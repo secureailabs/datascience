@@ -1,2 +1,2 @@
 sail-statistics/sail_secure_function.egg-info/*
-sail-statistics/notebook/.ipynb_checkpoints/*
+*.pyc

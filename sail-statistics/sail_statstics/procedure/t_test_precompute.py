@@ -9,7 +9,6 @@ class TTestPrecompute(SafeFunction):
     def __init__(self) -> None:
         super().__init__()
 
-    
     def run(
         sample_0:np.ndarray, 
         sample_1:np.ndarray) -> Tuple[List[float], List[bool]]: # there seems to be a problem here with this annotation
