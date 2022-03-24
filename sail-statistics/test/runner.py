@@ -1,3 +1,5 @@
-from t_test_test import t_test_test_scipy
+from t_test_test import test_t_test
+from mean_test import test_mean
 
-t_test_test_scipy()
+test_t_test()
+test_mean()

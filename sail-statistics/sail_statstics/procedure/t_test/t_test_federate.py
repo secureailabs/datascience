@@ -1,8 +1,7 @@
-import imp
 from sail_statstics.local_federated_dataframe import LocalFederatedDataframe
 
-from sail_statstics.procedure.t_test_precompute import TTestPrecompute
-from sail_statstics.procedure.t_test_agregate import TTestAgregate
+from sail_statstics.procedure.t_test.t_test_precompute import TTestPrecompute
+from sail_statstics.procedure.t_test.t_test_agregate import TTestAgregate
 
 from scipy.stats import t
 
@@ -23,8 +22,6 @@ class TTestFederate:
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         # TODO deal with posibilty sample_0 and sample_1 have more than 1 column
         for key_dataframe in list_key_dataframe:
-            sample_0.dict_dataframe[key_dataframe]
-            sample_1.dict_dataframe[key_dataframe]
             list_list_precompute.append(
                 TTestPrecompute.run(sample_0.dict_dataframe[key_dataframe], sample_1.dict_dataframe[key_dataframe])
             )
