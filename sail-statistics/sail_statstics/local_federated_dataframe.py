@@ -10,6 +10,19 @@ class LocalFederatedDataframe(FederatedDataframe):
         super().__init__()
         self.dict_dataframe = {}
 
+    def _get_dataframe_first(self) -> pd.DataFrame:
+        return list(self.dict_dataframe.values())[0]
+
+    @property
+    def columns(self):
+        dataframe = self._get_dataframe_first()
+        if isinstance(dataframe, pd.DataFrame):  # TODO bit of a hack should really use seperate classes to handle these
+            return dataframe.columns
+        elif isinstance(dataframe, pd.Series):
+            return [dataframe.name]
+        else:
+            raise ValueError("This is a terrible implementation and it should never end in production")
+
     def add_csv(self, path_file_csv: str) -> None:
         if path_file_csv in self.dict_dataframe:
             raise RuntimeError("Dataframe alreaddy present: " + path_file_csv)
@@ -22,6 +35,9 @@ class LocalFederatedDataframe(FederatedDataframe):
                 # #TODO also check datatype
                 #
         self.dict_dataframe[path_file_csv] = dataframe_new
+
+    def add_array(self, key: str, name: str, data: np.ndarray):
+        self.dict_dataframe[key] = pd.Series(data=data, name=name)
 
     def query(self, querystring: str) -> "LocalFederatedDataframe":
         dataframe_new = LocalFederatedDataframe()
