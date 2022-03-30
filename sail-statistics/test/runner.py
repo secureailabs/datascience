@@ -1,5 +1,15 @@
-from t_test_test import test_t_test
+from t_test_test import test_t_test_unpaired_equal_varriance
+
+test_t_test_unpaired_equal_varriance()
+
+from t_test_test import test_t_test_unpaired_unequal_varriance_small
+
+test_t_test_unpaired_unequal_varriance_small()
+
+from t_test_test import test_t_test_unpaired_unequal_varriance
+
+test_t_test_unpaired_unequal_varriance()
+
 from mean_test import test_mean
 
-test_t_test()
 test_mean()
