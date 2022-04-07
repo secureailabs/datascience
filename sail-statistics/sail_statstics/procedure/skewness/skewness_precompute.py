@@ -24,8 +24,8 @@ class SkewnessPrecompute(object):
 
         sample_0 = sample_0_dataframe.to_numpy()
         sum_x_0 = np.sum(sample_0)
-        sum_xx_0 = np.sum(sample_0*sample_0)
-        sum_xxx_0 = np.sum(sample_0 * sample_0*sample_0)
+        sum_xx_0 = np.sum(sample_0 * sample_0)
+        sum_xxx_0 = np.sum(sample_0 * sample_0 * sample_0)
         count_0 = len(sample_0)
 
         list_precompute = [sum_x_0, sum_xx_0, sum_xxx_0, count_0]
