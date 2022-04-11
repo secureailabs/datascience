@@ -7,6 +7,7 @@ class SkewnessAgregate(object):
         super().__init__()
 
     def run(list_list_precompute: List[List[float]]):
+
         """
         A Function to get the fedrated skewness value.
         same as scipy.skewsnes ()
@@ -15,7 +16,9 @@ class SkewnessAgregate(object):
         :type list_list_precompute: List[List[float]]
         :return: Skewness Value
         :rtype: Float
+
         """
+
         sum_x_0 = 0
         sum_xxx_0 = 0
         sum_xx_0 = 0
@@ -41,4 +44,5 @@ class SkewnessAgregate(object):
         # wiki link below for the formula
         # https://en.wikipedia.org/wiki/Skewness
         skewness_value = (mu3 - (3 * mean * sd * sd) - mean**3) / (sd**3)
+
         return skewness_value

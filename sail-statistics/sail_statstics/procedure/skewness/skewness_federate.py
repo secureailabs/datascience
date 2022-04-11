@@ -6,6 +6,7 @@ from sail_statstics.procedure.skewness.skewness_agregate import SkewnessAgregate
 
 
 class SkewnessFederate:
+
     """
     Final function to run for skewness Fedrated
     :return: Tupel[Float]
@@ -23,10 +24,10 @@ class SkewnessFederate:
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_dataframe.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        
+
         # Calculating precompute
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(SkewnessPrecompute.run(sample_0.dict_dataframe[key_dataframe]))
-        #Final Skew Value
+        # Final Skew Value
         skew_value = SkewnessAgregate.run(list_list_precompute)
         return skew_value
