@@ -9,7 +9,7 @@ class SkewnessAgregate(object):
     def run(list_list_precompute: List[List[float]]):
         """
         A Function to get the fedrated skewness value.
-        same as scipy.skewsness()
+        same as scipy.skewsnes ()
 
         :param list_list_precompute: compute from different DF
         :type list_list_precompute: List[List[float]]

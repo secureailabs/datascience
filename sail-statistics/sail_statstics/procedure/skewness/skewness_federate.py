@@ -7,7 +7,7 @@ from sail_statstics.procedure.skewness.skewness_agregate import SkewnessAgregate
 
 class SkewnessFederate:
     """
-    Final function to run for skewness fedrated
+    Final function to run for skewness Fedrated
     :return: Tupel[Float]
     :rtype: _type_
     """

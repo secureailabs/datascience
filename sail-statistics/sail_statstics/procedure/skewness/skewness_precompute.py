@@ -21,11 +21,11 @@ class SkewnessPrecompute(object):
         """
 
         sample_0 = sample_0_dataframe.to_numpy()
-        # First geometric mean
+        # First 
         sum_x_0 = np.sum(sample_0)
-        # second geometric mean
+        # second 
         sum_xx_0 = np.sum(sample_0 * sample_0)
-        # Third geometric mean
+        # Third 
         sum_xxx_0 = np.sum(sample_0 * sample_0 * sample_0)
         # Sample size
         count_0 = len(sample_0)
