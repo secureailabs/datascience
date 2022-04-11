@@ -1,4 +1,4 @@
 sail-statistics/sail_secure_function.egg-info/*
 *.pyc
 env39_sail/*
-
+venv**/*

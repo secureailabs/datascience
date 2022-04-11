@@ -1,4 +1,4 @@
-from typing import Any, List, Tuple
+from typing import List
 
 import pandas as pd
 import numpy as np
@@ -15,17 +15,19 @@ class SkewnessPrecompute(object):
         ----------
         sample_0_dataframe : pd.DataFrame
             The dataframe for sample_0
-
-
         Returns
         -------
-        a list of 3 floats
+        a list of 3 floats precompute value
         """
 
         sample_0 = sample_0_dataframe.to_numpy()
+        # First geometric mean
         sum_x_0 = np.sum(sample_0)
+        # second geometric mean
         sum_xx_0 = np.sum(sample_0 * sample_0)
+        # Third geometric mean
         sum_xxx_0 = np.sum(sample_0 * sample_0 * sample_0)
+        # Sample size
         count_0 = len(sample_0)
 
         list_precompute = [sum_x_0, sum_xx_0, sum_xxx_0, count_0]

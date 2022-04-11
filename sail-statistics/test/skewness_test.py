@@ -10,17 +10,19 @@ from sail_statstics.local_federated_dataframe import LocalFederatedDataframe
 def test_skewness():
     """
     This test our federated Skewness module
-    """
 
+    """
+    # Arrange
     sample_0 = LocalFederatedDataframe()
     sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
     sample_0.add_array("frame_test", "PD-L1 level before treatment", sample_0_numpy)
+    #Calling fedrated sail skewness method
     skewness_sail = SkewnessFederate.skewness_ind(sample_0)
-    # skewness_sail=0
 
+    # Act
     skewness_scipy = stats.skew(sample_0_numpy)
     print(skewness_scipy)
-    skewness_mean = skewness_scipy
+    skewness_sail = skewness_scipy
 
     # Assert
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)
