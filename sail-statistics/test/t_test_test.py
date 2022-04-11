@@ -33,10 +33,12 @@ def test_t_test_unpaired_equal_varriance():
     )
 
     # Assert
-    print(t_statistic_sail)
-    print(p_value_sail)
-    print(t_statistic_scipy)
-    print(p_value_scipy)
+    # TODO Can we remove these print statement
+    # print(t_statistic_sail)
+    # print(p_value_sail)
+    # print(t_statistic_scipy)
+    # print(p_value_scipy)
+
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)
 
