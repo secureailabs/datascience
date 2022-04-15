@@ -14,7 +14,7 @@ class KurtosisFederate:
     """
 
     @staticmethod
-    def kurtosis_ind(
+    def kurtosis(
         sample_0: LocalFederatedDataframe,
     ) -> Tuple[float]:
 
@@ -29,5 +29,5 @@ class KurtosisFederate:
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(KurtosisPrecompute.run(sample_0.dict_dataframe[key_dataframe]))
         # Final Skew Value
-        skew_value = KurtosisAgregate.run(list_list_precompute)
-        return skew_value
+        kurtosis_value = KurtosisAgregate.run(list_list_precompute)
+        return kurtosis_value

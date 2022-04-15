@@ -50,6 +50,6 @@ class KurtosisAgregate(object):
         # wiki link below for the formula
         # https://en.wikipedia.org/wiki/Kurtosis
 
-        Kurtosis_value = ((mu4) - 3 * (mean**4) - 4 * ((mu3) * (mean)) + 6 * ((mu2) * (mean**2))) / (sd**4)
+        kurtosis_value = ((mu4) - 3 * (mean**4) - 4 * ((mu3) * (mean)) + 6 * ((mu2) * (mean**2))) / (sd**4)
 
-        return Kurtosis_value - 3
+        return kurtosis_value - 3

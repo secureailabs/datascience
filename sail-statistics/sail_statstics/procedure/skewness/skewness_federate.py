@@ -14,7 +14,7 @@ class SkewnessFederate:
     """
 
     @staticmethod
-    def skewness_ind(
+    def skewness(
         sample_0: LocalFederatedDataframe,
     ) -> Tuple[float]:
 
