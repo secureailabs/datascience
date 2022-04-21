@@ -1,6 +1,4 @@
 # Secure AI Labs
-
-## Create your virtual environment
 ## Install package
 - Install Python 3.8 and add python to PATH
 - Clone datascience Repo
