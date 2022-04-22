@@ -1,4 +1,6 @@
-sail-statistics/sail_secure_function.egg-info/*
+sail-statistics/sail_safe_functions.egg-info/*
 *.pyc
-env39_sail/*
 
+env39_sail/*
+sail-demo/.ipynb_checkpoints/*
+sail-demo/.ipynb_checkpoints/weekly_demo-checkpoint.py

@@ -1,4 +1,4 @@
-class FederatedDataframe(object):
+class DataframeFederated:
     def __init__(self) -> None:
         pass
 

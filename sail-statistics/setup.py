@@ -5,9 +5,9 @@ with open("README.md", "r") as file:
 
 with open("requirements.txt", "r") as file:
     requirements = file.read().splitlines()
-    
+
 setup(
-    name="sail-secure-function",
+    name="sail-safe-functions",
     version="0.0.1",
     packages=find_packages(),
     package_data={},
@@ -15,7 +15,7 @@ setup(
     install_requires=requirements,
     author="Jaap Oosterbroek",
     author_email="jaap@secureailabs.com",
-    description="A set of secure functions to be used on the sail platform",
+    description="A set of safe functions to be used on the sail platform",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://nowhere.not",

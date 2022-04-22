@@ -1,4 +1,4 @@
-from sail_statstics.local_federated_dataframe import LocalFederatedDataframe
+from sail_statstics.orchestrator.series_federated import SeriesFederated
 
 from sail_statstics.procedure.mean.mean_precompute import MeanPrecompute
 from sail_statstics.procedure.mean.mean_agregate import MeanAgregate
@@ -6,14 +6,12 @@ from sail_statstics.procedure.mean.mean_agregate import MeanAgregate
 
 class MeanFederate:
     @staticmethod
-    def mean(sample_0: LocalFederatedDataframe):
+    def mean(sample_0: SeriesFederated):
 
         list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_dataframe.keys())
-        # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        # TODO deal with posibilty sample_0 and sample_1 have more than 1 column
-        for key_dataframe in list_key_dataframe:
-            list_list_precompute.append(MeanPrecompute.run(sample_0.dict_dataframe[key_dataframe]))
+        list_dict_series = list(sample_0.dict_series.keys())
+        for key in list_dict_series:
+            list_list_precompute.append(MeanPrecompute.run(sample_0.dict_series[key]))
 
         mean_statistic = MeanAgregate.run(list_list_precompute)
 

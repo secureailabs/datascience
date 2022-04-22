@@ -1,0 +1,66 @@
+
+#
+# step 1 start test Platform-Services-Backend (PSB)
+#
+
+# Connect to vpn
+
+# ensure there is a backend running at 40.88.37.65
+
+
+# ensure ssh keys are loaded
+git clone https://github.com/secureailabs/Engineering
+
+
+
+#
+# step 2 setup the Remote Data Connector (RDC)
+#
+
+
+
+#
+# step 3 setup the Researcher Notebook Docker Container (RNDC)
+#
+
+#starte wsl and ensure ssl keys are there in place
+#NOTE paths maybe different depending on user
+# clone repository or get latest version
+cd /mnt/c/project/sail/
+git clone https://github.com/secureailabs/Engineering
+# or 
+cd /mnt/c/project/sail/Engineering
+git reset --hard HEAD
+git clean -fdx
+
+# build SafeObjectCompiler
+cd /mnt/c/project/sail/Engineering/EndPointTools/SafeObjectTools/SafeObjectCompiler/Source
+make all
+
+# compile SafeObject
+# NOTE this compiler is does not work for every function
+cd /mnt/c/project/sail/Engineering/EndPointTools/SafeObjectTools/Scripts
+make all
+
+
+# build Orchestrator
+cd /mnt/c/project/sail/Engineering/EndPointTools/Orchestrator
+make all
+
+# copy IV
+cp /mnt/c/project/sail/Engineering/Docker/orchestrator/InitializationVector.json /mnt/c/project/sail/Engineering/EndPointTools/Orchestrator/sail
+
+# build container
+cd /mnt/c/project/sail/Engineering/Docker
+./BuildImages.sh -i orchestrator
+
+
+#
+#./RunService.sh -s orchestrator
+#
+
+docker run -p 8080:8080 \
+ -v /mnt/c/project/sail/Engineering/EndPointTools/Orchestrator/sail:/app \
+ -v /mnt/c/project/sail/Engineering/EndPointTools/SafeObjectTools/SafeObjects:/SafeObjects \
+ orchestrator
+
