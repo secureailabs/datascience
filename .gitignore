@@ -1,6 +1,7 @@
-sail-statistics/sail_safe_functions.egg-info/*
+sail-safe-functions/sail_safe_functions.egg-info/*
+sail-safe-functions-orchestrator/sail_safe_functions_orchestrator.egg-info/*
+sail-safe-functions-test/sail_safe_functions_test.egg-info/*
 *.pyc
+venv**/*
 
-env39_sail/*
-sail-demo/.ipynb_checkpoints/*
-sail-demo/.ipynb_checkpoints/weekly_demo-checkpoint.py
+
