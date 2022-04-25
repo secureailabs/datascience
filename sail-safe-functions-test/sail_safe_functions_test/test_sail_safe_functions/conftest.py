@@ -7,10 +7,10 @@ import pytest
 
 import numpy as np
 
-from config import DATA_PATH
+from sail_safe_functions_test.config import DATA_PATH
 
-from helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
-from helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
 @pytest.fixture

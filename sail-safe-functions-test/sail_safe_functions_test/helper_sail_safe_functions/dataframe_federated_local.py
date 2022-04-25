@@ -5,7 +5,7 @@ from typing import List
 from sail_safe_functions_orchestrator.dataframe_federated import DataframeFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
-from helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
 class DataframeFederatedLocal(DataframeFederated):

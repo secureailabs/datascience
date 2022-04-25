@@ -3,8 +3,7 @@ import numpy as np
 
 from sail_safe_functions_orchestrator.statistics.mean_federate import MeanFederate
 
-from helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 @pytest.mark.active
 def test_mean(one_sample_big: SeriesFederatedLocal):

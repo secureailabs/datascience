@@ -4,10 +4,10 @@ from scipy import stats
 
 from sail_safe_functions_orchestrator.statistics.skewness_federate import SkewnessFederate
 
-from helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 @pytest.mark.active
-def test_skewness(one_sample_big):
+def test_skewness(one_sample_big: SeriesFederatedLocal):
     """
     This test our federated Skewness module
 

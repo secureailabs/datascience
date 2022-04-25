@@ -3,8 +3,7 @@ import pytest
 from scipy import stats
 
 from sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate import UnpairedTTestFederate
-from helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 @pytest.mark.active
 def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
