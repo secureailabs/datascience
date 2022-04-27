@@ -3,14 +3,16 @@ Pytest fixtures
 """
 import os
 from typing import Tuple
-import pytest
 
 import numpy as np
-
-from sail_safe_functions_test.config import DATA_PATH
-
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+import pytest
+from config import DATA_PATH
+from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import (
+    DataframeFederatedLocal,
+)
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.fixture
@@ -60,7 +62,9 @@ def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     :return: SeriesFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
-    sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
+    sample_0_numpy = np.array(
+        [17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8]
+    )
     sample_1_numpy = np.array(
         [
             21.5,
