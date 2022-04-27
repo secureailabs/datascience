@@ -1,5 +1,0 @@
-scipy==1.8.0
-numpy==1.22.3
-pandas==1.4.1
-black==21.7b0
-flake8==3.9.2

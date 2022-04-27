@@ -13,14 +13,15 @@ Although each of these has their own requirements.txt they should never conflict
 ## Create virtual environment
 - Install Python 3.8
 - Clone datascience Repo
-- Create a virtual environment: `py -3.8 -m venv venv38_sail`
+- Create a virtual environment: `python3 -m venv venv38_sail`
 
 ## Activate virtual environment
-- Activate a virtual environment: `source venv38_sail/Scripts/activate`
+- Activate virtual environment on Windows: `venv38_sail\Scripts\activate`
+- Activate virtual environment on Linux `source venv38_sail/bin/activate`
 
-## Install repositories
-- Run `python install.py`
-
+## Install all Dependencies for local development
+- Run `python install.py` \
+*`Dependency Requirements are listed in config/requirements/*.txt`*
 ## Run Test package
 - Run `python run_tests.py`
 
