@@ -1,10 +1,7 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r") as file:
     long_description = file.read()
-
-with open("requirements.txt", "r") as file:
-    requirements = file.read().splitlines()
 
 setup(
     name="sail-safe-functions-test",
@@ -12,7 +9,6 @@ setup(
     packages=find_packages(),
     package_data={},
     python_requires=">=3.5",
-    install_requires=requirements,
     author="Jaap Oosterbroek",
     author_email="jaap@secureailabs.com",
     description="A set of safe functions to be used on the sail platform",
