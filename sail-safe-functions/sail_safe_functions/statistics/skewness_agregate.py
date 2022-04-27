@@ -2,9 +2,10 @@ from typing import List
 import math
 
 
-class SkewnessAgregate(object):
-    def __init__(self) -> None:
-        super().__init__()
+class SkewnessAgregate:
+    """
+    Agregates data for computing skewness
+    """
 
     def run(list_list_precompute: List[List[float]]):
 

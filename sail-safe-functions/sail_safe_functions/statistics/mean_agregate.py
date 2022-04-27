@@ -1,9 +1,10 @@
 from typing import List
 
 
-class MeanAgregate(object):
-    def __init__(self) -> None:
-        super().__init__()
+class MeanAgregate:
+    """
+    Agregates data for computing the mean
+    """
 
     def run(list_list_precompute: List[List[float]]):
         sum_x_0 = 0

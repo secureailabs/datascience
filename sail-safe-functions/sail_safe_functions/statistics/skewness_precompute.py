@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 
 
-class SkewnessPrecompute(object):
-    def __init__(self) -> None:
-        super().__init__()
+class SkewnessPrecompute:
+    """
+    Precomputes data for computing skewness
+    """
 
     def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
         """Generates the geometric moments for use in a Skewness
