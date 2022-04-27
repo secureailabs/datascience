@@ -13,7 +13,9 @@ Although each of these has their own requirements.txt they should never conflict
 ## Create virtual environment
 - Install Python 3.8
 - Clone datascience Repo
-- Create a virtual environment: `python3 -m venv venv38_sail`
+- [Create a virtual environment](https://docs.python.org/3/library/venv.html) \
+`example in linux : python3 -m venv venv38_sail` \
+`example in Windows: python -m venv c:\path\to\venv38_sail`
 
 ## Activate virtual environment
 - Activate virtual environment on Windows: `venv38_sail\Scripts\activate`
