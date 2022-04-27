@@ -3,5 +3,6 @@ sail-safe-functions-orchestrator/sail_safe_functions_orchestrator.egg-info/*
 sail-safe-functions-test/sail_safe_functions_test.egg-info/*
 *.pyc
 venv**/*
+settings.json
 
 
