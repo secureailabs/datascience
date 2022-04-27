@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 
 
-class MeanPrecompute(object):
-    def __init__(self) -> None:
-        super().__init__()
+class MeanPrecompute:
+    """
+    Precomputes data for computing the mean
+    """
 
     def run(
         sample_0_dataframe: pd.Series,
