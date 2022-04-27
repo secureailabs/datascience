@@ -4,10 +4,9 @@ import pandas as pd
 import numpy as np
 
 
-class MeanPrecompute(object):
-    def __init__(self) -> None:
-        super().__init__()
+class MeanPrecompute:
 
+    @staticmethod
     def run(
         sample_0_dataframe: pd.Series,
     ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation

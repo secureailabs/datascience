@@ -4,10 +4,9 @@ import pandas as pd
 import numpy as np
 
 
-class KurtosisPrecompute(object):
-    def __init__(self) -> None:
-        super().__init__()
+class KurtosisPrecompute:
 
+    @staticmethod
     def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
         """Generates the geometric moments for use in a Kurtosis
 

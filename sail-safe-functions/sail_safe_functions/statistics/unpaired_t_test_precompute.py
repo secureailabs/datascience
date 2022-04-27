@@ -4,10 +4,9 @@ import pandas as pd
 import numpy as np
 
 
-class UnpairedTTestPrecompute(object):
-    def __init__(self) -> None:
-        super().__init__()
+class UnpairedTTestPrecompute:
 
+    @staticmethod
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -> List[float]:
         """Generates the geometric moments for use in a T-Test
 
