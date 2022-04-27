@@ -2,10 +2,9 @@ from typing import List
 import math
 
 
-class KurtosisAgregate(object):
-    def __init__(self) -> None:
-        super().__init__()
+class KurtosisAgregate:
 
+    @staticmethod
     def run(list_list_precompute: List[List[float]]):
 
         """

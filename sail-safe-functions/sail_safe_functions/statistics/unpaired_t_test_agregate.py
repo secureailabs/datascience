@@ -4,10 +4,9 @@ import numpy as np
 import math
 
 
-class UnpairedTTestAgregate(object):
-    def __init__(self) -> None:
-        super().__init__()
+class UnpairedTTestAgregate:
 
+    @staticmethod
     def run(
         list_list_precompute: List[List[float]],
         equal_varriances: bool = False,
