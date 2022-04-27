@@ -1,7 +1,0 @@
-README.md
-setup.py
-sail_safe_functions_test.egg-info/PKG-INFO
-sail_safe_functions_test.egg-info/SOURCES.txt
-sail_safe_functions_test.egg-info/dependency_links.txt
-sail_safe_functions_test.egg-info/requires.txt
-sail_safe_functions_test.egg-info/top_level.txt
