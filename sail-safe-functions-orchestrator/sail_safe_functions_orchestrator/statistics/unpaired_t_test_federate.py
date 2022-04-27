@@ -1,8 +1,12 @@
 from typing import Tuple
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
-from sail_safe_functions.statistics.unpaired_t_test_agregate import UnpairedTTestAgregate
 
+from sail_safe_functions.statistics.unpaired_t_test_agregate import (
+    UnpairedTTestAgregate,
+)
+from sail_safe_functions.statistics.unpaired_t_test_precompute import (
+    UnpairedTTestPrecompute,
+)
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from scipy.stats import t
 
 
@@ -22,10 +26,15 @@ class UnpairedTTestFederate:
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
+                TTestPrecompute.run(
+                    sample_0.dict_series[key_dataframe],
+                    sample_1.dict_series[key_dataframe],
+                )
             )
 
-        t_statistic, degrees_of_freedom = UnpairedTTestAgregate.run(list_list_precompute, equal_varriances)
+        t_statistic, degrees_of_freedom = UnpairedTTestAgregate.run(
+            list_list_precompute, equal_varriances
+        )
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)

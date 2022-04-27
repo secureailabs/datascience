@@ -1,11 +1,12 @@
-import pandas as pd
-import numpy as np
 from typing import List
 
+import numpy as np
+import pandas as pd
 from sail_safe_functions_orchestrator.dataframe_federated import DataframeFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 class DataframeFederatedLocal(DataframeFederated):
