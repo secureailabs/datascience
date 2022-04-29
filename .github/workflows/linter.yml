@@ -18,14 +18,3 @@ jobs:
         select: E402,E265,F841,F541,702
         maxlinelength: 120
         repotoken: ${{ secrets.GITHUB_TOKEN }}
-
-  run-black:
-    name: black
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: psf/black@stable
-        with:
-          options: "--check --verbose"
-          src: "."
-          version: "22.3.0"
