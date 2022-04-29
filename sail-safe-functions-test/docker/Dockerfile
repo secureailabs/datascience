@@ -23,5 +23,5 @@ WORKDIR /datascience/sail-safe-functions-test/
 CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-sv"]
 
 # Usage
-# docker build --build-arg git_personal_token=XXXX --build-arg branch=notmain -t sail/datascience-test .
+# docker build --build-arg git_personal_token={git_personal_token} --build-arg branch={branch_name} -t sail/datascience-test .
 # docker run sail/datascience-test 
