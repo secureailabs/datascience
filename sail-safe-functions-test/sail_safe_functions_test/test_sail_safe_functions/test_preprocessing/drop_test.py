@@ -1,5 +1,5 @@
-import pytest
 import pandas as pd
+import pytest
 
 from sail_safe_functions.preprocessing.drop import Drop
 
@@ -15,7 +15,6 @@ def test_drop(dataframe_kidney: pd.DataFrame):
     # Arrange
 
     # Act
-
     drop_sail = Drop.Run(dataframe_kidney, labels=[0, 1], axis=0, index=None, columns=None, level=None, errors="raise")
     drop_pandas = pd.DataFrame.drop(
         dataframe_kidney, labels=[0, 1], axis=0, index=None, columns=None, level=None, inplace=False, errors="raise"
