@@ -4,7 +4,7 @@ import pandas as pd
 
 class Drop:
     """
-    Agregates data for Kurtosis
+    Drop specific rows or columns
     """
 
     def Run(
