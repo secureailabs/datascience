@@ -1,9 +1,10 @@
 from typing import Tuple
-import pytest
-from scipy import stats
 
+import pytest
 from sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate import UnpairedTTestFederate
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from scipy import stats
+
 
 @pytest.mark.active
 def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):

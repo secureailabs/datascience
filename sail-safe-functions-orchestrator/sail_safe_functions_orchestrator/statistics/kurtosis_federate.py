@@ -1,8 +1,8 @@
 from typing import Tuple
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
-from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
 from sail_safe_functions.statistics.kurtosis_agregate import KurtosisAgregate
+from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 class KurtosisFederate:

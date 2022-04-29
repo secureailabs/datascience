@@ -1,7 +1,8 @@
 from typing import Tuple
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
+
 from sail_safe_functions.statistics.skewness_agregate import SkewnessAgregate
+from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 class SkewnessFederate:
