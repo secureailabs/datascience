@@ -1,6 +1,6 @@
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions.statistics.mean_agregate import MeanAgregate
+from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 class MeanFederate:

@@ -1,9 +1,11 @@
 from typing import Tuple
-import pytest
-from scipy import stats
 
-from sail_safe_functions_orchestrator.statistics.paired_t_test_federate import PairedTTestFederate
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+import pytest
+from sail_safe_functions_orchestrator.statistics.paired_t_test_federate import \
+    PairedTTestFederate
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import \
+    SeriesFederatedLocal
+from scipy import stats
 
 
 @pytest.mark.active
