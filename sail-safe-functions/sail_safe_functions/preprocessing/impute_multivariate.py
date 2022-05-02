@@ -26,8 +26,6 @@ class ImputeMultivariate:
         :type data_frame: pd.DataFrame
         :param list_name_column: a list of column names to impute, set to None to do all columns
         :type list_name_column: list[str]
-        :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
-        :type strategy: str
         :param imputation_order: imputation_order, must be {`ascending`, `descending`}
             `ascending` From features with fewest missing values to most.
             `descending`: From features with most missing values to fewest.
