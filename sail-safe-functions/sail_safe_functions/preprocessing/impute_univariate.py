@@ -5,11 +5,11 @@ from sklearn.impute import SimpleImputer
 
 class ImputeUnivariate:
     """
-    Drop rows or columns with missing data
+    Imputes one or more columns with a univariate strategy
     """
 
     def Run(data_frame: pd.DataFrame, list_name_column: list[str], strategy: str) -> pd.DataFrame:
-        """ImputeUnivariate
+        """Imputes one or more columns with a univariate strategy
 
         :param data_frame: Input dataframe
         :type data_frame: pd.DataFrame
@@ -37,7 +37,6 @@ class ImputeUnivariate:
                     + name_column
                     + " which is of string type"
                 )
-            imputer.fit(data_frame[[name_column]])
-            data_frame[name_column] = imputer.transform(data_frame[[name_column]])
+            data_frame[name_column] = imputer.fit_transform(data_frame[[name_column]])
 
         return data_frame
