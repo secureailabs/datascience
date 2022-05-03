@@ -27,12 +27,6 @@ jobs:
       - name: The current pull request branch
         run: |
           echo "${{ steps.branch-name.outputs.head_ref_branch }}"
-          echo  "hello test"
-          echo "PR BRANCH: $PR_BRANCH"
-          echo  "hello END"
-        env:
-          PR_BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
-          
       - uses: actions/checkout@v2
       - name: Build Docker for DS Test
         env:
@@ -41,7 +35,6 @@ jobs:
           set -e
           echo $BRANCH
           pwd
-          echo ${{ steps.branch-names.outputs.head_ref_branch }}
           ls -l 
           sudo chmod 666 /var/run/docker.sock
           docker build --build-arg git_personal_token=$PAT --build-arg branch=${{ steps.branch-name.outputs.head_ref_branch }} -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
