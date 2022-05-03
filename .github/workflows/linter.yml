@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [ main ]
-
+  
 jobs:
   flake8-lint:
     runs-on: ubuntu-latest
@@ -31,13 +31,13 @@ jobs:
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-          BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
         run: |
           set -e
+          echo "PR Branch : ${{ steps.branch-name.outputs.head_ref_branch }}"
           pwd
           ls -l 
           sudo chmod 666 /var/run/docker.sock
-          docker build --build-arg git_personal_token=$PAT --build-arg branch=$BRANCH -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
+          docker build --build-arg git_personal_token=$PAT --build-arg branch=${{ steps.branch-name.outputs.head_ref_branch }} -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
           docker run sail/datascience-test
   
   workflow-conclusion:
