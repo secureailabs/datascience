@@ -33,7 +33,7 @@ jobs:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
         run: |
           set -e
-          echo $BRANCH
+          echo "PR Branch : ${{ steps.branch-name.outputs.head_ref_branch }}"
           pwd
           ls -l 
           sudo chmod 666 /var/run/docker.sock
