@@ -1,3 +1,5 @@
+
+[![.github/workflows/linter.yml](https://github.com/secureailabs/datascience/actions/workflows/linter.yml/badge.svg)](https://github.com/secureailabs/datascience/actions/workflows/linter.yml)
 # Secure AI Labs Datasciece repo
 
 ## Overview
