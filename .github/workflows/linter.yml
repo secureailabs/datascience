@@ -11,29 +11,34 @@ jobs:
   flake8-lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: tonybajan/flake8-check-action@v1.0.0
-      with:
-        select: E402,E265,F841,F541,702
-        maxlinelength: 120
-        repotoken: ${{ secrets.GITHUB_TOKEN }}
-  
+      - uses: actions/checkout@v2
+      - uses: tonybajan/flake8-check-action@v1.0.0
+        with:
+          select: E402,E265,F841,F541,702
+          maxlinelength: 120
+          repotoken: ${{ secrets.GITHUB_TOKEN }}
+
   build_test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Branch name
-      run: echo running on branch ${GITHUB_REF##*/}
-    - name: Build Docker for DS Test
-      env:
-        PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-      run: |
-        set -e
-        pwd
-        ls -l 
-        sudo chmod 666 /var/run/docker.sock
-        docker build --build-arg git_personal_token=$PAT --build-arg branch=${GITHUB_REF##*/} -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
-        docker run sail/datascience-test
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v5.2
+      - name: The current pull request branch
+        run: |
+          echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+      - uses: actions/checkout@v2
+      - name: Build Docker for DS Test
+        env:
+          PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
+          BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
+        run: |
+          set -e
+          pwd
+          ls -l 
+          sudo chmod 666 /var/run/docker.sock
+          docker build --build-arg git_personal_token=$PAT --build-arg branch=$BRANCH -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
+          docker run sail/datascience-test
   
   workflow-conclusion:
     # Without this step workflow remains "green" if build does fail.
