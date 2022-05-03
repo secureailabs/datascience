@@ -33,12 +33,14 @@ jobs:
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
+          BRANCH: ${ref}
         run: |
           set -e
+          echo $BRANCH
           pwd
+          echo $BRANCH
           ls -l 
           sudo chmod 666 /var/run/docker.sock
-          echo $ref
           docker build --build-arg git_personal_token=$PAT --build-arg branch=$ref -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
           docker run sail/datascience-test
   
