@@ -27,17 +27,23 @@ jobs:
       - name: The current pull request branch
         run: |
           echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+          echo "using GITHUB_ref_name : $GITHUB_REF_NAME"
+          echo "using GITHUB_BASE_REF : $GITHUB_BASE_REF"
+          echo "using GITHUB_BASE : $GITHUB_BASE"
+          echo "using GITHUB_HEAD_REF :$GITHUB_HEAD_REF"
+
       - uses: actions/checkout@v2
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
         run: |
           set -e
-          echo "PR Branch : ${{ steps.branch-name.outputs.head_ref_branch }}"
+          echo "Branch : ${{ steps.branch-name.outputs.head_ref_branch }}"
           pwd
           ls -l 
           sudo chmod 666 /var/run/docker.sock
-          docker build --build-arg git_personal_token=$PAT --build-arg branch=${{ steps.branch-name.outputs.head_ref_branch }} -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
+          BRANCH=${{ steps.branch-name.outputs.head_ref_branch }}
+          docker build --build-arg git_personal_token=$PAT --build-arg branch=$BRANCH -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
           docker run sail/datascience-test
   
   workflow-conclusion:
