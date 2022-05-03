@@ -1,6 +1,7 @@
 import pandas as pd
 from pandas.api.types import is_numeric_dtype, is_string_dtype
-from sklearn.experimental import enable_iterative_imputer  # NOTE side effect import!!!
+from sklearn.experimental import \
+    enable_iterative_imputer  # NOTE side effect import!!!
 from sklearn.impute import IterativeImputer, SimpleImputer
 
 
@@ -17,7 +18,7 @@ class ImputeMultivariate:
 
     def Run(
         data_frame: pd.DataFrame,
-        list_name_column: list[str],
+        list_name_column: list,
         imputation_order: str,
     ) -> pd.DataFrame:
         """Imputes one or more columns with a multivariate strategy

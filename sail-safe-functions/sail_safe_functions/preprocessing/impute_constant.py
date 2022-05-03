@@ -11,7 +11,7 @@ class ImputeConstant:
     """
 
     def Run(
-        data_frame: pd.DataFrame, list_name_column: list[str], missing_value: Union[str, int, float]
+        data_frame: pd.DataFrame, list_name_column: list, missing_value: Union[str, int, float]
     ) -> pd.DataFrame:
         """Imputes one or more columns with a constant value
 
