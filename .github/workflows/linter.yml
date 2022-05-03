@@ -38,6 +38,7 @@ jobs:
           pwd
           ls -l 
           sudo chmod 666 /var/run/docker.sock
+          echo $ref
           docker build --build-arg git_personal_token=$PAT --build-arg branch=$ref -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
           docker run sail/datascience-test
   
