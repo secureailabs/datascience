@@ -33,9 +33,8 @@ class ImputeUnivariate:
 
             if is_string_dtype(data_frame[name_column]) and strategy != "most_frequent":
                 raise ValueError(
-                    "`mean`, `median` strategies cannot not operate on column with name "
-                    + name_column
-                    + " which is of string type"
+                    "`mean`, `median` strategies cannot not operate on column with name %s which is of string type"
+                    % (name_column)
                 )
             data_frame[name_column] = imputer.fit_transform(data_frame[[name_column]])
 
