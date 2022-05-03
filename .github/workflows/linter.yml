@@ -23,17 +23,17 @@ jobs:
     steps:
       - name: Get branch names
         id: branch-name
-        uses: tj-actions/branch-names@v5.2
+      - uses: tj-actions/branch-names@v5.2
       - name: The current pull request branch
+        env:
+          BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
         run: |
           echo "${{ steps.branch-name.outputs.head_ref_branch }}"
+          echo "$BRANCH"
       - uses: actions/checkout@v2
-#         with:
-#           ref: ${{ steps.branch-names.outputs.head_ref_branch }}
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-          BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
         run: |
           set -e
           echo $BRANCH
