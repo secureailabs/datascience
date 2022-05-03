@@ -8,7 +8,7 @@ class ImputeUnivariate:
     Imputes one or more columns with a univariate strategy
     """
 
-    def Run(data_frame: pd.DataFrame, list_name_column: list[str], strategy: str) -> pd.DataFrame:
+    def Run(data_frame: pd.DataFrame, list_name_column: list, strategy: str) -> pd.DataFrame:
         """Imputes one or more columns with a univariate strategy
 
         :param data_frame: Input dataframe
