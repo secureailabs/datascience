@@ -31,7 +31,7 @@ jobs:
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-          BRANCH_NAME: $GITHUB_HEAD_REF || $GITHUB_REF_NAME
+          BRANCH_NAME: ${{ GITHUB_HEAD_REF || GITHUB_REF_NAME }}
         run: |
           set -e
           echo "Branch : $BRANCH_NAME"
