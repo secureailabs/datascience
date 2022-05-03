@@ -25,13 +25,13 @@ jobs:
         run: |
           echo "using GITHUB_ref_name : $GITHUB_REF_NAME"
           echo "using GITHUB_BASE_REF : $GITHUB_BASE_REF"
-          echo "using GITHUB_HEAD_REF :$GITHUB_HEAD_REF"
+          echo "using GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
 
       - uses: actions/checkout@v2
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-          BRANCH_NAME: $GITHUB_HEAD_REF || GITHUB_REF_NAME 
+          BRANCH_NAME: ${GITHUB_HEAD_REF || GITHUB_REF_NAME} 
         run: |
           set -e
           echo "Branch : $BRANCH_NAME
