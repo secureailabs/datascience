@@ -34,7 +34,7 @@ jobs:
           BRANCH_NAME: ${{ env.GITHUB_HEAD_REF || env.GITHUB_REF_NAME }} 
         run: |
           set -e
-          echo "Branch : $BRANCH_NAME
+          echo "Branch : $BRANCH_NAME"
           pwd
           ls -l 
           sudo chmod 666 /var/run/docker.sock
