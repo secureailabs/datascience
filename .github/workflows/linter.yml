@@ -28,17 +28,17 @@ jobs:
         run: |
           echo "${{ steps.branch-name.outputs.head_ref_branch }}"
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ steps.branch-names.outputs.head_ref_branch }}
+#         with:
+#           ref: ${{ steps.branch-names.outputs.head_ref_branch }}
       - name: Build Docker for DS Test
         env:
           PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
-          BRANCH: ${ref}
+          BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
         run: |
           set -e
           echo $BRANCH
           pwd
-          echo $BRANCH
+          echo ${{ steps.branch-names.outputs.head_ref_branch }}
           ls -l 
           sudo chmod 666 /var/run/docker.sock
           docker build --build-arg git_personal_token=$PAT --build-arg branch=$ref -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
