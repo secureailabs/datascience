@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Get branch names
         id: branch-name
-      - uses: tj-actions/branch-names@v5.2
+        uses: tj-actions/branch-names@v5.2
       - name: The current pull request branch
         env:
           BRANCH: ${{ steps.branch-names.outputs.head_ref_branch }}
