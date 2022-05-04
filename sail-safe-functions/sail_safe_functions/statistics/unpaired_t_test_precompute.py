@@ -12,17 +12,12 @@ class UnpairedTTestPrecompute:
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -> List[float]:
         """Generates the geometric moments for use in a T-Test
 
-        Parameters
-        ----------
-        sample_0_series : pd.Series
-            The series for sample_0
-
-        sample_1_series : pd.Series
-            The series for sample_1
-
-        Returns
-        -------
-        a list of 6 floats, two moments for sample_0 followed by the size of sample_0 and two moments for sample_1 followed by the size of sample 1
+        :param sample_0_series: The series for sample_0
+        :type sample_0_series: pd.Series
+        :param sample_1_series: The series for sample_1
+        :type sample_1_series: pd.Series
+        :return:   a list of 6 floats, two moments for sample_0 followed by the size of sample_0 and two moments for sample_1 followed by the size of sample 1
+        :rtype: List[float]
         """
         sample_0 = sample_0_series.to_numpy()
         sample_1 = sample_1_series.to_numpy()

@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -11,8 +11,17 @@ class UnpairedTTestAgregate:
 
     def run(
         list_list_precompute: List[List[float]],
-        equal_varriances: bool = False,
-    ):
+        equal_varriances: bool,
+    ) -> Tuple[float, float]:
+        """_summary_
+
+        :param list_list_precompute: a list of lists of geometric moments and sample sizes
+        :type list_list_precompute: List[List[float]]
+        :param equal_varriances: assume equal variances,
+        :type equal_varriances: bool, optional
+        :return: A tuple of a t-statitic and a p-value
+        :rtype: Tuple[float, float]
+        """
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -47,8 +56,6 @@ class UnpairedTTestAgregate:
             degrees_of_freedom = size_sample_0 + size_sample_1 - 2
 
         else:
-            # sample_varriance_0 /= size_sample_0 / (size_sample_0 - 1)
-            # sample_varriance_1 /= size_sample_1 / (size_sample_1 - 1)
             t_statistic = (sample_mean_0 - sample_mean_1) / (
                 np.sqrt((sample_varriance_0 / size_sample_0) + (sample_varriance_1 / size_sample_1))
             )

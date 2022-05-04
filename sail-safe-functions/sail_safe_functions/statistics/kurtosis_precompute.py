@@ -9,19 +9,19 @@ class KurtosisPrecompute:
     Precomputes data for Kurtosis
     """
 
-    def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
+    def run(sample_0_series: pd.Series) -> List[float]:
         """Generates the geometric moments for use in a Kurtosis
 
         Parameters
         ----------
-        sample_0_dataframe : pd.DataFrame
-            The dataframe for sample_0
+        sample_0_series : pd.Series
+            The series for sample_0
         Returns
         -------
         a list of 3 floats precomputes value
         """
 
-        sample_0 = sample_0_dataframe.to_numpy()
+        sample_0 = sample_0_series.to_numpy()
         # First
         sum_x_0 = np.sum(sample_0)
         # second
