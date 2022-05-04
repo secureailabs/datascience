@@ -3,6 +3,13 @@ import math
 
 
 class PearsonAgregate(object):
+    """
+    Computing the pearson Agregate
+
+    :param object:
+    :type object:
+    """
+
     def __init__(self) -> None:
         super().__init__()
 

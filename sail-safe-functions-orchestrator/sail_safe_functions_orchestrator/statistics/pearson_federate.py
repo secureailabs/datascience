@@ -6,6 +6,13 @@ from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
 
 
 class PearsonFederate:
+    """
+    Computing the final Pearson Federated
+
+    :return: _description_
+    :rtype: _type_
+    """
+
     @staticmethod
     def pearson(
         sample_0: SeriesFederated,

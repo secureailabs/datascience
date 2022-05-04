@@ -4,6 +4,13 @@ import numpy as np
 
 
 class PearsonPrecompute(object):
+    """
+    This class it get the precomputes required for the pearson
+
+    :param object:
+    :type object:
+    """
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -19,7 +26,7 @@ class PearsonPrecompute(object):
 
         Returns
         -------
-        a list of 3 floats
+        a list of 6 floats
         """
         sample_0 = sample_0_dataframe.to_numpy()
         sample_1 = sample_1_dataframe.to_numpy()
