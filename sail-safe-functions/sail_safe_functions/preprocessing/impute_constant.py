@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,9 @@ class ImputeConstant:
     Imputes one or more columns with a constant value
     """
 
-    def Run(data_frame: pd.DataFrame, list_name_column: list, missing_value: Union[str, int, float]) -> pd.DataFrame:
+    def Run(
+        data_frame: pd.DataFrame, list_name_column: List[str], missing_value: Union[str, int, float]
+    ) -> pd.DataFrame:
         """Imputes one or more columns with a constant value
 
         :param data_frame: Input data_frame
@@ -36,8 +38,8 @@ class ImputeConstant:
             list_name_column = list(data_frame.columns)
         for name_column in list_name_column:
             if missing_type_numberic and not is_numeric_dtype(data_frame[name_column]):
-                raise ValueError("missing_value is numeric type but column with name %s is not" % (name_column))
+                raise ValueError(f"missing_value is numeric type but column with name {name_column} is not")
             if not missing_type_numberic and not is_string_dtype(data_frame[name_column]):
-                raise ValueError("missing_value is string type but column with name %s is not" % (name_column))
+                raise ValueError(f"missing_value is string type but column with name {name_column} is not")
             data_frame[name_column] = data_frame[name_column].replace(np.nan, missing_value)
         return data_frame
