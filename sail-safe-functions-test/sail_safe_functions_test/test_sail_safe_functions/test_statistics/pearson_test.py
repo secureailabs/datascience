@@ -8,8 +8,10 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
 @pytest.mark.active
 def test_pearson(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     """
-    This test our federated Pearson module
+    This is our test for the Sails federated Pearson
 
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
     """
     # Arrange
     sample_0 = two_sample_big[0]
