@@ -12,12 +12,12 @@ class MinMaxPrecompute:
     def run(series_sample: pd.Series) -> Tuple[float, float]:
         """This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min <= sample_min and sample_max <= max
-        For uniform distributions this follows the UMVUE altough with bigger varriance
+        For uniform distributions this follows the UMVU-estimator altough with bigger varriance
         For normal distribution this creates a min and a max that are far outside the sample
         min and max to protect outliers.
         TODO this function can be improved by doing the actual estimation in the agregate section
 
-        :param series_sample: _description_
+        :param series_sample: the sample from witch to estimate the min and max
         :type series_sample: pd.Series
         :raises ValueError: raises a ValueError if the series contains `na` values
         :return: The min and max estimate from the series
