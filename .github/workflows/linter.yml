@@ -1,4 +1,4 @@
-name: Flake 8 and Black
+name: Flake 8 and Test
 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -6,15 +6,48 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [ main ]
-
-
+  
 jobs:
   flake8-lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: tonybajan/flake8-check-action@v1.0.0
-      with:
-        select: E402,E265,F841,F541,702
-        maxlinelength: 120
-        repotoken: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - uses: tonybajan/flake8-check-action@v1.0.0
+        with:
+          select: C90,E,W,F
+          ignore: E402,E265,F841,F541,E702
+          maxlinelength: 120
+          repotoken: ${{ secrets.GITHUB_TOKEN }}
+
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: The current branch
+        run: |
+          echo "using GITHUB_ref_name : $GITHUB_REF_NAME"
+          echo "using GITHUB_BASE_REF : $GITHUB_BASE_REF"
+          echo "using GITHUB_HEAD_REF : $GITHUB_HEAD_REF"
+
+      - uses: actions/checkout@v2
+      - name: Build Docker for DS Test
+        env:
+          PAT: ${{ secrets.JENKINS_BUILD_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          set -e
+          pwd
+          ls -l 
+          sudo chmod 666 /var/run/docker.sock
+          docker build --build-arg git_personal_token=$PAT --build-arg branch=$BRANCH_NAME -t sail/datascience-test -f sail-safe-functions-test/docker/Dockerfile .
+          docker run sail/datascience-test
+  
+  workflow-conclusion:
+    # Without this step workflow remains "green" if build does fail.
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [flake8-lint, build_test]
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - name: Check Job Status status and fail if they are red
+        if: env.WORKFLOW_CONCLUSION == 'failure'
+        run: exit 1
