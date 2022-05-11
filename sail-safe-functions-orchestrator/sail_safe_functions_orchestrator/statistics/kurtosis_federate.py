@@ -1,12 +1,13 @@
 from typing import Tuple
 
+import pandas
 from sail_safe_functions.statistics.kurtosis_agregate import KurtosisAgregate
 from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from scipy import stats
 
 
 class KurtosisFederate:
-
     """
     Final function to run for Kurtosis Fedrated
     """
@@ -26,3 +27,11 @@ class KurtosisFederate:
         # Final Kurtosis Value
         kurtosis_value = KurtosisAgregate.run(list_list_precompute)
         return kurtosis_value
+
+    @staticmethod
+    def Run(sample_0: SeriesFederated):
+        return KurtosisFederate.kurtosis(sample_0)
+
+    @staticmethod
+    def RunReference(sample_0: pandas.Series):
+        return stats.kurtosis(sample_0.to_numpy())
