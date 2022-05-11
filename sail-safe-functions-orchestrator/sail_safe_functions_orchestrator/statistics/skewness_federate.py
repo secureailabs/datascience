@@ -1,8 +1,10 @@
 from typing import Tuple
 
+import pandas
 from sail_safe_functions.statistics.skewness_agregate import SkewnessAgregate
 from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from scipy import stats
 
 
 class SkewnessFederate:
@@ -29,3 +31,11 @@ class SkewnessFederate:
         # Final Skew Value
         skew_value = SkewnessAgregate.run(list_list_precompute)
         return skew_value
+
+    @staticmethod
+    def Run(sample_0: SeriesFederated):
+        return SkewnessFederate.skewness(sample_0)
+
+    @staticmethod
+    def RunReference(sample_0: pandas.Series):
+        return stats.skew(sample_0.to_numpy())
