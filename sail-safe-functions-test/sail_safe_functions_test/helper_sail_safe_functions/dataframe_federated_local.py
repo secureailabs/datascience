@@ -4,9 +4,7 @@ import numpy as np
 import pandas as pd
 from sail_safe_functions_orchestrator.dataframe_federated import DataframeFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
 class DataframeFederatedLocal(DataframeFederated):
@@ -55,7 +53,7 @@ class DataframeFederatedLocal(DataframeFederated):
     def __getitem__(self, key) -> "SeriesFederated":
         series = SeriesFederatedLocal()
         for dataframe_key, dataframe in self.dict_dataframe.items():
-            series.dict_series[dataframe_key] = dataframe.__getitem__(key)
+            series.add_series(dataframe_key, dataframe.__getitem__(key))
         return series
 
     def __setitem__(self, key, value):
