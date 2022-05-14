@@ -1,5 +1,5 @@
-from typing import List
 import math
+from typing import List
 
 
 class PearsonAgregate(object):
@@ -56,6 +56,6 @@ class PearsonAgregate(object):
 
         E_xy = sum_x1_into_x2 / size_sample_0
 
-        r = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
-
-        return r
+        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
+        degrees_of_freedom
+        return rho, degrees_of_freedom
