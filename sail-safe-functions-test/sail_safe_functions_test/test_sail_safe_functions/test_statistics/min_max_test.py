@@ -1,8 +1,6 @@
-import numpy as np
 import pytest
 from sail_safe_functions_orchestrator.statistics.min_max_federate import MinMaxFederate
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
 
 
 @pytest.mark.active
