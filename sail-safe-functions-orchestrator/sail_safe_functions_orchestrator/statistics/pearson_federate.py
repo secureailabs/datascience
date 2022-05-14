@@ -51,7 +51,6 @@ class PearsonFederate:
             p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
         else:
             raise ValueError()
-
         return rho, p_value
 
     @staticmethod

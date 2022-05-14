@@ -8,6 +8,7 @@ from sail_safe_functions_orchestrator.statistics.min_max_federate import MinMaxF
 
 
 class CdfFederate:
+
     "Estimator for non-disclosive CDF"
 
     @staticmethod
@@ -26,6 +27,8 @@ class CdfFederate:
         for series in sample_0.dict_series.values():  # TODO rework abcs
             list_precompute.append(CdfPrecompute.run(series, domain_min, domain_max))
         list_domain, list_value = CdfAgregate.run(list_precompute, domain_min, domain_max)
+
+        return list_domain, list_value
 
     def run_reference(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()
