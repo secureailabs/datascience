@@ -3,4 +3,7 @@ from abc import ABC
 
 class SeriesFederated(ABC):
     def __init__(self) -> None:
-        self.dict_series = {}
+        self._dict_series = {}
+
+    def items(self):
+        return self._dict_series.items()
