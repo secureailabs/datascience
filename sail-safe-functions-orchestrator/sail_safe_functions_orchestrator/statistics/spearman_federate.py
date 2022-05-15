@@ -4,6 +4,7 @@ from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFed
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.pearson_federate import PearsonFederate
 from scipy import stats
+from scipy.stats import t
 
 
 class SpearmanFederate:
@@ -34,6 +35,7 @@ class SpearmanFederate:
         :return: returns
         :rtype: Tuple[float, float]
         """
+
         if alternative not in {"two-sided", "less", "greater"}:
             raise ValueError("alternative must be `two-sided`, `less` or `greater`")
         if mode not in {"unsafe", "cdf"}:
