@@ -4,6 +4,7 @@ from typing import Tuple
 from sail_safe_functions.statistics.pearson_agregate import PearsonAgregate
 from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from scipy import stats
 from scipy.stats import t
 
 
@@ -42,14 +43,22 @@ class PearsonFederate:
             )
         rho, degrees_of_freedom = PearsonAgregate.run(list_list_precompute)
         t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
-        degrees_of_freedom = n - 2
         if alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
         elif alternative == "two-sided":
-            p_value = t.cdf(t_statistic, degrees_of_freedom) * 2
+            p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
         elif alternative == "greater":
             p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
         else:
             raise ValueError()
 
         return rho, p_value
+
+    @staticmethod
+    def run(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        return PearsonFederate.pearson(sample_0, sample_1, "two-sided")
+
+    @staticmethod
+    def run_reference(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+
+        return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

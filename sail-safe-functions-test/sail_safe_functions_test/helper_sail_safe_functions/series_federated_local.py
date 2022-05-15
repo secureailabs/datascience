@@ -23,6 +23,7 @@ class SeriesFederatedLocal(SeriesFederated):
             self.name = series.name
             self.dtype = series.dtype
             self.is_numeric = is_numeric_dtype(series)
+
         else:
             if self.name != series.name:
                 raise RuntimeError("Cannot add series with different name")
@@ -32,6 +33,7 @@ class SeriesFederatedLocal(SeriesFederated):
 
             if self.is_numeric != is_numeric_dtype(series):
                 raise RuntimeError("Cannot add series with different is_numeric")
+        self.size += series.size
         self.dict_series[key] = series
 
     def add_array(self, key: str, array: np.ndarray, name: str = None):

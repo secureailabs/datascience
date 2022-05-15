@@ -57,5 +57,5 @@ class PearsonAgregate(object):
         E_xy = sum_x1_into_x2 / size_sample_0
 
         rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
-        degrees_of_freedom
+        degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom
