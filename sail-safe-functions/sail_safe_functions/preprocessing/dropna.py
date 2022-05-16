@@ -1,4 +1,5 @@
-from typing import List
+from typing import Any
+
 import pandas as pd
 
 
@@ -7,7 +8,7 @@ class DropNa:
     Drop rows or columns with missing data
     """
 
-    def Run(data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: list) -> pd.DataFrame:
+    def Run(data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: Any) -> pd.DataFrame:
         """
         Remove missing values.
         See the :ref:`User Guide <missing_data>` for more on which values are

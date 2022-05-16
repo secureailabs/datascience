@@ -1,8 +1,8 @@
 from typing import Tuple
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 from sail_safe_functions.statistics.pearson_agregate import PearsonAgregate
 from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 class PearsonFederate:
@@ -26,7 +26,7 @@ class PearsonFederate:
         :param sample_1: _description_
         :type sample_1: SeriesFederated
         :return: single value r which is the pearson value
-        
+
         """
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
