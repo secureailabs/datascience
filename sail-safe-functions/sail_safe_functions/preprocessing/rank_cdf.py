@@ -1,7 +1,7 @@
-from typing import List, Tuple
+from typing import List
 
 import numpy
-from pandas import Series, array
+from pandas import Series
 from scipy import interpolate
 
 
