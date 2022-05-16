@@ -1,7 +1,6 @@
 from typing import List, Tuple
 
 import numpy
-import pandas
 from scipy import interpolate
 
 

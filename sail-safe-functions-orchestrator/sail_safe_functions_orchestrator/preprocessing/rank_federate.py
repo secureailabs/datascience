@@ -8,6 +8,10 @@ from scipy.stats import rankdata
 
 
 class RankFederate:
+    """
+    Class for federated ranking algoritmss
+    """
+
     @staticmethod
     def run_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
 
@@ -43,7 +47,16 @@ class RankFederate:
 
     @staticmethod
     def run(sample_0: SeriesFederated, mode: str) -> SeriesFederated:
+        """Ranks series in a federated with, ideally with minimal data leaving the contribution
 
+        :param sample_0: The sample to be ranked
+        :type sample_0: SeriesFederated
+        :param mode: the mode in which to use the algoritm,  `unsafe` should never end in production
+        :type mode: str
+        :raises ValueError: ValueError: raise a ValueError of mode is not `unsafe` or `cdf`
+        :return: A federated series that has been converted into ranks
+        :rtype: SeriesFederated
+        """
         if mode not in {"unsafe", "cdf"}:
             raise ValueError("mode must be `unsafe`, `cdf`")
         if mode == "unsafe":
