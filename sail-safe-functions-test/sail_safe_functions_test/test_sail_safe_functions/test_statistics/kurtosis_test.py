@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 from sail_safe_functions_orchestrator.statistics.kurtosis_federate import KurtosisFederate
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal

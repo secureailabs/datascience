@@ -9,8 +9,6 @@ class KurtosisFederate:
 
     """
     Final function to run for Kurtosis Fedrated
-    :return: Tupel[Float]
-    :rtype: _type_
     """
 
     @staticmethod
