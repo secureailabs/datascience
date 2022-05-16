@@ -16,8 +16,8 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
 
     # Act
     # Calling fedrated sail skewness method
-    min_sail, max_sail = MinMaxFederate.Run(sample_0)
-    min_numpy, max_numpy = MinMaxFederate.RunReference(sample_0)
+    min_sail, max_sail = MinMaxFederate.run(sample_0)
+    min_numpy, max_numpy = MinMaxFederate.run_reference(sample_0)
 
     # Assert
     assert max_numpy <= max_sail
