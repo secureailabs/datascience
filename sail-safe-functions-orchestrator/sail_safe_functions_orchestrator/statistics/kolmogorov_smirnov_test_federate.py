@@ -19,19 +19,17 @@ class KolmogorovSmirnovTestFederate:
 
     @staticmethod
     def kolmogorov_smirnov(sample_0: SeriesFederated, type_distribution: str, type_ranking: str) -> Tuple[float, float]:
-        """spearman
-        Computes the spearman coeffcient by ranking both sample and
+        """Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
 
-        :param sample_0: sample 0
+
+        :param sample_0: sample to be tested
         :type sample_0: SeriesFederated
-        :param sample_1: sample 1
-        :type sample_1: SeriesFederated
-        :param alternative: The alternative to be tested: `two-sided`, `less` or `greater`
-        :type alternative: str
-        :param mode: The mode for which to run the ranking algoritm in must be `unsafe` or `cdf` where `unsafe`
-        is unsafe and must be refactored out before this ends up in production
-        :type mode: str
-        :raises ValueError: raise a ValueError if `type_distribution` is not `two-sided`, `less` or `greater`
+        :param type_distribution: type of ranking employed
+        :type type_distribution: str
+        :param type_ranking: type of rankign employed
+        :type type_ranking: str
+
+        :raises ValueError: raise a ValueError if `type_distribution` is not `normal` or `normalunit`
         :raises ValueError: raise a ValueError if `type_ranking` is not  `unsafe` or `cdf`
         :return: returns the k-statistic and the p-value
         :rtype: Tuple[float, float]
@@ -55,7 +53,7 @@ class KolmogorovSmirnovTestFederate:
         else:
             raise Exception()
 
-        series_sample_ranked_0 = RankFederate.run(sample_0, mode="unsafe")
+        series_sample_ranked_0 = RankFederate.run(sample_0, mode=type_ranking)
         list_list_precompute = []
         for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
             list_list_precompute.append(
