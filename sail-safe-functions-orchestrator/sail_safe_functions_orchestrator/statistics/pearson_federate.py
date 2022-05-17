@@ -8,6 +8,7 @@ from scipy import stats
 from scipy.stats import t
 
 
+
 class PearsonFederate:
     """
     Computing the final Pearson Federated

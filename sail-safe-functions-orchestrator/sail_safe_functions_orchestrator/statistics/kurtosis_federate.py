@@ -10,7 +10,6 @@ from scipy import stats
 class KurtosisFederate:
     """
     Class that wraps the safe function for kurtosis
-
     """
 
     @staticmethod
