@@ -7,7 +7,7 @@ from scipy import stats
 
 
 @pytest.mark.active
-def test_pearson_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     """
     This is our test for the Sails federated Spearman
 
@@ -28,7 +28,7 @@ def test_pearson_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFed
 
 
 @pytest.mark.active
-def test_pearson_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     """
     This is our test for the Sails federated Spearman
 
@@ -49,7 +49,7 @@ def test_pearson_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederate
 
 
 @pytest.mark.active
-def test_pearson_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     """
     This is our test for the Sails federated Spearman
 

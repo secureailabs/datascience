@@ -25,10 +25,10 @@ class RankFederate:
 
         sample_ranked_0 = SeriesFederatedLocal()
         index_start = 0
-        for i, federation_contribution_id in enumerate(sample_0.dict_series):
+        for i, dataset_id in enumerate(sample_0.dict_series):
             index_end = index_start + list_size[i]
             sample_ranked_0.add_array(
-                federation_contribution_id, Series(array_rank[index_start:index_end], name=f"{sample_0.name}_ranked")
+                dataset_id, Series(array_rank[index_start:index_end], name=f"{sample_0.name}_ranked")
             )
             index_start = index_end
         return sample_ranked_0
@@ -38,9 +38,9 @@ class RankFederate:
 
         list_domain_cdf, list_value_cdf = CdfFederate.run(sample_0)
         sample_ranked_0 = SeriesFederatedLocal()  # TODO become more clever  as this is basically a synthetic field
-        for federation_contribution_id, series in sample_0.dict_series.items():  # TODO rework abcs
+        for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
             sample_ranked_0.add_series(
-                federation_contribution_id,
+                dataset_id,
                 RankCdf.run(series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf),
             )
         return sample_ranked_0
