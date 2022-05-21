@@ -27,6 +27,7 @@ class CdfFederate:
             list_precompute.append(CdfPrecompute.run(series, domain_min, domain_max))
         return CdfAgregate.run(list_precompute, domain_min, domain_max)
 
+
     def run_reference(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()
         array_domain = numpy.sort(array_sample_0)
