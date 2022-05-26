@@ -25,7 +25,6 @@ class CdfFederate:
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
             list_precompute.append(CdfPrecompute.run(series, domain_min, domain_max))
-
         return CdfAgregate.run(list_precompute, domain_min, domain_max)
 
     def run_reference(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
