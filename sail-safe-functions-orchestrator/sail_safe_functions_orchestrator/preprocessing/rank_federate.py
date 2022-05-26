@@ -17,7 +17,7 @@ class RankFederate:
 
         list_size = []
         list_array = []
-        for federation_contribution_id, series in sample_0.dict_series.items():
+        for series in sample_0.dict_series.values():
             list_size.append(series.size)
             list_array.append(series.to_numpy())
         array_sample = numpy.concatenate(list_array)
