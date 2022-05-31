@@ -1,5 +1,3 @@
-import numpy
-import pandas
 from sail_safe_functions.visualization.histogram_agregate import HistogramAgregate
 from sail_safe_functions.visualization.histogram_precompute import HistogramPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
