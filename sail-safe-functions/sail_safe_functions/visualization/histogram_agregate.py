@@ -36,4 +36,9 @@ class HistogramAgregate:
             # using Counter
             final = final + ini_dictionary2
 
-        return final
+        final_list = []
+        for key in final:
+            for i in range(final[key]):
+                final_list.append(key)
+
+        return final_list
