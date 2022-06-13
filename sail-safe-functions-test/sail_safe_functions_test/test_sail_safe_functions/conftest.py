@@ -65,6 +65,26 @@ def two_sample_big() -> SeriesFederatedLocal:
 
 
 @pytest.fixture
+def two_sample_categorical() -> SeriesFederatedLocal:
+    """
+    Fixture for SeriesFederatedLocal with this first part of the kidney disease dataset
+
+    :return: DataframeFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    """
+    list_name_file_csv = ["kidney_disease_clean.csv"]
+    id_column_0 = "rbc"
+    id_column_1 = "classification"
+
+    dataframe = DataframeFederatedLocal()
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
+        dataframe.add_csv(path_file_csv)
+
+    return (dataframe[id_column_0], dataframe[id_column_1])
+
+
+@pytest.fixture
 def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     """
     A two sample tuple with data from wikipedia
