@@ -12,6 +12,9 @@ class MinMaxFederate:
 
     """
 
+    def __init__(self) -> None:
+        self.list_name_estimate = ["min", "max"]
+
     @staticmethod
     def min_max(
         sample_0: SeriesFederated,
