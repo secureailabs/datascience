@@ -1,6 +1,7 @@
 """
 Pytest fixtures
 """
+import json
 import os
 from typing import Tuple
 
@@ -10,6 +11,26 @@ import pytest
 from config import DATA_PATH
 from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+
+@pytest.fixture
+def tuple_kidney_schema_dataframe() -> Tuple[dict, DataframeFederatedLocal]:
+    """
+    Fixture for loading a dataframe without missing values and a matching schema
+
+    :return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
+    :rtype: class : Tuple[dict, DataframeFederatedLocal]
+    """
+
+    path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
+    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv")
+
+    with open(path_file_json, "r") as file:
+        schema = json.load(file)
+
+    dataframe = DataframeFederatedLocal()
+    dataframe.add_csv(path_file_csv)
+    return (schema, dataframe)
 
 
 @pytest.fixture
