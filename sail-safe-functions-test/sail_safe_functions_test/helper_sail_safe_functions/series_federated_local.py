@@ -57,3 +57,9 @@ class SeriesFederatedLocal(SeriesFederated):
         dict_discribe["dtype"] = self.dtype
         dict_discribe["is_numeric"] = self.is_numeric
         return dict_discribe
+
+    @staticmethod
+    def from_array(name: str, array: np.ndarray) -> pd.Series:
+        series = SeriesFederatedLocal(name)
+        series.add_array("shard_0", array, name)
+        return series
