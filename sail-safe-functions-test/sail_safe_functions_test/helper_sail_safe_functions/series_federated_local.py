@@ -19,7 +19,11 @@ class SeriesFederatedLocal(SeriesFederated):
     def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
+
+        if self.dtype is None:
             self.dtype = series.dtype
+
+        if self.is_numeric is None:
             self.is_numeric = is_numeric_dtype(series)
 
         else:
