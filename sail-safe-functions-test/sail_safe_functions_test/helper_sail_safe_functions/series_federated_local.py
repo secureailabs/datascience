@@ -34,7 +34,7 @@ class SeriesFederatedLocal(SeriesFederated):
         self.dict_series[dataset_id] = series
 
     def add_array(self, key: str, array: np.ndarray, name: str = None):
-        if name is None:
+        if name is not None:
             self.add_series(key, pd.Series(data=array, name=self.name))
         else:
             self.add_series(key, pd.Series(data=array, name=name))
