@@ -126,6 +126,24 @@ def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
 
 
 @pytest.fixture
+def two_sample_small_two() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+    """
+    A two sample tuple with data from wikipedia
+
+    :return: SeriesFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    """
+    sample_0_numpy = np.array([14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
+    sample_1_numpy = np.array([34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
+
+    sample_0 = SeriesFederatedLocal("sample_0")
+    sample_0.add_array("array_test", sample_0_numpy)
+    sample_1 = SeriesFederatedLocal("sample_1")
+    sample_1.add_array("array_test", sample_1_numpy)
+    return (sample_0, sample_1)
+
+
+@pytest.fixture
 def two_sample_small_paired() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     """
     A two sample tuple with data from https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples
