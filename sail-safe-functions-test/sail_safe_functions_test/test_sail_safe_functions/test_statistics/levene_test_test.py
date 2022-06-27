@@ -9,7 +9,7 @@ from scipy.stats import levene
 @pytest.mark.active
 def test_levene(two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     """
-    This is our test for the Sails federated Levene
+    This is our test for the Sails federated Levene test
 
     :param two_sample_small_two:
     :type two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
