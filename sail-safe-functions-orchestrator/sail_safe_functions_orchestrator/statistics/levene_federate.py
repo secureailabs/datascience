@@ -8,6 +8,13 @@ from scipy.stats import distributions
 
 
 class LeveneFederate:
+    """
+    This class contains the fedrated Levenes method
+
+    :return: f_statistic(statistics from levenes test)  , p-value
+    :rtype: float
+    """
+
     @staticmethod
     def levene(
         sample_0: SeriesFederated,
