@@ -38,7 +38,7 @@ def dataframe_kidney_clean() -> pd.DataFrame:
     return pd.read_csv(path_file_csv)
 
 @pytest.fixture
-def scheme_kidney() -> pd.DataFrame:
+def scheme_kidney() -> dict:
     """
     Fixture for loading the scheme for kidney dataset
 
@@ -46,8 +46,10 @@ def scheme_kidney() -> pd.DataFrame:
     :rtype: class : dict
     """
 
-    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "scheme.json")
-    return json.loads(path_file_csv)
+    path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
+    file = open(path_file_json, "r")
+    schema_content = file.read()
+    return json.loads(schema_content)
 
 
 @pytest.fixture

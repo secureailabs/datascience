@@ -10,6 +10,8 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 
     Args:
         dataframe_kidney_clean (pd.DataFrame): A dataframe with no missing fields
+        scheme_kidney (pd.DataFrame): A scheme for the kidney dataframe
+
     """
 
     #Arrange
@@ -19,4 +21,5 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 
 
     #Act
-    #noised_data = PragmaticNoise.Run(dataset, scheme, 0.5, 0.5)
+    pragmatic_noise = PragmaticNoise()
+    noised_data = pragmatic_noise.Run(dataset, scheme, 0.5, 0.5)
