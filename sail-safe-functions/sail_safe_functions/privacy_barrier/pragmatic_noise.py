@@ -100,12 +100,13 @@ class PragmaticNoise:
         noised_dataset = dataset.copy()
         for column in schema["dict_column"]:
             if column == "classification":
-                print("Skipped Classification Column: "+column)
+                # print("Skipped Classification Column: "+column)
+                continue
             elif schema["dict_column"][column]['type_data_level'] == 'interval':
-                print("Noising Numeric Column: "+ column)
+                # print("Noising Numeric Column: "+ column)
                 noised_dataset[column] =  self.col_noise_numeric(dataset[schema["dict_column"][column]["name_column"]], schema["dict_column"][column]["resolution"], scale=noise_scale)
             elif schema["dict_column"][column]['type_data_level'] == 'categorical':
-                print("Noising Categorical Column: "+ column)
+                # print("Noising Categorical Column: "+ column)
                 noised_dataset[schema["dict_column"][column]["name_column"]] = self.col_noise_categorical(dataset[schema["dict_column"][column]["name_column"]], schema["dict_column"][column]["list_value"], frequency=cat_swap_frequency)
 
         print("Done")
