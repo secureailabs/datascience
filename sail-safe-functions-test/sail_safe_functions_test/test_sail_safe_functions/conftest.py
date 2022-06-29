@@ -6,6 +6,7 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+import json
 import pytest
 from config import DATA_PATH
 from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
@@ -23,6 +24,30 @@ def dataframe_kidney() -> pd.DataFrame:
 
     path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", "kidney_disease.csv")
     return pd.read_csv(path_file_csv)
+
+@pytest.fixture
+def dataframe_kidney_clean() -> pd.DataFrame:
+    """
+    Fixture for loading a dataframe with no missing values
+
+    :return: dataframe_kidney_clean: A dataframe with no missing fields
+    :rtype: class : pd.DataFrame
+    """
+
+    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv")
+    return pd.read_csv(path_file_csv)
+
+@pytest.fixture
+def scheme_kidney() -> pd.DataFrame:
+    """
+    Fixture for loading the scheme for kidney dataset
+
+    :return: scheme_kidney: Scheme is associated with the kidney dataset
+    :rtype: class : dict
+    """
+
+    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "scheme.json")
+    return json.loads(path_file_csv)
 
 
 @pytest.fixture
