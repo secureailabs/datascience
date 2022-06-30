@@ -6,10 +6,15 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+import json
 import pytest
 from config import DATA_PATH
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import (
+    DataframeFederatedLocal,
+)
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.fixture
@@ -23,6 +28,36 @@ def dataframe_kidney() -> pd.DataFrame:
 
     path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", "kidney_disease.csv")
     return pd.read_csv(path_file_csv)
+
+
+@pytest.fixture
+def dataframe_kidney_clean() -> pd.DataFrame:
+    """
+    Fixture for loading a dataframe with no missing values
+
+    :return: dataframe_kidney_clean: A dataframe with no missing fields
+    :rtype: class : pd.DataFrame
+    """
+
+    path_file_csv = os.path.join(
+        DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv"
+    )
+    return pd.read_csv(path_file_csv)
+
+
+@pytest.fixture
+def scheme_kidney() -> dict:
+    """
+    Fixture for loading the scheme for kidney dataset
+
+    :return: scheme_kidney: Scheme is associated with the kidney dataset
+    :rtype: class : dict
+    """
+
+    path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
+    file = open(path_file_json, "r")
+    schema_content = file.read()
+    return json.loads(schema_content)
 
 
 @pytest.fixture
@@ -92,7 +127,9 @@ def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     :return: SeriesFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
-    sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
+    sample_0_numpy = np.array(
+        [17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8]
+    )
     sample_1_numpy = np.array(
         [
             21.5,
