@@ -13,7 +13,10 @@ def test_exception(dataframe_kidney: pd.DataFrame):
     # Arrange
 
     # Act
-    with pytest.raises(ValueError, match="`imputation_order` must be either in {`ascending`, `descending`}"):
+    with pytest.raises(
+        ValueError,
+        match="`imputation_order` must be either in {`ascending`, `descending`}",
+    ):
         dataframe_kidney_fixed = ImputeMultivariate.Run(
             dataframe_kidney, list_name_column=["age"], imputation_order="nope"
         )
@@ -32,14 +35,19 @@ def test_age(dataframe_kidney: pd.DataFrame):
 
     # Act
     dataframe_kidney_fixed = ImputeMultivariate.Run(
-        dataframe_kidney, list_name_column=["age"], imputation_order="ascending"
+        dataframe_kidney,
+        list_name_column=["age"],
+        imputation_order="ascending",
+        max_iter=20,
     )
 
     # Assert
     assert 9 == dataframe_kidney["age"].isna().sum()
     assert 0 == dataframe_kidney_fixed["age"].isna().sum()
     assert pytest.approx(20130.0, 0.0001) == dataframe_kidney["age"].sum()
-    assert pytest.approx(20604.530413505294, 0.0001) == dataframe_kidney_fixed["age"].sum()
+    assert (
+        pytest.approx(20604.530413505294, 0.0001) == dataframe_kidney_fixed["age"].sum()
+    )
 
 
 @pytest.mark.active
@@ -53,7 +61,10 @@ def test_rbc(dataframe_kidney: pd.DataFrame):
 
     # Act
     dataframe_kidney_fixed = ImputeMultivariate.Run(
-        dataframe_kidney, list_name_column=["rbc"], imputation_order="ascending"
+        dataframe_kidney,
+        list_name_column=["rbc"],
+        imputation_order="ascending",
+        max_iter=20,
     )
 
     # Assert
@@ -72,7 +83,10 @@ def test_all(dataframe_kidney: pd.DataFrame):
 
     # Act
     dataframe_kidney_fixed = ImputeMultivariate.Run(
-        dataframe_kidney, list_name_column=None, imputation_order="ascending"
+        dataframe_kidney,
+        list_name_column=None,
+        imputation_order="ascending",
+        max_iter=20,
     )
 
     # Assert
@@ -84,4 +98,6 @@ def test_all(dataframe_kidney: pd.DataFrame):
         assert 0 == dataframe_kidney_fixed[name_column].isna().sum()
 
     assert pytest.approx(20130.0, 0.0001) == dataframe_kidney["age"].sum()
-    assert pytest.approx(20604.530413505294, 0.0001) == dataframe_kidney_fixed["age"].sum()
+    assert (
+        pytest.approx(20604.530413505294, 0.0001) == dataframe_kidney_fixed["age"].sum()
+    )
