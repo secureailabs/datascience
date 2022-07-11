@@ -5,6 +5,7 @@ from sail_safe_functions.statistics.levene_precompute import LevenePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.mean_federate import MeanFederate
 from scipy.stats import distributions
+from sklearn.cluster import estimate_bandwidth
 
 
 class LeveneFederate:
@@ -30,8 +31,8 @@ class LeveneFederate:
         :return: F-stat, p-value
         :rtype: Tuple[float, float]
         """
-        mean_sample_0 = MeanFederate.Run(sample_0)
-        mean_sample_1 = MeanFederate.Run(sample_1)
+        mean_sample_0 = MeanFederate.mean(sample_0)
+        mean_sample_1 = MeanFederate.mean(sample_1)
 
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())

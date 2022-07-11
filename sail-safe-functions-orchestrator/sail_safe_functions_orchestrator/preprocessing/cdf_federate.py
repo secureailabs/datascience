@@ -20,7 +20,7 @@ class CdfFederate:
         :return: returns two lists of floating point values representing the domain and the values of the cdf
         :rtype: Tuple[List[float], List[float]]
         """
-        domain_min, domain_max = MinMaxFederate.run(sample_0)
+        domain_min, domain_max = MinMaxFederate.min_max(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs

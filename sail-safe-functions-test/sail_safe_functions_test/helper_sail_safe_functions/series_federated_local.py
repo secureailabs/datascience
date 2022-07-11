@@ -12,16 +12,18 @@ class SeriesFederatedLocal(SeriesFederated):
     """
 
     def __init__(self, name: str = None) -> None:
-        super().__init__()
-        self.dict_series = {}
-        self.name = None
+        super().__init__(name)
         self.dtype = None
         self.is_numeric = None
 
-    def add_series(self, key: str, series=pd.Series):
+    def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
+
+        if self.dtype is None:
             self.dtype = series.dtype
+
+        if self.is_numeric is None:
             self.is_numeric = is_numeric_dtype(series)
 
         else:
@@ -33,11 +35,10 @@ class SeriesFederatedLocal(SeriesFederated):
 
             if self.is_numeric != is_numeric_dtype(series):
                 raise RuntimeError("Cannot add series with different is_numeric")
-        self.size += series.size
-        self.dict_series[key] = series
+        self.dict_series[dataset_id] = series
 
     def add_array(self, key: str, array: np.ndarray, name: str = None):
-        if name is None:
+        if name is not None:
             self.add_series(key, pd.Series(data=array, name=self.name))
         else:
             self.add_series(key, pd.Series(data=array, name=name))
@@ -47,6 +48,16 @@ class SeriesFederatedLocal(SeriesFederated):
         for series in self.dict_series.values():
             list_array_numpy.append(series.to_numpy())
         return np.concatenate(list_array_numpy)
+
+    def drop_by_index(self, index_to_drop) -> "SeriesFederatedLocal":
+        series_federated_new = SeriesFederatedLocal()
+        for dataset_id in self.dict_series:
+            series = self.dict_series[dataset_id]
+            if 0 <= index_to_drop and index_to_drop < series.size:
+                series = series.drop(series.index[index_to_drop])
+            index_to_drop -= series.size + 1
+            series_federated_new.add_series(dataset_id, series)
+        return series_federated_new
 
     def to_series(self) -> pd.Series:
         return pd.Series(self.to_numpy(), name=self.name)
@@ -61,5 +72,5 @@ class SeriesFederatedLocal(SeriesFederated):
     @staticmethod
     def from_array(name: str, array: np.ndarray) -> pd.Series:
         series = SeriesFederatedLocal(name)
-        series.add_array("shard_0", array, name)
+        series.add_array("dataset_0", array, name)
         return series
