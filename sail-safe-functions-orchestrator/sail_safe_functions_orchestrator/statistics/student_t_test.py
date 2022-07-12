@@ -8,16 +8,16 @@ from scipy import stats
 from scipy.stats import t
 
 
-class StudentTTest(Estimator):
-    @staticmethod
-    def student_t_test(
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-        alternative: str = "less",
-    ) -> Tuple[float, float]:
-        if alternative not in ["less", "two-sided", "greater"]:
-            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
+def student_t_test(
+    sample_0: SeriesFederated,
+    sample_1: SeriesFederated,
+    alternative: str = "less",
+) -> Tuple[float, float]:
+    estimator = StudentTTest(alternative)
+    return estimator.run(sample_0, sample_1)
 
+
+class StudentTTest(Estimator):
     def __init__(self, alternative) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:

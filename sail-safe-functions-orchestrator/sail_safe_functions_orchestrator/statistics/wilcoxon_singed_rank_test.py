@@ -10,14 +10,14 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 
-class WilcoxonSingedRankTest(Estimator):
-    @staticmethod
-    def wilcoxon_singed_rank_test(
-        sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str, type_ranking: str
-    ):
-        estimator = WilcoxonSingedRankTest(alternative, type_ranking)
-        return estimator.run(sample_0, sample_1)
+def wilcoxon_singed_rank_test(
+    sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str, type_ranking: str
+):
+    estimator = WilcoxonSingedRankTest(alternative, type_ranking)
+    return estimator.run(sample_0, sample_1)
 
+
+class WilcoxonSingedRankTest(Estimator):
     def __init__(self, alternative, type_ranking: str) -> None:
         super().__init__(["w_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:

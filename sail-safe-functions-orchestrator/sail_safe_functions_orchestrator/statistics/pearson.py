@@ -9,25 +9,25 @@ from scipy import stats
 from scipy.stats import t
 
 
+def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
+    """
+    This is the main Pearson function
+
+    :param sample_0: sample_0
+    :type sample_0: SeriesFederated
+    :param sample_1: sample_1
+    :type sample_1: SeriesFederated
+    :return: single value r which is the pearson value
+
+    """
+    estimator = Pearson(alternative)
+    return estimator.run(sample_0, sample_1)
+
+
 class Pearson(Estimator):
     """
     Estimator for pearson product
     """
-
-    @staticmethod
-    def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
-        """
-        This is the main Pearson function
-
-        :param sample_0: sample_0
-        :type sample_0: SeriesFederated
-        :param sample_1: sample_1
-        :type sample_1: SeriesFederated
-        :return: single value r which is the pearson value
-
-        """
-        estimator = Pearson(alternative)
-        return estimator.run(sample_0, sample_1)
 
     def __init__(self, alternative) -> None:
         super().__init__(["rho", "p_value"])
@@ -60,7 +60,6 @@ class Pearson(Estimator):
 
         return rho, p_value
 
-    @staticmethod
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

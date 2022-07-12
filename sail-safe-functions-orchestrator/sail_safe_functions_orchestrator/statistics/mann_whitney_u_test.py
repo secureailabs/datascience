@@ -11,16 +11,17 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 
 
+def mann_whitney_u_test(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str, type_ranking: str):
+    estimator = MannWhitneyUTest(alternative, type_ranking)
+    return estimator.run(sample_0, sample_1)
+
+
 class MannWhitneyUTest(Estimator):
     """
     Federated version of the mann whiney u test, it makes two compromised
     1. Tie correction was removed, it has a small impact most of the time. The reference implementation still does this.
     2. The p values is always computed asymptotoicly, exact methods is only feasable for small smalle sizes.
     """
-
-    def mann_whitney_u_test(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str, type_ranking: str):
-        estimator = MannWhitneyUTest(alternative, type_ranking)
-        return estimator.run(sample_0, sample_1)
 
     def __init__(self, alternative, type_ranking: str) -> None:
         super().__init__(["f_statistic", "p_value"])

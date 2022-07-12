@@ -12,32 +12,33 @@ from scipy import stats
 from scipy.stats import kstwo
 
 
+def kolmogorov_smirnov_test(
+    sample_0: SeriesFederated, type_distribution: str, type_ranking: str
+) -> Tuple[float, float]:
+    """
+    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
+
+    :param sample_0: sample to be tested
+    :type sample_0: SeriesFederated
+    :param type_distribution: type of ranking employed
+    :type type_distribution: str
+    :param type_ranking: type of rankign employed
+    :type type_ranking: str
+
+    :raises ValueError: raise a ValueError if `type_distribution` is not `normal` or `normalunit`
+    :raises ValueError: raise a ValueError if `type_ranking` is not  `unsafe` or `cdf`
+    :return: returns the k-statistic and the p-value
+    :rtype: Tuple[float, float]
+    """
+    estimator = KolmogorovSmirnovTest(type_distribution, type_ranking)
+    return estimator.run(sample_0)
+
+
 class KolmogorovSmirnovTest(Estimator):
 
     """
     Federated version of the KolmogorovSmirnovFederate test
     """
-
-    @staticmethod
-    def kolmogorov_smirnov(sample_0: SeriesFederated, type_distribution: str, type_ranking: str) -> Tuple[float, float]:
-        """
-        Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
-
-
-        :param sample_0: sample to be tested
-        :type sample_0: SeriesFederated
-        :param type_distribution: type of ranking employed
-        :type type_distribution: str
-        :param type_ranking: type of rankign employed
-        :type type_ranking: str
-
-        :raises ValueError: raise a ValueError if `type_distribution` is not `normal` or `normalunit`
-        :raises ValueError: raise a ValueError if `type_ranking` is not  `unsafe` or `cdf`
-        :return: returns the k-statistic and the p-value
-        :rtype: Tuple[float, float]
-        """
-        estimator = KolmogorovSmirnovTest(type_distribution, type_ranking)
-        return estimator.run(sample_0)
 
     def __init__(self, type_distribution: str, type_ranking: str) -> None:
         super().__init__(["k_statistic", "p_value"])

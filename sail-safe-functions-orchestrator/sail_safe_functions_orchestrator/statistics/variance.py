@@ -6,13 +6,12 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 
+def variance(sample_0: SeriesFederated):
+    estimator = Variance()
+    return estimator.run(sample_0)
+
+
 class Variance(Estimator):
-    @staticmethod
-    def variance(sample_0: SeriesFederated):
-
-        estimator = Variance()
-        return estimator.run(sample_0)
-
     def __init__(self) -> None:
         super().__init__(["variance"])
 

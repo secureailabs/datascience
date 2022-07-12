@@ -6,12 +6,12 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 
-class Mean(Estimator):
-    @staticmethod
-    def mean(sample_0: SeriesFederated):
-        estimator = Mean()
-        return estimator.run(sample_0)
+def mean(sample_0: SeriesFederated):
+    estimator = Mean()
+    return estimator.run(sample_0)
 
+
+class Mean(Estimator):
     def __init__(self) -> None:
         super().__init__(["mean"])
 

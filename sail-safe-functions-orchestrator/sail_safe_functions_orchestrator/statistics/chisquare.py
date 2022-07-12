@@ -5,35 +5,35 @@ from sail_safe_functions.statistics.chisquare_agregate import ChisquareAgregate
 from sail_safe_functions.statistics.chisquare_precompute import ChisquarePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from scipy.stats import chisquare
+from scipy import stats
+
+
+def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    """
+    This test can be used to examine if there is a interaction between two paired categorical samples.
+
+    The null hypothesis is that there is no interaction between samples.
+
+    This test is invalid when the observed or expected frequencies in each category are too small.
+    A typical rule is that all of the observed and expected frequencies should be at least 5.
+    The total number of samples is recommended to be greater than 13.
+
+
+    :param sample_0: Sample A
+    :type sample_0: SeriesFederated
+    :param sample_1: Sample B
+    :type sample_1: SeriesFederated
+    :return: returns the chisquare-statistic and the p-value
+    :rtype: Tuple[float, float]
+    """
+    estimator = Chisquare()
+    return estimator.run(sample_0, sample_1)
 
 
 class Chisquare(Estimator):
     """
     Final function to run for Fedrated Chisquare test
     """
-
-    @staticmethod
-    def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        """
-        This test can be used to examine if there is a interaction between two paired categorical samples.
-
-        The null hypothesis is that there is no interaction between samples.
-
-        This test is invalid when the observed or expected frequencies in each category are too small.
-        A typical rule is that all of the observed and expected frequencies should be at least 5.
-        The total number of samples is recommended to be greater than 13.
-
-
-        :param sample_0: Sample A
-        :type sample_0: SeriesFederated
-        :param sample_1: Sample B
-        :type sample_1: SeriesFederated
-        :return: returns the chisquare-statistic and the p-value
-        :rtype: Tuple[float, float]
-        """
-        estimator = Chisquare()
-        return estimator.run(sample_0, sample_1)
 
     def __init__(self) -> None:
         super().__init__(["chisquare_statistic", "p_value"])
@@ -70,5 +70,5 @@ class Chisquare(Estimator):
         ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
             len(array_true.ravel()) - 1
         )  # 2d instead of 1d
-        chisquare_statistic, p_value = chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
+        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
         return chisquare_statistic, p_value

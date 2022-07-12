@@ -8,16 +8,16 @@ from scipy import stats
 from scipy.stats import t
 
 
-class WelchTTest(Estimator):
-    @staticmethod
-    def welch_t_test(
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-        alternative: str = "less",
-    ) -> Tuple[float, float]:
-        estimator = WelchTTest(alternative)
-        return estimator.run(sample_0, sample_1)
+def welch_t_test(
+    sample_0: SeriesFederated,
+    sample_1: SeriesFederated,
+    alternative: str = "less",
+) -> Tuple[float, float]:
+    estimator = WelchTTest(alternative)
+    return estimator.run(sample_0, sample_1)
 
+
+class WelchTTest(Estimator):
     def __init__(self, alternative) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:

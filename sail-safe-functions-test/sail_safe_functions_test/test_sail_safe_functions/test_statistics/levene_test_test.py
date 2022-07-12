@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pytest
-from sail_safe_functions_orchestrator.statistics.levene import Levene
+from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy.stats import levene
 from sklearn.cluster import estimate_bandwidth
@@ -20,7 +20,7 @@ def test_levene(two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederate
     sample_1 = two_sample_small_two[1]
 
     # Act
-    estimator = Levene()
+    estimator = LeveneTest()
     f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     f_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 

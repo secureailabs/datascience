@@ -1,7 +1,13 @@
 import numpy as np
 import pytest
+from sail_safe_functions_orchestrator import statistics
 from sail_safe_functions_orchestrator.statistics.mean import Mean
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+
+@pytest.mark.active
+def test_mean_direct(one_sample_big: SeriesFederatedLocal):
+    statistics.mean(one_sample_big)
 
 
 @pytest.mark.active

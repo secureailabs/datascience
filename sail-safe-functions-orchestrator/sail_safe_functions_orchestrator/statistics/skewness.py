@@ -8,19 +8,19 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 
 
+def skewness(
+    sample_0: SeriesFederated,
+) -> Tuple[float]:
+
+    estimator = Skewness()
+    return estimator.run(sample_0)
+
+
 class Skewness(Estimator):
 
     """
-    Final function to run for skewness Fedrated
+    An estimator for Skewness
     """
-
-    @staticmethod
-    def skewness(
-        sample_0: SeriesFederated,
-    ) -> Tuple[float]:
-
-        estimator = Skewness()
-        return estimator.run(sample_0)
 
     def __init__(self) -> None:
         super().__init__(["skewness"])
