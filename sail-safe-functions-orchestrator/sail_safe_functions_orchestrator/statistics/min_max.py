@@ -7,18 +7,17 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 
-class MinMaxFederate(Estimator):
+class MinMax(Estimator):
     """
     Class that wraps the safe function for min and max
     """
 
     def __init__(self) -> None:
-        super().__init__()
-        self.list_name_estimate = ["min", "max"]
+        super().__init__(["min", "max"])
 
     @staticmethod
     def min_max(sample_0: SeriesFederated) -> Tuple[float, float]:
-        estimator = MinMaxFederate()
+        estimator = MinMax()
         return estimator.run(sample_0)
 
     def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:

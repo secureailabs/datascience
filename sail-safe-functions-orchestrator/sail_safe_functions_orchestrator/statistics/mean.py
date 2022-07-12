@@ -6,15 +6,14 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 
-class MeanFederate(Estimator):
-    def __init__(self) -> None:
-        super().__init__()
-        self.list_name_estimate = ["mean"]
-
+class Mean(Estimator):
     @staticmethod
     def mean(sample_0: SeriesFederated):
-        estimator = MeanFederate()
+        estimator = Mean()
         return estimator.run(sample_0)
+
+    def __init__(self) -> None:
+        super().__init__(["mean"])
 
     def run(self, sample_0: SeriesFederated):
         list_list_precompute = []

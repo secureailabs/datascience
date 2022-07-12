@@ -4,7 +4,7 @@ import numpy
 from sail_safe_functions.preprocessing.cdf_agregate import CdfAgregate
 from sail_safe_functions.preprocessing.cdf_precompute import CdfPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.min_max_federate import MinMaxFederate
+from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 
 
 class CdfFederate:
@@ -20,7 +20,7 @@ class CdfFederate:
         :return: returns two lists of floating point values representing the domain and the values of the cdf
         :rtype: Tuple[List[float], List[float]]
         """
-        domain_min, domain_max = MinMaxFederate.min_max(sample_0)
+        domain_min, domain_max = MinMax.min_max(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs

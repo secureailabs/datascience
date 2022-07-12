@@ -4,10 +4,11 @@ import numpy
 from sail_safe_functions.statistics.chisquare_agregate import ChisquareAgregate
 from sail_safe_functions.statistics.chisquare_precompute import ChisquarePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy.stats import chisquare
 
 
-class ChisquareFederate:
+class Chisquare(Estimator):
     """
     Final function to run for Fedrated Chisquare test
     """
@@ -31,9 +32,13 @@ class ChisquareFederate:
         :return: returns the chisquare-statistic and the p-value
         :rtype: Tuple[float, float]
         """
-        return ChisquareFederate.run(sample_0, sample_1)
+        estimator = Chisquare()
+        return estimator.run(sample_0, sample_1)
 
-    def run(sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def __init__(self) -> None:
+        super().__init__(["chisquare_statistic", "p_value"])
+
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
         # if not (is_string_dtype(sample_0) and is_string_dtype(sample_1)): TODO would be nice to catch this here
         #    raise ValueException()
@@ -43,7 +48,7 @@ class ChisquareFederate:
             list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
         return ChisquareAgregate.run(list_precompute)
 
-    def run_reference(sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         count_total = sample_0.size
 
         array_0 = list(sample_0.to_numpy())
@@ -65,4 +70,5 @@ class ChisquareFederate:
         ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
             len(array_true.ravel()) - 1
         )  # 2d instead of 1d
-        return chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
+        chisquare_statistic, p_value = chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
+        return chisquare_statistic, p_value

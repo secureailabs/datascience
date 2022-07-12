@@ -4,16 +4,14 @@ from typing import Tuple
 from sail_safe_functions.statistics.pearson_agregate import PearsonAgregate
 from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 from scipy.stats import t
 
 
-class PearsonFederate:
+class Pearson(Estimator):
     """
-    Computing the final Pearson Federated
-
-    :return: _description_
-    :rtype: _type_
+    Estimator for pearson product
     """
 
     @staticmethod
@@ -21,15 +19,23 @@ class PearsonFederate:
         """
         This is the main Pearson function
 
-        :param sample_0: _description_
+        :param sample_0: sample_0
         :type sample_0: SeriesFederated
-        :param sample_1: _description_
+        :param sample_1: sample_1
         :type sample_1: SeriesFederated
         :return: single value r which is the pearson value
 
         """
-        if alternative not in {"two-sided", "less", "greater"}:
-            raise ValueError("alternative must be `two-sided`, `less` or `greater`")
+        estimator = Pearson(alternative)
+        return estimator.run(sample_0, sample_1)
+
+    def __init__(self, alternative) -> None:
+        super().__init__(["rho", "p_value"])
+        if alternative not in ["less", "two-sided", "greater"]:
+            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
+        self.alternative = alternative
+
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
@@ -43,11 +49,11 @@ class PearsonFederate:
             )
         rho, degrees_of_freedom = PearsonAgregate.run(list_list_precompute)
         t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
-        if alternative == "less":
+        if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
-        elif alternative == "two-sided":
+        elif self.alternative == "two-sided":
             p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
-        elif alternative == "greater":
+        elif self.alternative == "greater":
             p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
         else:
             raise ValueError()
@@ -55,10 +61,6 @@ class PearsonFederate:
         return rho, p_value
 
     @staticmethod
-    def run(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        return PearsonFederate.pearson(sample_0, sample_1, "two-sided")
-
-    @staticmethod
-    def run_reference(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

@@ -8,19 +8,12 @@ from scipy import stats
 from scipy.stats import t
 
 
-class PairedTTestFederate(Estimator):
+class PairedTTest(Estimator):
     """
     PairedTTestFederate this is the orchestator class that preforms a faderated t-test
     """
 
-    def __init__(self, alternative) -> None:
-        super().__init__()
-        if alternative not in ["less", "two-sided", "greater"]:
-            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
-        self.list_name_estimate = ["t_statistic", "p_value"]
-        self.alternative = alternative
-
-    def ttest_rel(
+    def paired_t_test(
         sample_0: SeriesFederated,
         sample_1: SeriesFederated,
         alternative: str = "less",
@@ -37,8 +30,14 @@ class PairedTTestFederate(Estimator):
         :return: Returns a t-statistic and its p-value
         :rtype: Tuple[float, float]
         """
-        estimator = PairedTTestFederate(alternative)
+        estimator = PairedTTest(alternative)
         return estimator.run(sample_0, sample_1)
+
+    def __init__(self, alternative) -> None:
+        super().__init__(["t_statistic", "p_value"])
+        if alternative not in ["less", "two-sided", "greater"]:
+            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
+        self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
         list_list_precompute = []
@@ -63,7 +62,5 @@ class PairedTTestFederate(Estimator):
             raise ValueError()
         return t_statistic, p_value
 
-    def run_reference(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str
-    ) -> Tuple[float, float]:
-        return stats.ttest_rel(sample_0.to_numpy(), sample_1.to_numpy(), alternative=alternative)
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        return stats.ttest_rel(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

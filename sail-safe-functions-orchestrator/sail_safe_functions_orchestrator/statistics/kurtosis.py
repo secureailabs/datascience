@@ -8,21 +8,20 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 
 
-class KurtosisFederate(Estimator):
+class Kurtosis(Estimator):
     """
-    Final function to run for Kurtosis Fedrated
+    A estimator for Kurtosis
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.list_name_estimate = ["kurtosis"]
 
     @staticmethod
     def kurtosis(
         sample_0: SeriesFederated,
     ) -> Tuple[float]:
-        estimator = KurtosisFederate()
+        estimator = Kurtosis()
         return estimator.run(sample_0)
+
+    def __init__(self) -> None:
+        super().__init__(["kurtosis"])
 
     def run(self, sample_0: SeriesFederated):
         list_list_precompute = []

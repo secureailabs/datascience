@@ -6,28 +6,17 @@ from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import Ko
 from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFederate
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.statistics.mean_federate import MeanFederate
-from sail_safe_functions_orchestrator.statistics.variance_federate import VarianceFederate
+from sail_safe_functions_orchestrator.statistics.mean import Mean
+from sail_safe_functions_orchestrator.statistics.variance import Variance
 from scipy import stats
 from scipy.stats import kstwo
 
 
-class KolmogorovSmirnovTestFederate(Estimator):
+class KolmogorovSmirnovTest(Estimator):
 
     """
     Federated version of the KolmogorovSmirnovFederate test
     """
-
-    def __init__(self, type_distribution: str, type_ranking: str) -> None:
-        super().__init__()
-
-        if type_distribution not in {"normal", "normalunit"}:
-            raise ValueError("`type_distribution` must be `normal` or `normalunit`")
-        if type_ranking not in {"unsafe", "cdf"}:
-            raise ValueError("`type_ranking` must be `unsafe` or `cdf`")
-        self.type_distribution = type_distribution
-        self.type_ranking = type_ranking
-        self.list_name_estimate = ["k_statistic", "p_value"]
 
     @staticmethod
     def kolmogorov_smirnov(sample_0: SeriesFederated, type_distribution: str, type_ranking: str) -> Tuple[float, float]:
@@ -47,13 +36,23 @@ class KolmogorovSmirnovTestFederate(Estimator):
         :return: returns the k-statistic and the p-value
         :rtype: Tuple[float, float]
         """
-        estimator = KolmogorovSmirnovTestFederate(type_distribution, type_ranking)
+        estimator = KolmogorovSmirnovTest(type_distribution, type_ranking)
         return estimator.run(sample_0)
+
+    def __init__(self, type_distribution: str, type_ranking: str) -> None:
+        super().__init__(["k_statistic", "p_value"])
+
+        if type_distribution not in {"normal", "normalunit"}:
+            raise ValueError("`type_distribution` must be `normal` or `normalunit`")
+        if type_ranking not in {"unsafe", "cdf"}:
+            raise ValueError("`type_ranking` must be `unsafe` or `cdf`")
+        self.type_distribution = type_distribution
+        self.type_ranking = type_ranking
 
     def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
         if self.type_distribution == "normal":
-            sample_mean = MeanFederate(sample_0)
-            sample_standart_deviation = numpy.sqrt(VarianceFederate(sample_0))
+            sample_mean = Mean(sample_0)
+            sample_standart_deviation = numpy.sqrt(Variance(sample_0))
             distribution = {
                 "type_distribution": self.type_distribution,
                 "sample_mean": sample_mean,

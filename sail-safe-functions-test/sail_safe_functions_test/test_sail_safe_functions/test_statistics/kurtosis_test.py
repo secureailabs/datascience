@@ -1,5 +1,5 @@
 import pytest
-from sail_safe_functions_orchestrator.statistics.kurtosis_federate import KurtosisFederate
+from sail_safe_functions_orchestrator.statistics.kurtosis import Kurtosis
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy import stats
 
@@ -16,8 +16,9 @@ def test_kurtosis(one_sample_big: SeriesFederatedLocal):
     sample_0 = one_sample_big
 
     # Act
-    kurtosis_sail = KurtosisFederate.kurtosis(sample_0)
-    kurtosis_scipy = stats.kurtosis(sample_0.to_numpy())
+    estimator = Kurtosis()
+    kurtosis_sail = estimator.run(sample_0)
+    kurtosis_scipy = estimator.run_reference(sample_0)
 
     # Assert
     assert kurtosis_scipy == pytest.approx(kurtosis_sail, 0.0001)

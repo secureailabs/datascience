@@ -3,12 +3,13 @@ from typing import Tuple
 from sail_safe_functions.statistics.levene_agregate import LeveneAgregate
 from sail_safe_functions.statistics.levene_precompute import LevenePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.mean_federate import MeanFederate
+from sail_safe_functions_orchestrator.statistics.estimator import Estimator
+from sail_safe_functions_orchestrator.statistics.mean import Mean
+from scipy import stats
 from scipy.stats import distributions
-from sklearn.cluster import estimate_bandwidth
 
 
-class LeveneFederate:
+class Levene(Estimator):
     """
     This class contains the fedrated Levenes method
 
@@ -31,8 +32,15 @@ class LeveneFederate:
         :return: F-stat, p-value
         :rtype: Tuple[float, float]
         """
-        mean_sample_0 = MeanFederate.mean(sample_0)
-        mean_sample_1 = MeanFederate.mean(sample_1)
+        estimator = Levene()
+        return estimator.run(sample_0, sample_1)
+
+    def __init__(self) -> None:
+        super().__init__(["f_statistic", "p_value"])
+
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        mean_sample_0 = Mean.mean(sample_0)
+        mean_sample_1 = Mean.mean(sample_1)
 
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
@@ -48,5 +56,8 @@ class LeveneFederate:
             )
 
         f_statistic, dof = LeveneAgregate.run(list_list_precompute)
-        pval = distributions.f.sf(f_statistic, 1, dof)  # 1 - cdf
-        return f_statistic, pval
+        p_value = distributions.f.sf(f_statistic, 1, dof)  # 1 - cdf
+        return f_statistic, p_value
+
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        return stats.levene(sample_0.to_numpy(), sample_1.to_numpy(), center="mean")
