@@ -11,7 +11,7 @@ class ChisquarePrecompute:
     def run(sample_0: pandas.Series, sample_1: pandas.Series) -> Dict:
         precompute = {}
         for tuple_value in zip(sample_0, sample_1):
-            if not tuple_value in precompute:
+            if tuple_value not in precompute:
                 precompute[tuple_value] = 0
             precompute[tuple_value] = precompute[tuple_value] + 1
 

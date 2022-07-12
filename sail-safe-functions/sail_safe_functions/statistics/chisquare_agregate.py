@@ -17,9 +17,9 @@ class ChisquareAgregate:
             for tuple_value in precompute:
                 value_0 = tuple_value[0]
                 value_1 = tuple_value[1]
-                if not value_0 in list_unique_0:
+                if value_0 not in list_unique_0:
                     list_unique_0.append(value_0)
-                if not value_1 in list_unique_1:
+                if value_1 not in list_unique_1:
                     list_unique_1.append(value_1)
 
         array_true = numpy.zeros((len(list_unique_0), len(list_unique_1)))

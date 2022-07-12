@@ -27,9 +27,9 @@ class ImputeConstant:
         :rtype: pd.DataFrame
         """
         if type(missing_value) == int or type(missing_value) == float:
-            missing_type_numberic = True
+            missing_type_numeric = True
         elif type(missing_value) == str:
-            missing_type_numberic = False
+            missing_type_numeric = False
         else:
             raise ValueError("missing_value is neither numeric nor a string")
 
@@ -37,9 +37,9 @@ class ImputeConstant:
         if list_name_column is None:
             list_name_column = list(data_frame.columns)
         for name_column in list_name_column:
-            if missing_type_numberic and not is_numeric_dtype(data_frame[name_column]):
+            if missing_type_numeric and not is_numeric_dtype(data_frame[name_column]):
                 raise ValueError(f"missing_value is numeric type but column with name {name_column} is not")
-            if not missing_type_numberic and not is_string_dtype(data_frame[name_column]):
+            if not missing_type_numeric and not is_string_dtype(data_frame[name_column]):
                 raise ValueError(f"missing_value is string type but column with name {name_column} is not")
             data_frame[name_column] = data_frame[name_column].replace(np.nan, missing_value)
         return data_frame

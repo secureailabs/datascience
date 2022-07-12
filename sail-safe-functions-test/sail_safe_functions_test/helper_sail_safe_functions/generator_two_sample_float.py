@@ -17,7 +17,7 @@ class GeneratorTwoSampleFloat:
         resolution: float,
     ) -> None:
 
-        if not type_distribution in ["normal", "uniform"]:
+        if type_distribution not in ["normal", "uniform"]:
             raise ValueError()
         self.name = name
         self.type_distribution = type_distribution
@@ -52,7 +52,7 @@ class GeneratorTwoSampleFloat:
                     array_1 = array_0 + numpy.random.uniform(mean_1 - shift, mean_1 + shift, count_federation)
                 else:
                     array_1 = numpy.random.uniform(mean_1 - shift, mean_1 + shift, count_federation)
-            if not self.resolution == -1:
+            if self.resolution != -1:
                 array_0 = (array_0 * (1 / self.resolution)).round().astype(int) * self.resolution
                 array_1 = (array_1 * (1 / self.resolution)).round().astype(int) * self.resolution
 
