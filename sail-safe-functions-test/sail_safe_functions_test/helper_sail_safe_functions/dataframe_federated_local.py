@@ -11,10 +11,17 @@ class DataframeFederatedLocal(DataframeFederated):
     """This should be a multyline docstring"""
 
     def __init__(self) -> None:
-        self.dict_dataframe = {}
+        super().__init__()
+
+    # oveloads
+    def create_new(self) -> "DataframeFederated":
+        return DataframeFederatedLocal()
 
     def _get_dataframe_first(self) -> pd.DataFrame:
         return list(self.dict_dataframe.values())[0]
+
+    def head(self):
+        return self._get_dataframe_first().head()
 
     @property
     def columns(self):
@@ -58,3 +65,20 @@ class DataframeFederatedLocal(DataframeFederated):
 
     def __setitem__(self, key, value):
         raise NotImplementedError()
+
+    def to_numpy(self) -> np.ndarray:
+
+        list_array_numpy = []
+        for data_frame in self.dict_dataframe.values():
+            list_array_numpy.append(data_frame.to_numpy())
+        return np.concatenate(list_array_numpy)
+
+    @staticmethod
+    def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
+        data_frame = pd.DataFrame(array)
+        if not list_name_column is None:
+            for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
+                data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
+        data_frame_federated = DataframeFederatedLocal()
+        data_frame_federated.dict_dataframe[dataset_id] = data_frame
+        return data_frame_federated
