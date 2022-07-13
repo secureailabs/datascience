@@ -10,14 +10,27 @@ on:
 jobs:
   flake8-lint:
     runs-on: ubuntu-latest
+    name: Lint
     steps:
-      - uses: actions/checkout@v2
-      - uses: tonybajan/flake8-check-action@v1.0.0
+      - name: Check out source repository
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
         with:
-          select: C90,E,W,F
-          ignore: E402,E265,F841,F541,E702
-          maxlinelength: 120
-          repotoken: ${{ secrets.GITHUB_TOKEN }}
+          python-version: "3.8"
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
+        with:
+          # Module level import not at top of file (E402)
+          # Block comment should start with '# ' (E265)
+          # Local variable name is assigned to but never used (F841)
+          # f-string without any placeholders (F541)
+          # Multiple statements on one line (semicolon) (E702)
+          # Module imported but unused (F401)
+          # Line too long (82 &gt; 79 characters) (E501)
+          # Line break occurred before a binary operator (W503)
+          ignore: "E402,E265,F841,F541,E702,F401,E501,W503"
+          max-line-length: 120
 
   build_test:
     runs-on: ubuntu-latest
