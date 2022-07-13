@@ -1,5 +1,5 @@
-from typing import List
 from collections import Counter
+from typing import List
 
 
 class HistogramAgregate:
@@ -13,7 +13,7 @@ class HistogramAgregate:
     # L2 -> Frequency of unique value for the 1st series.
     # L3 -> Unique value for the 2nd series.
     # L4 -> Frequency of unique value for the 2nd series.
-    # And so on
+    # And so on and on
 
     def run(list_list_precompute: List[List[float]]):
         """
