@@ -1,12 +1,12 @@
 import pandas as pd
 
 
-class Drop:
+class DropPrecompute:
     """
     Drop specific rows or columns
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame,
         labels: list,
         axis: int,

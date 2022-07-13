@@ -4,10 +4,10 @@ import numpy
 import scipy
 from sail_safe_functions.statistics.mann_whitney_u_test_agregate import MannWhitneyUTestAgregate
 from sail_safe_functions.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
-from sail_safe_functions_orchestrator.preprocessing.concatenate_federate import ConcatenateFederate
-from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFederate
+from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
+from sail_safe_functions_orchestrator.tools_common import ToolsCommon
 from scipy import stats
 
 
@@ -23,7 +23,7 @@ class MannWhitneyUTest(Estimator):
     2. The p values is always computed asymptotoicly, exact methods is only feasable for small smalle sizes.
     """
 
-    def __init__(self, alternative, type_ranking: str) -> None:
+    def __init__(self, alternative: str, type_ranking: str) -> None:
         super().__init__(["f_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
@@ -33,10 +33,12 @@ class MannWhitneyUTest(Estimator):
         self.type_ranking = type_ranking
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        ToolsCommon.check_instance(sample_0, SeriesFederated)
+        ToolsCommon.check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size
 
-        sample_concatenated = ConcatenateFederate.run(sample_0, sample_1)
-        sample_concatenated_ranked = RankFederate.run(sample_concatenated, self.type_ranking)
+        sample_concatenated = preprocessing.concatenate(sample_0, sample_1)
+        sample_concatenated_ranked = preprocessing.rank(sample_concatenated, self.type_ranking)
 
         list_precompute = []
         for dataset_id in sample_0.dict_series:

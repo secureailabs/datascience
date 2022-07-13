@@ -5,12 +5,12 @@ from pandas.api.types import is_string_dtype
 from sklearn.impute import SimpleImputer
 
 
-class ImputeUnivariate:
+class ImputeUnivariatePrecompute:
     """
     Imputes one or more columns with a univariate strategy
     """
 
-    def Run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -> pd.DataFrame:
+    def run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -> pd.DataFrame:
         """Imputes one or more columns with a univariate strategy
 
         :param data_frame: Input dataframe

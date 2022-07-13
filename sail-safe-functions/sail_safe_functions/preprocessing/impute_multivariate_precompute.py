@@ -6,7 +6,7 @@ from sklearn.experimental import enable_iterative_imputer  # NOTE side effect im
 from sklearn.impute import IterativeImputer, SimpleImputer
 
 
-class ImputeMultivariate:
+class ImputeMultivariatePrecompute:
     """
     Imputes one or more columns with a multivariate strategy
     uses https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html#sklearn.impute.IterativeImputer
@@ -17,7 +17,7 @@ class ImputeMultivariate:
     but it is tricky to implement and might be out of scope
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame,
         list_name_column: List[str],
         imputation_order: str,
@@ -43,12 +43,8 @@ class ImputeMultivariate:
         # if strategy not in {"mean", "median", "most_frequent"}:
         #     raise ValueError("parameter `strategy` must be either mean, median or most_frequent")
         if imputation_order not in {"ascending", "descending"}:
-            raise ValueError(
-                "parameter `imputation_order` must be either in {`ascending`, `descending`}"
-            )
-        numerical_imputer = IterativeImputer(
-            imputation_order=imputation_order, max_iter=max_iter
-        )
+            raise ValueError("parameter `imputation_order` must be either in {`ascending`, `descending`}")
+        numerical_imputer = IterativeImputer(imputation_order=imputation_order, max_iter=max_iter)
         string_imputer = SimpleImputer(strategy="most_frequent")
 
         # Gather columns for imputation
@@ -65,19 +61,13 @@ class ImputeMultivariate:
                 list_name_column_numeric.append(name_column)
 
         # Impute numerical columns
-        array_numeric_imputed = numerical_imputer.fit_transform(
-            data_frame[list_name_column_numeric]
-        )
-        data_frame_numeric_imputed = pd.DataFrame(
-            array_numeric_imputed, columns=list_name_column_numeric
-        )
+        array_numeric_imputed = numerical_imputer.fit_transform(data_frame[list_name_column_numeric])
+        data_frame_numeric_imputed = pd.DataFrame(array_numeric_imputed, columns=list_name_column_numeric)
 
         # Insert numerical columns
         for name_column in list_name_column_selected:
             if is_numeric_dtype(data_frame[name_column]):
                 data_frame[name_column] = data_frame_numeric_imputed[name_column]
             elif is_string_dtype(data_frame[name_column]):
-                data_frame[name_column] = string_imputer.fit_transform(
-                    data_frame[[name_column]]
-                )
+                data_frame[name_column] = string_imputer.fit_transform(data_frame[[name_column]])
         return data_frame

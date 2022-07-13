@@ -2,7 +2,7 @@ import numpy
 import scipy
 from sail_safe_functions.statistics.wilcoxon_singed_rank_test_agregate import WilcoxonSingedRankTestAgregate
 from sail_safe_functions.statistics.wilcoxon_singed_rank_test_precompute import WilcoxonSingedRankTestPrecompute
-from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFederate
+from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.preprocessing.wilcoxon_singed_rank_test_difference_tranform import (
     WilcoxonSingedRankTestDifferenceTranform,
 )
@@ -33,8 +33,10 @@ class WilcoxonSingedRankTest(Estimator):
             raise ValueError("`sample_0` and `sample_1` must have the same length.")
 
         size_sample = sample_0.size
-        sample_difference, sample_difference_absolute = WilcoxonSingedRankTestDifferenceTranform.run(sample_0, sample_1)
-        sample_difference_absolute_ranked = RankFederate.run(sample_difference_absolute, self.type_ranking)
+        sample_difference, sample_difference_absolute = preprocessing.wilcoxon_singed_rank_test_difference_tranform(
+            sample_0, sample_1
+        )
+        sample_difference_absolute_ranked = preprocessing.rank(sample_difference_absolute, self.type_ranking)
 
         # Calculating precompute
         list_precompute = []

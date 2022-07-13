@@ -1,7 +1,7 @@
 import pandas
 
 
-class Concatenate:
+class ConcatenatePrecompute:
     """Wrapper safe function for the pandas concatenate"""
 
     def run(series_0: pandas.Series, series_1: pandas.Series) -> pandas.Series:

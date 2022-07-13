@@ -6,7 +6,7 @@ class ListAppend:
     Appends an element to a list
     """
 
-    def Run(list: List, element: Any) -> List:
+    def run(list: List, element: Any) -> List:
         """Appends an element to a list for aggregation
 
         :param list: The list to append an element to

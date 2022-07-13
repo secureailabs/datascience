@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy
 from sail_safe_functions.statistics.kolmogorov_smirnov_test_agregate import KolmogorovSmirnovTestAgregate
 from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import KolmogorovSmirnovTestPrecompute
-from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFederate
+from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from sail_safe_functions_orchestrator.statistics.mean import Mean
@@ -65,7 +65,7 @@ class KolmogorovSmirnovTest(Estimator):
             raise Exception()
         size_sample = sample_0.size
 
-        series_sample_ranked_0 = RankFederate.run(sample_0, mode=self.type_ranking)
+        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
         list_list_precompute = []
         for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
             list_list_precompute.append(

@@ -1,10 +1,8 @@
 from typing import Tuple
 
-from sail_safe_functions_orchestrator import statistics
-from sail_safe_functions_orchestrator.preprocessing.rank_federate import RankFederate
+from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.statistics.pearson import Pearson
 from scipy import stats
 
 
@@ -53,8 +51,8 @@ class Spearman(Estimator):
         if sample_0.size != sample_1.size:
             raise ValueError("samples must be of equal size")
 
-        rank_0 = RankFederate.run(sample_0, self.type_ranking)
-        rank_1 = RankFederate.run(sample_1, self.type_ranking)
+        rank_0 = preprocessing.rank(sample_0, self.type_ranking)
+        rank_1 = preprocessing.rank(sample_1, self.type_ranking)
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
 

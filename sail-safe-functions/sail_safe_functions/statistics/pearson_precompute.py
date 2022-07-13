@@ -1,6 +1,7 @@
-import pandas as pd
 from typing import List
+
 import numpy as np
+import pandas as pd
 
 
 class PearsonPrecompute(object):
@@ -10,9 +11,6 @@ class PearsonPrecompute(object):
     :param object:
     :type object:
     """
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def run(sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame) -> List[float]:
         """

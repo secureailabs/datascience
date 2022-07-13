@@ -2,20 +2,20 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from sail_safe_functions_orchestrator.dataframe_federated import DataframeFederated
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
-class DataframeFederatedLocal(DataframeFederated):
+class DataFrameFederatedLocal(DataFrameFederated):
     """This should be a multyline docstring"""
 
     def __init__(self) -> None:
         super().__init__()
 
     # oveloads
-    def create_new(self) -> "DataframeFederated":
-        return DataframeFederatedLocal()
+    def create_new(self) -> "DataFrameFederated":
+        return DataFrameFederatedLocal()
 
     def _get_dataframe_first(self) -> pd.DataFrame:
         return list(self.dict_dataframe.values())[0]
@@ -40,8 +40,8 @@ class DataframeFederatedLocal(DataframeFederated):
                 #
         self.dict_dataframe[path_file_csv] = dataframe_new
 
-    def query(self, querystring: str) -> "DataframeFederatedLocal":
-        dataframe_new = DataframeFederatedLocal()
+    def query(self, querystring: str) -> "DataFrameFederatedLocal":
+        dataframe_new = DataFrameFederatedLocal()
         for key, dataframe in self.dict_dataframe.items():
             dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
 
@@ -79,6 +79,6 @@ class DataframeFederatedLocal(DataframeFederated):
         if list_name_column is not None:
             for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
                 data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
-        data_frame_federated = DataframeFederatedLocal()
+        data_frame_federated = DataFrameFederatedLocal()
         data_frame_federated.dict_dataframe[dataset_id] = data_frame
         return data_frame_federated

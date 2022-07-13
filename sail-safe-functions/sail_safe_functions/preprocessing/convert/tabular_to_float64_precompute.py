@@ -3,7 +3,7 @@ import pandas
 from sail_safe_functions.preprocessing.convert.categorical_to_onehot import CategoricalToOnehot
 
 
-class TabularToFloat64:
+class TabularToFloat64Precompute:
     def run(table_schema: dict, data_frame_source: pandas.DataFrame) -> pandas.DataFrame:
 
         list_data_frame_target = []
