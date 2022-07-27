@@ -3,12 +3,12 @@ from pandas import Series
 from sail_safe_functions.preprocessing.rank_cdf import RankCdf
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 from scipy.stats import rankdata
 
 
 def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
-    ToolsCommon.check_instance(sample_0, SeriesFederated)
+    check_instance(sample_0, SeriesFederated)
     list_size = []
     list_array = []
     for series in sample_0.dict_series.values():
@@ -27,7 +27,7 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
 
 
 def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
-    ToolsCommon.check_instance(sample_0, SeriesFederated)
+    check_instance(sample_0, SeriesFederated)
     list_domain_cdf, list_value_cdf = preprocessing.cdf(sample_0)
     sample_ranked_0 = sample_0.create_new()
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
@@ -39,8 +39,8 @@ def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
 
 
 def rank(sample_0: SeriesFederated, type_ranking: str) -> SeriesFederated:
-    ToolsCommon.check_instance(sample_0, SeriesFederated)
-    ToolsCommon.check_instance(type_ranking, str)
+    check_instance(sample_0, SeriesFederated)
+    check_instance(type_ranking, str)
     """Ranks series in a federated with, ideally with minimal data leaving the contribution
 
     :param sample_0: The sample to be ranked

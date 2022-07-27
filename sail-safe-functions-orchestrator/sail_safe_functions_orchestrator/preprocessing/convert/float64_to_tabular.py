@@ -1,6 +1,6 @@
 from sail_safe_functions.preprocessing.convert.float64_to_tabular_precompute import Float64ToTabularPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
@@ -9,8 +9,8 @@ def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated
 
 class Float64ToTabular:
     def run(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
-        ToolsCommon.check_instance(table_schema, dict)
-        ToolsCommon.check_instance(data_frame_source, DataFrameFederated)
+        check_instance(table_schema, dict)
+        check_instance(data_frame_source, DataFrameFederated)
         """
         Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
 

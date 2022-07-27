@@ -1,6 +1,6 @@
 from sail_safe_functions.preprocessing.concatenate_precompute import ConcatenatePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def concatenate(sample_0: SeriesFederated, sample_1: SeriesFederated) -> SeriesFederated:
@@ -11,8 +11,8 @@ class Concatenate:
     """Federate wrapper safe function for the pandas concatenate"""
 
     def run(sample_0: SeriesFederated, sample_1: SeriesFederated):
-        ToolsCommon.check_instance(sample_0, SeriesFederated)
-        ToolsCommon.check_instance(sample_1, SeriesFederated)
+        check_instance(sample_0, SeriesFederated)
+        check_instance(sample_1, SeriesFederated)
         sample_concatenated = sample_0.create_new()
 
         for dataset_id in sample_0.dict_series:  # TODO rework abcs

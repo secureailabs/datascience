@@ -1,6 +1,6 @@
 from sail_safe_functions.preprocessing.convert.tabular_to_float64_precompute import TabularToFloat64Precompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def tabular_to_float64(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
@@ -9,8 +9,8 @@ def tabular_to_float64(table_schema: dict, data_frame_source: DataFrameFederated
 
 class TabularToFloat64:
     def run(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
-        ToolsCommon.check_instance(table_schema, dict)
-        ToolsCommon.check_instance(data_frame_source, DataFrameFederated)
+        check_instance(table_schema, dict)
+        check_instance(data_frame_source, DataFrameFederated)
         """
         Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
 

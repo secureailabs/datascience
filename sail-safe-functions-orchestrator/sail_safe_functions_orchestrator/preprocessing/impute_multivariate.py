@@ -2,7 +2,7 @@ from typing import Any, List, Union
 
 from sail_safe_functions.preprocessing.impute_multivariate_precompute import ImputeMultivariatePrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def impute_multivariate(
@@ -41,7 +41,7 @@ class ImputeMultivariate:
         imputation_order: str,
         max_iter: int = 10,
     ) -> DataFrameFederated:
-        ToolsCommon.check_instance(data_frame_source, DataFrameFederated)
+        check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
             data_frame_target.dict_dataframe[dataset_id] = ImputeMultivariatePrecompute.run(

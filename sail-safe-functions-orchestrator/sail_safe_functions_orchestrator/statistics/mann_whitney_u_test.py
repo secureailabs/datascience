@@ -7,7 +7,7 @@ from sail_safe_functions.statistics.mann_whitney_u_test_precompute import MannWh
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.tools_common import ToolsCommon
+from sail_safe_functions_orchestrator.tools_common import check_instance
 from scipy import stats
 
 
@@ -33,8 +33,8 @@ class MannWhitneyUTest(Estimator):
         self.type_ranking = type_ranking
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        ToolsCommon.check_instance(sample_0, SeriesFederated)
-        ToolsCommon.check_instance(sample_1, SeriesFederated)
+        check_instance(sample_0, SeriesFederated)
+        check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size
 
         sample_concatenated = preprocessing.concatenate(sample_0, sample_1)
