@@ -59,6 +59,9 @@ class SeriesFederatedLocal(SeriesFederated):
             series_federated_new.add_series(dataset_id, series)
         return series_federated_new
 
+    def create_new(self) -> "SeriesFederated":
+        return SeriesFederatedLocal()
+
     def to_series(self) -> pd.Series:
         return pd.Series(self.to_numpy(), name=self.name)
 

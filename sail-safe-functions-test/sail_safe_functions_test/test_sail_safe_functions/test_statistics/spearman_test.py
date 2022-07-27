@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pytest
-from sail_safe_functions_orchestrator.statistics.spearman_federate import SpearmanFederate
+from sail_safe_functions_orchestrator.statistics.spearman import Spearman
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy import stats
 
@@ -17,10 +17,13 @@ def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFe
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    alternative = "two-sided"
+    type_ranking = "unsafe"
 
     # Act
-    spearman_sail, p_value_sail = SpearmanFederate.spearman(sample_0, sample_1, alternative="two-sided", mode="unsafe")
-    spearman_scipy, p_value_scipy = stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative="two-sided")
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -38,10 +41,13 @@ def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederat
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    alternative = "less"
+    type_ranking = "unsafe"
 
     # Act
-    spearman_sail, p_value_sail = SpearmanFederate.spearman(sample_0, sample_1, alternative="less", mode="unsafe")
-    spearman_scipy, p_value_scipy = stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative="less")
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -59,10 +65,13 @@ def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFede
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    alternative = "greater"
+    type_ranking = "unsafe"
 
     # Act
-    spearman_sail, p_value_sail = SpearmanFederate.spearman(sample_0, sample_1, alternative="greater", mode="unsafe")
-    spearman_scipy, p_value_scipy = stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative="greater")
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)

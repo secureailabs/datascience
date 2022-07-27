@@ -6,7 +6,7 @@ class ListCreate:
     Creates an empty list for aggregation
     """
 
-    def Run() -> List:
+    def run() -> List:
         """Creates an empty list for aggregation
 
         :return: The created list

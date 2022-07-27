@@ -1,6 +1,7 @@
 from typing import List
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 
 class PragmaticNoise:
@@ -8,9 +9,7 @@ class PragmaticNoise:
     Adds noise to categorical, boolean, numeric and continous columns in a pandas dataframe
     """
 
-    def col_noise_numeric(
-        self, column: pd.Series, col_resolution: float, scale: float
-    ) -> pd.Series:
+    def col_noise_numeric(self, column: pd.Series, col_resolution: float, scale: float) -> pd.Series:
         """
         Adds noise to numeric and continuous columns scaled
         to one standard deviation from the mean.
@@ -43,9 +42,7 @@ class PragmaticNoise:
             noised_column[i] += noise[i]
         return noised_column
 
-    def col_noise_categorical(
-        self, column: pd.Series, list_values: List[str], frequency: float
-    ) -> pd.Series:
+    def col_noise_categorical(self, column: pd.Series, list_values: List[str], frequency: float) -> pd.Series:
         """
         Adds noise to categorical columns by swapping categories of elements based
         on frequency of occurence in the column at given intervals.
@@ -121,9 +118,7 @@ class PragmaticNoise:
                 )
             elif schema["dict_column"][column]["type_data_level"] == "categorical":
                 # print("Noising Categorical Column: "+ column)
-                noised_dataset[
-                    schema["dict_column"][column]["name_column"]
-                ] = self.col_noise_categorical(
+                noised_dataset[schema["dict_column"][column]["name_column"]] = self.col_noise_categorical(
                     dataset[schema["dict_column"][column]["name_column"]],
                     schema["dict_column"][column]["list_value"],
                     frequency=cat_swap_frequency,

@@ -2,13 +2,12 @@ from typing import Tuple
 
 import pytest
 from pandas.util.testing import assert_frame_equal
-from sail_safe_functions_orchestrator.preprocessing.convert.float64_to_tabular_federate import Float64ToTabularFederate
-from sail_safe_functions_orchestrator.preprocessing.convert.tabular_to_float64_federate import TabularToFloat64Federate
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
+from sail_safe_functions_orchestrator.preprocessing import convert
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 
 
 @pytest.mark.active
-def test_convert_and_reverse(tuple_kidney_schema_dataframe: Tuple[dict, DataframeFederatedLocal]):
+def test_convert_and_reverse(tuple_kidney_schema_dataframe: Tuple[dict, DataFrameFederatedLocal]):
     """
     This test or ability to do one-hot and resolution conversion and reverse it relativly acurately (5 decimal places)
     """
@@ -19,8 +18,8 @@ def test_convert_and_reverse(tuple_kidney_schema_dataframe: Tuple[dict, Datafram
     dataset_id = list(data_frame_source.dict_dataframe.keys())[0]
 
     # Act
-    date_frame_target = TabularToFloat64Federate.run(table_schema, data_frame_source)
-    date_frame_rebuild = Float64ToTabularFederate.run(table_schema, date_frame_target)
+    date_frame_target = convert.tabular_to_float64(table_schema, data_frame_source)
+    date_frame_rebuild = convert.float64_to_tabular(table_schema, date_frame_target)
 
     # TODO we need to make this nicer at some point
     data_frame_source.dict_dataframe[dataset_id] = data_frame_source.dict_dataframe[dataset_id].drop(["id"], axis=1)

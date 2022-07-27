@@ -1,5 +1,5 @@
 import pytest
-from sail_safe_functions_orchestrator.statistics.min_max_federate import MinMaxFederate
+from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
@@ -15,8 +15,7 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
     sample_0 = one_sample_big
 
     # Act
-    # Calling fedrated sail skewness method
-    estimator = MinMaxFederate()
+    estimator = MinMax()
     min_sail, max_sail = estimator.run(sample_0)
     min_numpy, max_numpy = estimator.run_reference(sample_0)
 

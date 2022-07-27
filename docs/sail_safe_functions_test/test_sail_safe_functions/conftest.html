@@ -36,8 +36,8 @@ from typing import Tuple
 import numpy as np
 import pytest
 from config import DATA_PATH
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import (
-    DataframeFederatedLocal,
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
+    DataFrameFederatedLocal,
 )
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
     SeriesFederatedLocal,
@@ -49,13 +49,13 @@ def one_sample_big() -&gt; SeriesFederatedLocal:
     &#34;&#34;&#34;
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
     list_name_file_csv = [&#34;bmc1.csv&#34;, &#34;bwh1.csv&#34;, &#34;mgh1.csv&#34;]
     id_column_0 = &#34;PD-L1 level before treatment&#34;
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_investor_demo&#34;, name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -68,14 +68,14 @@ def two_sample_big() -&gt; SeriesFederatedLocal:
     &#34;&#34;&#34;
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
     list_name_file_csv = [&#34;bmc1.csv&#34;, &#34;bwh1.csv&#34;, &#34;mgh1.csv&#34;]
     id_column_0 = &#34;PD-L1 level before treatment&#34;
     id_column_1 = &#34;PD-L1 level after treatment&#34;
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_investor_demo&#34;, name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -138,7 +138,7 @@ def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
 </code></dt>
 <dd>
 <div class="desc"><p>Fixture for SeriesFederatedLocal with this first part of the investor demo dataset</p>
-<p>:return: DataframeFederatedLocal
+<p>:return: DataFrameFederatedLocal
 :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
 <details class="source">
 <summary>
@@ -149,13 +149,13 @@ def one_sample_big() -&gt; SeriesFederatedLocal:
     &#34;&#34;&#34;
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
     list_name_file_csv = [&#34;bmc1.csv&#34;, &#34;bwh1.csv&#34;, &#34;mgh1.csv&#34;]
     id_column_0 = &#34;PD-L1 level before treatment&#34;
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_investor_demo&#34;, name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -168,7 +168,7 @@ def one_sample_big() -&gt; SeriesFederatedLocal:
 </code></dt>
 <dd>
 <div class="desc"><p>Fixture for SeriesFederatedLocal with this first part of the investor demo dataset</p>
-<p>:return: DataframeFederatedLocal
+<p>:return: DataFrameFederatedLocal
 :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
 <details class="source">
 <summary>
@@ -179,14 +179,14 @@ def two_sample_big() -&gt; SeriesFederatedLocal:
     &#34;&#34;&#34;
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
     list_name_file_csv = [&#34;bmc1.csv&#34;, &#34;bwh1.csv&#34;, &#34;mgh1.csv&#34;]
     id_column_0 = &#34;PD-L1 level before treatment&#34;
     id_column_1 = &#34;PD-L1 level after treatment&#34;
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_investor_demo&#34;, name_file_csv)
         dataframe.add_csv(path_file_csv)

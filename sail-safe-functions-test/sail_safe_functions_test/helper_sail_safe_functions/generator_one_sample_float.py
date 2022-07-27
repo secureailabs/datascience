@@ -17,7 +17,7 @@ class GeneratorOneSampleFloat:
         resolution: float,
     ) -> None:
 
-        if not type_distribution in ["normal", "uniform"]:
+        if type_distribution not in ["normal", "uniform"]:
             raise ValueError()
         self.name = name
         self.type_distribution = type_distribution
@@ -38,7 +38,7 @@ class GeneratorOneSampleFloat:
                 shift = self.standard_deviation * (numpy.sqrt(12) / 2)
                 array_0 = numpy.random.uniform(self.mean - shift, self.mean + shift, count_federation)
 
-            if not self.resolution == -1:
+            if self.resolution != -1:
                 array_0 = (array_0 * (1 / self.resolution)).round().astype(int) * self.resolution
             sample_0.add_series(
                 f"federation_{i}",

@@ -19,3 +19,6 @@ class SeriesFederated(ABC):
 
     def items(self):
         return self._dict_series.items()
+
+    def create_new(self) -> "SeriesFederated":
+        raise NotImplementedError()

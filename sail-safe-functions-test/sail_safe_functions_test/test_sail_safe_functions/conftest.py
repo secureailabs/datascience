@@ -7,24 +7,19 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
-import json
 import pytest
 from config import DATA_PATH
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import (
-    DataframeFederatedLocal,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
 @pytest.fixture
-def tuple_kidney_schema_dataframe() -> Tuple[dict, DataframeFederatedLocal]:
+def tuple_kidney_schema_dataframe() -> Tuple[dict, DataFrameFederatedLocal]:
     """
     Fixture for loading a dataframe without missing values and a matching schema
 
     :return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
-    :rtype: class : Tuple[dict, DataframeFederatedLocal]
+    :rtype: class : Tuple[dict, DataFrameFederatedLocal]
     """
 
     path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
@@ -33,9 +28,24 @@ def tuple_kidney_schema_dataframe() -> Tuple[dict, DataframeFederatedLocal]:
     with open(path_file_json, "r") as file:
         schema = json.load(file)
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     dataframe.add_csv(path_file_csv)
     return (schema, dataframe)
+
+
+@pytest.fixture
+def data_frame_federated_kidney() -> Tuple[dict, DataFrameFederatedLocal]:
+    """
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    """
+
+    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", "kidney_disease.csv")
+
+    data_frame_federated_kidney = DataFrameFederatedLocal()
+    data_frame_federated_kidney.add_csv(path_file_csv)
+    return data_frame_federated_kidney
 
 
 @pytest.fixture
@@ -60,9 +70,7 @@ def dataframe_kidney_clean() -> pd.DataFrame:
     :rtype: class : pd.DataFrame
     """
 
-    path_file_csv = os.path.join(
-        DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv"
-    )
+    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv")
     return pd.read_csv(path_file_csv)
 
 
@@ -86,13 +94,13 @@ def one_sample_big() -> SeriesFederatedLocal:
     """
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -105,14 +113,14 @@ def two_sample_big() -> SeriesFederatedLocal:
     """
     Fixture for SeriesFederatedLocal with this first part of the investor demo dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
     id_column_1 = "PD-L1 level after treatment"
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -125,14 +133,14 @@ def two_sample_categorical() -> SeriesFederatedLocal:
     """
     Fixture for SeriesFederatedLocal with this first part of the kidney disease dataset
 
-    :return: DataframeFederatedLocal
+    :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
     list_name_file_csv = ["kidney_disease_clean.csv"]
     id_column_0 = "rbc"
     id_column_1 = "classification"
 
-    dataframe = DataframeFederatedLocal()
+    dataframe = DataFrameFederatedLocal()
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
         dataframe.add_csv(path_file_csv)
@@ -148,9 +156,7 @@ def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     :return: SeriesFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
-    sample_0_numpy = np.array(
-        [17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8]
-    )
+    sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
     sample_1_numpy = np.array(
         [
             21.5,
