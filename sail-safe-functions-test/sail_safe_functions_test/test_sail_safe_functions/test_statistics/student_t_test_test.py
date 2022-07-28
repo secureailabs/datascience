@@ -2,13 +2,17 @@ from typing import Tuple
 
 import pytest
 from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
 
 @pytest.mark.active
-def test_student_t_test_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    """Preform a unpaired t-test asuming equal varriance
+def test_student_t_test_big(
+    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
+    """Preform a unpaired t-test asuming equal variance
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series

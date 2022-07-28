@@ -2,13 +2,17 @@ from typing import Tuple
 
 import pytest
 from sail_safe_functions_orchestrator.statistics.welch_t_test import WelchTTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
 
 @pytest.mark.active
-def test_welch_t_test_small(two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    """Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_welch_t_test_small(
+    two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
+    """Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -29,8 +33,10 @@ def test_welch_t_test_small(two_sample_small: Tuple[SeriesFederatedLocal, Series
 
 
 @pytest.mark.active
-def test_welch_t_test_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    """Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_welch_t_test_big(
+    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
+    """Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series

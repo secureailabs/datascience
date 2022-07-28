@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.min_max_agregate import MinMaxAgregate
+from sail_safe_functions.statistics.min_max_agregate import MinMaxAggregate
 from sail_safe_functions.statistics.min_max_precompute import MinMaxPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -26,10 +26,10 @@ class MinMax(Estimator):
 
         # Calculating precompute
         for series in sample_0.dict_series.values():  # TODO replace these
-            list_list_precompute.append(MinMaxPrecompute.run(series))
+            list_list_precompute.append(MinMaxPrecompute.Run(series))
 
         # Final min max values
-        min, max = MinMaxAgregate.run(list_list_precompute)
+        min, max = MinMaxAggregate.Run(list_list_precompute)
         return min, max
 
     def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:

@@ -1,6 +1,8 @@
 from typing import Any
 
-from sail_safe_functions.preprocessing.drop_missing_precompute import DropMissingPrecompute
+from sail_safe_functions.preprocessing.drop_missing_precompute import (
+    DropMissingPrecompute,
+)
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
@@ -41,11 +43,17 @@ class DropMissing:
     Drop rows or columns with missing data
     """
 
-    def run(data_frame_source: DataFrameFederated, axis: int, how: str, thresh: int, subset: Any) -> DataFrameFederated:
+    def run(
+        data_frame_source: DataFrameFederated,
+        axis: int,
+        how: str,
+        thresh: int,
+        subset: Any,
+    ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.run(
+            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.Run(
                 data_frame_source.dict_dataframe[dataset_id], axis, how, thresh, subset
             )
         return data_frame_target

@@ -4,9 +4,9 @@ from typing import List
 import numpy as np
 
 
-class WelchTTestAgregate:
+class WelchTTestAggregate:
     """
-    Agregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
+    Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
     """
 
     def run(
@@ -27,22 +27,42 @@ class WelchTTestAgregate:
             size_sample_1 += list_precompute[5]
 
         sample_mean_0 = sum_x_0 / size_sample_0
-        sample_varriance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
-            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = (
+            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        ) * (
+            size_sample_0
+            / (
+                size_sample_0 - 1
+            )  # unbiased estimator (numpy version is biased by default)
         )
 
         sample_mean_1 = sum_x_1 / size_sample_1
-        sample_varriance_1 = ((sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)) * (
-            size_sample_1 / (size_sample_1 - 1)  # unbiased estimator (np version is biased by default)
+        sample_variance_1 = (
+            (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
+        ) * (
+            size_sample_1
+            / (
+                size_sample_1 - 1
+            )  # unbiased estimator (np version is biased by default)
         )
 
         t_statistic = (sample_mean_0 - sample_mean_1) / (
-            np.sqrt((sample_varriance_0 / size_sample_0) + (sample_varriance_1 / size_sample_1))
+            np.sqrt(
+                (sample_variance_0 / size_sample_0)
+                + (sample_variance_1 / size_sample_1)
+            )
         )
         # Welch–Satterthwaite equation:
-        dof_nominator = math.pow(((sample_varriance_0 / size_sample_0) + (sample_varriance_1 / size_sample_1)), 2)
-        dof_denominator = (math.pow(sample_varriance_0, 2) / (size_sample_0 * size_sample_0 * (size_sample_0 - 1))) + (
-            math.pow(sample_varriance_1, 2) / (size_sample_1 * size_sample_1 * (size_sample_1 - 1))
+        dof_nominator = math.pow(
+            ((sample_variance_0 / size_sample_0) + (sample_variance_1 / size_sample_1)),
+            2,
+        )
+        dof_denominator = (
+            math.pow(sample_variance_0, 2)
+            / (size_sample_0 * size_sample_0 * (size_sample_0 - 1))
+        ) + (
+            math.pow(sample_variance_1, 2)
+            / (size_sample_1 * size_sample_1 * (size_sample_1 - 1))
         )
         degrees_of_freedom = dof_nominator / dof_denominator
 

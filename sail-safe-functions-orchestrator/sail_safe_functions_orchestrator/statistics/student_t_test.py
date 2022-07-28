@@ -1,7 +1,9 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.student_t_test_agregate import StudentTTestAgregate
-from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
+from sail_safe_functions.statistics.student_t_test_agregate import StudentTTestAggregate
+from sail_safe_functions.statistics.unpaired_t_test_precompute import (
+    UnpairedTTestPrecompute,
+)
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
@@ -30,13 +32,15 @@ class StudentTTest(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(
+                UnpairedTTestPrecompute.Run(
                     sample_0.dict_series[key_dataframe],
                     sample_1.dict_series[key_dataframe],
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAgregate.run(list_list_precompute)
+        t_statistic, degrees_of_freedom = StudentTTestAggregate.Run(
+            list_list_precompute
+        )
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -49,4 +53,9 @@ class StudentTTest(Estimator):
         return t_statistic, p_value
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        return stats.ttest_ind(sample_0.to_numpy(), sample_1.to_numpy(), equal_var=True, alternative=self.alternative)
+        return stats.ttest_ind(
+            sample_0.to_numpy(),
+            sample_1.to_numpy(),
+            equal_var=True,
+            alternative=self.alternative,
+        )

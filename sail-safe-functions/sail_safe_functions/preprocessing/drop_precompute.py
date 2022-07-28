@@ -6,7 +6,7 @@ class DropPrecompute:
     Drop specific rows or columns
     """
 
-    def run(
+    def Run(
         data_frame: pd.DataFrame,
         labels: list,
         axis: int,
@@ -44,5 +44,11 @@ class DropPrecompute:
         :rtype: pd.DataFrame
         """
         return data_frame.drop(
-            labels=labels, axis=axis, index=index, columns=columns, level=level, inplace=False, errors=errors
+            labels=labels,
+            axis=axis,
+            index=index,
+            columns=columns,
+            level=level,
+            inplace=False,
+            errors=errors,
         )

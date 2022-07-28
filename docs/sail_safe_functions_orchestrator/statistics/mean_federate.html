@@ -28,7 +28,7 @@
 </summary>
 <pre><code class="python">from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
-from sail_safe_functions.statistics.mean_agregate import MeanAgregate
+from sail_safe_functions.statistics.mean_agregate import MeanAggregate
 
 
 class MeanFederate:
@@ -37,9 +37,9 @@ class MeanFederate:
 
         list_list_precompute = []
         for series in sample_0.dict_series.values():
-            list_list_precompute.append(MeanPrecompute.run(series))
+            list_list_precompute.append(MeanPrecompute.Run(series))
 
-        mean_statistic = MeanAgregate.run(list_list_precompute)
+        mean_statistic = MeanAggregate.Run(list_list_precompute)
 
         return mean_statistic</code></pre>
 </details>
@@ -68,9 +68,9 @@ class MeanFederate:
 
         list_list_precompute = []
         for series in sample_0.dict_series.values():
-            list_list_precompute.append(MeanPrecompute.run(series))
+            list_list_precompute.append(MeanPrecompute.Run(series))
 
-        mean_statistic = MeanAgregate.run(list_list_precompute)
+        mean_statistic = MeanAggregate.Run(list_list_precompute)
 
         return mean_statistic</code></pre>
 </details>
@@ -90,9 +90,9 @@ def mean(sample_0: SeriesFederated):
 
     list_list_precompute = []
     for series in sample_0.dict_series.values():
-        list_list_precompute.append(MeanPrecompute.run(series))
+        list_list_precompute.append(MeanPrecompute.Run(series))
 
-    mean_statistic = MeanAgregate.run(list_list_precompute)
+    mean_statistic = MeanAggregate.Run(list_list_precompute)
 
     return mean_statistic</code></pre>
 </details>

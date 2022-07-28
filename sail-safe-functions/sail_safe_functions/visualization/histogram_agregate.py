@@ -2,9 +2,9 @@ from collections import Counter
 from typing import List
 
 
-class HistogramAgregate:
+class HistogramAggregate:
     """
-    Agregates the final list for the histogrm.
+    Aggregates the final list for the histogrm.
     """
 
     # list of precompute contains list of list

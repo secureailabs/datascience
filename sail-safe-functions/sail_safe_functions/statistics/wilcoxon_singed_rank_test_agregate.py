@@ -2,9 +2,9 @@ import math
 from typing import List
 
 
-class WilcoxonSingedRankTestAgregate:
+class WilcoxonSingedRankTestAggregate:
     """
-    Agregates data for WilcoxonSingedRankTest
+    Aggregates data for WilcoxonSingedRankTest
     """
 
     def run(list_precompute: List):

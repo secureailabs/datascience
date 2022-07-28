@@ -2,12 +2,12 @@ import math
 from typing import List
 
 
-class KurtosisAgregate:
+class KurtosisAggregate:
     """
-    Agregates data for Kurtosis
+    Aggregates data for Kurtosis
     """
 
-    def run(list_list_precompute: List[List[float]]):
+    def Run(list_list_precompute: List[List[float]]):
 
         """
         A Function to get the fedrated Kurtosis value.
@@ -35,22 +35,24 @@ class KurtosisAgregate:
 
         # Calculating sampel mean
         sample_mean_0 = sum_x_0 / size_sample_0
-        # Calculating sample varriance
-        sample_varriance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        # Calculating sample variance
+        sample_variance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
         # Calculating Sample
-        sample_standard_deviation = math.sqrt(sample_varriance_0)
+        sample_standard_deviation = math.sqrt(sample_variance_0)
 
         # mu Geometric
         mu2 = sum_xx_0 / size_sample_0
         mu3 = sum_xxx_0 / size_sample_0
         mu4 = sum_xxxx_0 / size_sample_0
         mean = sample_mean_0
-        sd = sample_standard_deviation
+        standard_deviation = sample_standard_deviation
 
         # Final Statistical formula for calculating Kurtosis
         # wiki link below for the formula
         # https://en.wikipedia.org/wiki/Kurtosis
 
-        kurtosis_value = ((mu4) - 3 * (mean**4) - 4 * ((mu3) * (mean)) + 6 * ((mu2) * (mean**2))) / (sd**4)
+        kurtosis_value = (
+            (mu4) - 3 * (mean**4) - 4 * ((mu3) * (mean)) + 6 * ((mu2) * (mean**2))
+        ) / (standard_deviation**4)
 
         return kurtosis_value - 3

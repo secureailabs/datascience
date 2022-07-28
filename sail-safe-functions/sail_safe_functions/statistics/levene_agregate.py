@@ -3,14 +3,14 @@ from typing import List
 import numpy as np
 
 
-class LeveneAgregate:
+class LeveneAggregate:
     """
-    Agregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
+    Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
     """
 
-    def run(
+    def Run(
         list_list_precompute: List[List[float]],
-        equal_varriances: bool = False,
+        equal_variances: bool = False,
     ):
         sum_x_0 = 0
         sum_xx_0 = 0
@@ -35,18 +35,20 @@ class LeveneAgregate:
 
         z__ = (z1_ + z2_) / 2
 
-        denom_1 = final_z1j - z1_
-        denom_1 = np.sum(denom_1 * denom_1)
+        denomenator_1 = final_z1j - z1_
+        denomenator_1 = np.sum(denomenator_1 * denomenator_1)
 
-        denom_2 = final_z2j - z2_
-        denom_2 = np.sum(denom_2 * denom_2)
+        denomenator_2 = final_z2j - z2_
+        denomenator_2 = np.sum(denomenator_2 * denomenator_2)
 
-        final_denom = denom_1 + denom_2
+        final_denomenator = denomenator_1 + denomenator_2
         length1 = size_sample_0
         length2 = size_sample_1
         dof = length1 + length2 - 2
-        final_nem = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
+        final_numerator = dof * (
+            length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__)
+        )
 
-        f_statictic = final_nem / final_denom
+        f_statictic = final_numerator / final_denomenator
 
         return f_statictic, dof

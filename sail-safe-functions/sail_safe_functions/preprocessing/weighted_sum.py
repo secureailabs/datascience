@@ -3,12 +3,14 @@ from typing import List
 import pandas
 
 
-class WeightedSum:
+class SumWeighted:
     """
     Takes the weighted sum of a list of series
     """
 
-    def run(list_series: List[pandas.Series], list_weight: List[float]) -> pandas.Series:
+    def Run(
+        list_series: List[pandas.Series], list_weight: List[float]
+    ) -> pandas.Series:
         """Takes the weighted sum of a list of series
 
         :param list_series:list of series to be weighted

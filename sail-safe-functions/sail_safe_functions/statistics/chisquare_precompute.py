@@ -8,7 +8,7 @@ class ChisquarePrecompute:
     Precomputes data for Chisquare test
     """
 
-    def run(sample_0: pandas.Series, sample_1: pandas.Series) -> Dict:
+    def Run(sample_0: pandas.Series, sample_1: pandas.Series) -> Dict:
         precompute = {}
         for tuple_value in zip(sample_0, sample_1):
             if tuple_value not in precompute:

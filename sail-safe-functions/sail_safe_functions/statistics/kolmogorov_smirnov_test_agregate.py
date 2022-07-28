@@ -2,12 +2,12 @@ import math
 from typing import List
 
 
-class KolmogorovSmirnovTestAgregate:
+class KolmogorovSmirnovTestAggregate:
     """
-    Agregates data for the KolmogorovSmirnov test
+    Aggregates data for the KolmogorovSmirnov test
     """
 
-    def run(list_precompute: List[float]):
+    def Run(list_precompute: List[float]):
         list_max = []
         for precompute in list_precompute:
             list_max.append(precompute)

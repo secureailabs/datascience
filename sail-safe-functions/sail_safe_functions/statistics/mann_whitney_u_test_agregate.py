@@ -3,10 +3,10 @@ from typing import List
 import numpy
 
 
-class MannWhitneyUTestAgregate:
+class MannWhitneyUTestAggregate:
     """
     The agregate function of the mann withnet u test
     """
 
-    def run(list_precompute: List[float]) -> float:
+    def Run(list_precompute: List[float]) -> float:
         return numpy.array(list_precompute).sum()

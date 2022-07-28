@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.levene_agregate import LeveneAgregate
+from sail_safe_functions.statistics.levene_agregate import LeveneAggregate
 from sail_safe_functions.statistics.levene_precompute import LevenePrecompute
 from sail_safe_functions_orchestrator import statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -47,7 +47,7 @@ class LeveneTest(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                LevenePrecompute.run(
+                LevenePrecompute.Run(
                     sample_0.dict_series[key_dataframe],
                     sample_1.dict_series[key_dataframe],
                     mean_sample_0,
@@ -55,7 +55,7 @@ class LeveneTest(Estimator):
                 )
             )
 
-        f_statistic, dof = LeveneAgregate.run(list_list_precompute)
+        f_statistic, dof = LeveneAggregate.Run(list_list_precompute)
         p_value = distributions.f.sf(f_statistic, 1, dof)  # 1 - cdf
         return f_statistic, p_value
 

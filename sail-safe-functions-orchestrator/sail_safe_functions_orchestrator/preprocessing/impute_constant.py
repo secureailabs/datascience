@@ -1,12 +1,16 @@
 from typing import Any, List, Union
 
-from sail_safe_functions.preprocessing.impute_constant_precompute import ImputeConstantPrecompute
+from sail_safe_functions.preprocessing.impute_constant_precompute import (
+    ImputeConstantPrecompute,
+)
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def impute_constant(
-    data_frame_source: DataFrameFederated, list_name_column: List[str], missing_value: Union[str, int, float]
+    data_frame_source: DataFrameFederated,
+    list_name_column: List[str],
+    missing_value: Union[str, int, float],
 ) -> DataFrameFederated:
     """Imputes one or more columns with a constant value
 
@@ -30,12 +34,16 @@ class ImputeConstant:
     """
 
     def run(
-        data_frame_source: DataFrameFederated, list_name_column: List[str], missing_value: Union[str, int, float]
+        data_frame_source: DataFrameFederated,
+        list_name_column: List[str],
+        missing_value: Union[str, int, float],
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = ImputeConstantPrecompute.run(
-                data_frame_source.dict_dataframe[dataset_id], list_name_column, missing_value
+            data_frame_target.dict_dataframe[dataset_id] = ImputeConstantPrecompute.Run(
+                data_frame_source.dict_dataframe[dataset_id],
+                list_name_column,
+                missing_value,
             )
         return data_frame_target

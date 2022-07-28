@@ -1,13 +1,13 @@
 from typing import List, Tuple
 
 
-class MinMaxAgregate:
+class MinMaxAggregate:
     """
-    Agregates min and max for a given sample
+    Aggregates min and max for a given sample
     """
 
-    def run(list_tuple_min_max: List[Tuple[float, float]]) -> Tuple[float, float]:
-        """Agregates the results of multiple precompute functions into a global min and max
+    def Run(list_tuple_min_max: List[Tuple[float, float]]) -> Tuple[float, float]:
+        """Aggregates the results of multiple precompute functions into a global min and max
 
         :param list_tuple_min_max: A list of tuples from various precompute functions
         :type list_tuple_min_max: List[Tuple[float, float]]

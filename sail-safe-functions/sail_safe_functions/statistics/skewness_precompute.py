@@ -9,7 +9,7 @@ class SkewnessPrecompute:
     Precomputes data for computing skewness
     """
 
-    def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
+    def Run(sample_0_dataframe: pd.DataFrame) -> List[float]:
         """Generates the geometric moments for use in a Skewness
 
         Parameters

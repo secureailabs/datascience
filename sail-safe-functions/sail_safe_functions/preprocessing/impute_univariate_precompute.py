@@ -10,7 +10,9 @@ class ImputeUnivariatePrecompute:
     Imputes one or more columns with a univariate strategy
     """
 
-    def run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -> pd.DataFrame:
+    def Run(
+        data_frame: pd.DataFrame, list_name_column: List[str], strategy: str
+    ) -> pd.DataFrame:
         """Imputes one or more columns with a univariate strategy
 
         :param data_frame: Input dataframe
@@ -24,7 +26,9 @@ class ImputeUnivariatePrecompute:
         """
 
         if strategy not in {"mean", "median", "most_frequent"}:
-            raise ValueError("parameter `strategy` must be either mean, median or most_frequent")
+            raise ValueError(
+                "parameter `strategy` must be either mean, median or most_frequent"
+            )
         imputer = SimpleImputer(strategy=strategy)
 
         data_frame = data_frame.copy()

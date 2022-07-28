@@ -34,8 +34,8 @@ from sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate import
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 @pytest.mark.active
-def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming equal varriance
+def test_t_test_unpaired_equal_variance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming equal variance
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -46,7 +46,7 @@ def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederat
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=True, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=True, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -59,8 +59,8 @@ def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederat
 
 
 @pytest.mark.active
-def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_t_test_unpaired_unequal_variance_small(two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -71,7 +71,7 @@ def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesF
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=False, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=False, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -84,8 +84,8 @@ def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesF
 
 
 @pytest.mark.active
-def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_t_test_unpaired_unequal_variance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -96,7 +96,7 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=False, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=False, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -115,11 +115,11 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_varriance_big"><code class="name flex">
-<span>def <span class="ident">test_t_test_unpaired_equal_varriance_big</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_variance_big"><code class="name flex">
+<span>def <span class="ident">test_t_test_unpaired_equal_variance_big</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preform a unpaired t-test asuming equal varriance</p>
+<div class="desc"><p>Preform a unpaired t-test asuming equal variance</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>two_sample_big</code></strong> :&ensp;<code>Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</code></dt>
@@ -130,8 +130,8 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming equal varriance
+def test_t_test_unpaired_equal_variance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming equal variance
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -142,7 +142,7 @@ def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederat
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=True, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=True, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -154,11 +154,11 @@ def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederat
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
 </details>
 </dd>
-<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_big"><code class="name flex">
-<span>def <span class="ident">test_t_test_unpaired_unequal_varriance_big</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_big"><code class="name flex">
+<span>def <span class="ident">test_t_test_unpaired_unequal_variance_big</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset</p>
+<div class="desc"><p>Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>two_sample_big</code></strong> :&ensp;<code>Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</code></dt>
@@ -169,8 +169,8 @@ def test_t_test_unpaired_equal_varriance_big(two_sample_big: Tuple[SeriesFederat
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_t_test_unpaired_unequal_variance_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -181,7 +181,7 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=False, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=False, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -193,11 +193,11 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
 </details>
 </dd>
-<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_small"><code class="name flex">
-<span>def <span class="ident">test_t_test_unpaired_unequal_varriance_small</span></span>(<span>two_sample_small: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_small"><code class="name flex">
+<span>def <span class="ident">test_t_test_unpaired_unequal_variance_small</span></span>(<span>two_sample_small: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset</p>
+<div class="desc"><p>Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>two_sample_big</code></strong> :&ensp;<code>Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</code></dt>
@@ -208,8 +208,8 @@ def test_t_test_unpaired_unequal_varriance_big(two_sample_big: Tuple[SeriesFeder
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
-    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal varriance (welch t-test) using a smaller dataset
+def test_t_test_unpaired_unequal_variance_small(two_sample_small: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;Preform a unpaired t-test asuming unequal variance (welch t-test) using a smaller dataset
 
     Args:
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
@@ -220,7 +220,7 @@ def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesF
 
     # Act
     t_statistic_sail, p_value_sail = UnpairedTTestFederate.ttest_ind(
-        sample_0, sample_1, equal_varriances=False, alternative=&#34;less&#34;
+        sample_0, sample_1, equal_variances=False, alternative=&#34;less&#34;
     )
 
     t_statistic_scipy, p_value_scipy = stats.ttest_ind(
@@ -250,9 +250,9 @@ def test_t_test_unpaired_unequal_varriance_small(two_sample_small: Tuple[SeriesF
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_varriance_big" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_varriance_big">test_t_test_unpaired_equal_varriance_big</a></code></li>
-<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_big" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_big">test_t_test_unpaired_unequal_varriance_big</a></code></li>
-<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_small" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_varriance_small">test_t_test_unpaired_unequal_varriance_small</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_variance_big" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_equal_variance_big">test_t_test_unpaired_equal_variance_big</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_big" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_big">test_t_test_unpaired_unequal_variance_big</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_small" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.unpaired_t_test_test.test_t_test_unpaired_unequal_variance_small">test_t_test_unpaired_unequal_variance_small</a></code></li>
 </ul>
 </li>
 </ul>

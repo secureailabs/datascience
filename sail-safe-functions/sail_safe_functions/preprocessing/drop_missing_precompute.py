@@ -8,7 +8,9 @@ class DropMissingPrecompute:
     Drop rows or columns with missing data
     """
 
-    def run(data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: Any) -> pd.DataFrame:
+    def Run(
+        data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: Any
+    ) -> pd.DataFrame:
         """
         Remove missing values.
         See the :ref:`User Guide <missing_data>` for more on which values are
@@ -36,4 +38,6 @@ class DropMissingPrecompute:
         DataFrame
             DataFrame with NA entries dropped.
         """
-        return data_frame.dropna(axis=axis, how=how, thresh=thresh, subset=subset, inplace=False)
+        return data_frame.dropna(
+            axis=axis, how=how, thresh=thresh, subset=subset, inplace=False
+        )

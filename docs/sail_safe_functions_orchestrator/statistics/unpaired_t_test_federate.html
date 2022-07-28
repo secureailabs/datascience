@@ -29,7 +29,7 @@
 <pre><code class="python">from typing import Tuple
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
-from sail_safe_functions.statistics.unpaired_t_test_agregate import UnpairedTTestAgregate
+from sail_safe_functions.statistics.unpaired_t_test_agregate import UnpairedTTestAggregate
 
 from scipy.stats import t
 
@@ -39,7 +39,7 @@ class UnpairedTTestFederate:
     def ttest_ind(
         sample_0: SeriesFederated,
         sample_1: SeriesFederated,
-        equal_varriances: bool = False,
+        equal_variances: bool = False,
         alternative: str = &#34;less&#34;,
     ) -&gt; Tuple[float, float]:
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -50,10 +50,10 @@ class UnpairedTTestFederate:
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
+                UnpairedTTestPrecompute.Run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
             )
 
-        t_statistic, degrees_of_freedom = UnpairedTTestAgregate.run(list_list_precompute, equal_varriances)
+        t_statistic, degrees_of_freedom = UnPairedTTestAggregate.Run(list_list_precompute, equal_variances)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if alternative == &#34;less&#34;:
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -89,7 +89,7 @@ class UnpairedTTestFederate:
     def ttest_ind(
         sample_0: SeriesFederated,
         sample_1: SeriesFederated,
-        equal_varriances: bool = False,
+        equal_variances: bool = False,
         alternative: str = &#34;less&#34;,
     ) -&gt; Tuple[float, float]:
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -100,10 +100,10 @@ class UnpairedTTestFederate:
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
+                UnpairedTTestPrecompute.Run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
             )
 
-        t_statistic, degrees_of_freedom = UnpairedTTestAgregate.run(list_list_precompute, equal_varriances)
+        t_statistic, degrees_of_freedom = UnPairedTTestAggregate.Run(list_list_precompute, equal_variances)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if alternative == &#34;less&#34;:
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -118,7 +118,7 @@ class UnpairedTTestFederate:
 <h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate.UnpairedTTestFederate.ttest_ind"><code class="name flex">
-<span>def <span class="ident">ttest_ind</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, equal_varriances: bool = False, alternative: str = 'less') ‑> Tuple[float, float]</span>
+<span>def <span class="ident">ttest_ind</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, equal_variances: bool = False, alternative: str = 'less') ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -130,7 +130,7 @@ class UnpairedTTestFederate:
 def ttest_ind(
     sample_0: SeriesFederated,
     sample_1: SeriesFederated,
-    equal_varriances: bool = False,
+    equal_variances: bool = False,
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
     if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -141,10 +141,10 @@ def ttest_ind(
     # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
     for key_dataframe in list_key_dataframe:
         list_list_precompute.append(
-            UnpairedTTestPrecompute.run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
+            UnpairedTTestPrecompute.Run(sample_0.dict_series[key_dataframe], sample_1.dict_series[key_dataframe])
         )
 
-    t_statistic, degrees_of_freedom = UnpairedTTestAgregate.run(list_list_precompute, equal_varriances)
+    t_statistic, degrees_of_freedom = UnPairedTTestAggregate.Run(list_list_precompute, equal_variances)
     p_value = t.cdf(t_statistic, degrees_of_freedom)
     if alternative == &#34;less&#34;:
         p_value = t.cdf(t_statistic, degrees_of_freedom)

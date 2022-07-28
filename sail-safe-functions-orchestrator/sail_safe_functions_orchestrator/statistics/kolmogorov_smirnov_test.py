@@ -1,8 +1,12 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_agregate import KolmogorovSmirnovTestAgregate
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import KolmogorovSmirnovTestPrecompute
+from sail_safe_functions.statistics.kolmogorov_smirnov_test_agregate import (
+    KolmogorovSmirnovTestAggregate,
+)
+from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import (
+    KolmogorovSmirnovTestPrecompute,
+)
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -65,13 +69,19 @@ class KolmogorovSmirnovTest(Estimator):
             raise Exception()
         size_sample = sample_0.size
 
-        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
+        series_sample_ranked_0 = preprocessing.rank(
+            sample_0, type_ranking=self.type_ranking
+        )
         list_list_precompute = []
-        for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
+        for series, series_ranked in zip(
+            sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
+        ):
             list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
+                KolmogorovSmirnovTestPrecompute.Run(
+                    series, series_ranked, distribution, size_sample
+                )
             )
-        k_statistic = KolmogorovSmirnovTestAgregate.run(list_list_precompute)
+        k_statistic = KolmogorovSmirnovTestAggregate.Run(list_list_precompute)
 
         p_value = kstwo.sf(k_statistic, size_sample)
 

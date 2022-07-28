@@ -1,6 +1,8 @@
 from typing import Any, List, Union
 
-from sail_safe_functions.preprocessing.impute_multivariate_precompute import ImputeMultivariatePrecompute
+from sail_safe_functions.preprocessing.impute_multivariate_precompute import (
+    ImputeMultivariatePrecompute,
+)
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
@@ -27,7 +29,9 @@ def impute_multivariate(
     :return: Output dataframe
     :rtype: DataFrameFederated
     """
-    return ImputeMultivariate.run(data_frame_source, list_name_column, imputation_order, max_iter)
+    return ImputeMultivariate.run(
+        data_frame_source, list_name_column, imputation_order, max_iter
+    )
 
 
 class ImputeMultivariate:
@@ -44,7 +48,12 @@ class ImputeMultivariate:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = ImputeMultivariatePrecompute.run(
-                data_frame_source.dict_dataframe[dataset_id], list_name_column, imputation_order, max_iter
+            data_frame_target.dict_dataframe[
+                dataset_id
+            ] = ImputeMultivariatePrecompute.Run(
+                data_frame_source.dict_dataframe[dataset_id],
+                list_name_column,
+                imputation_order,
+                max_iter,
             )
         return data_frame_target

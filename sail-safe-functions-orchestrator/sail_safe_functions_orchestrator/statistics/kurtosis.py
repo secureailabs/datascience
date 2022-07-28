@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pandas
-from sail_safe_functions.statistics.kurtosis_agregate import KurtosisAgregate
+from sail_safe_functions.statistics.kurtosis_agregate import KurtosisAggregate
 from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -27,10 +27,10 @@ class Kurtosis(Estimator):
 
         # Calculating precompute
         for series in sample_0.dict_series.values():
-            list_list_precompute.append(KurtosisPrecompute.run(series))
+            list_list_precompute.append(KurtosisPrecompute.Run(series))
 
         # Final Kurtosis Value
-        kurtosis_value = KurtosisAgregate.run(list_list_precompute)
+        kurtosis_value = KurtosisAggregate.Run(list_list_precompute)
         return kurtosis_value
 
     def run_reference(self, sample_0: SeriesFederated):

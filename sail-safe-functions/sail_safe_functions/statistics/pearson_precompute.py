@@ -12,7 +12,9 @@ class PearsonPrecompute(object):
     :type object:
     """
 
-    def run(sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame) -> List[float]:
+    def Run(
+        sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame
+    ) -> List[float]:
         """
         Parameters
         ----------
@@ -31,15 +33,23 @@ class PearsonPrecompute(object):
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
-        sample_0_dof = len(sample_0)
+        sample_0_degrees_of_freedom = len(sample_0)
 
         sum_x_1 = np.sum(sample_1)
         sum_xx_1 = np.sum(sample_1 * sample_1)
-        sample_1_dof = len(sample_1)
+        sample_1_degrees_of_freedom = len(sample_1)
 
         sum_x1_into_x2 = np.sum(np.multiply(sample_0, sample_1))
 
-        list_precompute = [sum_x_0, sum_xx_0, sample_0_dof, sum_x_1, sum_xx_1, sample_1_dof, sum_x1_into_x2]
+        list_precompute = [
+            sum_x_0,
+            sum_xx_0,
+            sample_0_degrees_of_freedom,
+            sum_x_1,
+            sum_xx_1,
+            sample_1_degrees_of_freedom,
+            sum_x1_into_x2,
+        ]
 
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe
