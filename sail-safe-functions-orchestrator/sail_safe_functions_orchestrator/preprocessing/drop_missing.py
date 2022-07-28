@@ -35,7 +35,7 @@ def drop_missing(
     DataFrame
         DataFrame with NA entries dropped.
     """
-    return DropMissing.run(data_frame_source, axis, how, thresh, subset)
+    return DropMissing.Run(data_frame_source, axis, how, thresh, subset)
 
 
 class DropMissing:
@@ -43,7 +43,7 @@ class DropMissing:
     Drop rows or columns with missing data
     """
 
-    def run(
+    def Run(
         data_frame_source: DataFrameFederated,
         axis: int,
         how: str,

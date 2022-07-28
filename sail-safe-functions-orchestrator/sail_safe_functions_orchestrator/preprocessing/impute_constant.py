@@ -25,7 +25,7 @@ def impute_constant(
     :return: Output data_frame
     :rtype: DataFrameFederated
     """
-    return ImputeConstant.run(data_frame_source, list_name_column, missing_value)
+    return ImputeConstant.Run(data_frame_source, list_name_column, missing_value)
 
 
 class ImputeConstant:
@@ -33,7 +33,7 @@ class ImputeConstant:
     class for ImputeConstant
     """
 
-    def run(
+    def Run(
         data_frame_source: DataFrameFederated,
         list_name_column: List[str],
         missing_value: Union[str, int, float],

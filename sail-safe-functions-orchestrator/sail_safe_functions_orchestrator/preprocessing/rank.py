@@ -21,7 +21,10 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
     index_start = 0
     for i, dataset_id in enumerate(sample_0.dict_series):
         index_end = index_start + list_size[i]
-        sample_ranked_0.add_array(dataset_id, Series(array_rank[index_start:index_end], name=f"{sample_0.name}_ranked"))
+        sample_ranked_0.add_array(
+            dataset_id,
+            Series(array_rank[index_start:index_end], name=f"{sample_0.name}_ranked"),
+        )
         index_start = index_end
     return sample_ranked_0
 
@@ -33,7 +36,9 @@ def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(
             dataset_id,
-            RankCdf.run(series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf),
+            RankCdf.Run(
+                series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf
+            ),
         )
     return sample_ranked_0
 

@@ -16,7 +16,7 @@ def student_t_test(
     alternative: str = "less",
 ) -> Tuple[float, float]:
     estimator = StudentTTest(alternative)
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class StudentTTest(Estimator):
@@ -26,7 +26,7 @@ class StudentTTest(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

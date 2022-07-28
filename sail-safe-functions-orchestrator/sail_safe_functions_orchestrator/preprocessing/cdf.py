@@ -16,7 +16,7 @@ def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
     :return: returns two lists of floating point values representing the domain and the values of the cdf
     :rtype: Tuple[List[float], List[float]]
     """
-    return Cdf.run(sample_0)
+    return Cdf.Run(sample_0)
 
 
 class Cdf:

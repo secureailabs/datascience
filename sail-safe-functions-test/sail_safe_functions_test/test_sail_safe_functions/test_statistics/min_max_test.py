@@ -16,7 +16,7 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = MinMax()
-    min_sail, max_sail = estimator.run(sample_0)
+    min_sail, max_sail = estimator.Run(sample_0)
     min_numpy, max_numpy = estimator.run_reference(sample_0)
 
     # Assert

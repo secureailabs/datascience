@@ -2,12 +2,16 @@ from typing import Tuple
 
 import pytest
 from sail_safe_functions_orchestrator.statistics.paired_t_test import PairedTTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
 
 @pytest.mark.active
-def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_t_test_paired_big(
+    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
     """Preform a paired t-test using a bigger dataset
 
     Args:
@@ -20,7 +24,7 @@ def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFed
 
     # Act
     estimator = PairedTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    t_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
     t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
@@ -29,7 +33,9 @@ def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFed
 
 
 @pytest.mark.active
-def test_t_test_paired_small(two_sample_small_paired: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_t_test_paired_small(
+    two_sample_small_paired: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
     """Preform a paired t-test using a smaller dataset
 
     Args:
@@ -42,7 +48,7 @@ def test_t_test_paired_small(two_sample_small_paired: Tuple[SeriesFederatedLocal
 
     # Act
     estimator = PairedTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    t_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
     t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)

@@ -7,7 +7,10 @@ from scipy import stats
 
 
 def spearman(
-    sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str, type_ranking: str
+    sample_0: SeriesFederated,
+    sample_1: SeriesFederated,
+    alternative: str,
+    type_ranking: str,
 ) -> Tuple[float, float]:
     """spearman
     Computes the spearman coeffcient by ranking both sample and
@@ -29,7 +32,7 @@ def spearman(
     """
 
     estimator = Spearman(alternative, type_ranking)
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class Spearman(Estimator):
@@ -47,7 +50,9 @@ class Spearman(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def Run(
+        self, sample_0: SeriesFederated, sample_1: SeriesFederated
+    ) -> Tuple[float, float]:
         if sample_0.size != sample_1.size:
             raise ValueError("samples must be of equal size")
 
@@ -56,5 +61,9 @@ class Spearman(Estimator):
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        return stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)
+    def run_reference(
+        self, sample_0: SeriesFederated, sample_1: SeriesFederated
+    ) -> Tuple[float, float]:
+        return stats.spearmanr(
+            sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative
+        )

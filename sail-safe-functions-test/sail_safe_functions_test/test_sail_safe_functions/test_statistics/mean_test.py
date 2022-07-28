@@ -22,7 +22,7 @@ def test_mean(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = Mean()
-    mean_sail = estimator.run(sample_0)
+    mean_sail = estimator.Run(sample_0)
     mean_numpy = estimator.run_reference(sample_0)
 
     # Assert

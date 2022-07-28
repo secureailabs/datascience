@@ -29,7 +29,7 @@ def impute_multivariate(
     :return: Output dataframe
     :rtype: DataFrameFederated
     """
-    return ImputeMultivariate.run(
+    return ImputeMultivariate.Run(
         data_frame_source, list_name_column, imputation_order, max_iter
     )
 
@@ -39,7 +39,7 @@ class ImputeMultivariate:
     class for ImputeMultivariate
     """
 
-    def run(
+    def Run(
         data_frame_source: DataFrameFederated,
         list_name_column: List[str],
         imputation_order: str,

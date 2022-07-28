@@ -43,7 +43,7 @@ def drop(
     :return: DataFrame with specified entries dropped.
     :rtype: pd.DataFrame
     """
-    return Drop.run(
+    return Drop.Run(
         data_frame_source,
         labels,
         axis,
@@ -59,7 +59,7 @@ class Drop:
     Drop rows or columns with missing data
     """
 
-    def run(
+    def Run(
         data_frame_source: DataFrameFederated,
         labels: list,
         axis: int,

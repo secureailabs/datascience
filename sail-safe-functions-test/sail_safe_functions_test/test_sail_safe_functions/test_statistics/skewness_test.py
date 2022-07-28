@@ -1,6 +1,8 @@
 import pytest
 from sail_safe_functions_orchestrator.statistics.skewness import Skewness
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
 
@@ -17,7 +19,7 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = Skewness()
-    skewness_sail = estimator.run(sample_0)
+    skewness_sail = estimator.Run(sample_0)
     skewness_scipy = estimator.run_reference(sample_0)
 
     # Assert

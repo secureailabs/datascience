@@ -12,14 +12,14 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
 def wilcoxon_singed_rank_test_difference_tranform(
     sample_0: SeriesFederated, sample_1: SeriesFederated
 ) -> Tuple[List[float], List[float]]:
-    return WilcoxonSingedRankTestDifferenceTranform.run(sample_0, sample_1)
+    return WilcoxonSingedRankTestDifferenceTranform.Run(sample_0, sample_1)
 
 
 class WilcoxonSingedRankTestDifferenceTranform:
     "Tranform for Wilcoxon Singed Rank Test"
 
     @staticmethod
-    def run(
+    def Run(
         sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[List[float], List[float]]:
 

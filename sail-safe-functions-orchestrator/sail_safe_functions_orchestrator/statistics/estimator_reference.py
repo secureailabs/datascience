@@ -7,5 +7,5 @@ class EstimatorReference(Estimator):
         super().__init__()
         self.estimator = estimator
 
-    def run(self, sample_0: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated):
         return self.estimator.run_reference(sample_0)

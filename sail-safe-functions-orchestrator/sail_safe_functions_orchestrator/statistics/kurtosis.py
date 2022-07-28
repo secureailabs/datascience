@@ -10,7 +10,7 @@ from scipy import stats
 
 def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
     estimator = Kurtosis()
-    return estimator.run(sample_0)
+    return estimator.Run(sample_0)
 
 
 class Kurtosis(Estimator):
@@ -21,7 +21,7 @@ class Kurtosis(Estimator):
     def __init__(self) -> None:
         super().__init__(["kurtosis"])
 
-    def run(self, sample_0: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated):
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
 

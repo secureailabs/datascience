@@ -24,7 +24,7 @@ def levene_test(
     :rtype: Tuple[float, float]
     """
     estimator = LeveneTest()
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class LeveneTest(Estimator):
@@ -38,7 +38,7 @@ class LeveneTest(Estimator):
     def __init__(self) -> None:
         super().__init__(["f_statistic", "p_value"])
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         mean_sample_0 = statistics.mean(sample_0)
         mean_sample_1 = statistics.mean(sample_1)
 

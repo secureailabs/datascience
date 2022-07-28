@@ -22,7 +22,7 @@ def mann_whitney_u_test(
     type_ranking: str,
 ):
     estimator = MannWhitneyUTest(alternative, type_ranking)
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class MannWhitneyUTest(Estimator):
@@ -41,7 +41,7 @@ class MannWhitneyUTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(
+    def Run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
         check_instance(sample_0, SeriesFederated)

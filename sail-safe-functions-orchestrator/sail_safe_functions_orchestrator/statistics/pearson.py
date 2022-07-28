@@ -23,7 +23,7 @@ def pearson(
 
     """
     estimator = Pearson(alternative)
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class Pearson(Estimator):
@@ -37,7 +37,7 @@ class Pearson(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def run(
+    def Run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
 

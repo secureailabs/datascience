@@ -29,7 +29,7 @@ def chisquare(
     :rtype: Tuple[float, float]
     """
     estimator = Chisquare()
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class Chisquare(Estimator):
@@ -40,7 +40,7 @@ class Chisquare(Estimator):
     def __init__(self) -> None:
         super().__init__(["chisquare_statistic", "p_value"])
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
         # if not (is_string_dtype(sample_0) and is_string_dtype(sample_1)): TODO would be nice to catch this here
         #    raise ValueException()

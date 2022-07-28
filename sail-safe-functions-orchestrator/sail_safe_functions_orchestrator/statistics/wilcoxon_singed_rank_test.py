@@ -21,7 +21,7 @@ def wilcoxon_singed_rank_test(
     type_ranking: str,
 ):
     estimator = WilcoxonSingedRankTest(alternative, type_ranking)
-    return estimator.run(sample_0, sample_1)
+    return estimator.Run(sample_0, sample_1)
 
 
 class WilcoxonSingedRankTest(Estimator):
@@ -34,7 +34,7 @@ class WilcoxonSingedRankTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
         if sample_0.size != sample_1.size:
             raise ValueError("`sample_0` and `sample_1` must have the same length.")

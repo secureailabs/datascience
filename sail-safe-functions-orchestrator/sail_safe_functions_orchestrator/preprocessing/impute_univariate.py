@@ -22,7 +22,7 @@ def impute_univariate(
     :rtype: DataFrameFederated
     """
 
-    return ImputeUnivariate.run(data_frame_source, list_name_column, strategy)
+    return ImputeUnivariate.Run(data_frame_source, list_name_column, strategy)
 
 
 class ImputeUnivariate:
@@ -30,7 +30,7 @@ class ImputeUnivariate:
     class for ImputeUnivariate
     """
 
-    def run(
+    def Run(
         data_frame_source: DataFrameFederated,
         list_name_column: List[str],
         missing_value: Union[str, int, float],

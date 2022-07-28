@@ -13,7 +13,7 @@ def skewness(
 ) -> Tuple[float]:
 
     estimator = Skewness()
-    return estimator.run(sample_0)
+    return estimator.Run(sample_0)
 
 
 class Skewness(Estimator):
@@ -25,7 +25,7 @@ class Skewness(Estimator):
     def __init__(self) -> None:
         super().__init__(["skewness"])
 
-    def run(self, sample_0: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated):
         list_list_precompute = []
 
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

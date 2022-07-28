@@ -8,14 +8,14 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 def mean(sample_0: SeriesFederated):
     estimator = Mean()
-    return estimator.run(sample_0)
+    return estimator.Run(sample_0)
 
 
 class Mean(Estimator):
     def __init__(self) -> None:
         super().__init__(["mean"])
 
-    def run(self, sample_0: SeriesFederated):
+    def Run(self, sample_0: SeriesFederated):
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(MeanPrecompute.Run(series))
