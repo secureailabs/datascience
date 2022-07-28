@@ -2,13 +2,17 @@ from typing import Tuple
 
 import pytest
 from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy.stats import levene
 from sklearn.cluster import estimate_bandwidth
 
 
 @pytest.mark.active
-def test_levene(two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_levene(
+    two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
     """
     This is our test for the Sails federated Levene test
 

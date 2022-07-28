@@ -5,7 +5,7 @@ import pandas as pd
 
 class HistogramPrecompute:
     """
-    Precomputes data for Kurtosis
+    Precomputes data for Histogram
     """
 
     def run(sample_0_series: pd.Series) -> List[float]:

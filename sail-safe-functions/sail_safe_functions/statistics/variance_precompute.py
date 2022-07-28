@@ -11,7 +11,9 @@ class VariancePrecompute:
 
     def run(
         sample_0: pd.Series,
-    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         sample_0 = sample_0.to_numpy()
 
         sum_x_0 = np.sum(sample_0)

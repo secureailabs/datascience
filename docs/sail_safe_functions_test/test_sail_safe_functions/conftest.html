@@ -30,18 +30,92 @@
 <pre><code class="python">&#34;&#34;&#34;
 Pytest fixtures
 &#34;&#34;&#34;
+import json
 import os
 from typing import Tuple
 
 import numpy as np
+import pandas as pd
 import pytest
 from config import DATA_PATH
-from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
-    DataFrameFederatedLocal,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+
+@pytest.fixture
+def tuple_kidney_schema_dataframe() -&gt; Tuple[dict, DataFrameFederatedLocal]:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe without missing values and a matching schema
+
+    :return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
+    :rtype: class : Tuple[dict, DataFrameFederatedLocal]
+    &#34;&#34;&#34;
+
+    path_file_json = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;schema.json&#34;)
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;kidney_disease_clean.csv&#34;)
+
+    with open(path_file_json, &#34;r&#34;) as file:
+        schema = json.load(file)
+
+    dataframe = DataFrameFederatedLocal()
+    dataframe.add_csv(path_file_csv)
+    return (schema, dataframe)
+
+
+@pytest.fixture
+def data_frame_federated_kidney() -&gt; Tuple[dict, DataFrameFederatedLocal]:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney&#34;, &#34;kidney_disease.csv&#34;)
+
+    data_frame_federated_kidney = DataFrameFederatedLocal()
+    data_frame_federated_kidney.add_csv(path_file_csv)
+    return data_frame_federated_kidney
+
+
+@pytest.fixture
+def dataframe_kidney() -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with some missing values
+
+    :return: dataframe_kidney: A dataframe with some missing fields
+    :rtype: class : pd.DataFrame
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney&#34;, &#34;kidney_disease.csv&#34;)
+    return pd.read_csv(path_file_csv)
+
+
+@pytest.fixture
+def dataframe_kidney_clean() -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with no missing values
+
+    :return: dataframe_kidney_clean: A dataframe with no missing fields
+    :rtype: class : pd.DataFrame
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;kidney_disease_clean.csv&#34;)
+    return pd.read_csv(path_file_csv)
+
+
+@pytest.fixture
+def scheme_kidney() -&gt; dict:
+    &#34;&#34;&#34;
+    Fixture for loading the scheme for kidney dataset
+
+    :return: scheme_kidney: Scheme is associated with the kidney dataset
+    :rtype: class : dict
+    &#34;&#34;&#34;
+
+    path_file_json = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;schema.json&#34;)
+    file = open(path_file_json, &#34;r&#34;)
+    schema_content = file.read()
+    return json.loads(schema_content)
 
 
 @pytest.fixture
@@ -84,16 +158,34 @@ def two_sample_big() -&gt; SeriesFederatedLocal:
 
 
 @pytest.fixture
+def two_sample_categorical() -&gt; SeriesFederatedLocal:
+    &#34;&#34;&#34;
+    Fixture for SeriesFederatedLocal with this first part of the kidney disease dataset
+
+    :return: DataFrameFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    list_name_file_csv = [&#34;kidney_disease_clean.csv&#34;]
+    id_column_0 = &#34;rbc&#34;
+    id_column_1 = &#34;classification&#34;
+
+    dataframe = DataFrameFederatedLocal()
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, name_file_csv)
+        dataframe.add_csv(path_file_csv)
+
+    return (dataframe[id_column_0], dataframe[id_column_1])
+
+
+@pytest.fixture
 def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     &#34;&#34;&#34;
-    A two sample tuple with data from
+    A two sample tuple with data from wikipedia
 
     :return: SeriesFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
-    sample_0_numpy = np.array(
-        [17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8]
-    )
+    sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
     sample_1_numpy = np.array(
         [
             21.5,
@@ -123,6 +215,42 @@ def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     sample_0.add_array(&#34;array_test&#34;, sample_0_numpy)
     sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
     sample_1.add_array(&#34;array_test&#34;, sample_1_numpy)
+    return (sample_0, sample_1)
+
+
+@pytest.fixture
+def two_sample_small_two() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+    &#34;&#34;&#34;
+    A two sample tuple with data from wikipedia
+
+    :return: SeriesFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    sample_0_numpy = np.array([14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
+    sample_1_numpy = np.array([34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
+
+    sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    sample_0.add_array(&#34;array_test&#34;, sample_0_numpy)
+    sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    sample_1.add_array(&#34;array_test&#34;, sample_1_numpy)
+    return (sample_0, sample_1)
+
+
+@pytest.fixture
+def two_sample_small_paired() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+    &#34;&#34;&#34;
+    A two sample tuple with data from https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples
+
+    :return: SeriesFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    sample_0_numpy = np.array([30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
+    sample_1_numpy = np.array([29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
+
+    sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    sample_0.add_array(&#34;array_test&#34;, sample_0_numpy)
+    sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    sample_1.add_array(&#34;array_test&#34;, sample_1_numpy)
     return (sample_0, sample_1)</code></pre>
 </details>
 </section>
@@ -133,6 +261,80 @@ def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.data_frame_federated_kidney"><code class="name flex">
+<span>def <span class="ident">data_frame_federated_kidney</span></span>(<span>) ‑> Tuple[dict, <a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="../helper_sail_safe_functions/data_frame_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for loading a dataframe with missing values
+:return: data_frame_federated_kidney: a federated dataframe
+:rtype: class : DataFrameFederatedLocal</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def data_frame_federated_kidney() -&gt; Tuple[dict, DataFrameFederatedLocal]:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney&#34;, &#34;kidney_disease.csv&#34;)
+
+    data_frame_federated_kidney = DataFrameFederatedLocal()
+    data_frame_federated_kidney.add_csv(path_file_csv)
+    return data_frame_federated_kidney</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney"><code class="name flex">
+<span>def <span class="ident">dataframe_kidney</span></span>(<span>) ‑> pandas.core.frame.DataFrame</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for loading a dataframe with some missing values</p>
+<p>:return: dataframe_kidney: A dataframe with some missing fields
+:rtype: class : pd.DataFrame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def dataframe_kidney() -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with some missing values
+
+    :return: dataframe_kidney: A dataframe with some missing fields
+    :rtype: class : pd.DataFrame
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney&#34;, &#34;kidney_disease.csv&#34;)
+    return pd.read_csv(path_file_csv)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney_clean"><code class="name flex">
+<span>def <span class="ident">dataframe_kidney_clean</span></span>(<span>) ‑> pandas.core.frame.DataFrame</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for loading a dataframe with no missing values</p>
+<p>:return: dataframe_kidney_clean: A dataframe with no missing fields
+:rtype: class : pd.DataFrame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def dataframe_kidney_clean() -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe with no missing values
+
+    :return: dataframe_kidney_clean: A dataframe with no missing fields
+    :rtype: class : pd.DataFrame
+    &#34;&#34;&#34;
+
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;kidney_disease_clean.csv&#34;)
+    return pd.read_csv(path_file_csv)</code></pre>
+</details>
+</dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.one_sample_big"><code class="name flex">
 <span>def <span class="ident">one_sample_big</span></span>(<span>) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a></span>
 </code></dt>
@@ -161,6 +363,63 @@ def one_sample_big() -&gt; SeriesFederatedLocal:
         dataframe.add_csv(path_file_csv)
 
     return dataframe[id_column_0]</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.scheme_kidney"><code class="name flex">
+<span>def <span class="ident">scheme_kidney</span></span>(<span>) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for loading the scheme for kidney dataset</p>
+<p>:return: scheme_kidney: Scheme is associated with the kidney dataset
+:rtype: class : dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def scheme_kidney() -&gt; dict:
+    &#34;&#34;&#34;
+    Fixture for loading the scheme for kidney dataset
+
+    :return: scheme_kidney: Scheme is associated with the kidney dataset
+    :rtype: class : dict
+    &#34;&#34;&#34;
+
+    path_file_json = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;schema.json&#34;)
+    file = open(path_file_json, &#34;r&#34;)
+    schema_content = file.read()
+    return json.loads(schema_content)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.tuple_kidney_schema_dataframe"><code class="name flex">
+<span>def <span class="ident">tuple_kidney_schema_dataframe</span></span>(<span>) ‑> Tuple[dict, <a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="../helper_sail_safe_functions/data_frame_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for loading a dataframe without missing values and a matching schema</p>
+<p>:return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
+:rtype: class : Tuple[dict, DataFrameFederatedLocal]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def tuple_kidney_schema_dataframe() -&gt; Tuple[dict, DataFrameFederatedLocal]:
+    &#34;&#34;&#34;
+    Fixture for loading a dataframe without missing values and a matching schema
+
+    :return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
+    :rtype: class : Tuple[dict, DataFrameFederatedLocal]
+    &#34;&#34;&#34;
+
+    path_file_json = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;schema.json&#34;)
+    path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, &#34;kidney_disease_clean.csv&#34;)
+
+    with open(path_file_json, &#34;r&#34;) as file:
+        schema = json.load(file)
+
+    dataframe = DataFrameFederatedLocal()
+    dataframe.add_csv(path_file_csv)
+    return (schema, dataframe)</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_big"><code class="name flex">
@@ -194,11 +453,42 @@ def two_sample_big() -&gt; SeriesFederatedLocal:
     return (dataframe[id_column_0], dataframe[id_column_1])</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_categorical"><code class="name flex">
+<span>def <span class="ident">two_sample_categorical</span></span>(<span>) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixture for SeriesFederatedLocal with this first part of the kidney disease dataset</p>
+<p>:return: DataFrameFederatedLocal
+:rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def two_sample_categorical() -&gt; SeriesFederatedLocal:
+    &#34;&#34;&#34;
+    Fixture for SeriesFederatedLocal with this first part of the kidney disease dataset
+
+    :return: DataFrameFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    list_name_file_csv = [&#34;kidney_disease_clean.csv&#34;]
+    id_column_0 = &#34;rbc&#34;
+    id_column_1 = &#34;classification&#34;
+
+    dataframe = DataFrameFederatedLocal()
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, &#34;data_csv_kidney_clean&#34;, name_file_csv)
+        dataframe.add_csv(path_file_csv)
+
+    return (dataframe[id_column_0], dataframe[id_column_1])</code></pre>
+</details>
+</dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small"><code class="name flex">
 <span>def <span class="ident">two_sample_small</span></span>(<span>) ‑> Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A two sample tuple with data from</p>
+<div class="desc"><p>A two sample tuple with data from wikipedia</p>
 <p>:return: SeriesFederatedLocal
 :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
 <details class="source">
@@ -208,14 +498,12 @@ def two_sample_big() -&gt; SeriesFederatedLocal:
 <pre><code class="python">@pytest.fixture
 def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     &#34;&#34;&#34;
-    A two sample tuple with data from
+    A two sample tuple with data from wikipedia
 
     :return: SeriesFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     &#34;&#34;&#34;
-    sample_0_numpy = np.array(
-        [17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8]
-    )
+    sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
     sample_1_numpy = np.array(
         [
             21.5,
@@ -248,6 +536,64 @@ def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     return (sample_0, sample_1)</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_paired"><code class="name flex">
+<span>def <span class="ident">two_sample_small_paired</span></span>(<span>) ‑> Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A two sample tuple with data from <a href="https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples">https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples</a></p>
+<p>:return: SeriesFederatedLocal
+:rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def two_sample_small_paired() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+    &#34;&#34;&#34;
+    A two sample tuple with data from https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples
+
+    :return: SeriesFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    sample_0_numpy = np.array([30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
+    sample_1_numpy = np.array([29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
+
+    sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    sample_0.add_array(&#34;array_test&#34;, sample_0_numpy)
+    sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    sample_1.add_array(&#34;array_test&#34;, sample_1_numpy)
+    return (sample_0, sample_1)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_two"><code class="name flex">
+<span>def <span class="ident">two_sample_small_two</span></span>(<span>) ‑> Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A two sample tuple with data from wikipedia</p>
+<p>:return: SeriesFederatedLocal
+:rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def two_sample_small_two() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+    &#34;&#34;&#34;
+    A two sample tuple with data from wikipedia
+
+    :return: SeriesFederatedLocal
+    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
+    &#34;&#34;&#34;
+    sample_0_numpy = np.array([14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
+    sample_1_numpy = np.array([34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
+
+    sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    sample_0.add_array(&#34;array_test&#34;, sample_0_numpy)
+    sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    sample_1.add_array(&#34;array_test&#34;, sample_1_numpy)
+    return (sample_0, sample_1)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -266,9 +612,17 @@ def two_sample_small() -&gt; Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.data_frame_federated_kidney" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.data_frame_federated_kidney">data_frame_federated_kidney</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney">dataframe_kidney</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney_clean" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.dataframe_kidney_clean">dataframe_kidney_clean</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.one_sample_big" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.one_sample_big">one_sample_big</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.scheme_kidney" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.scheme_kidney">scheme_kidney</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.tuple_kidney_schema_dataframe" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.tuple_kidney_schema_dataframe">tuple_kidney_schema_dataframe</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_big" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_big">two_sample_big</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_categorical" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_categorical">two_sample_categorical</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small">two_sample_small</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_paired" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_paired">two_sample_small_paired</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_two" href="#sail_safe_functions_test.test_sail_safe_functions.conftest.two_sample_small_two">two_sample_small_two</a></code></li>
 </ul>
 </li>
 </ul>

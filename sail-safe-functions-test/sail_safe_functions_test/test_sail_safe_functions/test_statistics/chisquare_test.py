@@ -3,11 +3,15 @@ from typing import Tuple
 import pytest
 from sail_safe_functions_orchestrator import statistics
 from sail_safe_functions_orchestrator.statistics.chisquare import Chisquare
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.mark.active
-def test_chisquare_direct(two_sample_categorical: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_chisquare_direct(
+    two_sample_categorical: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
     """
     This is our test for the Sails federated chisquare test
 
@@ -23,7 +27,9 @@ def test_chisquare_direct(two_sample_categorical: Tuple[SeriesFederatedLocal, Se
 
 
 @pytest.mark.active
-def test_chisquare(two_sample_categorical: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_chisquare(
+    two_sample_categorical: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+):
     """
     This is our test for the Sails federated chisquare test
 

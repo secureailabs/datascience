@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pandas
-from sail_safe_functions.statistics.skewness_agregate import SkewnessAgregate
+from sail_safe_functions.statistics.skewness_aggregate import SkewnessAggregate
 from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -35,7 +35,7 @@ class Skewness(Estimator):
             list_list_precompute.append(SkewnessPrecompute.run(series))
 
         # Final Skew Value
-        skewness = SkewnessAgregate.run(list_list_precompute)
+        skewness = SkewnessAggregate.run(list_list_precompute)
         return skewness
 
     def run_reference(self, sample_0: SeriesFederated):

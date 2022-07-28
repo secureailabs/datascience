@@ -10,8 +10,13 @@ class LevenePrecompute:
     """
 
     def run(
-        sample_0_series: pd.Series, sample_1_series: pd.Series, mean_0: float, mean_1: float
-    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+        sample_0_series: pd.Series,
+        sample_1_series: pd.Series,
+        mean_0: float,
+        mean_1: float,
+    ) -> Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         """
         ----------
         sample_0_series : pd.Series
@@ -40,6 +45,15 @@ class LevenePrecompute:
         z1j = abs(sample_0 - mean_0)
         z2j = abs(sample_1 - mean_1)
 
-        list_precompute = [sum_x_0, sum_xx_0, count_0, sum_x_1, sum_xx_1, count_1, z1j, z2j]
+        list_precompute = [
+            sum_x_0,
+            sum_xx_0,
+            count_0,
+            sum_x_1,
+            sum_xx_1,
+            count_1,
+            z1j,
+            z2j,
+        ]
 
         return list_precompute

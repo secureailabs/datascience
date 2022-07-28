@@ -1,6 +1,8 @@
 import pytest
 from sail_safe_functions_orchestrator.statistics.min_max import MinMax
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.mark.active

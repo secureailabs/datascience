@@ -4,7 +4,7 @@ import pandas
 
 
 # TODO this function is dangerous
-class AbsoluteValue:
+class ValueAbsolute:
     """
     Takes the absolute value sum of a series
     """

@@ -72,6 +72,12 @@ class Drop:
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
             data_frame_target.dict_dataframe[dataset_id] = DropPrecompute.run(
-                data_frame_source.dict_dataframe[dataset_id], labels, axis, index, columns, level, errors
+                data_frame_source.dict_dataframe[dataset_id],
+                labels,
+                axis,
+                index,
+                columns,
+                level,
+                errors,
             )
         return data_frame_target

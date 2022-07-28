@@ -27,29 +27,28 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import pytest
-import numpy as np
+from sail_safe_functions_orchestrator.statistics.skewness import Skewness
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
-from sail_safe_functions_orchestrator.statistics.skewness_federate import SkewnessFederate
-
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 @pytest.mark.active
 def test_skewness(one_sample_big: SeriesFederatedLocal):
-    &#34;&#34;&#34;
-    This test our federated Skewness module
+    &#34;&#34;&#34;This test our federated Skewness module
 
-
-    Args:
-        one_sample_big (SeriesFederatedLocal): A single federated series fixture
+    :param one_sample_big: A single federated series fixture
+    :type one_sample_big: SeriesFederatedLocal
     &#34;&#34;&#34;
+
     # Arrange
     sample_0 = one_sample_big
 
     # Act
-    # Calling fedrated sail skewness method
-    skewness_sail = SkewnessFederate.skewness(sample_0)
-    skewness_scipy = stats.skew(sample_0.to_numpy())
+    estimator = Skewness()
+    skewness_sail = estimator.run(sample_0)
+    skewness_scipy = estimator.run_reference(sample_0)
 
     # Assert
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)</code></pre>
@@ -67,31 +66,27 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
 </code></dt>
 <dd>
 <div class="desc"><p>This test our federated Skewness module</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>one_sample_big</code></strong> :&ensp;<code>SeriesFederatedLocal</code></dt>
-<dd>A single federated series fixture</dd>
-</dl></div>
+<p>:param one_sample_big: A single federated series fixture
+:type one_sample_big: SeriesFederatedLocal</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
 def test_skewness(one_sample_big: SeriesFederatedLocal):
-    &#34;&#34;&#34;
-    This test our federated Skewness module
+    &#34;&#34;&#34;This test our federated Skewness module
 
-
-    Args:
-        one_sample_big (SeriesFederatedLocal): A single federated series fixture
+    :param one_sample_big: A single federated series fixture
+    :type one_sample_big: SeriesFederatedLocal
     &#34;&#34;&#34;
+
     # Arrange
     sample_0 = one_sample_big
 
     # Act
-    # Calling fedrated sail skewness method
-    skewness_sail = SkewnessFederate.skewness(sample_0)
-    skewness_scipy = stats.skew(sample_0.to_numpy())
+    estimator = Skewness()
+    skewness_sail = estimator.run(sample_0)
+    skewness_scipy = estimator.run_reference(sample_0)
 
     # Assert
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)</code></pre>

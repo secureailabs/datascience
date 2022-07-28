@@ -28,13 +28,14 @@
 </summary>
 <pre><code class="python">from typing import List
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
-class UnpairedTTestPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+class UnpairedTTestPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for performing a unpaired t-test
+    &#34;&#34;&#34;
 
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -&gt; List[float]:
         &#34;&#34;&#34;Generates the geometric moments for use in a T-Test
@@ -80,14 +81,15 @@ class UnpairedTTestPrecompute(object):
 <span>class <span class="ident">UnpairedTTestPrecompute</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Precomputes data for performing a unpaired t-test</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UnpairedTTestPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+<pre><code class="python">class UnpairedTTestPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for performing a unpaired t-test
+    &#34;&#34;&#34;
 
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -&gt; List[float]:
         &#34;&#34;&#34;Generates the geometric moments for use in a T-Test

@@ -28,23 +28,26 @@
 </summary>
 <pre><code class="python">from typing import List, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
-class MeanPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+class MeanPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for computing the mean
+    &#34;&#34;&#34;
 
     def run(
         sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
-        sample_0_dof = len(sample_0)
+        sample_0_degrees_of_freedom = len(sample_0)
 
-        list_precompute = [sum_x_0, sample_0_dof]
+        list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
@@ -62,24 +65,27 @@ class MeanPrecompute(object):
 <span>class <span class="ident">MeanPrecompute</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Precomputes data for computing the mean</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MeanPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+<pre><code class="python">class MeanPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for computing the mean
+    &#34;&#34;&#34;
 
     def run(
         sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
-        sample_0_dof = len(sample_0)
+        sample_0_degrees_of_freedom = len(sample_0)
 
-        list_precompute = [sum_x_0, sample_0_dof]
+        list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
@@ -96,13 +102,15 @@ class MeanPrecompute(object):
 </summary>
 <pre><code class="python">def run(
     sample_0_dataframe: pd.Series,
-) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+) -&gt; Tuple[
+    List[float], List[bool]
+]:  # there seems to be a problem here with this annotation
     sample_0 = sample_0_dataframe.to_numpy()
 
     sum_x_0 = np.sum(sample_0)
-    sample_0_dof = len(sample_0)
+    sample_0_degrees_of_freedom = len(sample_0)
 
-    list_precompute = [sum_x_0, sample_0_dof]
+    list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
     # list_safe = [False, False, False, False, False, False ]
     return list_precompute  # , list_safe</code></pre>
 </details>

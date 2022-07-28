@@ -1,7 +1,9 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
-from sail_safe_functions.statistics.welch_t_test_agregate import WelchTTestAgregate
+from sail_safe_functions.statistics.unpaired_t_test_precompute import (
+    UnpairedTTestPrecompute,
+)
+from sail_safe_functions.statistics.welch_t_test_aggregate import WelchTTestAggregate
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
@@ -36,7 +38,7 @@ class WelchTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = WelchTTestAgregate.run(list_list_precompute)
+        t_statistic, degrees_of_freedom = WelchTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -49,4 +51,9 @@ class WelchTTest(Estimator):
         return t_statistic, p_value
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        return stats.ttest_ind(sample_0.to_numpy(), sample_1.to_numpy(), equal_var=False, alternative=self.alternative)
+        return stats.ttest_ind(
+            sample_0.to_numpy(),
+            sample_1.to_numpy(),
+            equal_var=False,
+            alternative=self.alternative,
+        )

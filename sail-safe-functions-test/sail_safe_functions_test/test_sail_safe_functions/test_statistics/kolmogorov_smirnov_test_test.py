@@ -2,8 +2,12 @@ from typing import Tuple
 
 import numpy
 import pytest
-from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
+    KolmogorovSmirnovTest,
+)
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 from sklearn.utils import estimator_html_repr
 
@@ -17,7 +21,9 @@ def test_kolmogorov_smirnov_normalunit():
     sample_0 = SeriesFederatedLocal.from_array("sample_0", array_sample_0)
 
     # Act
-    estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
+    estimator = KolmogorovSmirnovTest(
+        type_distribution="normalunit", type_ranking="unsafe"
+    )
     k_statistic_sail, p_value_sail = estimator.run(sample_0)
     k_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0)
 

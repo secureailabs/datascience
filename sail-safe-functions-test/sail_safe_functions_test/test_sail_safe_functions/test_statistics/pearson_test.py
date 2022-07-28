@@ -2,7 +2,9 @@ from typing import Tuple
 
 import pytest
 from sail_safe_functions_orchestrator.statistics.pearson import Pearson
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 from scipy import stats
 
 
