@@ -57,13 +57,13 @@ class WilcoxonSingedRankTest(Estimator):
             sample_difference_absolute_ranked.dict_series.values(),
         ):
             list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.run(
+                WilcoxonSingedRankTestPrecompute.Run(
                     series_difference, series_difference_absolute_ranked
                 )
             )
 
         # rank_minus rank_plus
-        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.run(list_precompute)
+        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.Run(list_precompute)
 
         if self.alternative == "two-sided":
             w_statistic = min(rank_minus, rank_plus)

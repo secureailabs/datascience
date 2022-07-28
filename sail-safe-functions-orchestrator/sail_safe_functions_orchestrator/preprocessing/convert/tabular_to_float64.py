@@ -8,11 +8,11 @@ from sail_safe_functions_orchestrator.tools_common import check_instance
 def tabular_to_float64(
     table_schema: dict, data_frame_source: DataFrameFederated
 ) -> DataFrameFederated:
-    return TabularToFloat64.run(table_schema, data_frame_source)
+    return TabularToFloat64.Run(table_schema, data_frame_source)
 
 
 class TabularToFloat64:
-    def run(
+    def Run(
         table_schema: dict, data_frame_source: DataFrameFederated
     ) -> DataFrameFederated:
         check_instance(table_schema, dict)

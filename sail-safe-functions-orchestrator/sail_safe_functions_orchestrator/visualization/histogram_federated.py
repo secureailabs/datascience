@@ -12,7 +12,7 @@ class HistogramFederate:
         for series in sample_0.dict_series.values():
             list_list_precompute.append(HistogramPrecompute.run(series))
 
-        hist_value = HistogramAggregate.run(list_list_precompute)
+        hist_value = HistogramAggregate.Run(list_list_precompute)
         fig = px.histogram(hist_value, nbins=bin_count)
         return fig
 

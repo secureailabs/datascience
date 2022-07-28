@@ -7,7 +7,7 @@ class WilcoxonSingedRankTestAggregate:
     Aggregates data for WilcoxonSingedRankTest
     """
 
-    def run(list_precompute: List):
+    def Run(list_precompute: List):
         rank_minus = 0
         rank_plus = 0
         for precompute in list_precompute:

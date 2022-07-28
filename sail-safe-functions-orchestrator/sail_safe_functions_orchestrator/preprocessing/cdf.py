@@ -23,7 +23,7 @@ class Cdf:
     "Estimator for non-disclosive CDF"
 
     @staticmethod
-    def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
+    def Run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 

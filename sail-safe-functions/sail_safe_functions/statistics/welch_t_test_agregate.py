@@ -9,7 +9,7 @@ class WelchTTestAggregate:
     Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
     """
 
-    def run(
+    def Run(
         list_list_precompute: List[List[float]],
     ):
         sum_x_0 = 0
@@ -53,17 +53,19 @@ class WelchTTestAggregate:
             )
         )
         # Welch–Satterthwaite equation:
-        dof_nominator = math.pow(
+        degrees_of_freedom_numerator = math.pow(
             ((sample_variance_0 / size_sample_0) + (sample_variance_1 / size_sample_1)),
             2,
         )
-        dof_denominator = (
+        degrees_of_freedom_denominator = (
             math.pow(sample_variance_0, 2)
             / (size_sample_0 * size_sample_0 * (size_sample_0 - 1))
         ) + (
             math.pow(sample_variance_1, 2)
             / (size_sample_1 * size_sample_1 * (size_sample_1 - 1))
         )
-        degrees_of_freedom = dof_nominator / dof_denominator
+        degrees_of_freedom = (
+            degrees_of_freedom_numerator / degrees_of_freedom_denominator
+        )
 
         return t_statistic, degrees_of_freedom

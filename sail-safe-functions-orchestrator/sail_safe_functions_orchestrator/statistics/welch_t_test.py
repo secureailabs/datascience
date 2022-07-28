@@ -38,7 +38,7 @@ class WelchTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = WelchTTestAggregate.run(list_list_precompute)
+        t_statistic, degrees_of_freedom = WelchTTestAggregate.Run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
