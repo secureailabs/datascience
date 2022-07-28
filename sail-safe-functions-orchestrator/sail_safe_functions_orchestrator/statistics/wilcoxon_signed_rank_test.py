@@ -7,7 +7,7 @@ from sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute import 
     WilcoxonSingedRankTestPrecompute,
 )
 from sail_safe_functions_orchestrator import preprocessing
-from sail_safe_functions_orchestrator.preprocessing.wilcoxon_singed_rank_test_difference_tranform import (
+from sail_safe_functions_orchestrator.preprocessing.wilcoxon_signed_rank_test_difference_tranform import (
     WilcoxonSingedRankTestDifferenceTranform,
 )
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
