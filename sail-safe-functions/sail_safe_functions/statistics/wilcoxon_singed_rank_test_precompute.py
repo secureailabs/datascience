@@ -9,7 +9,7 @@ class WilcoxonSingedRankTestPrecompute:
     Precomputes data for the  WilcoxonSingedRankTest
     """
 
-    def Run(
+    def run(
         sample_difference: pandas.Series,
         sample_absolute_difference_ranked: pandas.Series,
     ):

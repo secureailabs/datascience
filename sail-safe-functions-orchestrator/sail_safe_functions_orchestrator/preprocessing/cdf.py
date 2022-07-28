@@ -20,25 +20,25 @@ def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
     :return: returns two lists of floating point values representing the domain and the values of the cdf
     :rtype: Tuple[List[float], List[float]]
     """
-    return CumulativeDistributionFunction.Run(sample_0)
+    return CumulativeDistributionFunction.run(sample_0)
 
 
 class CumulativeDistributionFunction:
     "Estimator for non-disclosive CDF"
 
     @staticmethod
-    def Run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
+    def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
             list_precompute.append(
-                CumulativeDistributionFunctionPrecompute.Run(
+                CumulativeDistributionFunctionPrecompute.run(
                     series, domain_min, domain_max
                 )
             )
-        return CumulativeDistributionFunctionAggregate.Run(
+        return CumulativeDistributionFunctionAggregate.run(
             list_precompute, domain_min, domain_max
         )
 

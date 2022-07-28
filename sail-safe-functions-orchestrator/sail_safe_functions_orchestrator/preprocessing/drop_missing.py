@@ -35,7 +35,7 @@ def drop_missing(
     DataFrame
         DataFrame with NA entries dropped.
     """
-    return DropMissing.Run(data_frame_source, axis, how, thresh, subset)
+    return DropMissing.run(data_frame_source, axis, how, thresh, subset)
 
 
 class DropMissing:
@@ -43,7 +43,7 @@ class DropMissing:
     Drop rows or columns with missing data
     """
 
-    def Run(
+    def run(
         data_frame_source: DataFrameFederated,
         axis: int,
         how: str,
@@ -53,7 +53,7 @@ class DropMissing:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.Run(
+            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.run(
                 data_frame_source.dict_dataframe[dataset_id], axis, how, thresh, subset
             )
         return data_frame_target

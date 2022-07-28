@@ -7,7 +7,7 @@ class SkewnessAggregate:
     Aggregates data for computing skewness
     """
 
-    def Run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]):
 
         """
         A Function to get the fedrated skewness value.

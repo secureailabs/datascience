@@ -3,7 +3,7 @@ import pandas
 
 
 class OnehotToCategorical:
-    def Run(
+    def run(
         column_schema: dict, data_frame_source: pandas.DataFrame
     ) -> pandas.DataFrame:
         name_column = column_schema["name_column"]

@@ -38,7 +38,7 @@ def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(
             dataset_id,
-            RankCumulativeDistributionFunction.Run(
+            RankCumulativeDistributionFunction.run(
                 series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf
             ),
         )

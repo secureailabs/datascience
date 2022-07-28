@@ -12,14 +12,14 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
 def wilcoxon_singed_rank_test_difference_tranform(
     sample_0: SeriesFederated, sample_1: SeriesFederated
 ) -> Tuple[List[float], List[float]]:
-    return WilcoxonSingedRankTestDifferenceTranform.Run(sample_0, sample_1)
+    return WilcoxonSingedRankTestDifferenceTranform.run(sample_0, sample_1)
 
 
 class WilcoxonSingedRankTestDifferenceTranform:
     "Tranform for Wilcoxon Singed Rank Test"
 
     @staticmethod
-    def Run(
+    def run(
         sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[List[float], List[float]]:
 
@@ -32,8 +32,8 @@ class WilcoxonSingedRankTestDifferenceTranform:
         ) in sample_0.dict_series:  # TODO rework abcs #TODO check matching frames
             series_0 = sample_0.dict_series[dataset_id]
             series_1 = sample_1.dict_series[dataset_id]
-            series_difference = SumWeighted.Run([series_0, series_1], [1, -1])
-            series_difference_absolute = ValueAbsolute.Run(series_difference)
+            series_difference = SumWeighted.run([series_0, series_1], [1, -1])
+            series_difference_absolute = ValueAbsolute.run(series_difference)
             sample_difference.add_series(dataset_id, series_difference)
             sample_difference_absolute.add_series(
                 sample_difference_absolute, series_difference_absolute

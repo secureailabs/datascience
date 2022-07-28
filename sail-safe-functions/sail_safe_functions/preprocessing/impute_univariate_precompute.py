@@ -10,7 +10,7 @@ class ImputeUnivariatePrecompute:
     Imputes one or more columns with a univariate strategy
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame, list_name_column: List[str], strategy: str
     ) -> pd.DataFrame:
         """Imputes one or more columns with a univariate strategy

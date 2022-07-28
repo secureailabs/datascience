@@ -8,18 +8,18 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 def variance(sample_0: SeriesFederated):
     estimator = Variance()
-    return estimator.Run(sample_0)
+    return estimator.run(sample_0)
 
 
 class Variance(Estimator):
     def __init__(self) -> None:
         super().__init__(["variance"])
 
-    def Run(self, sample_0: SeriesFederated):
+    def run(self, sample_0: SeriesFederated):
         list_list_precompute = []
         for series in sample_0.dict_series.values():
-            list_list_precompute.append(VariancePrecompute.Run(series))
-        variance = VarianceAggregate.Run(list_list_precompute)
+            list_list_precompute.append(VariancePrecompute.run(series))
+        variance = VarianceAggregate.run(list_list_precompute)
         return variance
 
     def run_reference(self, sample_0: SeriesFederated):

@@ -8,7 +8,7 @@ class SumWeighted:
     Takes the weighted sum of a list of series
     """
 
-    def Run(
+    def run(
         list_series: List[pandas.Series], list_weight: List[float]
     ) -> pandas.Series:
         """Takes the weighted sum of a list of series

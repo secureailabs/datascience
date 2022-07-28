@@ -5,7 +5,7 @@ class Estimator:
     def __init__(self, list_name_estimate) -> None:
         self.list_name_estimate = list_name_estimate
 
-    def Run(self, sample_0: SeriesFederated):
+    def run(self, sample_0: SeriesFederated):
         raise NotImplementedError()
 
     def run_reference(self, sample_0: SeriesFederated):

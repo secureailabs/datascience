@@ -9,7 +9,7 @@ class ChisquareAggregate:
     Aggregates data for Chisquare test
     """
 
-    def Run(list_precompute) -> Dict:
+    def run(list_precompute) -> Dict:
 
         list_unique_0 = []
         list_unique_1 = []

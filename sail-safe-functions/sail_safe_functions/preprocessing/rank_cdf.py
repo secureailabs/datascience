@@ -10,7 +10,7 @@ class RankCumulativeDistributionFunction:
     Aggregates data for a federated cdf
     """
 
-    def Run(
+    def run(
         sample_0: Series,
         size_sample_total: int,
         list_domain_cdf: List[float],

@@ -18,7 +18,7 @@ def test_variance(one_sample_big: SeriesFederatedLocal):
 
     #
     estimator = Variance()
-    variance_sail = estimator.Run(sample_0)
+    variance_sail = estimator.run(sample_0)
     variance_numpy = estimator.run_reference(sample_0)
 
     # Assert

@@ -35,7 +35,7 @@ def kolmogorov_smirnov_test(
     :rtype: Tuple[float, float]
     """
     estimator = KolmogorovSmirnovTest(type_distribution, type_ranking)
-    return estimator.Run(sample_0)
+    return estimator.run(sample_0)
 
 
 class KolmogorovSmirnovTest(Estimator):
@@ -54,7 +54,7 @@ class KolmogorovSmirnovTest(Estimator):
         self.type_distribution = type_distribution
         self.type_ranking = type_ranking
 
-    def Run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+    def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
         if self.type_distribution == "normal":
             sample_mean = Mean(sample_0)
             sample_standart_deviation = numpy.sqrt(Variance(sample_0))
@@ -77,11 +77,11 @@ class KolmogorovSmirnovTest(Estimator):
             sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
         ):
             list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.Run(
+                KolmogorovSmirnovTestPrecompute.run(
                     series, series_ranked, distribution, size_sample
                 )
             )
-        k_statistic = KolmogorovSmirnovTestAggregate.Run(list_list_precompute)
+        k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
 
         p_value = kstwo.sf(k_statistic, size_sample)
 

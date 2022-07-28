@@ -23,7 +23,7 @@ def pearson(
 
     """
     estimator = Pearson(alternative)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class Pearson(Estimator):
@@ -37,7 +37,7 @@ class Pearson(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def Run(
+    def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
 
@@ -46,12 +46,12 @@ class Pearson(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                PearsonPrecompute.Run(
+                PearsonPrecompute.run(
                     sample_0.dict_series[key_dataframe],
                     sample_1.dict_series[key_dataframe],
                 )
             )
-        rho, degrees_of_freedom = PearsonAggregate.Run(list_list_precompute)
+        rho, degrees_of_freedom = PearsonAggregate.run(list_list_precompute)
         t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)

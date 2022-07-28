@@ -5,7 +5,7 @@ from sail_safe_functions.preprocessing.convert.onehot_to_categorical import (
 
 
 class Float64ToTabularPrecompute:
-    def Run(
+    def run(
         table_schema: dict, data_frame_source: pandas.DataFrame
     ) -> pandas.DataFrame:
 
@@ -17,7 +17,7 @@ class Float64ToTabularPrecompute:
 
             if column_schema["type_data_level"] == "categorical":
                 list_data_frame_target.append(
-                    OnehotToCategorical.Run(column_schema, data_frame_source)
+                    OnehotToCategorical.run(column_schema, data_frame_source)
                 )
             elif column_schema["type_data_level"] == "interval":
                 series = data_frame_source[name_column]

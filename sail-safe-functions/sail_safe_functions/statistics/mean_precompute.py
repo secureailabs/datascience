@@ -9,7 +9,7 @@ class MeanPrecompute:
     Precomputes data for computing the mean
     """
 
-    def Run(
+    def run(
         sample_0_dataframe: pd.Series,
     ) -> Tuple[
         List[float], List[bool]

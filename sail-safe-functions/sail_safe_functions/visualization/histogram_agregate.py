@@ -15,7 +15,7 @@ class HistogramAggregate:
     # L4 -> Frequency of unique value for the 2nd series.
     # And so on and on
 
-    def Run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]):
         """
         Function get the agregated list value counts
 

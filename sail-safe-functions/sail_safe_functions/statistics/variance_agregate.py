@@ -6,7 +6,7 @@ class VarianceAggregate:
     Aggregates data for computing the mean
     """
 
-    def Run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]):
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0

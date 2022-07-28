@@ -28,7 +28,7 @@ def paired_t_test(
     :rtype: Tuple[float, float]
     """
     estimator = PairedTTest(alternative)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class PairedTTest(Estimator):
@@ -42,7 +42,7 @@ class PairedTTest(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def Run(
+    def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
         list_list_precompute = []
@@ -50,13 +50,13 @@ class PairedTTest(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                PairedTTestPrecompute.Run(
+                PairedTTestPrecompute.run(
                     sample_0.dict_series[key_dataframe],
                     sample_1.dict_series[key_dataframe],
                 )
             )
 
-        t_statistic, degrees_of_freedom = PairedTTestAggregate.Run(list_list_precompute)
+        t_statistic, degrees_of_freedom = PairedTTestAggregate.run(list_list_precompute)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
         elif self.alternative == "two-sided":

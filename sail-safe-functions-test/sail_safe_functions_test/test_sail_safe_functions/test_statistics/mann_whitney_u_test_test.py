@@ -30,7 +30,7 @@ def test_mann_whitney_u_test_two_sided():
     type_ranking = "unsafe"
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
-    w_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     w_statistic_scipy, p_value_scipy = estimator.run_reference(
         sample_0,
         sample_1,
@@ -61,7 +61,7 @@ def test_mann_whitney_u_test_less():
     type_ranking = "unsafe"
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
-    w_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     w_statistic_scipy, p_value_scipy = estimator.run_reference(
         sample_0,
         sample_1,
@@ -92,7 +92,7 @@ def test_mann_whitney_u_test_greater():
     type_ranking = "unsafe"
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
-    w_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     w_statistic_scipy, p_value_scipy = estimator.run_reference(
         sample_0,
         sample_1,

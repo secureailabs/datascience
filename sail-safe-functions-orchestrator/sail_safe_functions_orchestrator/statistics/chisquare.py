@@ -29,7 +29,7 @@ def chisquare(
     :rtype: Tuple[float, float]
     """
     estimator = Chisquare()
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class Chisquare(Estimator):
@@ -40,7 +40,7 @@ class Chisquare(Estimator):
     def __init__(self) -> None:
         super().__init__(["chisquare_statistic", "p_value"])
 
-    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
         # if not (is_string_dtype(sample_0) and is_string_dtype(sample_1)): TODO would be nice to catch this here
         #    raise ValueException()
@@ -49,8 +49,8 @@ class Chisquare(Estimator):
         for series_0, series_1 in zip(
             sample_0.dict_series.values(), sample_1.dict_series.values()
         ):
-            list_precompute.append(ChisquarePrecompute.Run(series_0, series_1))
-        return ChisquareAggregate.Run(list_precompute)
+            list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
+        return ChisquareAggregate.run(list_precompute)
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         count_total = sample_0.size

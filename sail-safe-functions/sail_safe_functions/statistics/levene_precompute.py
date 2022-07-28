@@ -9,7 +9,7 @@ class LevenePrecompute:
     Precomputes data for computing the variance
     """
 
-    def Run(
+    def run(
         sample_0_series: pd.Series,
         sample_1_series: pd.Series,
         mean_0: float,

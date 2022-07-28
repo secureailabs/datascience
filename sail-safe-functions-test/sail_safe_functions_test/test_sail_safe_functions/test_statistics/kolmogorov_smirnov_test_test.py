@@ -24,7 +24,7 @@ def test_kolmogorov_smirnov_normalunit():
     estimator = KolmogorovSmirnovTest(
         type_distribution="normalunit", type_ranking="unsafe"
     )
-    k_statistic_sail, p_value_sail = estimator.Run(sample_0)
+    k_statistic_sail, p_value_sail = estimator.run(sample_0)
     k_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0)
 
     # Assert

@@ -25,7 +25,7 @@ def test_levene(
 
     # Act
     estimator = LeveneTest()
-    f_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     f_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert

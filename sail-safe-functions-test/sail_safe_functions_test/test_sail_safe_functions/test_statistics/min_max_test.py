@@ -1,6 +1,8 @@
 import pytest
 from sail_safe_functions_orchestrator.statistics.min_max import MinMax
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.mark.active
@@ -16,7 +18,7 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = MinMax()
-    min_sail, max_sail = estimator.Run(sample_0)
+    min_sail, max_sail = estimator.run(sample_0)
     min_numpy, max_numpy = estimator.run_reference(sample_0)
 
     # Assert

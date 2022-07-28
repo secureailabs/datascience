@@ -32,7 +32,7 @@ def spearman(
     """
 
     estimator = Spearman(alternative, type_ranking)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class Spearman(Estimator):
@@ -50,7 +50,7 @@ class Spearman(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def Run(
+    def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
         if sample_0.size != sample_1.size:

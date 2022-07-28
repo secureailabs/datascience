@@ -9,7 +9,7 @@ class ValueAbsolute:
     Takes the absolute value sum of a series
     """
 
-    def Run(series_0: pandas.Series) -> pandas.Series:
+    def run(series_0: pandas.Series) -> pandas.Series:
         """Takes the weighted sum of a list of series
 
         :param series_0: input series

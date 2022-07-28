@@ -10,7 +10,7 @@ class CumulativeDistributionFunctionPrecompute:
     Precomputes data for creating a federated 1dcdf
     """
 
-    def Run(
+    def run(
         sample_0: pandas.Series, domain_min: float, domain_max: float
     ) -> Tuple[List[float], List[float], int]:
         # TODO test this for series of size 1

@@ -10,7 +10,7 @@ class KolmogorovSmirnovTestPrecompute:
     Precomputes data for the KolmogorovSmirnov test
     """
 
-    def Run(
+    def run(
         sample_0: Series, sample_ranked_0: Series, distribution: str, count_total: int
     ) -> List[float]:
         type_distribution = distribution["type_distribution"]

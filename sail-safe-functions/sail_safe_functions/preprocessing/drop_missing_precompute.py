@@ -8,7 +8,7 @@ class DropMissingPrecompute:
     Drop rows or columns with missing data
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: Any
     ) -> pd.DataFrame:
         """

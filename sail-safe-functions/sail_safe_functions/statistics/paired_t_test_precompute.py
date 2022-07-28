@@ -9,7 +9,7 @@ class PairedTTestPrecompute:
     Precomputes data for performing a paired t-test
     """
 
-    def Run(sample_0_series: pd.Series, sample_1_series: pd.Series) -> List[float]:
+    def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -> List[float]:
         """Generates the geometric moments for use in a T-Test
 
         :param sample_0_series:  The series for sample_0

@@ -21,7 +21,7 @@ def wilcoxon_singed_rank_test(
     type_ranking: str,
 ):
     estimator = WilcoxonSingedRankTest(alternative, type_ranking)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class WilcoxonSingedRankTest(Estimator):
@@ -34,7 +34,7 @@ class WilcoxonSingedRankTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
         if sample_0.size != sample_1.size:
             raise ValueError("`sample_0` and `sample_1` must have the same length.")
@@ -57,13 +57,13 @@ class WilcoxonSingedRankTest(Estimator):
             sample_difference_absolute_ranked.dict_series.values(),
         ):
             list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.Run(
+                WilcoxonSingedRankTestPrecompute.run(
                     series_difference, series_difference_absolute_ranked
                 )
             )
 
         # rank_minus rank_plus
-        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.Run(list_precompute)
+        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.run(list_precompute)
 
         if self.alternative == "two-sided":
             w_statistic = min(rank_minus, rank_plus)

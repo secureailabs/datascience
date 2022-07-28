@@ -9,7 +9,7 @@ class MinMaxPrecompute:
     Precomputes min and max for a given sample
     """
 
-    def Run(series_sample: pd.Series) -> Tuple[float, float]:
+    def run(series_sample: pd.Series) -> Tuple[float, float]:
         """This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min <= sample_min and sample_max <= max
         For uniform distributions this follows the UMVU-estimator altough with bigger variance

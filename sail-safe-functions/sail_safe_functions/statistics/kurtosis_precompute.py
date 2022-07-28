@@ -9,7 +9,7 @@ class KurtosisPrecompute:
     Precomputes data for Kurtosis
     """
 
-    def Run(sample_0_dataframe: pd.DataFrame) -> List[float]:
+    def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
         """Generates the geometric moments for use in a Kurtosis
 
         Parameters

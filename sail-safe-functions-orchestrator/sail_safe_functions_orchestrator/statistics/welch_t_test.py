@@ -16,7 +16,7 @@ def welch_t_test(
     alternative: str = "less",
 ) -> Tuple[float, float]:
     estimator = WelchTTest(alternative)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class WelchTTest(Estimator):
@@ -26,19 +26,19 @@ class WelchTTest(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def Run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         for key_dataframe in list_key_dataframe:
             list_list_precompute.append(
-                UnpairedTTestPrecompute.Run(
+                UnpairedTTestPrecompute.run(
                     sample_0.dict_series[key_dataframe],
                     sample_1.dict_series[key_dataframe],
                 )
             )
 
-        t_statistic, degrees_of_freedom = WelchTTestAggregate.Run(list_list_precompute)
+        t_statistic, degrees_of_freedom = WelchTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)

@@ -9,7 +9,7 @@ class WelchTTestAggregate:
     Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
     """
 
-    def Run(
+    def run(
         list_list_precompute: List[List[float]],
     ):
         sum_x_0 = 0

@@ -19,7 +19,7 @@ def test_kurtosis(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = Kurtosis()
-    kurtosis_sail = estimator.Run(sample_0)
+    kurtosis_sail = estimator.run(sample_0)
     kurtosis_scipy = estimator.run_reference(sample_0)
 
     # Assert

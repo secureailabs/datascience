@@ -26,7 +26,7 @@ def test_spearman_two_sided(
 
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
     spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
@@ -52,7 +52,7 @@ def test_spearman_less(
 
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
     spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
@@ -78,7 +78,7 @@ def test_spearman_greater(
 
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
     spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert

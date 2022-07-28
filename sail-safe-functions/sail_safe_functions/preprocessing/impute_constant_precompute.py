@@ -10,7 +10,7 @@ class ImputeConstantPrecompute:
     Imputes one or more columns with a constant value
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame,
         list_name_column: List[str],
         missing_value: Union[str, int, float],

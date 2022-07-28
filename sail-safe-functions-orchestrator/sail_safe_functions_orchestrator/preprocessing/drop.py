@@ -43,7 +43,7 @@ def drop(
     :return: DataFrame with specified entries dropped.
     :rtype: pd.DataFrame
     """
-    return Drop.Run(
+    return Drop.run(
         data_frame_source,
         labels,
         axis,
@@ -59,7 +59,7 @@ class Drop:
     Drop rows or columns with missing data
     """
 
-    def Run(
+    def run(
         data_frame_source: DataFrameFederated,
         labels: list,
         axis: int,
@@ -71,7 +71,7 @@ class Drop:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = DropPrecompute.Run(
+            data_frame_target.dict_dataframe[dataset_id] = DropPrecompute.run(
                 data_frame_source.dict_dataframe[dataset_id],
                 labels,
                 axis,

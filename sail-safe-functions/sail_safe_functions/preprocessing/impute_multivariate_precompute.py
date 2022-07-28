@@ -17,7 +17,7 @@ class ImputeMultivariatePrecompute:
     but it is tricky to implement and might be out of scope
     """
 
-    def Run(
+    def run(
         data_frame: pd.DataFrame,
         list_name_column: List[str],
         imputation_order: str,

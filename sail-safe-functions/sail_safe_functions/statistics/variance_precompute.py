@@ -9,7 +9,7 @@ class VariancePrecompute:
     Precomputes data for computing the variance
     """
 
-    def Run(
+    def run(
         sample_0: pd.Series,
     ) -> Tuple[
         List[float], List[bool]

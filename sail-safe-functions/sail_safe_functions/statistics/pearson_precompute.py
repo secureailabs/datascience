@@ -12,7 +12,7 @@ class PearsonPrecompute(object):
     :type object:
     """
 
-    def Run(
+    def run(
         sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame
     ) -> List[float]:
         """

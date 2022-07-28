@@ -8,7 +8,7 @@ class HistogramPrecompute:
     Precomputes data for Histogram
     """
 
-    def Run(sample_0_series: pd.Series) -> List[float]:
+    def run(sample_0_series: pd.Series) -> List[float]:
         """Generates the precompute count Frequency for use in a histogram
 
         Parameters

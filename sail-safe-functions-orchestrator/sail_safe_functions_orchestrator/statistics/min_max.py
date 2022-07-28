@@ -9,7 +9,7 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 def min_max(sample_0: SeriesFederated) -> Tuple[float, float]:
     estimator = MinMax()
-    return estimator.Run(sample_0)
+    return estimator.run(sample_0)
 
 
 class MinMax(Estimator):
@@ -20,16 +20,16 @@ class MinMax(Estimator):
     def __init__(self) -> None:
         super().__init__(["min", "max"])
 
-    def Run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+    def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
         # Calculating precompute
         for series in sample_0.dict_series.values():  # TODO replace these
-            list_list_precompute.append(MinMaxPrecompute.Run(series))
+            list_list_precompute.append(MinMaxPrecompute.run(series))
 
         # Final min max values
-        min, max = MinMaxAggregate.Run(list_list_precompute)
+        min, max = MinMaxAggregate.run(list_list_precompute)
         return min, max
 
     def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:

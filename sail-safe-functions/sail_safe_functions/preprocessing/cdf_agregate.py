@@ -9,7 +9,7 @@ class CumulativeDistributionFunctionAggregate:
     Aggregates data for a federated cdf
     """
 
-    def Run(
+    def run(
         list_precompute: List[Tuple[List[float], List[float], int]],
         domain_min,
         domain_max,

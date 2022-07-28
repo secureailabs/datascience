@@ -22,7 +22,7 @@ def mann_whitney_u_test(
     type_ranking: str,
 ):
     estimator = MannWhitneyUTest(alternative, type_ranking)
-    return estimator.Run(sample_0, sample_1)
+    return estimator.run(sample_0, sample_1)
 
 
 class MannWhitneyUTest(Estimator):
@@ -41,7 +41,7 @@ class MannWhitneyUTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def Run(
+    def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
         check_instance(sample_0, SeriesFederated)
@@ -60,10 +60,10 @@ class MannWhitneyUTest(Estimator):
                 dataset_id
             ]
             list_precompute.append(
-                MannWhitneyUTestPrecompute.Run(series_0, series_concatenated_ranked)
+                MannWhitneyUTestPrecompute.run(series_0, series_concatenated_ranked)
             )
 
-        sum_ranks_0 = MannWhitneyUTestAggregate.Run(list_precompute)
+        sum_ranks_0 = MannWhitneyUTestAggregate.run(list_precompute)
 
         U0 = sum_ranks_0 - n0 * (n0 + 1) / 2
         U1 = n0 * n1 - U0

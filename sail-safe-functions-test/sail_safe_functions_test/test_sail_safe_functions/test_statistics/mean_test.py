@@ -2,7 +2,9 @@ import numpy as np
 import pytest
 from sail_safe_functions_orchestrator import statistics
 from sail_safe_functions_orchestrator.statistics.mean import Mean
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 @pytest.mark.active
@@ -22,7 +24,7 @@ def test_mean(one_sample_big: SeriesFederatedLocal):
 
     # Act
     estimator = Mean()
-    mean_sail = estimator.Run(sample_0)
+    mean_sail = estimator.run(sample_0)
     mean_numpy = estimator.run_reference(sample_0)
 
     # Assert

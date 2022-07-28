@@ -13,7 +13,7 @@ class PearsonAggregate(object):
     def __init__(self) -> None:
         super().__init__()
 
-    def Run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]):
         """
         This function run to calculate the final precompute
         and calculate the federated pearson value.

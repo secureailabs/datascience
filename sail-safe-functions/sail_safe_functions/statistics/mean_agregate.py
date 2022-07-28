@@ -6,7 +6,7 @@ class MeanAggregate:
     Aggregates data for computing the mean
     """
 
-    def Run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]):
         sum_x_0 = 0
         degrees_of_freedom_0 = 0
 

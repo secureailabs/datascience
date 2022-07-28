@@ -24,7 +24,7 @@ def test_t_test_paired_big(
 
     # Act
     estimator = PairedTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
 
     # Assert
@@ -48,7 +48,7 @@ def test_t_test_paired_small(
 
     # Act
     estimator = PairedTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.Run(sample_0, sample_1)
+    t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
     t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
