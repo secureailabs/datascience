@@ -2,7 +2,7 @@ import numpy
 import pandas
 import pytest
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.statistics.wilcoxon_singed_rank_test import (
+from sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test import (
     WilcoxonSingedRankTest,
 )
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (

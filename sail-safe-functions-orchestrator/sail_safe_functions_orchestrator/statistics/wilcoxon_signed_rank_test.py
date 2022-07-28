@@ -1,9 +1,9 @@
 import numpy
 import scipy
-from sail_safe_functions.statistics.wilcoxon_singed_rank_test_aggregate import (
+from sail_safe_functions.statistics.wilcoxon_signed_rank_test_aggregate import (
     WilcoxonSingedRankTestAggregate,
 )
-from sail_safe_functions.statistics.wilcoxon_singed_rank_test_precompute import (
+from sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute import (
     WilcoxonSingedRankTestPrecompute,
 )
 from sail_safe_functions_orchestrator import preprocessing
