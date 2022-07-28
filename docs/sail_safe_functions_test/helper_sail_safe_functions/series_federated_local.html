@@ -26,10 +26,13 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import numpy as np
-import pandas as pd
+<pre><code class="python">from typing import Dict
 
+import numpy as np
+import pandas as pd
+from pandas.api.types import is_numeric_dtype
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+
 
 class SeriesFederatedLocal(SeriesFederated):
     &#34;&#34;&#34;
@@ -37,20 +40,33 @@ class SeriesFederatedLocal(SeriesFederated):
     &#34;&#34;&#34;
 
     def __init__(self, name: str = None) -&gt; None:
-        super().__init__()
-        self.dict_series = {}
-        self.name = None
+        super().__init__(name)
+        self.dtype = None
+        self.is_numeric = None
 
-    def add_series(self, key: str, series=pd.Series):
+    def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
+
+        if self.dtype is None:
+            self.dtype = series.dtype
+
+        if self.is_numeric is None:
+            self.is_numeric = is_numeric_dtype(series)
+
         else:
             if self.name != series.name:
                 raise RuntimeError(&#34;Cannot add series with different name&#34;)
-        self.dict_series[key] = series
+
+            if self.dtype != series.dtype:
+                raise RuntimeError(&#34;Cannot add series with different dtype&#34;)
+
+            if self.is_numeric != is_numeric_dtype(series):
+                raise RuntimeError(&#34;Cannot add series with different is_numeric&#34;)
+        self.dict_series[dataset_id] = series
 
     def add_array(self, key: str, array: np.ndarray, name: str = None):
-        if name is None:
+        if name is not None:
             self.add_series(key, pd.Series(data=array, name=self.name))
         else:
             self.add_series(key, pd.Series(data=array, name=name))
@@ -59,7 +75,36 @@ class SeriesFederatedLocal(SeriesFederated):
         list_array_numpy = []
         for series in self.dict_series.values():
             list_array_numpy.append(series.to_numpy())
-        return np.concatenate(list_array_numpy)</code></pre>
+        return np.concatenate(list_array_numpy)
+
+    def drop_by_index(self, index_to_drop) -&gt; &#34;SeriesFederatedLocal&#34;:
+        series_federated_new = SeriesFederatedLocal()
+        for dataset_id in self.dict_series:
+            series = self.dict_series[dataset_id]
+            if 0 &lt;= index_to_drop and index_to_drop &lt; series.size:
+                series = series.drop(series.index[index_to_drop])
+            index_to_drop -= series.size + 1
+            series_federated_new.add_series(dataset_id, series)
+        return series_federated_new
+
+    def create_new(self) -&gt; &#34;SeriesFederated&#34;:
+        return SeriesFederatedLocal()
+
+    def to_series(self) -&gt; pd.Series:
+        return pd.Series(self.to_numpy(), name=self.name)
+
+    def describe(self) -&gt; Dict:
+        dict_discribe = {}
+        dict_discribe[&#34;name&#34;] = self.name
+        dict_discribe[&#34;dtype&#34;] = self.dtype
+        dict_discribe[&#34;is_numeric&#34;] = self.is_numeric
+        return dict_discribe
+
+    @staticmethod
+    def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
+        series = SeriesFederatedLocal(name)
+        series.add_array(&#34;dataset_0&#34;, array, name)
+        return series</code></pre>
 </details>
 </section>
 <section>
@@ -87,20 +132,33 @@ class SeriesFederatedLocal(SeriesFederated):
     &#34;&#34;&#34;
 
     def __init__(self, name: str = None) -&gt; None:
-        super().__init__()
-        self.dict_series = {}
-        self.name = None
+        super().__init__(name)
+        self.dtype = None
+        self.is_numeric = None
 
-    def add_series(self, key: str, series=pd.Series):
+    def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
+
+        if self.dtype is None:
+            self.dtype = series.dtype
+
+        if self.is_numeric is None:
+            self.is_numeric = is_numeric_dtype(series)
+
         else:
             if self.name != series.name:
                 raise RuntimeError(&#34;Cannot add series with different name&#34;)
-        self.dict_series[key] = series
+
+            if self.dtype != series.dtype:
+                raise RuntimeError(&#34;Cannot add series with different dtype&#34;)
+
+            if self.is_numeric != is_numeric_dtype(series):
+                raise RuntimeError(&#34;Cannot add series with different is_numeric&#34;)
+        self.dict_series[dataset_id] = series
 
     def add_array(self, key: str, array: np.ndarray, name: str = None):
-        if name is None:
+        if name is not None:
             self.add_series(key, pd.Series(data=array, name=self.name))
         else:
             self.add_series(key, pd.Series(data=array, name=name))
@@ -109,13 +167,61 @@ class SeriesFederatedLocal(SeriesFederated):
         list_array_numpy = []
         for series in self.dict_series.values():
             list_array_numpy.append(series.to_numpy())
-        return np.concatenate(list_array_numpy)</code></pre>
+        return np.concatenate(list_array_numpy)
+
+    def drop_by_index(self, index_to_drop) -&gt; &#34;SeriesFederatedLocal&#34;:
+        series_federated_new = SeriesFederatedLocal()
+        for dataset_id in self.dict_series:
+            series = self.dict_series[dataset_id]
+            if 0 &lt;= index_to_drop and index_to_drop &lt; series.size:
+                series = series.drop(series.index[index_to_drop])
+            index_to_drop -= series.size + 1
+            series_federated_new.add_series(dataset_id, series)
+        return series_federated_new
+
+    def create_new(self) -&gt; &#34;SeriesFederated&#34;:
+        return SeriesFederatedLocal()
+
+    def to_series(self) -&gt; pd.Series:
+        return pd.Series(self.to_numpy(), name=self.name)
+
+    def describe(self) -&gt; Dict:
+        dict_discribe = {}
+        dict_discribe[&#34;name&#34;] = self.name
+        dict_discribe[&#34;dtype&#34;] = self.dtype
+        dict_discribe[&#34;is_numeric&#34;] = self.is_numeric
+        return dict_discribe
+
+    @staticmethod
+    def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
+        series = SeriesFederatedLocal(name)
+        series.add_array(&#34;dataset_0&#34;, array, name)
+        return series</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>sail_safe_functions_orchestrator.series_federated.SeriesFederated</li>
 <li>abc.ABC</li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array"><code class="name flex">
+<span>def <span class="ident">from_array</span></span>(<span>name: str, array: numpy.ndarray) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
+    series = SeriesFederatedLocal(name)
+    series.add_array(&#34;dataset_0&#34;, array, name)
+    return series</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_array"><code class="name flex">
@@ -128,14 +234,14 @@ class SeriesFederatedLocal(SeriesFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_array(self, key: str, array: np.ndarray, name: str = None):
-    if name is None:
+    if name is not None:
         self.add_series(key, pd.Series(data=array, name=self.name))
     else:
         self.add_series(key, pd.Series(data=array, name=name))</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_series"><code class="name flex">
-<span>def <span class="ident">add_series</span></span>(<span>self, key: str, series=pandas.core.series.Series)</span>
+<span>def <span class="ident">add_series</span></span>(<span>self, dataset_id: str, series: pandas.core.series.Series)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -143,13 +249,76 @@ class SeriesFederatedLocal(SeriesFederated):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_series(self, key: str, series=pd.Series):
+<pre><code class="python">def add_series(self, dataset_id: str, series: pd.Series):
     if self.name is None:
         self.name = series.name
+
+    if self.dtype is None:
+        self.dtype = series.dtype
+
+    if self.is_numeric is None:
+        self.is_numeric = is_numeric_dtype(series)
+
     else:
         if self.name != series.name:
             raise RuntimeError(&#34;Cannot add series with different name&#34;)
-    self.dict_series[key] = series</code></pre>
+
+        if self.dtype != series.dtype:
+            raise RuntimeError(&#34;Cannot add series with different dtype&#34;)
+
+        if self.is_numeric != is_numeric_dtype(series):
+            raise RuntimeError(&#34;Cannot add series with different is_numeric&#34;)
+    self.dict_series[dataset_id] = series</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.create_new"><code class="name flex">
+<span>def <span class="ident">create_new</span></span>(<span>self) ‑> sail_safe_functions_orchestrator.series_federated.SeriesFederated</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_new(self) -&gt; &#34;SeriesFederated&#34;:
+    return SeriesFederatedLocal()</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.describe"><code class="name flex">
+<span>def <span class="ident">describe</span></span>(<span>self) ‑> Dict[~KT, ~VT]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def describe(self) -&gt; Dict:
+    dict_discribe = {}
+    dict_discribe[&#34;name&#34;] = self.name
+    dict_discribe[&#34;dtype&#34;] = self.dtype
+    dict_discribe[&#34;is_numeric&#34;] = self.is_numeric
+    return dict_discribe</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.drop_by_index"><code class="name flex">
+<span>def <span class="ident">drop_by_index</span></span>(<span>self, index_to_drop) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def drop_by_index(self, index_to_drop) -&gt; &#34;SeriesFederatedLocal&#34;:
+    series_federated_new = SeriesFederatedLocal()
+    for dataset_id in self.dict_series:
+        series = self.dict_series[dataset_id]
+        if 0 &lt;= index_to_drop and index_to_drop &lt; series.size:
+            series = series.drop(series.index[index_to_drop])
+        index_to_drop -= series.size + 1
+        series_federated_new.add_series(dataset_id, series)
+    return series_federated_new</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy"><code class="name flex">
@@ -166,6 +335,19 @@ class SeriesFederatedLocal(SeriesFederated):
     for series in self.dict_series.values():
         list_array_numpy.append(series.to_numpy())
     return np.concatenate(list_array_numpy)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_series"><code class="name flex">
+<span>def <span class="ident">to_series</span></span>(<span>self) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_series(self) -&gt; pd.Series:
+    return pd.Series(self.to_numpy(), name=self.name)</code></pre>
 </details>
 </dd>
 </dl>
@@ -188,10 +370,15 @@ class SeriesFederatedLocal(SeriesFederated):
 <ul>
 <li>
 <h4><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_array" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_array">add_array</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_series" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.add_series">add_series</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.create_new" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.create_new">create_new</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.describe" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.describe">describe</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.drop_by_index" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.drop_by_index">drop_by_index</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array">from_array</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy">to_numpy</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_series" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_series">to_series</a></code></li>
 </ul>
 </li>
 </ul>

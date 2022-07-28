@@ -28,13 +28,14 @@
 </summary>
 <pre><code class="python">from typing import List
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
-class KurtosisPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+class KurtosisPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for Kurtosis
+    &#34;&#34;&#34;
 
     def run(sample_0_dataframe: pd.DataFrame) -&gt; List[float]:
         &#34;&#34;&#34;Generates the geometric moments for use in a Kurtosis
@@ -45,7 +46,7 @@ class KurtosisPrecompute(object):
             The dataframe for sample_0
         Returns
         -------
-        a list of 3 floats precompute value
+        a list of 3 floats precomputes value
         &#34;&#34;&#34;
 
         sample_0 = sample_0_dataframe.to_numpy()
@@ -78,14 +79,15 @@ class KurtosisPrecompute(object):
 <span>class <span class="ident">KurtosisPrecompute</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Precomputes data for Kurtosis</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class KurtosisPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+<pre><code class="python">class KurtosisPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for Kurtosis
+    &#34;&#34;&#34;
 
     def run(sample_0_dataframe: pd.DataFrame) -&gt; List[float]:
         &#34;&#34;&#34;Generates the geometric moments for use in a Kurtosis
@@ -96,7 +98,7 @@ class KurtosisPrecompute(object):
             The dataframe for sample_0
         Returns
         -------
-        a list of 3 floats precompute value
+        a list of 3 floats precomputes value
         &#34;&#34;&#34;
 
         sample_0 = sample_0_dataframe.to_numpy()
@@ -117,7 +119,7 @@ class KurtosisPrecompute(object):
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.Run"><code class="name flex">
+<dt id="sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>sample_0_dataframe: pandas.core.frame.DataFrame) ‑> List[float]</span>
 </code></dt>
 <dd>
@@ -129,7 +131,7 @@ class KurtosisPrecompute(object):
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>a list</code> of <code>3 floats precompute value</code></dt>
+<dt><code>a list</code> of <code>3 floats precomputes value</code></dt>
 <dd>&nbsp;</dd>
 </dl></div>
 <details class="source">
@@ -145,7 +147,7 @@ class KurtosisPrecompute(object):
         The dataframe for sample_0
     Returns
     -------
-    a list of 3 floats precompute value
+    a list of 3 floats precomputes value
     &#34;&#34;&#34;
 
     sample_0 = sample_0_dataframe.to_numpy()
@@ -186,7 +188,7 @@ class KurtosisPrecompute(object):
 <li>
 <h4><code><a title="sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute" href="#sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute">KurtosisPrecompute</a></code></h4>
 <ul class="">
-<li><code><a title="sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.Run" href="#sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.Run">run</a></code></li>
+<li><code><a title="sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.run" href="#sail_safe_functions.statistics.kurtosis_precompute.KurtosisPrecompute.run">run</a></code></li>
 </ul>
 </li>
 </ul>

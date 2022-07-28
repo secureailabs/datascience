@@ -28,23 +28,26 @@
 </summary>
 <pre><code class="python">from typing import List, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
-class MeanPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+class MeanPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for computing the mean
+    &#34;&#34;&#34;
 
     def run(
         sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
-        sample_0_dof = len(sample_0)
+        sample_0_degrees_of_freedom = len(sample_0)
 
-        list_precompute = [sum_x_0, sample_0_dof]
+        list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
@@ -62,30 +65,33 @@ class MeanPrecompute(object):
 <span>class <span class="ident">MeanPrecompute</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Precomputes data for computing the mean</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MeanPrecompute(object):
-    def __init__(self) -&gt; None:
-        super().__init__()
+<pre><code class="python">class MeanPrecompute:
+    &#34;&#34;&#34;
+    Precomputes data for computing the mean
+    &#34;&#34;&#34;
 
     def run(
         sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
-        sample_0_dof = len(sample_0)
+        sample_0_degrees_of_freedom = len(sample_0)
 
-        list_precompute = [sum_x_0, sample_0_dof]
+        list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="sail_safe_functions.statistics.mean_precompute.MeanPrecompute.Run"><code class="name flex">
+<dt id="sail_safe_functions.statistics.mean_precompute.MeanPrecompute.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>sample_0_dataframe: pandas.core.series.Series) ‑> Tuple[List[float], List[bool]]</span>
 </code></dt>
 <dd>
@@ -96,13 +102,15 @@ class MeanPrecompute(object):
 </summary>
 <pre><code class="python">def run(
     sample_0_dataframe: pd.Series,
-) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+) -&gt; Tuple[
+    List[float], List[bool]
+]:  # there seems to be a problem here with this annotation
     sample_0 = sample_0_dataframe.to_numpy()
 
     sum_x_0 = np.sum(sample_0)
-    sample_0_dof = len(sample_0)
+    sample_0_degrees_of_freedom = len(sample_0)
 
-    list_precompute = [sum_x_0, sample_0_dof]
+    list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
     # list_safe = [False, False, False, False, False, False ]
     return list_precompute  # , list_safe</code></pre>
 </details>
@@ -128,7 +136,7 @@ class MeanPrecompute(object):
 <li>
 <h4><code><a title="sail_safe_functions.statistics.mean_precompute.MeanPrecompute" href="#sail_safe_functions.statistics.mean_precompute.MeanPrecompute">MeanPrecompute</a></code></h4>
 <ul class="">
-<li><code><a title="sail_safe_functions.statistics.mean_precompute.MeanPrecompute.Run" href="#sail_safe_functions.statistics.mean_precompute.MeanPrecompute.Run">run</a></code></li>
+<li><code><a title="sail_safe_functions.statistics.mean_precompute.MeanPrecompute.run" href="#sail_safe_functions.statistics.mean_precompute.MeanPrecompute.run">run</a></code></li>
 </ul>
 </li>
 </ul>

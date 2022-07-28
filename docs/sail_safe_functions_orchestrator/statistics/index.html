@@ -19,26 +19,104 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Namespace <code>sail_safe_functions_orchestrator.statistics</code></h1>
+<h1 class="title">Module <code>sail_safe_functions_orchestrator.statistics</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from sail_safe_functions_orchestrator.statistics.chisquare import chisquare
+from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
+    kolmogorov_smirnov_test,
+)
+from sail_safe_functions_orchestrator.statistics.kurtosis import kurtosis
+from sail_safe_functions_orchestrator.statistics.levene_test import levene_test
+from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import (
+    mann_whitney_u_test,
+)
+from sail_safe_functions_orchestrator.statistics.mean import mean
+from sail_safe_functions_orchestrator.statistics.min_max import min_max
+from sail_safe_functions_orchestrator.statistics.paired_t_test import paired_t_test
+from sail_safe_functions_orchestrator.statistics.pearson import pearson
+from sail_safe_functions_orchestrator.statistics.skewness import skewness
+from sail_safe_functions_orchestrator.statistics.spearman import spearman
+from sail_safe_functions_orchestrator.statistics.student_t_test import student_t_test
+from sail_safe_functions_orchestrator.statistics.variance import variance
+from sail_safe_functions_orchestrator.statistics.welch_t_test import welch_t_test
+from sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test import (
+    wilcoxon_singed_rank_test,
+)</code></pre>
+</details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.kurtosis_federate" href="kurtosis_federate.html">sail_safe_functions_orchestrator.statistics.kurtosis_federate</a></code></dt>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.chisquare" href="chisquare.html">sail_safe_functions_orchestrator.statistics.chisquare</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.mean_federate" href="mean_federate.html">sail_safe_functions_orchestrator.statistics.mean_federate</a></code></dt>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.estimator" href="estimator.html">sail_safe_functions_orchestrator.statistics.estimator</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.skewness_federate" href="skewness_federate.html">sail_safe_functions_orchestrator.statistics.skewness_federate</a></code></dt>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.estimator_reference" href="estimator_reference.html">sail_safe_functions_orchestrator.statistics.estimator_reference</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate" href="unpaired_t_test_federate.html">sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate</a></code></dt>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test" href="kolmogorov_smirnov_test.html">sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.kurtosis" href="kurtosis.html">sail_safe_functions_orchestrator.statistics.kurtosis</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.levene_test" href="levene_test.html">sail_safe_functions_orchestrator.statistics.levene_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.mann_whitney_u_test" href="mann_whitney_u_test.html">sail_safe_functions_orchestrator.statistics.mann_whitney_u_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.mean" href="mean.html">sail_safe_functions_orchestrator.statistics.mean</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.min_max" href="min_max.html">sail_safe_functions_orchestrator.statistics.min_max</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.paired_t_test" href="paired_t_test.html">sail_safe_functions_orchestrator.statistics.paired_t_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.pearson" href="pearson.html">sail_safe_functions_orchestrator.statistics.pearson</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.skewness" href="skewness.html">sail_safe_functions_orchestrator.statistics.skewness</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.spearman" href="spearman.html">sail_safe_functions_orchestrator.statistics.spearman</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.student_t_test" href="student_t_test.html">sail_safe_functions_orchestrator.statistics.student_t_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.variance" href="variance.html">sail_safe_functions_orchestrator.statistics.variance</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.welch_t_test" href="welch_t_test.html">sail_safe_functions_orchestrator.statistics.welch_t_test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test" href="wilcoxon_signed_rank_test.html">sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -64,10 +142,23 @@
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="sail_safe_functions_orchestrator.statistics.kurtosis_federate" href="kurtosis_federate.html">sail_safe_functions_orchestrator.statistics.kurtosis_federate</a></code></li>
-<li><code><a title="sail_safe_functions_orchestrator.statistics.mean_federate" href="mean_federate.html">sail_safe_functions_orchestrator.statistics.mean_federate</a></code></li>
-<li><code><a title="sail_safe_functions_orchestrator.statistics.skewness_federate" href="skewness_federate.html">sail_safe_functions_orchestrator.statistics.skewness_federate</a></code></li>
-<li><code><a title="sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate" href="unpaired_t_test_federate.html">sail_safe_functions_orchestrator.statistics.unpaired_t_test_federate</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.chisquare" href="chisquare.html">sail_safe_functions_orchestrator.statistics.chisquare</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.estimator" href="estimator.html">sail_safe_functions_orchestrator.statistics.estimator</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.estimator_reference" href="estimator_reference.html">sail_safe_functions_orchestrator.statistics.estimator_reference</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test" href="kolmogorov_smirnov_test.html">sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.kurtosis" href="kurtosis.html">sail_safe_functions_orchestrator.statistics.kurtosis</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.levene_test" href="levene_test.html">sail_safe_functions_orchestrator.statistics.levene_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.mann_whitney_u_test" href="mann_whitney_u_test.html">sail_safe_functions_orchestrator.statistics.mann_whitney_u_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.mean" href="mean.html">sail_safe_functions_orchestrator.statistics.mean</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.min_max" href="min_max.html">sail_safe_functions_orchestrator.statistics.min_max</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.paired_t_test" href="paired_t_test.html">sail_safe_functions_orchestrator.statistics.paired_t_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.pearson" href="pearson.html">sail_safe_functions_orchestrator.statistics.pearson</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.skewness" href="skewness.html">sail_safe_functions_orchestrator.statistics.skewness</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.spearman" href="spearman.html">sail_safe_functions_orchestrator.statistics.spearman</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.student_t_test" href="student_t_test.html">sail_safe_functions_orchestrator.statistics.student_t_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.variance" href="variance.html">sail_safe_functions_orchestrator.statistics.variance</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.welch_t_test" href="welch_t_test.html">sail_safe_functions_orchestrator.statistics.welch_t_test</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test" href="wilcoxon_signed_rank_test.html">sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test</a></code></li>
 </ul>
 </li>
 </ul>

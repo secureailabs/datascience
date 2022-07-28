@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local API documentation</title>
+<title>sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,25 +19,26 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local</code></h1>
+<h1 class="title">Module <code>sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import pandas as pd
-import numpy as np
-from typing import List
+<pre><code class="python">from typing import List
 
+import numpy as np
+import pandas as pd
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
-class DataFrameFederatedLocal(DataFrameFederated):
-    &#34;&#34;&#34;This should be a multyline docstring&#34;&#34;&#34;
+class DataframeFederatedLocal(DataFrameFederated):
+    &#34;&#34;&#34;Helper class for testing safe functions locally,
+    the DataframeFederatedLocal holds several dataframes and pretends the are on different locations.
+    &#34;&#34;&#34;
 
     def __init__(self) -&gt; None:
         self.dict_dataframe = {}
@@ -62,8 +63,8 @@ class DataFrameFederatedLocal(DataFrameFederated):
                 #
         self.dict_dataframe[path_file_csv] = dataframe_new
 
-    def query(self, querystring: str) -&gt; &#34;DataFrameFederatedLocal&#34;:
-        dataframe_new = DataFrameFederatedLocal()
+    def query(self, querystring: str) -&gt; &#34;DataframeFederatedLocal&#34;:
+        dataframe_new = DataframeFederatedLocal()
         for key, dataframe in self.dict_dataframe.items():
             dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
 
@@ -82,7 +83,7 @@ class DataFrameFederatedLocal(DataFrameFederated):
     def __getitem__(self, key) -&gt; &#34;SeriesFederated&#34;:
         series = SeriesFederatedLocal()
         for dataframe_key, dataframe in self.dict_dataframe.items():
-            series.dict_series[dataframe_key] = dataframe.__getitem__(key)
+            series.add_series(dataframe_key, dataframe.__getitem__(key))
         return series
 
     def __setitem__(self, key, value):
@@ -98,17 +99,20 @@ class DataFrameFederatedLocal(DataFrameFederated):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal"><code class="flex name class">
-<span>class <span class="ident">DataFrameFederatedLocal</span></span>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal"><code class="flex name class">
+<span>class <span class="ident">DataframeFederatedLocal</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>This should be a multyline docstring</p></div>
+<div class="desc"><p>Helper class for testing safe functions locally,
+the DataframeFederatedLocal holds several dataframes and pretends the are on different locations.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DataFrameFederatedLocal(DataFrameFederated):
-    &#34;&#34;&#34;This should be a multyline docstring&#34;&#34;&#34;
+<pre><code class="python">class DataframeFederatedLocal(DataFrameFederated):
+    &#34;&#34;&#34;Helper class for testing safe functions locally,
+    the DataframeFederatedLocal holds several dataframes and pretends the are on different locations.
+    &#34;&#34;&#34;
 
     def __init__(self) -&gt; None:
         self.dict_dataframe = {}
@@ -133,8 +137,8 @@ class DataFrameFederatedLocal(DataFrameFederated):
                 #
         self.dict_dataframe[path_file_csv] = dataframe_new
 
-    def query(self, querystring: str) -&gt; &#34;DataFrameFederatedLocal&#34;:
-        dataframe_new = DataFrameFederatedLocal()
+    def query(self, querystring: str) -&gt; &#34;DataframeFederatedLocal&#34;:
+        dataframe_new = DataframeFederatedLocal()
         for key, dataframe in self.dict_dataframe.items():
             dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
 
@@ -153,7 +157,7 @@ class DataFrameFederatedLocal(DataFrameFederated):
     def __getitem__(self, key) -&gt; &#34;SeriesFederated&#34;:
         series = SeriesFederatedLocal()
         for dataframe_key, dataframe in self.dict_dataframe.items():
-            series.dict_series[dataframe_key] = dataframe.__getitem__(key)
+            series.add_series(dataframe_key, dataframe.__getitem__(key))
         return series
 
     def __setitem__(self, key, value):
@@ -166,7 +170,7 @@ class DataFrameFederatedLocal(DataFrameFederated):
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns"><code class="name">var <span class="ident">columns</span></code></dt>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.columns"><code class="name">var <span class="ident">columns</span></code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -181,7 +185,7 @@ def columns(self):
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv"><code class="name flex">
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.add_csv"><code class="name flex">
 <span>def <span class="ident">add_csv</span></span>(<span>self, path_file_csv: str) ‑> None</span>
 </code></dt>
 <dd>
@@ -204,8 +208,8 @@ def columns(self):
     self.dict_dataframe[path_file_csv] = dataframe_new</code></pre>
 </details>
 </dd>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query"><code class="name flex">
-<span>def <span class="ident">query</span></span>(<span>self, querystring: str) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a></span>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.query"><code class="name flex">
+<span>def <span class="ident">query</span></span>(<span>self, querystring: str) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal">DataframeFederatedLocal</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -213,13 +217,13 @@ def columns(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def query(self, querystring: str) -&gt; &#34;DataFrameFederatedLocal&#34;:
-    dataframe_new = DataFrameFederatedLocal()
+<pre><code class="python">def query(self, querystring: str) -&gt; &#34;DataframeFederatedLocal&#34;:
+    dataframe_new = DataframeFederatedLocal()
     for key, dataframe in self.dict_dataframe.items():
         dataframe_new.dict_dataframe[key] = dataframe.query(querystring)</code></pre>
 </details>
 </dd>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_list_numpy"><code class="name flex">
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.to_list_numpy"><code class="name flex">
 <span>def <span class="ident">to_list_numpy</span></span>(<span>self) ‑> List[numpy.ndarray]</span>
 </code></dt>
 <dd>
@@ -254,12 +258,12 @@ def columns(self):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a></code></h4>
+<h4><code><a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal">DataframeFederatedLocal</a></code></h4>
 <ul class="">
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv">add_csv</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns">columns</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query">query</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_list_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_list_numpy">to_list_numpy</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.add_csv" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.add_csv">add_csv</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.columns" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.columns">columns</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.query" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.query">query</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.to_list_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local.DataframeFederatedLocal.to_list_numpy">to_list_numpy</a></code></li>
 </ul>
 </li>
 </ul>
