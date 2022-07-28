@@ -1,6 +1,6 @@
 import numpy
 import pandas
-from sail_safe_functions.statistics.variance_agregate import VarianceAggregate
+from sail_safe_functions.statistics.variance_aggregate import VarianceAggregate
 from sail_safe_functions.statistics.variance_precompute import VariancePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

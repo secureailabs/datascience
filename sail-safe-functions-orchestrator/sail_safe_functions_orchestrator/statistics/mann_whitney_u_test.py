@@ -2,7 +2,7 @@ from typing import Tuple
 
 import numpy
 import scipy
-from sail_safe_functions.statistics.mann_whitney_u_test_agregate import (
+from sail_safe_functions.statistics.mann_whitney_u_test_aggregate import (
     MannWhitneyUTestAggregate,
 )
 from sail_safe_functions.statistics.mann_whitney_u_test_precompute import (

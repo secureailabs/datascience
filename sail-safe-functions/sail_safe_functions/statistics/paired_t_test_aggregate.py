@@ -9,7 +9,7 @@ class PairedTTestAggregate:
     """
 
     def run(list_list_precompute: List[List[float]]) -> Tuple[float, float]:
-        """collects the parts of a t-test and agregates them into statisitcs
+        """collects the parts of a t-test and aggregates them into statisitcs
 
         :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
         :type list_list_precompute: List[List[float]]

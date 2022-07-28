@@ -3,7 +3,7 @@ from typing import Tuple
 from sail_safe_functions.statistics.unpaired_t_test_precompute import (
     UnpairedTTestPrecompute,
 )
-from sail_safe_functions.statistics.welch_t_test_agregate import WelchTTestAggregate
+from sail_safe_functions.statistics.welch_t_test_aggregate import WelchTTestAggregate
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats

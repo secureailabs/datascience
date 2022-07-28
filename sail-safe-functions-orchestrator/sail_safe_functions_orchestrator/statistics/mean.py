@@ -1,6 +1,6 @@
 import numpy
 import pandas
-from sail_safe_functions.statistics.mean_agregate import MeanAggregate
+from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

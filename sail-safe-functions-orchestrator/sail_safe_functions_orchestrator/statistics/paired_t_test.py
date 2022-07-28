@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.paired_t_test_agregate import PairedTTestAggregate
+from sail_safe_functions.statistics.paired_t_test_aggregate import PairedTTestAggregate
 from sail_safe_functions.statistics.paired_t_test_precompute import (
     PairedTTestPrecompute,
 )

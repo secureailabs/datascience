@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.min_max_agregate import MinMaxAggregate
+from sail_safe_functions.statistics.min_max_aggregate import MinMaxAggregate
 from sail_safe_functions.statistics.min_max_precompute import MinMaxPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

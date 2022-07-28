@@ -15,7 +15,7 @@ class MinMaxPrecompute:
         For uniform distributions this follows the UMVU-estimator altough with bigger variance
         For normal distribution this creates a min and a max that are far outside the sample
         min and max to protect outliers.
-        TODO this function can be improved by doing the actual estimation in the agregate section
+        TODO this function can be improved by doing the actual estimation in the aggregate section
 
         :param series_sample: the sample from witch to estimate the min and max
         :type series_sample: pd.Series

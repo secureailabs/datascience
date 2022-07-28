@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pandas
-from sail_safe_functions.statistics.skewness_agregate import SkewnessAggregate
+from sail_safe_functions.statistics.skewness_aggregate import SkewnessAggregate
 from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

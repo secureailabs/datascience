@@ -1,5 +1,5 @@
 import plotly.express as px
-from sail_safe_functions.visualization.histogram_agregate import HistogramAggregate
+from sail_safe_functions.visualization.histogram_aggregate import HistogramAggregate
 from sail_safe_functions.visualization.histogram_precompute import HistogramPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 

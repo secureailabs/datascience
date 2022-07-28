@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.levene_agregate import LeveneAggregate
+from sail_safe_functions.statistics.levene_aggregate import LeveneAggregate
 from sail_safe_functions.statistics.levene_precompute import LevenePrecompute
 from sail_safe_functions_orchestrator import statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated

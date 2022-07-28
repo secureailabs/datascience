@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.chisquare_agregate import ChisquareAggregate
+from sail_safe_functions.statistics.chisquare_aggregate import ChisquareAggregate
 from sail_safe_functions.statistics.chisquare_precompute import ChisquarePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_agregate import (
+from sail_safe_functions.statistics.kolmogorov_smirnov_test_aggregate import (
     KolmogorovSmirnovTestAggregate,
 )
 from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import (

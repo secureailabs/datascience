@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 import numpy
-from sail_safe_functions.preprocessing.cdf_agregate import (
+from sail_safe_functions.preprocessing.cdf_aggregate import (
     CumulativeDistributionFunctionAggregate,
 )
 from sail_safe_functions.preprocessing.cdf_precompute import (

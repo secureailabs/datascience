@@ -1,6 +1,8 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.student_t_test_agregate import StudentTTestAggregate
+from sail_safe_functions.statistics.student_t_test_aggregate import (
+    StudentTTestAggregate,
+)
 from sail_safe_functions.statistics.unpaired_t_test_precompute import (
     UnpairedTTestPrecompute,
 )

@@ -1,7 +1,7 @@
 import math
 from typing import Tuple
 
-from sail_safe_functions.statistics.pearson_agregate import PearsonAggregate
+from sail_safe_functions.statistics.pearson_aggregate import PearsonAggregate
 from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator

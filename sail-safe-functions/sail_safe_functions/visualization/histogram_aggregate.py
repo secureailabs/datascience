@@ -17,7 +17,7 @@ class HistogramAggregate:
 
     def run(list_list_precompute: List[List[float]]):
         """
-        Function get the agregated list value counts
+        Function get the aggregated list value counts
 
         :param list_list_precompute: list
         :type list_list_precompute: List[List[float]]
