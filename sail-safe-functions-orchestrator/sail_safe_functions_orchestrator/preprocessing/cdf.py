@@ -1,8 +1,12 @@
 from typing import List, Tuple
 
 import numpy
-from sail_safe_functions.preprocessing.cdf_agregate import CdfAggregate
-from sail_safe_functions.preprocessing.cdf_precompute import CdfPrecompute
+from sail_safe_functions.preprocessing.cdf_agregate import (
+    CumulativeDistributionFunctionAggregate,
+)
+from sail_safe_functions.preprocessing.cdf_precompute import (
+    CumulativeDistributionFunctionPrecompute,
+)
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 
@@ -16,10 +20,10 @@ def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
     :return: returns two lists of floating point values representing the domain and the values of the cdf
     :rtype: Tuple[List[float], List[float]]
     """
-    return Cdf.Run(sample_0)
+    return CumulativeDistributionFunction.Run(sample_0)
 
 
-class Cdf:
+class CumulativeDistributionFunction:
     "Estimator for non-disclosive CDF"
 
     @staticmethod
@@ -29,8 +33,14 @@ class Cdf:
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
-            list_precompute.append(CdfPrecompute.Run(series, domain_min, domain_max))
-        return CdfAggregate.Run(list_precompute, domain_min, domain_max)
+            list_precompute.append(
+                CumulativeDistributionFunctionPrecompute.Run(
+                    series, domain_min, domain_max
+                )
+            )
+        return CumulativeDistributionFunctionAggregate.Run(
+            list_precompute, domain_min, domain_max
+        )
 
     def run_reference(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()

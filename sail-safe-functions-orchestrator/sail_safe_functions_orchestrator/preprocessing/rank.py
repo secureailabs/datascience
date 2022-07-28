@@ -1,6 +1,8 @@
 import numpy
 from pandas import Series
-from sail_safe_functions.preprocessing.rank_cdf import RankCdf
+from sail_safe_functions.preprocessing.rank_cdf import (
+    RankCumulativeDistributionFunction,
+)
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
@@ -36,7 +38,7 @@ def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(
             dataset_id,
-            RankCdf.Run(
+            RankCumulativeDistributionFunction.Run(
                 series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf
             ),
         )

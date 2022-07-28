@@ -5,7 +5,7 @@ from pandas import Series
 from scipy import interpolate
 
 
-class RankCdf:
+class RankCumulativeDistributionFunction:
     """
     Aggregates data for a federated cdf
     """

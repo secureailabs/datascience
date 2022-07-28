@@ -4,7 +4,7 @@ import numpy
 from scipy import interpolate
 
 
-class CdfAggregate:
+class CumulativeDistributionFunctionAggregate:
     """
     Aggregates data for a federated cdf
     """

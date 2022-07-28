@@ -5,7 +5,7 @@ import pandas
 from scipy import interpolate
 
 
-class CdfPrecompute:
+class CumulativeDistributionFunctionPrecompute:
     """
     Precomputes data for creating a federated 1dcdf
     """
