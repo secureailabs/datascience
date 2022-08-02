@@ -7,7 +7,7 @@ import dateutil.parser
 import pandas
 
 
-class IngestJsonZip:
+class ReadJsonzipPrecompute:
     def run(path_file_jsonzip_source: str, dict_column_template):
 
         # 1. Covert patients into events
@@ -18,10 +18,10 @@ class IngestJsonZip:
                     continue
 
                 dict_patient = json.loads(zip_file.read(name_file))
-                list_patient.append(IngestJsonZip.process_patient(dict_patient))
+                list_patient.append(ReadJsonzipPrecompute.process_patient(dict_patient))
 
         # 2. Compute statistics on events
-        dict_measurement_statistics = IngestJsonZip.compute_statistics(list_patient)
+        dict_measurement_statistics = ReadJsonzipPrecompute.compute_statistics(list_patient)
 
         # 3. List all categories by fraction of patients that have at least 1
         for key, value in sorted(
@@ -38,7 +38,7 @@ class IngestJsonZip:
             dict_column[name_column] = []
 
         for patient in list_patient:
-            IngestJsonZip.compile_columns(dict_column, dict_column_template, patient)
+            ReadJsonzipPrecompute.compile_columns(dict_column, dict_column_template, patient)
 
         data_frame = pandas.DataFrame()
         for name_column in dict_column_template:
@@ -48,7 +48,7 @@ class IngestJsonZip:
 
     def compile_columns(dict_series: Dict[str, List], dict_feature_template: Dict, patient):
         for name_column, column_template in dict_feature_template.items():
-            feature_value = IngestJsonZip.compile_column(column_template, patient)
+            feature_value = ReadJsonzipPrecompute.compile_column(column_template, patient)
             dict_series[name_column].append(feature_value)
 
     def compile_column(column_template, patient):
@@ -208,7 +208,7 @@ class IngestJsonZip:
         list_event = []
         for entry in dict_patient["entry"]:
             resource = entry["resource"]
-            list_event.extend(IngestJsonZip.parse_list_event(resource))
+            list_event.extend(ReadJsonzipPrecompute.parse_list_event(resource))
 
         # print(f"{name_file} {len(dict)} {dict.keys()}")
         for event in list_event:
