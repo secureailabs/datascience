@@ -1,12 +1,12 @@
 import os
 
-from sail_safe_functions_orchestrator.dataframe_federated import DataframeFederated
-from sail_safe_functions_test.helper_sail_safe_functions.dataframe_federated_local import DataframeFederatedLocal
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 
 
 class ToolsTestData:
     @staticmethod
-    def list_data():
+    def list_data() -> dict:
         dict_dataset = {}
         dict_dataset["data_csv_investor_demo"] = {}
         dict_dataset["data_csv_investor_demo"]["dataset"] = {}
@@ -33,7 +33,7 @@ class ToolsTestData:
     @staticmethod
     def load_test_dataframe_csv(
         name_dataset: str, name_table: str = None, blob_connection_string: str = None
-    ) -> DataframeFederated:
+    ) -> DataFrameFederated:
 
         path_dir_test_data = os.environ.get("PATH_SAIL_TEST_DATA")
         if path_dir_test_data is None:
@@ -50,7 +50,7 @@ class ToolsTestData:
             name_table = list(dict_dataset[name_dataset]["dataset"].keys())[0]
 
         path_dir_dataset = os.path.join(path_dir_test_data, name_dataset)
-        data_frame = DataframeFederatedLocal()
+        data_frame = DataFrameFederatedLocal()
         list_name_file_csv = dict_dataset[name_dataset]["dataset"][name_table]
         for name_file_csv in list_name_file_csv:
             path_file_csv = os.path.join(path_dir_dataset, name_file_csv)
@@ -61,7 +61,7 @@ class ToolsTestData:
     @staticmethod
     def load_test_dataframe_jsonzip(
         name_dataset: str, name_table: str, blob_connection_string: str = None
-    ) -> DataframeFederated:
+    ) -> DataFrameFederated:
 
         path_dir_test_data = os.environ.get("PATH_SAIL_TEST_DATA")
         if path_dir_test_data is None:

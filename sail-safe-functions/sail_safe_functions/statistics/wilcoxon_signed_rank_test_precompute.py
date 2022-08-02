@@ -4,7 +4,7 @@ import numpy
 import pandas
 
 
-class WilcoxonSingedRankTestPrecompute:
+class WilcoxonSignedRankTestPrecompute:
     """
     Precomputes data for the  WilcoxonSingedRankTest
     """
@@ -13,12 +13,6 @@ class WilcoxonSingedRankTestPrecompute:
         sample_difference: pandas.Series,
         sample_absolute_difference_ranked: pandas.Series,
     ):
-        rank_minus = numpy.sum(
-            (sample_difference.to_numpy() < 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
-        rank_plus = numpy.sum(
-            (sample_difference.to_numpy() > 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
+        rank_minus = numpy.sum((sample_difference.to_numpy() < 0) * sample_absolute_difference_ranked.to_numpy())
+        rank_plus = numpy.sum((sample_difference.to_numpy() > 0) * sample_absolute_difference_ranked.to_numpy())
         return [rank_minus, rank_plus]

@@ -2,7 +2,7 @@ import math
 from typing import List
 
 
-class WilcoxonSingedRankTestAggregate:
+class WilcoxonSignedRankTestAggregate:
     """
     Aggregates data for WilcoxonSingedRankTest
     """
