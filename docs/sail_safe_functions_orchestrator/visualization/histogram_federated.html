@@ -35,7 +35,46 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 class HistogramFederate:
     @staticmethod
     def hist(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        This the federated histogram
+        -----------
 
+        it works to segregate the range into several bins and then returns the number
+        of instances in each bin. This function is used to build the histogram.
+
+        A histogram is an approximate representation of the distribution of numerical data.
+        The term was first introduced by Karl Pearson.[1] To construct a histogram, the first step
+        is to &#34;bin&#34; (or &#34;bucket&#34;) the range of values—that is, divide the entire range of values
+        into a series of intervals—and then count how many values fall into each interval.
+        The bins are usually specified as consecutive, non-overlapping intervals of a variable.
+        The bins (intervals) must be adjacent and are often (but not required to be) of equal size.[2]
+
+        If the bins are of equal size, a rectangle is erected over the bin with height proportional to
+        the frequency—the number of cases in each bin. A histogram may also be normalized to display
+        &#34;relative&#34; frequencies. It then shows the proportion of cases that fall into each of several
+        categories, with the sum of the heights equaling 1.
+        -----------
+
+        Example
+        -----------
+        &gt;&gt;&gt; from sail_safe_functions_orchestrator.visualization.histogram_federated import HistogramFederate
+        &gt;&gt;&gt; values = HistogramFederate.Run(sample_0,5)
+
+        Example-2
+        --------
+        Look into thte notebook
+
+        https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb
+        
+        It will show you the result in the plot.
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: pyplot figure valuie
+        :rtype: pyplot object
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(HistogramPrecompute.run(series))
@@ -70,7 +109,46 @@ class HistogramFederate:
 <pre><code class="python">class HistogramFederate:
     @staticmethod
     def hist(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        This the federated histogram
+        -----------
 
+        it works to segregate the range into several bins and then returns the number
+        of instances in each bin. This function is used to build the histogram.
+
+        A histogram is an approximate representation of the distribution of numerical data.
+        The term was first introduced by Karl Pearson.[1] To construct a histogram, the first step
+        is to &#34;bin&#34; (or &#34;bucket&#34;) the range of values—that is, divide the entire range of values
+        into a series of intervals—and then count how many values fall into each interval.
+        The bins are usually specified as consecutive, non-overlapping intervals of a variable.
+        The bins (intervals) must be adjacent and are often (but not required to be) of equal size.[2]
+
+        If the bins are of equal size, a rectangle is erected over the bin with height proportional to
+        the frequency—the number of cases in each bin. A histogram may also be normalized to display
+        &#34;relative&#34; frequencies. It then shows the proportion of cases that fall into each of several
+        categories, with the sum of the heights equaling 1.
+        -----------
+
+        Example
+        -----------
+        &gt;&gt;&gt; from sail_safe_functions_orchestrator.visualization.histogram_federated import HistogramFederate
+        &gt;&gt;&gt; values = HistogramFederate.Run(sample_0,5)
+
+        Example-2
+        --------
+        Look into thte notebook
+
+        https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb
+        
+        It will show you the result in the plot.
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: pyplot figure valuie
+        :rtype: pyplot object
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(HistogramPrecompute.run(series))
@@ -89,14 +167,80 @@ class HistogramFederate:
 <span>def <span class="ident">hist</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, bin_count: int)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><h2 id="this-the-federated-histogram">This The Federated Histogram</h2>
+<p>it works to segregate the range into several bins and then returns the number
+of instances in each bin. This function is used to build the histogram.</p>
+<p>A histogram is an approximate representation of the distribution of numerical data.
+The term was first introduced by Karl Pearson.[1] To construct a histogram, the first step
+is to "bin" (or "bucket") the range of values—that is, divide the entire range of values
+into a series of intervals—and then count how many values fall into each interval.
+The bins are usually specified as consecutive, non-overlapping intervals of a variable.
+The bins (intervals) must be adjacent and are often (but not required to be) of equal size.[2]</p>
+<p>If the bins are of equal size, a rectangle is erected over the bin with height proportional to
+the frequency—the number of cases in each bin. A histogram may also be normalized to display
+"relative" frequencies. It then shows the proportion of cases that fall into each of several
+categories, with the sum of the heights equaling 1.</p>
+<hr>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from sail_safe_functions_orchestrator.visualization.histogram_federated import HistogramFederate
+&gt;&gt;&gt; values = HistogramFederate.Run(sample_0,5)
+</code></pre>
+<h2 id="example-2">Example-2</h2>
+<p>Look into thte notebook</p>
+<p><a href="https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb">https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb</a></p>
+<p>It will show you the result in the plot.</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param bin_count: <em>description</em>
+:type bin_count: int
+:return: pyplot figure valuie
+:rtype: pyplot object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def hist(sample_0: SeriesFederated, bin_count: int):
+    &#34;&#34;&#34;
+    This the federated histogram
+    -----------
 
+    it works to segregate the range into several bins and then returns the number
+    of instances in each bin. This function is used to build the histogram.
+
+    A histogram is an approximate representation of the distribution of numerical data.
+    The term was first introduced by Karl Pearson.[1] To construct a histogram, the first step
+    is to &#34;bin&#34; (or &#34;bucket&#34;) the range of values—that is, divide the entire range of values
+    into a series of intervals—and then count how many values fall into each interval.
+    The bins are usually specified as consecutive, non-overlapping intervals of a variable.
+    The bins (intervals) must be adjacent and are often (but not required to be) of equal size.[2]
+
+    If the bins are of equal size, a rectangle is erected over the bin with height proportional to
+    the frequency—the number of cases in each bin. A histogram may also be normalized to display
+    &#34;relative&#34; frequencies. It then shows the proportion of cases that fall into each of several
+    categories, with the sum of the heights equaling 1.
+    -----------
+
+    Example
+    -----------
+    &gt;&gt;&gt; from sail_safe_functions_orchestrator.visualization.histogram_federated import HistogramFederate
+    &gt;&gt;&gt; values = HistogramFederate.Run(sample_0,5)
+
+    Example-2
+    --------
+    Look into thte notebook
+
+    https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb
+    
+    It will show you the result in the plot.
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param bin_count: _description_
+    :type bin_count: int
+    :return: pyplot figure valuie
+    :rtype: pyplot object
+    &#34;&#34;&#34;
     list_list_precompute = []
     for series in sample_0.dict_series.values():
         list_list_precompute.append(HistogramPrecompute.run(series))
