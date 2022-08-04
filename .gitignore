@@ -2,3 +2,4 @@
 *.pyc
 **/venv*/*
 settings.json
+sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions/data_jsonzip_fhir_r4_sep2019/*

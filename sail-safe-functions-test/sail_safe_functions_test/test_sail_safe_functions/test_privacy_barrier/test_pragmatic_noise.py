@@ -1,7 +1,6 @@
-import pytest
 import pandas as pd
-
-from sail_safe_functions.privacy_barrier.pragmatic_noise import PragmaticNoise
+import pytest
+from sail_safe_functions.privacy_barrier.pragmatic_noise_precompute import PragmaticNoisePrecompute
 
 
 @pytest.mark.active
@@ -21,8 +20,7 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
     dataset = dataframe_kidney_clean
 
     # Act
-    pragmatic_noise = PragmaticNoise()
-    noised_data = pragmatic_noise.run(dataset, scheme, 0.5, 0.5)
+    noised_data = PragmaticNoisePrecompute.run(dataset, scheme, 0.5, 0.5)
 
     # Assert
     assert type(noised_data) is pd.DataFrame

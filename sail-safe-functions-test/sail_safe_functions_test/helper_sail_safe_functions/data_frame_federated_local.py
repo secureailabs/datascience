@@ -40,6 +40,9 @@ class DataFrameFederatedLocal(DataFrameFederated):
                 #
         self.dict_dataframe[path_file_csv] = dataframe_new
 
+    def add_data_frame(self, id_dataset, data_frame: pd.DataFrame) -> None:
+        self.dict_dataframe[id_dataset] = data_frame
+
     def query(self, querystring: str) -> "DataFrameFederatedLocal":
         dataframe_new = DataFrameFederatedLocal()
         for key, dataframe in self.dict_dataframe.items():
