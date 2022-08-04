@@ -8,8 +8,13 @@ import pandas
 
 
 class ReadJsonzipPrecompute:
+<<<<<<< HEAD
     def run(path_file_jsonzip_source: str, dict_feature_schema):
         dict_feature_template = dict_feature_schema["dict_column"]
+=======
+    def run(path_file_jsonzip_source: str, dict_column_template):
+
+>>>>>>> 5759326b8e4fb0a8cedbf5b339ee9d6da334a584
         # 1. Covert patients into events
         list_patient = []
         with zipfile.ZipFile(path_file_jsonzip_source, "r") as zip_file:
@@ -24,6 +29,7 @@ class ReadJsonzipPrecompute:
         dict_measurement_statistics = ReadJsonzipPrecompute.compute_statistics(list_patient)
 
         # 3. List all categories by fraction of patients that have at least 1
+<<<<<<< HEAD
         do_list_data = False
         if do_list_data:
             for key, value in sorted(
@@ -45,6 +51,27 @@ class ReadJsonzipPrecompute:
         data_frame = pandas.DataFrame()
         for name_feature in dict_feature_template:
             data_frame[name_feature] = pandas.Series(data=dict_column[name_feature], name=name_feature)
+=======
+        for key, value in sorted(
+            dict_measurement_statistics.items(),
+            key=lambda key_value: key_value[1]["count_atleastone"],
+            reverse=True,
+        ):
+            count = value["count_atleastone"] / len(list_patient)
+            print(f"{key} {count}")
+
+        # 4. convert mesurements to table
+        dict_column = {}
+        for name_column in dict_column_template:
+            dict_column[name_column] = []
+
+        for patient in list_patient:
+            ReadJsonzipPrecompute.compile_columns(dict_column, dict_column_template, patient)
+
+        data_frame = pandas.DataFrame()
+        for name_column in dict_column_template:
+            data_frame[name_column] = pandas.Series(data=dict_column[name_column], name=name_column)
+>>>>>>> 5759326b8e4fb0a8cedbf5b339ee9d6da334a584
 
         return data_frame
 
@@ -131,6 +158,57 @@ class ReadJsonzipPrecompute:
             raise exception
         raise Exception(f"cannot return default")
 
+<<<<<<< HEAD
+=======
+    def temp_create_dict_feature_template():
+        dict_column_template = {}
+        dict_column_template["gender"] = {}
+        dict_column_template["gender"]["type_feature"] = "patient_gender"
+
+        dict_column_template["race"] = {}
+        dict_column_template["race"]["type_feature"] = "patient_race"
+
+        dict_column_template["ethnicity"] = {}
+        dict_column_template["ethnicity"]["type_feature"] = "patient_ethnicity"
+
+        dict_column_template["marital_status"] = {}
+        dict_column_template["marital_status"]["type_feature"] = "patient_marital_status"
+
+        dict_column_template["first_height"] = {}
+        dict_column_template["first_height"]["type_feature"] = "numeric"
+        dict_column_template["first_height"]["name_measurement"] = "Observation:Body Height"
+        dict_column_template["first_height"]["type_selector"] = "first_occurance"
+
+        dict_column_template["last_height"] = {}
+        dict_column_template["last_height"]["type_feature"] = "numeric"
+        dict_column_template["last_height"]["name_measurement"] = "Observation:Body Height"
+        dict_column_template["last_height"]["type_selector"] = "last_occurance"
+
+        dict_column_template["last_bmi"] = {}
+        dict_column_template["last_bmi"]["type_feature"] = "numeric"
+        dict_column_template["last_bmi"]["name_measurement"] = "Observation:Body Height"
+        dict_column_template["last_bmi"]["type_selector"] = "count_occurance"
+
+        dict_column_template["mean_cholesterol"] = {}
+        dict_column_template["mean_cholesterol"]["type_feature"] = "numeric"
+        dict_column_template["mean_cholesterol"]["name_measurement"] = "Observation:Total Cholesterol"
+        dict_column_template["mean_cholesterol"]["type_selector"] = "mean"
+
+        dict_column_template["first_influenza"] = {}
+        dict_column_template["first_influenza"]["type_feature"] = "categorical"
+        dict_column_template["first_influenza"][
+            "name_measurement"
+        ] = "Immunization:Influenza, seasonal, injectable, preservative free"
+        dict_column_template["first_influenza"]["type_selector"] = "first_occurance"
+
+        dict_column_template["last_smoking"] = {}
+        dict_column_template["last_smoking"]["type_feature"] = "categorical"
+        dict_column_template["last_smoking"]["name_measurement"] = "Observation:Tobacco smoking status NHIS"
+        dict_column_template["last_smoking"]["type_selector"] = "last_occurance"
+
+        return dict_column_template
+
+>>>>>>> 5759326b8e4fb0a8cedbf5b339ee9d6da334a584
     def compute_statistics(list_patient):
         dict_measurement_statistics = {}
         for patient in list_patient:
