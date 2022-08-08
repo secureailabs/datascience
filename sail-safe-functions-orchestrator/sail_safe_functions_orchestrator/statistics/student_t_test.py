@@ -1,11 +1,7 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.student_t_test_aggregate import (
-    StudentTTestAggregate,
-)
-from sail_safe_functions.statistics.unpaired_t_test_precompute import (
-    UnpairedTTestPrecompute,
-)
+from sail_safe_functions.statistics.student_t_test_aggregate import StudentTTestAggregate
+from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
@@ -17,7 +13,7 @@ def student_t_test(
     sample_1: SeriesFederated,
     alternative: str = "less",
 ) -> Tuple[float, float]:
-    
+
     estimator = StudentTTest(alternative)
     return estimator.run(sample_0, sample_1)
 
@@ -41,9 +37,7 @@ class StudentTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(
-            list_list_precompute
-        )
+        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
