@@ -11,11 +11,9 @@ class VariancePrecompute:
 
     def run(
         sample_0: pd.Series,
-    ) -> Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         """
-        Function collects the precomptues requireds for calculating variance 
+        Function collects the precomptues requireds for calculating variance
 
         :param sample_0: _description_
         :type sample_0: pd.Series

@@ -3,11 +3,9 @@ import pandas
 
 
 class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -> pandas.DataFrame:
+    def run(column_schema: dict, data_frame_source: pandas.DataFrame) -> pandas.DataFrame:
         """
-        Categorical featurization function 
+        Categorical featurization function
 
         :param column_schema: _description_
         :type column_schema: dict
@@ -29,9 +27,7 @@ class CategoricalToOnehot:
 
         if type_missing_policy == "raise_exception":
             if 0 < data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f"Column {name_column} contains expeption while not should be present"
-                )
+                raise ValueError(f"Column {name_column} contains expeption while not should be present")
 
         data_frame_target = pandas.get_dummies(
             data_frame_source[name_column],
