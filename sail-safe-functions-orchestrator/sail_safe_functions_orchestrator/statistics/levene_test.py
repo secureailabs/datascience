@@ -16,6 +16,19 @@ def levene_test(
     """
     Perform federated Levene test for equal variances.
 
+    :param sample_0: fedrated series
+
+    :type sample_0: SeriesFederated
+
+    :param sample_1: _description_
+
+    :type sample_1:  fedrsated series
+
+    :return: F-stat, p-value
+
+    :rtype: Tuple[float, float]
+
+
     Definition
     -----------
     The Levene test tests the null hypothesis that all input samples
@@ -37,8 +50,11 @@ def levene_test(
     of variance across groups, including:
 
     -F-test
+
     -Bartlett’s test
+
     -Levene’s test
+
     -Fligner-Killeen test
 
     Examples
@@ -67,12 +83,6 @@ def levene_test(
     ..[1] https://en.wikipedia.org/wiki/Levene%27s_test
     ..[2] https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
 
-    :param sample_0: fedrated series
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1:  fedrsated series
-    :return: F-stat, p-value
-    :rtype: Tuple[float, float]
 
     """
     estimator = LeveneTest()
@@ -84,6 +94,7 @@ class LeveneTest(Estimator):
     This class contains the federated Levenes method
 
     :return: f_statistic(statistics from levenes test)  , p-value
+
     :rtype: float
     """
 

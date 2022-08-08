@@ -9,17 +9,24 @@ from scipy import stats
 from scipy.stats import t
 
 
-def pearson(
-    sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str
-) -> Tuple[float, float]:
+def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
     """
     This is the federated pearson function
     ----------------
+    :param sample_0: _description_
 
-    In statistics, the Pearson correlation coefficient (PCC, pronounced /ˈpɪərsən/) ― also known as Pearson's r,
-    the Pearson product-moment correlation coefficient (PPMCC), the bivariate correlation,[1] or colloquially
-    simply as the correlation coefficient[2] ― is a measure of linear correlation between two sets of data.
-    It is the ratio between the covariance[3][circular reference] of two variables and the product of their standard
+    :type sample_0: SeriesFederated
+
+    :param sample_1: _description_
+
+    :type sample_1: SeriesFederated
+
+    :return: two values pearson and p value
+
+    In statistics, the Pearson correlation coefficient ― also known as Pearson's r,
+    the Pearson product-moment correlation coefficient (PPMCC), the bivariate correlation, or colloquially
+    simply as the correlation coefficient ― is a measure of linear correlation between two sets of data.
+    It is the ratio between the covariance of two variables and the product of their standard
     deviations; thus, it is essentially a normalized measurement of the covariance, such that the result always
     has a value between −1 and 1. As with covariance itself, the measure can only reflect a linear correlation of variables,
     and ignores many other types of relationships or correlations. As a simple example, one would expect the age
@@ -38,12 +45,12 @@ def pearson(
     >>> sample_0.add_array("array_test", np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
     >>> sample_1 = SeriesFederatedLocal("sample_1")
     >>> sample_1.add_array("array_test", np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
-    
-    >>> 
-    >>> 
+
+    >>>
+    >>>
     >>> estimator = Pearson(alternative=alternative)
     >>> pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    
+
 
     There is a linear dependence between x and y if y = a + b*x + e, where
     a,b are constants and e is a random error term, assumed to be independent
@@ -62,12 +69,6 @@ def pearson(
         Journal of the Royal Statistical Society. Series C (Applied
         Statistics), Vol. 21, No. 1 (1972), pp. 1-12.
 
-    :param sample_0: _description_
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1: SeriesFederated
-    :return: two values pearson and p value
-
     """
     estimator = Pearson(alternative)
     return estimator.run(sample_0, sample_1)
@@ -84,9 +85,7 @@ class Pearson(Estimator):
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def run(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
@@ -111,8 +110,6 @@ class Pearson(Estimator):
 
         return rho, p_value
 
-    def run_reference(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

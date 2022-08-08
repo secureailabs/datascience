@@ -45,60 +45,7 @@ def student_t_test(
     sample_1: SeriesFederated,
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
-    &#34;&#34;&#34;
-    Preforms a federated paired t-test
-
-    The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
-    You can use the test when your data values are paired measurements. For example, you might have before-and-after
-    measurements for a group of people. Also, the distribution of differences between the paired measurements should be
-    normally distributed.
-    The paired t-test is also known as the dependent samples t-test, the paired-difference t-test, the matched pairs
-    t-test and the repeated-samples t-test.
-    If your sample sizes are very small, you might not be able to test for normality. You might need to rely on your
-    understanding of the data. Or, you can perform a nonparametric test that doesn’t assume normality.
-
-    Notes
-    -----
-    Examples for use are scores of the same set of student in
-    different exams, or repeated sampling from the same units. The
-    test measures whether the average score differs significantly
-    across samples (e.g. exams). If we observe a large p-value, for
-    example greater than 0.05 or 0.1 then we cannot reject the null
-    hypothesis of identical average scores. If the p-value is smaller
-    than the threshold, e.g. 1%, 5% or 10%, then we reject the null
-    hypothesis of equal averages. Small p-values are associated with
-    large t-statistics.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from scipy import stats
-    &gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
-    &gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-
-    &gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
-    &gt;&gt;&gt; sample_0.add_array(&#34;array_test&#34;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
-    &gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
-    &gt;&gt;&gt; sample_1.add_array(&#34;array_test&#34;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
-
-
-    &gt;&gt;&gt; estimator = StudentTTest(alternative=alternative)
-    &gt;&gt;&gt; t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-
-    References
-    ----------
-    ..[1] https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
-
-    :param sample_0
-    :type sample_0: SeriesFederated
-    :param sample_1
-    :type sample_1: SeriesFederated
-    :param alternative: alternative for the test, defaults to &#34;less&#34;
-    :type alternative: str, optional
-    :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
-    :return: Returns a t-statistic and its p-value
-    :rtype: Tuple[float, float]
-    &#34;&#34;&#34;
-
+    
     estimator = StudentTTest(alternative)
     return estimator.run(sample_0, sample_1)
 
@@ -156,49 +103,7 @@ class StudentTTest(Estimator):
 <span>def <span class="ident">student_t_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, alternative: str = 'less') ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preforms a federated paired t-test</p>
-<p>The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
-You can use the test when your data values are paired measurements. For example, you might have before-and-after
-measurements for a group of people. Also, the distribution of differences between the paired measurements should be
-normally distributed.
-The paired t-test is also known as the dependent samples t-test, the paired-difference t-test, the matched pairs
-t-test and the repeated-samples t-test.
-If your sample sizes are very small, you might not be able to test for normality. You might need to rely on your
-understanding of the data. Or, you can perform a nonparametric test that doesn’t assume normality.</p>
-<h2 id="notes">Notes</h2>
-<p>Examples for use are scores of the same set of student in
-different exams, or repeated sampling from the same units. The
-test measures whether the average score differs significantly
-across samples (e.g. exams). If we observe a large p-value, for
-example greater than 0.05 or 0.1 then we cannot reject the null
-hypothesis of identical average scores. If the p-value is smaller
-than the threshold, e.g. 1%, 5% or 10%, then we reject the null
-hypothesis of equal averages. Small p-values are associated with
-large t-statistics.</p>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from scipy import stats
-&gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
-&gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&quot;sample_0&quot;)
-&gt;&gt;&gt; sample_0.add_array(&quot;array_test&quot;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
-&gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&quot;sample_1&quot;)
-&gt;&gt;&gt; sample_1.add_array(&quot;array_test&quot;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; estimator = StudentTTest(alternative=alternative)
-&gt;&gt;&gt; t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-</code></pre>
-<h2 id="references">References</h2>
-<p>..[1] <a href="https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples">https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples</a></p>
-<p>:param sample_0
-:type sample_0: SeriesFederated
-:param sample_1
-:type sample_1: SeriesFederated
-:param alternative: alternative for the test, defaults to "less"
-:type alternative: str, optional
-:raises ValueError: Raises a value error if alternative is not either {"less", "two-sided", "greater"}
-:return: Returns a t-statistic and its p-value
-:rtype: Tuple[float, float]</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -208,60 +113,7 @@ large t-statistics.</p>
     sample_1: SeriesFederated,
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
-    &#34;&#34;&#34;
-    Preforms a federated paired t-test
-
-    The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
-    You can use the test when your data values are paired measurements. For example, you might have before-and-after
-    measurements for a group of people. Also, the distribution of differences between the paired measurements should be
-    normally distributed.
-    The paired t-test is also known as the dependent samples t-test, the paired-difference t-test, the matched pairs
-    t-test and the repeated-samples t-test.
-    If your sample sizes are very small, you might not be able to test for normality. You might need to rely on your
-    understanding of the data. Or, you can perform a nonparametric test that doesn’t assume normality.
-
-    Notes
-    -----
-    Examples for use are scores of the same set of student in
-    different exams, or repeated sampling from the same units. The
-    test measures whether the average score differs significantly
-    across samples (e.g. exams). If we observe a large p-value, for
-    example greater than 0.05 or 0.1 then we cannot reject the null
-    hypothesis of identical average scores. If the p-value is smaller
-    than the threshold, e.g. 1%, 5% or 10%, then we reject the null
-    hypothesis of equal averages. Small p-values are associated with
-    large t-statistics.
-
-    Examples
-    --------
-    &gt;&gt;&gt; from scipy import stats
-    &gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
-    &gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-
-    &gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
-    &gt;&gt;&gt; sample_0.add_array(&#34;array_test&#34;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
-    &gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
-    &gt;&gt;&gt; sample_1.add_array(&#34;array_test&#34;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
-
-
-    &gt;&gt;&gt; estimator = StudentTTest(alternative=alternative)
-    &gt;&gt;&gt; t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-
-    References
-    ----------
-    ..[1] https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
-
-    :param sample_0
-    :type sample_0: SeriesFederated
-    :param sample_1
-    :type sample_1: SeriesFederated
-    :param alternative: alternative for the test, defaults to &#34;less&#34;
-    :type alternative: str, optional
-    :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
-    :return: Returns a t-statistic and its p-value
-    :rtype: Tuple[float, float]
-    &#34;&#34;&#34;
-
+    
     estimator = StudentTTest(alternative)
     return estimator.run(sample_0, sample_1)</code></pre>
 </details>

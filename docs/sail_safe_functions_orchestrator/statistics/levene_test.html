@@ -44,6 +44,19 @@ def levene_test(
     &#34;&#34;&#34;
     Perform federated Levene test for equal variances.
 
+    :param sample_0: fedrated series
+
+    :type sample_0: SeriesFederated
+
+    :param sample_1: _description_
+
+    :type sample_1:  fedrsated series
+
+    :return: F-stat, p-value
+
+    :rtype: Tuple[float, float]
+
+
     Definition
     -----------
     The Levene test tests the null hypothesis that all input samples
@@ -65,8 +78,11 @@ def levene_test(
     of variance across groups, including:
 
     -F-test
+
     -Bartlett’s test
+
     -Levene’s test
+
     -Fligner-Killeen test
 
     Examples
@@ -95,12 +111,6 @@ def levene_test(
     ..[1] https://en.wikipedia.org/wiki/Levene%27s_test
     ..[2] https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
 
-    :param sample_0: fedrated series
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1:  fedrsated series
-    :return: F-stat, p-value
-    :rtype: Tuple[float, float]
 
     &#34;&#34;&#34;
     estimator = LeveneTest()
@@ -112,6 +122,7 @@ class LeveneTest(Estimator):
     This class contains the federated Levenes method
 
     :return: f_statistic(statistics from levenes test)  , p-value
+
     :rtype: float
     &#34;&#34;&#34;
 
@@ -155,6 +166,13 @@ class LeveneTest(Estimator):
 </code></dt>
 <dd>
 <div class="desc"><p>Perform federated Levene test for equal variances.</p>
+<p>:param sample_0: fedrated series</p>
+<p>:type sample_0: SeriesFederated</p>
+<p>:param sample_1: <em>description</em></p>
+<p>:type sample_1:
+fedrsated series</p>
+<p>:return: F-stat, p-value</p>
+<p>:rtype: Tuple[float, float]</p>
 <h2 id="definition">Definition</h2>
 <p>The Levene test tests the null hypothesis that all input samples
 are from populations with equal variances.
@@ -173,10 +191,10 @@ It’s an alternative to Bartlett’s test that is less sensitive to
 departures from normality.
 There are several solutions to test for the equality (homogeneity)
 of variance across groups, including:</p>
-<p>-F-test
--Bartlett’s test
--Levene’s test
--Fligner-Killeen test</p>
+<p>-F-test</p>
+<p>-Bartlett’s test</p>
+<p>-Levene’s test</p>
+<p>-Fligner-Killeen test</p>
 <h2 id="examples">Examples</h2>
 <p>Test whether or not the lists <code>a</code>, <code>b</code> and <code>c</code> come from populations
 with equal variances.</p>
@@ -197,14 +215,7 @@ This is not surprising, given that the sample variance of <code>b</code> is much
 larger than that of <code>a</code> and <code>c</code>:</p>
 <h2 id="references">References</h2>
 <p>..[1] <a href="https://en.wikipedia.org/wiki/Levene%27s_test">https://en.wikipedia.org/wiki/Levene%27s_test</a>
-..[2] <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html</a></p>
-<p>:param sample_0: fedrated series
-:type sample_0: SeriesFederated
-:param sample_1: <em>description</em>
-:type sample_1:
-fedrsated series
-:return: F-stat, p-value
-:rtype: Tuple[float, float]</p></div>
+..[2] <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -215,6 +226,19 @@ fedrsated series
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
     Perform federated Levene test for equal variances.
+
+    :param sample_0: fedrated series
+
+    :type sample_0: SeriesFederated
+
+    :param sample_1: _description_
+
+    :type sample_1:  fedrsated series
+
+    :return: F-stat, p-value
+
+    :rtype: Tuple[float, float]
+
 
     Definition
     -----------
@@ -237,8 +261,11 @@ fedrsated series
     of variance across groups, including:
 
     -F-test
+
     -Bartlett’s test
+
     -Levene’s test
+
     -Fligner-Killeen test
 
     Examples
@@ -267,12 +294,6 @@ fedrsated series
     ..[1] https://en.wikipedia.org/wiki/Levene%27s_test
     ..[2] https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
 
-    :param sample_0: fedrated series
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1:  fedrsated series
-    :return: F-stat, p-value
-    :rtype: Tuple[float, float]
 
     &#34;&#34;&#34;
     estimator = LeveneTest()
@@ -290,8 +311,8 @@ fedrsated series
 <dd>
 <div class="desc"><p>This class contains the federated Levenes method</p>
 <p>:return: f_statistic(statistics from levenes test)
-, p-value
-:rtype: float</p></div>
+, p-value</p>
+<p>:rtype: float</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -301,6 +322,7 @@ fedrsated series
     This class contains the federated Levenes method
 
     :return: f_statistic(statistics from levenes test)  , p-value
+
     :rtype: float
     &#34;&#34;&#34;
 

@@ -10,6 +10,17 @@ class HistogramFederate:
         """
         This the federated histogram
         -----------
+        :param sample_0: _description_
+
+        :type sample_0: SeriesFederated
+
+        :param bin_count: _description_
+
+        :type bin_count: int
+
+        :return: pyplot figure valuie
+
+        :rtype: pyplot object
 
         it works to segregate the range into several bins and then returns the number
         of instances in each bin. This function is used to build the histogram.
@@ -37,15 +48,9 @@ class HistogramFederate:
         Look into thte notebook
 
         https://github.com/secureailabs/ScratchPad/blob/master/Saurabh/demo_histogram.ipynb
-        
+
         It will show you the result in the plot.
 
-        :param sample_0: _description_
-        :type sample_0: SeriesFederated
-        :param bin_count: _description_
-        :type bin_count: int
-        :return: pyplot figure valuie
-        :rtype: pyplot object
         """
         list_list_precompute = []
         for series in sample_0.dict_series.values():
