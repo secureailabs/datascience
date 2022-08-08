@@ -14,6 +14,14 @@ class VariancePrecompute:
     ) -> Tuple[
         List[float], List[bool]
     ]:  # there seems to be a problem here with this annotation
+        """
+        Function collects the precomptues requireds for calculating variance 
+
+        :param sample_0: _description_
+        :type sample_0: pd.Series
+        :return: _description_
+        :rtype: Tuple[ List[float], List[bool] ]
+        """
         sample_0 = sample_0.to_numpy()
 
         sum_x_0 = np.sum(sample_0)

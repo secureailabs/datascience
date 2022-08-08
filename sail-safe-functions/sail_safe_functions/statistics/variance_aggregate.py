@@ -18,13 +18,8 @@ class VarianceAggregate:
 
         sample_mean_0 = sum_x_0 / size_sample_0
 
-        sample_variance_0 = (
-            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
-        ) * (
-            size_sample_0
-            / (
-                size_sample_0 - 1
-            )  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
         )
 
         return sample_variance_0

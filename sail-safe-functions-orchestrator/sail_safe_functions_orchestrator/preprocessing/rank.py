@@ -10,6 +10,12 @@ from scipy.stats import rankdata
 
 
 def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
+    """
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :return: _description_
+    :rtype: SeriesFederated
+    """
     check_instance(sample_0, SeriesFederated)
     list_size = []
     list_array = []

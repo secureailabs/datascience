@@ -16,6 +16,14 @@ class Variance(Estimator):
         super().__init__(["variance"])
 
     def run(self, sample_0: SeriesFederated):
+        """
+        Runs federated Mean function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        """
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(VariancePrecompute.run(series))

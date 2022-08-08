@@ -1,5 +1,5 @@
 import numpy
-import pandas
+
 from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -16,6 +16,14 @@ class Mean(Estimator):
         super().__init__(["mean"])
 
     def run(self, sample_0: SeriesFederated):
+        """
+        Run federated Means function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        """
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(MeanPrecompute.run(series))

@@ -12,6 +12,15 @@ class WelchTTestAggregate:
     def run(
         list_list_precompute: List[List[float]],
     ):
+        """
+        Function Aggregates data for doing a unpaired t-test
+
+        :param list_list_precompute: _description_
+        :type list_list_precompute: List[List[float]]
+        :return: _description_
+        :rtype: _type_
+        """
+
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0

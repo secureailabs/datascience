@@ -10,6 +10,14 @@ class ChisquareAggregate:
     """
 
     def run(list_precompute) -> Dict:
+        """
+        Aggregates data for Chisquare test
+
+        :param list_precompute: _description_
+        :type list_precompute: _type_
+        :return: _description_
+        :rtype: Dict
+        """
 
         list_unique_0 = []
         list_unique_1 = []
@@ -36,15 +44,11 @@ class ChisquareAggregate:
 
         for i_0 in range(array_true.shape[0]):
             for i_1 in range(array_true.shape[1]):
-                array_pred[i_0, i_1] = (
-                    array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-                )
+                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
         array_true = array_true.ravel()
         array_pred = array_pred.ravel()
-        chisquare_statistic = (
-            numpy.power(array_true - array_pred, 2) / array_pred
-        ).sum()
+        chisquare_statistic = (numpy.power(array_true - array_pred, 2) / array_pred).sum()
         degrees_of_freedom = (len(list_unique_0) - 1) * (len(list_unique_1) - 1)
 
         p_value = distributions.chi2.sf(chisquare_statistic, degrees_of_freedom)

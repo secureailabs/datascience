@@ -29,6 +29,17 @@ class StudentTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        """
+        Run federated student t test
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises ValueError: _description_
+        :return: _description_
+        :rtype: _type_
+        """
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -40,9 +51,7 @@ class StudentTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(
-            list_list_precompute
-        )
+        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)

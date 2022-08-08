@@ -1,10 +1,9 @@
-from typing import List
-
 import pandas
 
 
 # TODO this function is dangerous
 class ValueAbsolute:
+
     """
     Takes the absolute value sum of a series
     """

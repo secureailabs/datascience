@@ -15,6 +15,16 @@ class Concatenate:
     """Federate wrapper safe function for the pandas concatenate"""
 
     def run(sample_0: SeriesFederated, sample_1: SeriesFederated):
+        """
+        Federate wrapper safe function for the pandas concatenate
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
         sample_concatenated = sample_0.create_new()

@@ -10,10 +10,20 @@ class CumulativeDistributionFunctionPrecompute:
     Precomputes data for creating a federated 1dcdf
     """
 
-    def run(
-        sample_0: pandas.Series, domain_min: float, domain_max: float
-    ) -> Tuple[List[float], List[float], int]:
+    def run(sample_0: pandas.Series, domain_min: float, domain_max: float) -> Tuple[List[float], List[float], int]:
         # TODO test this for series of size 1
+        """
+        precomputes for federated cdf
+
+        :param sample_0: _description_
+        :type sample_0: pandas.Series
+        :param domain_min: _description_
+        :type domain_min: float
+        :param domain_max: _description_
+        :type domain_max: float
+        :return: _description_
+        :rtype: Tuple[List[float], List[float], int]
+        """
         array_sample_0 = sample_0.to_numpy()
         size_sample_0 = len(array_sample_0)
         if size_sample_0 == 1:
@@ -30,7 +40,5 @@ class CumulativeDistributionFunctionPrecompute:
             array_value = numpy.insert(array_value, -1, 1)
 
             array_domain_safe = numpy.linspace(domain_min, domain_max, count_value)
-            array_value_safe = interpolate.interp1d(array_domain, array_value)(
-                array_domain_safe
-            )
+            array_value_safe = interpolate.interp1d(array_domain, array_value)(array_domain_safe)
         return array_domain_safe, array_value_safe, size_sample_0

@@ -13,6 +13,21 @@ class KolmogorovSmirnovTestPrecompute:
     def run(
         sample_0: Series, sample_ranked_0: Series, distribution: str, count_total: int
     ) -> List[float]:
+        """
+        Calculate the preceomputes for KolmogorovSmirnov test
+
+        :param sample_0: _description_
+        :type sample_0: Series
+        :param sample_ranked_0: _description_
+        :type sample_ranked_0: Series
+        :param distribution: _description_
+        :type distribution: str
+        :param count_total: _description_
+        :type count_total: int
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: List[float]
+        """
         type_distribution = distribution["type_distribution"]
 
         array_sample_0 = sample_0.to_numpy()

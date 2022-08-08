@@ -14,6 +14,19 @@ class CumulativeDistributionFunctionAggregate:
         domain_min,
         domain_max,
     ) -> Tuple[List[float], List[float]]:
+        """
+        Aggregate the cdf precompute
+
+        :param list_precompute: _description_
+        :type list_precompute: List[Tuple[List[float], List[float], int]]
+        :param domain_min: _description_
+        :type domain_min: _type_
+        :param domain_max: _description_
+        :type domain_max: _type_
+        :return: _description_
+        :rtype: Tuple[List[float], List[float]]
+        """
+
         list_array_value_resampled = []
         count_total = 0
         for precompute in list_precompute:

@@ -44,6 +44,17 @@ class MannWhitneyUTest(Estimator):
     def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -> Tuple[float, float]:
+        """
+        Runs Federated MannWhitneyUTest
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: Tuple[float, float]
+        """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size

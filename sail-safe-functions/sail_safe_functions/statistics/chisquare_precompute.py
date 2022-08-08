@@ -9,6 +9,16 @@ class ChisquarePrecompute:
     """
 
     def run(sample_0: pandas.Series, sample_1: pandas.Series) -> Dict:
+        """
+        collect the precompute for chisquare
+
+        :param sample_0: _description_
+        :type sample_0: pandas.Series
+        :param sample_1: _description_
+        :type sample_1: pandas.Series
+        :return: _description_
+        :rtype: Dict
+        """
         precompute = {}
         for tuple_value in zip(sample_0, sample_1):
             if tuple_value not in precompute:

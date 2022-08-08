@@ -6,6 +6,17 @@ class CategoricalToOnehot:
     def run(
         column_schema: dict, data_frame_source: pandas.DataFrame
     ) -> pandas.DataFrame:
+        """
+        Categorical featurization function 
+
+        :param column_schema: _description_
+        :type column_schema: dict
+        :param data_frame_source: _description_
+        :type data_frame_source: pandas.DataFrame
+        :raises ValueError: _description__
+        :return: featurized encoding on categorical feature
+        :rtype: pandas.DataFrame
+        """
         name_column = column_schema["name_column"]
         type_missing_policy = column_schema["type_missing_policy"]
         if type_missing_policy not in ["propagate_add_column", "raise_exception"]:

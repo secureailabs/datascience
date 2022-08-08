@@ -7,6 +7,14 @@ class MeanAggregate:
     """
 
     def run(list_list_precompute: List[List[float]]):
+        """
+        Aggregate the precomptes for mean
+
+        :param list_list_precompute: _description_
+        :type list_list_precompute: List[List[float]]
+        :return: _description_
+        :rtype: _type_
+        """
         sum_x_0 = 0
         degrees_of_freedom_0 = 0
 
