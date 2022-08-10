@@ -1,0 +1,49 @@
+name: Update Documentation
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  Pdoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Run Python commands to generate Documentation
+        run: |
+          pip install --upgrade pip
+          python3.8 -m venv env
+          source env/bin/activate
+          echo "VIRTUAL ENV:" $VIRTUAL_ENV
+          python build/install.py
+          python build/documentation.py
+      - name: check for changes
+        run: git status
+      - name: commit changed files
+        run: |
+          git config --local user.email "Jenkins@secureailabs.com"
+          git config --local user.name "GitHub Action test"
+          git add .
+          git commit -m "Auto updating Docs"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+
+  workflow-conclusion:
+    # Without this step workflow remains "green" if build does fail.
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [Pdoc]
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - name: Check Job Status status and fail if they are red
+        if: env.WORKFLOW_CONCLUSION == 'failure'
+        run: exit 1
