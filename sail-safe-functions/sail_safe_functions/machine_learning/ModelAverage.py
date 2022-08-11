@@ -1,8 +1,11 @@
+from typing import List
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
+
+import torch
 
 
 class ModelAverage:
-    def run(models, verbose=False):
+    def run(models: List[torch.nn.Module], verbose: bool = False) -> torch.nn.Module:
 
         model_parameters = []
         for model in models:

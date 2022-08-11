@@ -1,4 +1,5 @@
 from tokenize import String
+from typing import List
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 from torch.autograd import Variable
 import torch
@@ -6,13 +7,13 @@ import torch
 
 class ModelTrain:
     def run(
-        epochs,
-        data,
-        learn_rate,
-        model,
-        criterion,
-        optimizer,
-    ):
+        epochs: int,
+        data: List[torch.Tensor, torch.Tensor],
+        learn_rate: float,
+        model: torch.nn.Module,
+        criterion: String,
+        optimizer: String,
+    ) -> torch.nn.Module:
 
         if ModelUtility.check_valid_model(model):
             model = ModelUtility.get_clean_model(model)
@@ -51,7 +52,7 @@ class ModelTrain:
 
     # TODO: fancy ref filtering
     @staticmethod
-    def get_criterion(criterion: String):
+    def get_criterion(criterion: String) -> torch.nn.Module:
         if criterion == "MSELoss":
             return torch.nn.MSELoss()
         elif criterion == "BCELoss":
@@ -61,5 +62,7 @@ class ModelTrain:
 
     # TODO: fancy ref filtering
     @staticmethod
-    def get_optimizer(model, learn_rate, optimizer: String):
+    def get_optimizer(
+        model: torch.nn.Module, learn_rate: float, optimizer: String
+    ) -> torch.optim.Optimizer:
         return torch.optim.SGD(model.parameters(), lr=learn_rate)

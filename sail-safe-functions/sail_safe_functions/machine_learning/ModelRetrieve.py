@@ -1,8 +1,9 @@
+import torch
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 
 
 class ModelRetrieve:
-    def run(avg_model, max_epsilon=1):
+    def run(avg_model: torch.nn.Module, max_epsilon: float = 1.0) -> torch.nn.Module:
 
         # Check Privacy Parameter
         if ModelUtility.get_epsilon(avg_model) > max_epsilon:
