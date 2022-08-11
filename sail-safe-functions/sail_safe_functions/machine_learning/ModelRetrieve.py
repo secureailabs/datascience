@@ -7,7 +7,7 @@ class ModelRetrieve:
 
         # Check Privacy Parameter
         if ModelUtility.get_epsilon(avg_model) > max_epsilon:
-            return "Epislon BUdget Exceeded"
+            return "Epislon Budget Exceeded"
 
         # Clean the model
         clean_model = ModelUtility.get_clean_model(avg_model)

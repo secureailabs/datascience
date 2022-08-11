@@ -1,5 +1,5 @@
 from tokenize import String
-from typing import List
+from typing import List, Tuple
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 from torch.autograd import Variable
 import torch
@@ -8,7 +8,7 @@ import torch
 class ModelTrain:
     def run(
         epochs: int,
-        data: List[torch.Tensor, torch.Tensor],
+        data: List[Tuple[torch.Tensor, torch.Tensor]],
         learn_rate: float,
         model: torch.nn.Module,
         criterion: String,
