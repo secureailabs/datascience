@@ -1,6 +1,5 @@
-from abc import abstractmethod
 from tokenize import String
-from sail_safe_functions.machine_learning.utilities.ModelUtility import ModelUtility
+from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 from torch.autograd import Variable
 import torch
 

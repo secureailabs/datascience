@@ -1,7 +1,7 @@
-from sail_safe_functions.machine_learning.models.LogisticRegression import (
+from helper_libs.shared.models.LogisticRegression import (
     LogisticRegression,
 )
-from sail_safe_functions.machine_learning.models.LinearRegression import (
+from helper_libs.shared.models.LinearRegression import (
     LinearRegression,
 )
 import torch
@@ -37,25 +37,10 @@ class ModelUtility:
         # return data.epsilon
         return 0.1
 
-    # TODO: enumerate all model params for each model
-    @staticmethod
-    def get_clean_model(model):
-
-        if isinstance(model, LinearRegression):
-            in_layer = model.model.in_features
-            out_layer = model.model.out_features
-            return LinearRegression(in_layer, out_layer)
-        elif isinstance(model, LogisticRegression):
-            in_layer = model.model.in_features
-            out_layer = model.model.out_features
-            return LogisticRegression(in_layer, out_layer)
-        else:
-            print("model clean falied")
-            return 0
-
-    # TODO: make checks for all our supported models
     @staticmethod
     def check_valid_model(model):
+
+        # TODO: make checks for all our supported models
         if isinstance(model, LinearRegression):
             return True
         elif isinstance(model, LogisticRegression):
@@ -63,3 +48,19 @@ class ModelUtility:
         else:
             print("model check Failed")
             return False
+
+    @staticmethod
+    def get_clean_model(model):
+        if ModelUtility.check_valid_model(model):
+
+            # TODO: enumerate all supported params for each model
+            in_layer = model.model.in_features
+            out_layer = model.model.out_features
+
+            if isinstance(model, LinearRegression):
+                return LinearRegression(in_layer, out_layer)
+            elif isinstance(model, LogisticRegression):
+                return LogisticRegression(in_layer, out_layer)
+            else:
+                print("Model cleaning failed.")
+                return 0

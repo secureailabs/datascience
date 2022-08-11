@@ -1,4 +1,4 @@
-from sail_safe_functions.machine_learning.utilities.ModelUtility import ModelUtility
+from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 
 
 class ModelRetrieve:
