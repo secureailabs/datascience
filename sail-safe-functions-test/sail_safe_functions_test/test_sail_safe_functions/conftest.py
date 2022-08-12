@@ -34,7 +34,7 @@ def tuple_kidney_schema_dataframe() -> Tuple[dict, DataFrameFederatedLocal]:
 
 
 @pytest.fixture
-def data_frame_federated_kidney() -> Tuple[dict, DataFrameFederatedLocal]:
+def data_frame_federated_kidney() -> DataFrameFederatedLocal:
     """
     Fixture for loading a dataframe with missing values
     :return: data_frame_federated_kidney: a federated dataframe
