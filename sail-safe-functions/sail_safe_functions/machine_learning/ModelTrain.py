@@ -2,13 +2,15 @@ from tokenize import String
 from typing import List, Tuple
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 from torch.autograd import Variable
+from pandas import DataFrame
 import torch
 
 
 class ModelTrain:
     def run(
         epochs: int,
-        data: List[Tuple[torch.Tensor, torch.Tensor]],
+        X: DataFrame,
+        Y: DataFrame,
         learn_rate: float,
         model: torch.nn.Module,
         criterion: String,
@@ -26,10 +28,14 @@ class ModelTrain:
         criterion = ModelTrain.get_criterion(criterion)
         optimizer = ModelTrain.get_optimizer(model, learn_rate, optimizer)
 
+        # Transform DataFrames to Tensors
+        X = torch.Tensor(X.values).float()
+        Y = torch.Tensor(Y.values).float()
+
         for epoch in range(epochs):
 
-            inputs = Variable(data[0])
-            labels = Variable(data[1])
+            inputs = Variable(X)
+            labels = Variable(Y)
 
             # Clear gradient buffers because we don't want any gradient from previous epoch to carry forward, dont want to cummulate gradients
             optimizer.zero_grad()
