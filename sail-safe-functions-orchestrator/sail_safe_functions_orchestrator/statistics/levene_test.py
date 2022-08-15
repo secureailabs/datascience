@@ -16,17 +16,12 @@ def levene_test(
     """
     Perform federated Levene test for equal variances.
 
-    :param sample_0: fedrated series
-
-    :type sample_0: SeriesFederated
-
-    :param sample_1: _description_
-
-    :type sample_1:  fedrsated series
-
-    :return: F-stat, p-value
-
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1:  federated series
+        :return: F-stat, p-value
+        :rtype: Tuple[float, float]
 
 
     Definition

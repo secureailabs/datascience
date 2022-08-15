@@ -44,25 +44,19 @@ def paired_t_test(
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Preforms a federated paired t-test
+    Preforms a federated paired t-test.
 
-    :param sample_0
+    It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
-    :type sample_0: SeriesFederated
-
-    :param sample_1
-
-    :type sample_1: SeriesFederated
-
-    :param alternative: alternative for the test, defaults to &#34;less&#34;
-
-    :type alternative: str, optional
-
-    :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
-
-    :return: Returns a t-statistic and its p-value
-
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1: SeriesFederated
+        :param alternative: alternative for the test, defaults to &#34;less&#34;
+        :type alternative: str, optional
+        :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
+        :return: The t-statistic and the p-value.
+        :rtype: Tuple[float, float]
 
     The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
     You can use the test when your data values are paired measurements. For example, you might have before-and-after
@@ -103,8 +97,6 @@ def paired_t_test(
     References
     ----------
     ..[1] https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
-
-
     &#34;&#34;&#34;
 
     estimator = PairedTTest(alternative)
@@ -160,16 +152,18 @@ class PairedTTest(Estimator):
 <span>def <span class="ident">paired_t_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, alternative: str = 'less') ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preforms a federated paired t-test</p>
-<p>:param sample_0</p>
-<p>:type sample_0: SeriesFederated</p>
-<p>:param sample_1</p>
-<p>:type sample_1: SeriesFederated</p>
-<p>:param alternative: alternative for the test, defaults to "less"</p>
-<p>:type alternative: str, optional</p>
-<p>:raises ValueError: Raises a value error if alternative is not either {"less", "two-sided", "greater"}</p>
-<p>:return: Returns a t-statistic and its p-value</p>
-<p>:rtype: Tuple[float, float]</p>
+<div class="desc"><p>Preforms a federated paired t-test.</p>
+<p>It takes two federated series, and returns the t-statistic and p-value for a paired t-test.</p>
+<pre><code>:param sample_0: The first sample of data
+:type sample_0: SeriesFederated
+:param sample_1: The second sample of data
+:type sample_1: SeriesFederated
+:param alternative: alternative for the test, defaults to "less"
+:type alternative: str, optional
+:raises ValueError: Raises a value error if alternative is not either {"less", "two-sided", "greater"}
+:return: The t-statistic and the p-value.
+:rtype: Tuple[float, float]
+</code></pre>
 <p>The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
 You can use the test when your data values are paired measurements. For example, you might have before-and-after
 measurements for a group of people. Also, the distribution of differences between the paired measurements should be
@@ -213,25 +207,19 @@ large t-statistics.</p>
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Preforms a federated paired t-test
+    Preforms a federated paired t-test.
 
-    :param sample_0
+    It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
-    :type sample_0: SeriesFederated
-
-    :param sample_1
-
-    :type sample_1: SeriesFederated
-
-    :param alternative: alternative for the test, defaults to &#34;less&#34;
-
-    :type alternative: str, optional
-
-    :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
-
-    :return: Returns a t-statistic and its p-value
-
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1: SeriesFederated
+        :param alternative: alternative for the test, defaults to &#34;less&#34;
+        :type alternative: str, optional
+        :raises ValueError: Raises a value error if alternative is not either {&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;}
+        :return: The t-statistic and the p-value.
+        :rtype: Tuple[float, float]
 
     The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
     You can use the test when your data values are paired measurements. For example, you might have before-and-after
@@ -272,8 +260,6 @@ large t-statistics.</p>
     References
     ----------
     ..[1] https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
-
-
     &#34;&#34;&#34;
 
     estimator = PairedTTest(alternative)

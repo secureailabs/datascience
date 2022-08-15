@@ -16,25 +16,19 @@ def paired_t_test(
     alternative: str = "less",
 ) -> Tuple[float, float]:
     """
-    Preforms a federated paired t-test
+    Preforms a federated paired t-test.
 
-    :param sample_0
+    It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
-    :type sample_0: SeriesFederated
-
-    :param sample_1
-
-    :type sample_1: SeriesFederated
-
-    :param alternative: alternative for the test, defaults to "less"
-
-    :type alternative: str, optional
-
-    :raises ValueError: Raises a value error if alternative is not either {"less", "two-sided", "greater"}
-
-    :return: Returns a t-statistic and its p-value
-
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1: SeriesFederated
+        :param alternative: alternative for the test, defaults to "less"
+        :type alternative: str, optional
+        :raises ValueError: Raises a value error if alternative is not either {"less", "two-sided", "greater"}
+        :return: The t-statistic and the p-value.
+        :rtype: Tuple[float, float]
 
     The paired t-test is a method used to test whether the mean difference between pairs of measurements is zero or not.
     You can use the test when your data values are paired measurements. For example, you might have before-and-after
@@ -75,8 +69,6 @@ def paired_t_test(
     References
     ----------
     ..[1] https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
-
-
     """
 
     estimator = PairedTTest(alternative)

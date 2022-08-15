@@ -13,15 +13,11 @@ def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: s
     """
     This is the federated pearson function
     ----------------
-    :param sample_0: _description_
-
-    :type sample_0: SeriesFederated
-
-    :param sample_1: _description_
-
-    :type sample_1: SeriesFederated
-
-    :return: two values pearson and p value
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The Second sample of data
+        :type sample_1: SeriesFederated
+        :return: two values pearson and p value
 
     In statistics, the Pearson correlation coefficient ― also known as Pearson's r,
     the Pearson product-moment correlation coefficient (PPMCC), the bivariate correlation, or colloquially
