@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 from sail_safe_functions.preprocessing.drop_precompute import DropPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
@@ -51,6 +51,18 @@ def drop(
         columns,
         level,
         errors,
+    )
+
+
+def drop_column(data_frame_source: DataFrameFederated, list_name_column: List[str]) -> DataFrameFederated:
+    return Drop.run(
+        data_frame_source,
+        list_name_column,
+        axis=1,
+        index=None,
+        columns=None,
+        level=None,
+        errors="raise",
     )
 
 

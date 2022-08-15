@@ -1,4 +1,5 @@
 from sail_safe_functions_orchestrator.statistics.chisquare import chisquare
+from sail_safe_functions_orchestrator.statistics.covariance import covariance
 from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import kolmogorov_smirnov_test
 from sail_safe_functions_orchestrator.statistics.kurtosis import kurtosis
 from sail_safe_functions_orchestrator.statistics.levene_test import levene_test
@@ -7,6 +8,7 @@ from sail_safe_functions_orchestrator.statistics.mean import mean
 from sail_safe_functions_orchestrator.statistics.min_max import min_max
 from sail_safe_functions_orchestrator.statistics.paired_t_test import paired_t_test
 from sail_safe_functions_orchestrator.statistics.pearson import pearson
+from sail_safe_functions_orchestrator.statistics.quantiles import quantiles
 from sail_safe_functions_orchestrator.statistics.skewness import skewness
 from sail_safe_functions_orchestrator.statistics.spearman import spearman
 from sail_safe_functions_orchestrator.statistics.student_t_test import student_t_test

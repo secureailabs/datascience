@@ -10,6 +10,7 @@ from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
     """Computes a CDF by aproximation with at least the square root of the sample
     size equally spaced between a estimate of the min and the max
+    this cdf is design to resist and exact value attack and a reconstruction attack but not a membership attack
 
     :param sample_0: The federated series over which the cdf should be computed
     :type sample_0: SeriesFederated
