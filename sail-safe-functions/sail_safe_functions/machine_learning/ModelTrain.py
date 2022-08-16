@@ -28,14 +28,10 @@ class ModelTrain:
         criterion = ModelTrain.get_criterion(criterion)
         optimizer = ModelTrain.get_optimizer(model, learn_rate, optimizer)
 
-        # Transform DataFrames to Tensors
-        X = torch.Tensor(X.values).float()
-        Y = torch.Tensor(Y.values).float()
-
         for epoch in range(epochs):
 
-            inputs = Variable(X)
-            labels = Variable(Y)
+            inputs = Variable(ModelUtility.dataframe_to_tensor(X))
+            labels = Variable(ModelUtility.dataframe_to_tensor(Y))
 
             # Clear gradient buffers because we don't want any gradient from previous epoch to carry forward, dont want to cummulate gradients
             optimizer.zero_grad()

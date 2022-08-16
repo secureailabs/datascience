@@ -64,3 +64,15 @@ class ModelUtility:
             else:
                 print("Model cleaning failed.")
                 return 0
+
+    # TODO: Types hard coded for now
+    @staticmethod
+    def dataframe_to_tensor(data):
+        # if isinstance(data.values, numpy.ndarray):
+        #     tensor = torch.from_numpy(data.values)
+        if not isinstance(data.values, torch.Tensor):
+            tensor = torch.Tensor(data.values).float()
+        else:
+            print("Problem transforming dataframe to tensor")
+            return -1
+        return tensor
