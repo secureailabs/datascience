@@ -1,5 +1,6 @@
 from sail_safe_functions_orchestrator.statistics.chisquare import chisquare
 from sail_safe_functions_orchestrator.statistics.covariance import covariance
+from sail_safe_functions_orchestrator.statistics.covariance_matrix import covariance_matrix
 from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import kolmogorov_smirnov_test
 from sail_safe_functions_orchestrator.statistics.kurtosis import kurtosis
 from sail_safe_functions_orchestrator.statistics.levene_test import levene_test

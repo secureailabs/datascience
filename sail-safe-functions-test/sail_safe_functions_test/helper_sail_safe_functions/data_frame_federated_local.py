@@ -1,6 +1,6 @@
 from typing import List
 
-import numpy as np
+import numpy
 import pandas as pd
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -12,6 +12,7 @@ class DataFrameFederatedLocal(DataFrameFederated):
 
     def __init__(self) -> None:
         super().__init__()
+        self._size = 0
 
     # oveloads
     def create_new(self) -> "DataFrameFederated":
@@ -22,6 +23,14 @@ class DataFrameFederatedLocal(DataFrameFederated):
 
     def head(self):
         return self._get_dataframe_first().head()
+
+    @property
+    def size(self) -> int:
+        # TODO track this
+        size = 0
+        for data_frame in self.dict_dataframe.values():
+            size += data_frame.shape[0]
+        return size
 
     @property
     def columns(self):
@@ -48,12 +57,6 @@ class DataFrameFederatedLocal(DataFrameFederated):
         for key, dataframe in self.dict_dataframe.items():
             dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
 
-    def to_list_numpy(self) -> List[np.ndarray]:
-        list_array_numpy = []
-        for dataframe in self.dict_dataframe.values():
-            dataframe.to_numpy()
-        return list_array_numpy
-
     # index section
 
     def __delitem__(self, key) -> None:
@@ -69,15 +72,23 @@ class DataFrameFederatedLocal(DataFrameFederated):
     def __setitem__(self, key, value):
         raise NotImplementedError()
 
-    def to_numpy(self) -> np.ndarray:
+    def to_list_numpy(self) -> List[numpy.ndarray]:
+        list_array_numpy = []
+        for dataframe in self.dict_dataframe.values():
+            dataframe.to_numpy()
+        return list_array_numpy
 
+    def to_numpy(self) -> numpy.ndarray:
         list_array_numpy = []
         for data_frame in self.dict_dataframe.values():
             list_array_numpy.append(data_frame.to_numpy())
-        return np.concatenate(list_array_numpy)
+        return numpy.concatenate(list_array_numpy)
+
+    def to_numpy_float64(self) -> numpy.ndarray:
+        return self.to_numpy().astype(numpy.float64)
 
     @staticmethod
-    def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
+    def from_numpy(dataset_id: str, array: numpy.ndarray, list_name_column=None) -> numpy.ndarray:
         data_frame = pd.DataFrame(array)
         if list_name_column is not None:
             for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):

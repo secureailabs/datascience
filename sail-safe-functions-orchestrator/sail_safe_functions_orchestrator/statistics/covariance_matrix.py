@@ -6,7 +6,7 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 def covariance_matrix(data_frame: DataFrameFederated) -> numpy.ndarray:
     """
-    covariance_matrix is defined
+    covariance_matrix is defined as the matrix of all covariance
 
     :param sample_0: sample_0
     :type sample_0: SeriesFederated

@@ -1,10 +1,16 @@
 from abc import ABC
+from typing import List, Tuple
 
 
 class SeriesFederated(ABC):
     def __init__(self, name: str = None) -> None:
         self._dict_series = {}
         self.name = name
+        self._dtype = None
+
+    @property
+    def dtype(self):
+        return self._dtype
 
     @property
     def dict_series(self):

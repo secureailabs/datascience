@@ -21,11 +21,11 @@ def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
 
 
 class CumulativeDistributionFunction:
-    "Estimator for non-disclosive CDF"
+    "Estimator for non-disclosive CDF, WARNING this function works very poorly when the sample has very few unique values"
 
     @staticmethod
     def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
-
+        # TODO we need some sort of wanring when the sample does not contain enough unque values
         domain_min, domain_max = MinMax().run(sample_0)
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
