@@ -20,22 +20,21 @@ class kl_divergence:
             :return: kl divergence between two distribution
             :rtype: float
         """
-        return math.sum(a[i] * np.log(a[i] / b[i]) for i in range(len(a)))
+        return sum(a[i] * np.log(a[i] / b[i]) for i in range(len(a)))
 
     def run(self, sample_0: pandas.Series, sample_1: pandas.Series, reverse: Boolean):
         """
         kl divergence between same distribtion could be different for two same distribution
-        So there are two type kl divergence. we have tried to include both
+        There are two ways do tha Kl divergence. Forward kl and Reverse kl
 
-
-        :param sample_0: first input distibution
-        :type sample_0: pandas.Series
-        :param sample_1: Second input distribution
-        :type sample_1: pandas.Series
-        :param reverse: If reverse is True it will run Reverse KL
-        :type reverse: Boolean
-        :return: kl divergence between two distribution
-        :rtype: Float
+            :param sample_0: first input distibution
+            :type sample_0: pandas.Series
+            :param sample_1: Second input distribution
+            :type sample_1: pandas.Series
+            :param reverse: If reverse is True it will run Reverse KL
+            :type reverse: Boolean
+            :return: kl divergence between two distribution
+            :rtype: Float
         """
         # Reverse KL
         if reverse:
