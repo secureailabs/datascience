@@ -41,12 +41,4 @@ class CovarianceAggregate(object):
         term_3 = size_0 * mean_0 * mean_1
 
         covariance = (term_0 + term_1 + term_2 + term_3) / (size_0 - 1)
-        import numpy
-
-        if numpy.isnan(covariance):
-            print(term_0)
-            print(term_1)
-            print(term_2)
-            print(term_3)
-            raise Exception
         return covariance

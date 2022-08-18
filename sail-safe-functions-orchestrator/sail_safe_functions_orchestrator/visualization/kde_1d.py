@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt  # TODO replace
 import numpy
 import scipy
 from sail_safe_functions_orchestrator import statistics
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sklearn.neighbors import KernelDensity
 
@@ -16,9 +17,16 @@ def kde(array_domain: numpy.ndarray, array_samples: numpy.ndarray, kernel_standa
     return density(array_domain)
 
 
-def kde_1d(sample_0: SeriesFederated, sample_split: SeriesFederated = None, kernel_standard_deviation: float = 0.1):
-    # TODO add plotliy
+def kde_1d(
+    data_frame: DataFrameFederated,
+    name_feature_data: str,
+    sample_split: SeriesFederated = None,  # TODO make this part of the dataframe
+    kernel_standard_deviation: float = 0.1,
+):
+    sample_0 = data_frame[name_feature_data]
+    # TODO add plotly
     # TODO add privacy
+    fig = plt.figure()
     domain_min, domain_max = statistics.min_max(sample_0)
     array_domain = numpy.linspace(domain_min, domain_max, 100)
     if sample_split is None:
@@ -42,4 +50,7 @@ def kde_1d(sample_0: SeriesFederated, sample_split: SeriesFederated = None, kern
                 ax.fill_between(array_domain, numpy.zeros(len(array_domain)), array_value, alpha=0.2)
             # plt.scatter(sample_0.to_numpy()[array_split == unique], sample_1.to_numpy()[array_split == unique])
         plt.legend(list_unique)
+    plt.ylabel("likelihood")
+    plt.xlabel(name_feature_data)
     plt.show()
+    return fig
