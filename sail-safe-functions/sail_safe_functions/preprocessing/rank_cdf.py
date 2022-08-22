@@ -19,15 +19,15 @@ class RankCumulativeDistributionFunction:
         """
         Rank the cdf
 
-        :param sample_0: _description_
+        :param sample_0: input sample
         :type sample_0: Series
-        :param size_sample_total: _description_
+        :param size_sample_total: value for sample size
         :type size_sample_total: int
-        :param list_domain_cdf: _description_
+        :param list_domain_cdf: A 1-D array of real value
         :type list_domain_cdf: List[float]
-        :param list_value_cdf: _description_
+        :param list_value_cdf: A N-D array of real values. The length of y along the interpolation axis must be equal to the length of x
         :type list_value_cdf: List[float]
-        :return: _description_
+        :return: array containing rank
         :rtype: Series
         """
         array_sample_0 = sample_0

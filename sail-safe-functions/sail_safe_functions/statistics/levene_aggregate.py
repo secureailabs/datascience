@@ -15,9 +15,9 @@ class LeveneAggregate:
         """
          Aggregates data for Levens Test
 
-        :param list_list_precompute: _description_
+        :param list_list_precompute:  list of precompute
         :type list_list_precompute: List[List[float]]
-        :param equal_variances: _description_, defaults to False
+        :param equal_variances: Applying for equal varaince or not, defaults to False
         :type equal_variances: bool, optional
         :return: _description_
         :rtype: _type_

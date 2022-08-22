@@ -12,11 +12,11 @@ class ChisquarePrecompute:
         """
         collect the precompute for chisquare
 
-        :param sample_0: _description_
+        :param sample_0: First input sample
         :type sample_0: pandas.Series
-        :param sample_1: _description_
+        :param sample_1: Second input sample
         :type sample_1: pandas.Series
-        :return: _description_
+        :return: dicitoanry containing precompute
         :rtype: Dict
         """
         precompute = {}

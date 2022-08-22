@@ -18,7 +18,7 @@ class PearsonAggregate(object):
         This function run to calculate the final precompute
         and calculate the federated pearson value.
 
-        :param list_list_precompute:
+        :param list_list_precompute: list of precomputes
         :type list_list_precompute: List[List[float]]
         :return: Pearson value r
         :rtype: float

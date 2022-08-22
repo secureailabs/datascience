@@ -7,11 +7,10 @@ class OnehotToCategorical:
         """
         encoded(one hot encoding) feature to categorical
 
-        :param column_schema: _description_
+        :param column_schema: dictionary containing column schema
         :type column_schema: dict
-        :param data_frame_source: _description_
+        :param data_frame_source: dataframe containing source
         :type data_frame_source: pandas.DataFrame
-        :raises ValueError: _description_
         :return: _description_
         :rtype: pandas.DataFrame
         """

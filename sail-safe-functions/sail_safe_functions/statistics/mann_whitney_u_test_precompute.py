@@ -10,9 +10,9 @@ class MannWhitneyUTestPrecompute:
         """
         precompute function of the mann withnet u test
 
-        :param series_0: _description_
+        :param series_0: INput sample
         :type series_0: pandas.Series
-        :param series_concatenated_ranked: _description_
+        :param series_concatenated_ranked: Concatenated ranked series
         :type series_concatenated_ranked: pandas.Series
         :return: _description_
         :rtype: float

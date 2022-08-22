@@ -22,11 +22,11 @@ class WilcoxonSingedRankTestDifferenceTranform:
         """
         Tranform for Wilcoxon Singed Rank Test
 
-        :param sample_0: _description_
+        :param sample_0: First input series
         :type sample_0: SeriesFederated
-        :param sample_1: _description_
+        :param sample_1: Second input series
         :type sample_1: SeriesFederated
-        :return: _description_
+        :return: sample_difference, sample_difference_absolute
         :rtype: Tuple[List[float], List[float]]
         """
         sample_difference = SeriesFederatedLocal()  # TODO make transforms smarter

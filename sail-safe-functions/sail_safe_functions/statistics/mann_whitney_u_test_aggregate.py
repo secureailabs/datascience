@@ -12,9 +12,9 @@ class MannWhitneyUTestAggregate:
         """
         The aggregate function of the mann withnet u test
 
-        :param list_precompute: _description_
+        :param list_precompute: list of precompute
         :type list_precompute: List[float]
-        :return: _description_
+        :return: Aggregate value for mann whitney u test
         :rtype: float
         """
         return numpy.array(list_precompute).sum()

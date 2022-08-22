@@ -17,9 +17,9 @@ class MeanPrecompute:
         """
         function to calculate the precomputes for mean
 
-        :param sample_0_dataframe: _description_
+        :param sample_0_dataframe: sample input
         :type sample_0_dataframe: pd.Series
-        :return: _description_
+        :return: precomputes of mean
         :rtype: Tuple[ List[float], List[bool] ]
         """
         sample_0 = sample_0_dataframe.to_numpy()

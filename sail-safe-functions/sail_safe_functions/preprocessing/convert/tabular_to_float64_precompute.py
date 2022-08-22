@@ -10,9 +10,9 @@ class TabularToFloat64Precompute:
         """
         Convert tabular to float64
 
-        :param table_schema: _description_
+        :param table_schema: dictionary containing column schema
         :type table_schema: dict
-        :param data_frame_source: _description_
+        :param data_frame_source: dataframe source
         :type data_frame_source: pandas.DataFrame
         :return: _description_
         :rtype: pandas.DataFrame

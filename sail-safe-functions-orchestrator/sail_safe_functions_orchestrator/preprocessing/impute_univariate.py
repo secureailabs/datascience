@@ -1,4 +1,4 @@
-from typing import Any, List, Union
+from typing import List, Union
 
 from sail_safe_functions.preprocessing.impute_univariate_precompute import (
     ImputeUnivariatePrecompute,
@@ -38,9 +38,7 @@ class ImputeUnivariate:
         check_instance(data_frame_source, DataFrameFederated)
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[
-                dataset_id
-            ] = ImputeUnivariatePrecompute.run(
+            data_frame_target.dict_dataframe[dataset_id] = ImputeUnivariatePrecompute.run(
                 data_frame_source.dict_dataframe[dataset_id],
                 list_name_column,
                 missing_value,

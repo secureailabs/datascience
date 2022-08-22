@@ -13,9 +13,9 @@ class ChisquareAggregate:
         """
         Aggregates data for Chisquare test
 
-        :param list_precompute: _description_
-        :type list_precompute: _type_
-        :return: _description_
+        :param list_precompute: list containing  precompute
+        :type list_precompute:  list of list
+        :return: chisquare_statistic, p_value
         :rtype: Dict
         """
 

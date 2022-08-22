@@ -31,9 +31,9 @@ class CumulativeDistributionFunction:
         """
         Main function run for Estimator for non-disclosive CDF
 
-        :param sample_0: _description_
+        :param sample_0: Input sample
         :type sample_0: SeriesFederated
-        :return: _description_
+        :return: Federated CDF final value
         :rtype: Tuple[List[float], List[float]]
         """
 

@@ -15,13 +15,13 @@ class CumulativeDistributionFunctionPrecompute:
         """
         precomputes for federated cdf
 
-        :param sample_0: _description_
+        :param sample_0: input series
         :type sample_0: pandas.Series
-        :param domain_min: _description_
+        :param domain_min: The starting value of the sequence.
         :type domain_min: float
-        :param domain_max: _description_
+        :param domain_max: The end value of the sequence
         :type domain_max: float
-        :return: _description_
+        :return: values required for aggregates
         :rtype: Tuple[List[float], List[float], int]
         """
         array_sample_0 = sample_0.to_numpy()
