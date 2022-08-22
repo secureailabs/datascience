@@ -42,6 +42,14 @@ class MeanPrecompute:
     ) -&gt; Tuple[
         List[float], List[bool]
     ]:  # there seems to be a problem here with this annotation
+        &#34;&#34;&#34;
+        function to calculate the precomputes for mean
+
+        :param sample_0_dataframe: sample input
+        :type sample_0_dataframe: pd.Series
+        :return: precomputes of mean
+        :rtype: Tuple[ List[float], List[bool] ]
+        &#34;&#34;&#34;
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
@@ -80,6 +88,14 @@ class MeanPrecompute:
     ) -&gt; Tuple[
         List[float], List[bool]
     ]:  # there seems to be a problem here with this annotation
+        &#34;&#34;&#34;
+        function to calculate the precomputes for mean
+
+        :param sample_0_dataframe: sample input
+        :type sample_0_dataframe: pd.Series
+        :return: precomputes of mean
+        :rtype: Tuple[ List[float], List[bool] ]
+        &#34;&#34;&#34;
         sample_0 = sample_0_dataframe.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
@@ -95,7 +111,11 @@ class MeanPrecompute:
 <span>def <span class="ident">run</span></span>(<span>sample_0_dataframe: pandas.core.series.Series) ‑> Tuple[List[float], List[bool]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>function to calculate the precomputes for mean</p>
+<p>:param sample_0_dataframe: sample input
+:type sample_0_dataframe: pd.Series
+:return: precomputes of mean
+:rtype: Tuple[ List[float], List[bool] ]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -105,6 +125,14 @@ class MeanPrecompute:
 ) -&gt; Tuple[
     List[float], List[bool]
 ]:  # there seems to be a problem here with this annotation
+    &#34;&#34;&#34;
+    function to calculate the precomputes for mean
+
+    :param sample_0_dataframe: sample input
+    :type sample_0_dataframe: pd.Series
+    :return: precomputes of mean
+    :rtype: Tuple[ List[float], List[bool] ]
+    &#34;&#34;&#34;
     sample_0 = sample_0_dataframe.to_numpy()
 
     sum_x_0 = np.sum(sample_0)

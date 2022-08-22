@@ -38,6 +38,12 @@ from scipy.stats import rankdata
 
 
 def rank_unsafe(sample_0: SeriesFederated) -&gt; SeriesFederated:
+    &#34;&#34;&#34;
+    :param sample_0: Input sample series
+    :type sample_0: SeriesFederated
+    :return: ranked sample
+    :rtype: SeriesFederated
+    &#34;&#34;&#34;
     check_instance(sample_0, SeriesFederated)
     list_size = []
     list_array = []
@@ -66,9 +72,7 @@ def rank_cdf(sample_0: SeriesFederated) -&gt; SeriesFederated:
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(
             dataset_id,
-            RankCumulativeDistributionFunction.run(
-                series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf
-            ),
+            RankCumulativeDistributionFunction.run(series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf),
         )
     return sample_ranked_0
 
@@ -151,9 +155,7 @@ def rank(sample_0: SeriesFederated, type_ranking: str) -&gt; SeriesFederated:
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(
             dataset_id,
-            RankCumulativeDistributionFunction.run(
-                series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf
-            ),
+            RankCumulativeDistributionFunction.run(series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf),
         )
     return sample_ranked_0</code></pre>
 </details>
@@ -162,12 +164,21 @@ def rank(sample_0: SeriesFederated, type_ranking: str) -&gt; SeriesFederated:
 <span>def <span class="ident">rank_unsafe</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>:param sample_0: Input sample series
+:type sample_0: SeriesFederated
+:return: ranked sample
+:rtype: SeriesFederated</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rank_unsafe(sample_0: SeriesFederated) -&gt; SeriesFederated:
+    &#34;&#34;&#34;
+    :param sample_0: Input sample series
+    :type sample_0: SeriesFederated
+    :return: ranked sample
+    :rtype: SeriesFederated
+    &#34;&#34;&#34;
     check_instance(sample_0, SeriesFederated)
     list_size = []
     list_array = []

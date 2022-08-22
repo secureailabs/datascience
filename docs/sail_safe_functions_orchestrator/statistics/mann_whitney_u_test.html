@@ -72,6 +72,17 @@ class MannWhitneyUTest(Estimator):
     def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Runs Federated MannWhitneyUTest
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size
@@ -193,6 +204,17 @@ class MannWhitneyUTest(Estimator):
     def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Runs Federated MannWhitneyUTest
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size
@@ -261,7 +283,14 @@ class MannWhitneyUTest(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Runs Federated MannWhitneyUTest</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param sample_1: <em>description</em>
+:type sample_1: SeriesFederated
+:raises Exception: <em>description</em>
+:return: <em>description</em>
+:rtype: Tuple[float, float]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -269,6 +298,17 @@ class MannWhitneyUTest(Estimator):
 <pre><code class="python">def run(
     self, sample_0: SeriesFederated, sample_1: SeriesFederated
 ) -&gt; Tuple[float, float]:
+    &#34;&#34;&#34;
+    Runs Federated MannWhitneyUTest
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param sample_1: _description_
+    :type sample_1: SeriesFederated
+    :raises Exception: _description_
+    :return: _description_
+    :rtype: Tuple[float, float]
+    &#34;&#34;&#34;
     check_instance(sample_0, SeriesFederated)
     check_instance(sample_1, SeriesFederated)
     n0, n1 = sample_0.size, sample_1.size

@@ -34,7 +34,7 @@ import pandas as pd
 
 class LevenePrecompute:
     &#34;&#34;&#34;
-    Precomputes data for computing the variance
+    Precomputes data for Levens Test
     &#34;&#34;&#34;
 
     def run(
@@ -42,10 +42,9 @@ class LevenePrecompute:
         sample_1_series: pd.Series,
         mean_0: float,
         mean_1: float,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         &#34;&#34;&#34;
+        Precomputes data for Levens Test
         ----------
         sample_0_series : pd.Series
             The series for sample_0
@@ -100,14 +99,14 @@ class LevenePrecompute:
 <span>class <span class="ident">LevenePrecompute</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Precomputes data for computing the variance</p></div>
+<div class="desc"><p>Precomputes data for Levens Test</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LevenePrecompute:
     &#34;&#34;&#34;
-    Precomputes data for computing the variance
+    Precomputes data for Levens Test
     &#34;&#34;&#34;
 
     def run(
@@ -115,10 +114,9 @@ class LevenePrecompute:
         sample_1_series: pd.Series,
         mean_0: float,
         mean_1: float,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         &#34;&#34;&#34;
+        Precomputes data for Levens Test
         ----------
         sample_0_series : pd.Series
             The series for sample_0
@@ -165,7 +163,7 @@ class LevenePrecompute:
 <span>def <span class="ident">run</span></span>(<span>sample_0_series: pandas.core.series.Series, sample_1_series: pandas.core.series.Series, mean_0: float, mean_1: float) ‑> Tuple[List[float], List[bool]]</span>
 </code></dt>
 <dd>
-<div class="desc"><hr>
+<div class="desc"><h2 id="precomputes-data-for-levens-test">Precomputes Data For Levens Test</h2>
 <p>sample_0_series : pd.Series
 The series for sample_0</p>
 <p>sample_1_series : pd.Series
@@ -184,10 +182,9 @@ The series for sample_1</p>
     sample_1_series: pd.Series,
     mean_0: float,
     mean_1: float,
-) -&gt; Tuple[
-    List[float], List[bool]
-]:  # there seems to be a problem here with this annotation
+) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
     &#34;&#34;&#34;
+    Precomputes data for Levens Test
     ----------
     sample_0_series : pd.Series
         The series for sample_0

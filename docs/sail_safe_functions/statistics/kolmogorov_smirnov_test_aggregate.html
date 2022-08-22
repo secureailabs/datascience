@@ -26,8 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import math
-from typing import List
+<pre><code class="python">from typing import List
 
 
 class KolmogorovSmirnovTestAggregate:
@@ -36,6 +35,14 @@ class KolmogorovSmirnovTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_precompute: List[float]):
+        &#34;&#34;&#34;
+        Calculate the aggregate Kolmogorov Smirnov Test
+
+        :param list_precompute: list containing precomputes 
+        :type list_precompute: List[float]
+        :return: K-S test aggregate value
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_max = []
         for precompute in list_precompute:
             list_max.append(precompute)
@@ -67,6 +74,14 @@ class KolmogorovSmirnovTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_precompute: List[float]):
+        &#34;&#34;&#34;
+        Calculate the aggregate Kolmogorov Smirnov Test
+
+        :param list_precompute: list containing precomputes 
+        :type list_precompute: List[float]
+        :return: K-S test aggregate value
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_max = []
         for precompute in list_precompute:
             list_max.append(precompute)
@@ -79,12 +94,24 @@ class KolmogorovSmirnovTestAggregate:
 <span>def <span class="ident">run</span></span>(<span>list_precompute: List[float])</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Calculate the aggregate Kolmogorov Smirnov Test</p>
+<p>:param list_precompute: list containing precomputes
+:type list_precompute: List[float]
+:return: K-S test aggregate value
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(list_precompute: List[float]):
+    &#34;&#34;&#34;
+    Calculate the aggregate Kolmogorov Smirnov Test
+
+    :param list_precompute: list containing precomputes 
+    :type list_precompute: List[float]
+    :return: K-S test aggregate value
+    :rtype: _type_
+    &#34;&#34;&#34;
     list_max = []
     for precompute in list_precompute:
         list_max.append(precompute)

@@ -63,6 +63,18 @@ class WilcoxonSingedRankTest(Estimator):
         self.type_ranking = type_ranking
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        Runs federated wilcoxon Singed Rank Test
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises ValueError: _description_
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
 
         if sample_0.size != sample_1.size:
             raise ValueError(&#34;`sample_0` and `sample_1` must have the same length.&#34;)
@@ -71,12 +83,8 @@ class WilcoxonSingedRankTest(Estimator):
         (
             sample_difference,
             sample_difference_absolute,
-        ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(
-            sample_0, sample_1
-        )
-        sample_difference_absolute_ranked = preprocessing.rank(
-            sample_difference_absolute, self.type_ranking
-        )
+        ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(sample_0, sample_1)
+        sample_difference_absolute_ranked = preprocessing.rank(sample_difference_absolute, self.type_ranking)
 
         # Calculating precompute
         list_precompute = []
@@ -85,9 +93,7 @@ class WilcoxonSingedRankTest(Estimator):
             sample_difference_absolute_ranked.dict_series.values(),
         ):
             list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.run(
-                    series_difference, series_difference_absolute_ranked
-                )
+                WilcoxonSingedRankTestPrecompute.run(series_difference, series_difference_absolute_ranked)
             )
 
         # rank_minus rank_plus
@@ -99,9 +105,7 @@ class WilcoxonSingedRankTest(Estimator):
             w_statistic = rank_plus
 
         mean = size_sample * (size_sample + 1.0) * 0.25
-        standard_deviation = numpy.sqrt(
-            size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24
-        )
+        standard_deviation = numpy.sqrt(size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24)
         z_statistic = (w_statistic - mean) / standard_deviation
 
         if self.alternative == &#34;two-sided&#34;:
@@ -178,6 +182,18 @@ class WilcoxonSingedRankTest(Estimator):
         self.type_ranking = type_ranking
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        Runs federated wilcoxon Singed Rank Test
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises ValueError: _description_
+        :raises Exception: _description_
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
 
         if sample_0.size != sample_1.size:
             raise ValueError(&#34;`sample_0` and `sample_1` must have the same length.&#34;)
@@ -186,12 +202,8 @@ class WilcoxonSingedRankTest(Estimator):
         (
             sample_difference,
             sample_difference_absolute,
-        ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(
-            sample_0, sample_1
-        )
-        sample_difference_absolute_ranked = preprocessing.rank(
-            sample_difference_absolute, self.type_ranking
-        )
+        ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(sample_0, sample_1)
+        sample_difference_absolute_ranked = preprocessing.rank(sample_difference_absolute, self.type_ranking)
 
         # Calculating precompute
         list_precompute = []
@@ -200,9 +212,7 @@ class WilcoxonSingedRankTest(Estimator):
             sample_difference_absolute_ranked.dict_series.values(),
         ):
             list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.run(
-                    series_difference, series_difference_absolute_ranked
-                )
+                WilcoxonSingedRankTestPrecompute.run(series_difference, series_difference_absolute_ranked)
             )
 
         # rank_minus rank_plus
@@ -214,9 +224,7 @@ class WilcoxonSingedRankTest(Estimator):
             w_statistic = rank_plus
 
         mean = size_sample * (size_sample + 1.0) * 0.25
-        standard_deviation = numpy.sqrt(
-            size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24
-        )
+        standard_deviation = numpy.sqrt(size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24)
         z_statistic = (w_statistic - mean) / standard_deviation
 
         if self.alternative == &#34;two-sided&#34;:
@@ -250,12 +258,32 @@ class WilcoxonSingedRankTest(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Runs federated wilcoxon Singed Rank Test</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param sample_1: <em>description</em>
+:type sample_1: SeriesFederated
+:raises ValueError: <em>description</em>
+:raises Exception: <em>description</em>
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    &#34;&#34;&#34;
+    Runs federated wilcoxon Singed Rank Test
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param sample_1: _description_
+    :type sample_1: SeriesFederated
+    :raises ValueError: _description_
+    :raises Exception: _description_
+    :return: _description_
+    :rtype: _type_
+    &#34;&#34;&#34;
 
     if sample_0.size != sample_1.size:
         raise ValueError(&#34;`sample_0` and `sample_1` must have the same length.&#34;)
@@ -264,12 +292,8 @@ class WilcoxonSingedRankTest(Estimator):
     (
         sample_difference,
         sample_difference_absolute,
-    ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(
-        sample_0, sample_1
-    )
-    sample_difference_absolute_ranked = preprocessing.rank(
-        sample_difference_absolute, self.type_ranking
-    )
+    ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(sample_0, sample_1)
+    sample_difference_absolute_ranked = preprocessing.rank(sample_difference_absolute, self.type_ranking)
 
     # Calculating precompute
     list_precompute = []
@@ -278,9 +302,7 @@ class WilcoxonSingedRankTest(Estimator):
         sample_difference_absolute_ranked.dict_series.values(),
     ):
         list_precompute.append(
-            WilcoxonSingedRankTestPrecompute.run(
-                series_difference, series_difference_absolute_ranked
-            )
+            WilcoxonSingedRankTestPrecompute.run(series_difference, series_difference_absolute_ranked)
         )
 
     # rank_minus rank_plus
@@ -292,9 +314,7 @@ class WilcoxonSingedRankTest(Estimator):
         w_statistic = rank_plus
 
     mean = size_sample * (size_sample + 1.0) * 0.25
-    standard_deviation = numpy.sqrt(
-        size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24
-    )
+    standard_deviation = numpy.sqrt(size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24)
     z_statistic = (w_statistic - mean) / standard_deviation
 
     if self.alternative == &#34;two-sided&#34;:

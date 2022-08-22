@@ -27,7 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import numpy
-import pandas
+
 from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -44,6 +44,14 @@ class Mean(Estimator):
         super().__init__([&#34;mean&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        Run federated Means function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(MeanPrecompute.run(series))
@@ -94,6 +102,14 @@ class Mean(Estimator):
         super().__init__([&#34;mean&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        Run federated Means function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(MeanPrecompute.run(series))
@@ -113,12 +129,24 @@ class Mean(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Run federated Means function</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated):
+    &#34;&#34;&#34;
+    Run federated Means function
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :return: _description_
+    :rtype: _type_
+    &#34;&#34;&#34;
     list_list_precompute = []
     for series in sample_0.dict_series.values():
         list_list_precompute.append(MeanPrecompute.run(series))

@@ -31,9 +31,17 @@ import pandas
 
 
 class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Categorical featurization function
+
+        :param column_schema: image.png
+        :type column_schema: dictionary conating column schema
+        :param data_frame_source: pandas dataframe conating source
+        :type data_frame_source: pandas.DataFrame
+        :return: featurized encoding on categorical feature
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         name_column = column_schema[&#34;name_column&#34;]
         type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
         if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -46,9 +54,7 @@ class CategoricalToOnehot:
 
         if type_missing_policy == &#34;raise_exception&#34;:
             if 0 &lt; data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f&#34;Column {name_column} contains expeption while not should be present&#34;
-                )
+                raise ValueError(f&#34;Column {name_column} contains expeption while not should be present&#34;)
 
         data_frame_target = pandas.get_dummies(
             data_frame_source[name_column],
@@ -82,9 +88,17 @@ class CategoricalToOnehot:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Categorical featurization function
+
+        :param column_schema: image.png
+        :type column_schema: dictionary conating column schema
+        :param data_frame_source: pandas dataframe conating source
+        :type data_frame_source: pandas.DataFrame
+        :return: featurized encoding on categorical feature
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         name_column = column_schema[&#34;name_column&#34;]
         type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
         if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -97,9 +111,7 @@ class CategoricalToOnehot:
 
         if type_missing_policy == &#34;raise_exception&#34;:
             if 0 &lt; data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f&#34;Column {name_column} contains expeption while not should be present&#34;
-                )
+                raise ValueError(f&#34;Column {name_column} contains expeption while not should be present&#34;)
 
         data_frame_target = pandas.get_dummies(
             data_frame_source[name_column],
@@ -119,14 +131,28 @@ class CategoricalToOnehot:
 <span>def <span class="ident">run</span></span>(<span>column_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Categorical featurization function</p>
+<p>:param column_schema: image.png
+:type column_schema: dictionary conating column schema
+:param data_frame_source: pandas dataframe conating source
+:type data_frame_source: pandas.DataFrame
+:return: featurized encoding on categorical feature
+:rtype: pandas.DataFrame</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    column_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
+<pre><code class="python">def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+    &#34;&#34;&#34;
+    Categorical featurization function
+
+    :param column_schema: image.png
+    :type column_schema: dictionary conating column schema
+    :param data_frame_source: pandas dataframe conating source
+    :type data_frame_source: pandas.DataFrame
+    :return: featurized encoding on categorical feature
+    :rtype: pandas.DataFrame
+    &#34;&#34;&#34;
     name_column = column_schema[&#34;name_column&#34;]
     type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
     if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -139,9 +165,7 @@ class CategoricalToOnehot:
 
     if type_missing_policy == &#34;raise_exception&#34;:
         if 0 &lt; data_frame_source[name_column].isna().sum():
-            raise ValueError(
-                f&#34;Column {name_column} contains expeption while not should be present&#34;
-            )
+            raise ValueError(f&#34;Column {name_column} contains expeption while not should be present&#34;)
 
     data_frame_target = pandas.get_dummies(
         data_frame_source[name_column],

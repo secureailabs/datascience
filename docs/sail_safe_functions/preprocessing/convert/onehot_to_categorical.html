@@ -31,9 +31,17 @@ import pandas
 
 
 class OnehotToCategorical:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        encoded(one hot encoding) feature to categorical
+
+        :param column_schema: dictionary containing column schema
+        :type column_schema: dict
+        :param data_frame_source: dataframe containing source
+        :type data_frame_source: pandas.DataFrame
+        :return: _description_
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         name_column = column_schema[&#34;name_column&#34;]
         type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
         if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -45,9 +53,7 @@ class OnehotToCategorical:
         if type_missing_policy == &#34;propagate_add_column&#34;:
             list_name_column_selection.append(name_column + &#34;_nan&#34;)
         data_frame_selection = data_frame_source[list_name_column_selection]
-        series = data_frame_selection.idxmax(
-            axis=1
-        )  # select the larges column name as value name
+        series = data_frame_selection.idxmax(axis=1)  # select the larges column name as value name
         series = series.str.slice(start=len(name_column) + 1)  # take away the prefixes
         series = series.replace(&#34;nan&#34;, numpy.nan)
         series.name = name_column
@@ -73,9 +79,17 @@ class OnehotToCategorical:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class OnehotToCategorical:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        encoded(one hot encoding) feature to categorical
+
+        :param column_schema: dictionary containing column schema
+        :type column_schema: dict
+        :param data_frame_source: dataframe containing source
+        :type data_frame_source: pandas.DataFrame
+        :return: _description_
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         name_column = column_schema[&#34;name_column&#34;]
         type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
         if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -87,9 +101,7 @@ class OnehotToCategorical:
         if type_missing_policy == &#34;propagate_add_column&#34;:
             list_name_column_selection.append(name_column + &#34;_nan&#34;)
         data_frame_selection = data_frame_source[list_name_column_selection]
-        series = data_frame_selection.idxmax(
-            axis=1
-        )  # select the larges column name as value name
+        series = data_frame_selection.idxmax(axis=1)  # select the larges column name as value name
         series = series.str.slice(start=len(name_column) + 1)  # take away the prefixes
         series = series.replace(&#34;nan&#34;, numpy.nan)
         series.name = name_column
@@ -101,14 +113,28 @@ class OnehotToCategorical:
 <span>def <span class="ident">run</span></span>(<span>column_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>encoded(one hot encoding) feature to categorical</p>
+<p>:param column_schema: dictionary containing column schema
+:type column_schema: dict
+:param data_frame_source: dataframe containing source
+:type data_frame_source: pandas.DataFrame
+:return: <em>description</em>
+:rtype: pandas.DataFrame</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    column_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
+<pre><code class="python">def run(column_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+    &#34;&#34;&#34;
+    encoded(one hot encoding) feature to categorical
+
+    :param column_schema: dictionary containing column schema
+    :type column_schema: dict
+    :param data_frame_source: dataframe containing source
+    :type data_frame_source: pandas.DataFrame
+    :return: _description_
+    :rtype: pandas.DataFrame
+    &#34;&#34;&#34;
     name_column = column_schema[&#34;name_column&#34;]
     type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
     if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
@@ -120,9 +146,7 @@ class OnehotToCategorical:
     if type_missing_policy == &#34;propagate_add_column&#34;:
         list_name_column_selection.append(name_column + &#34;_nan&#34;)
     data_frame_selection = data_frame_source[list_name_column_selection]
-    series = data_frame_selection.idxmax(
-        axis=1
-    )  # select the larges column name as value name
+    series = data_frame_selection.idxmax(axis=1)  # select the larges column name as value name
     series = series.str.slice(start=len(name_column) + 1)  # take away the prefixes
     series = series.replace(&#34;nan&#34;, numpy.nan)
     series.name = name_column

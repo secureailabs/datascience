@@ -35,6 +35,16 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 class HistogramFederate:
     @staticmethod
     def hist(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        Main histogram function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
 
         list_list_precompute = []
         for series in sample_0.dict_series.values():
@@ -46,6 +56,16 @@ class HistogramFederate:
 
     @staticmethod
     def run(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        Runs federated histogram function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         return HistogramFederate.hist(sample_0, bin_count)</code></pre>
 </details>
 </section>
@@ -70,6 +90,16 @@ class HistogramFederate:
 <pre><code class="python">class HistogramFederate:
     @staticmethod
     def hist(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        Main histogram function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
 
         list_list_precompute = []
         for series in sample_0.dict_series.values():
@@ -81,6 +111,16 @@ class HistogramFederate:
 
     @staticmethod
     def run(sample_0: SeriesFederated, bin_count: int):
+        &#34;&#34;&#34;
+        Runs federated histogram function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param bin_count: _description_
+        :type bin_count: int
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         return HistogramFederate.hist(sample_0, bin_count)</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -89,13 +129,29 @@ class HistogramFederate:
 <span>def <span class="ident">hist</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, bin_count: int)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Main histogram function</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param bin_count: <em>description</em>
+:type bin_count: int
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def hist(sample_0: SeriesFederated, bin_count: int):
+    &#34;&#34;&#34;
+    Main histogram function
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param bin_count: _description_
+    :type bin_count: int
+    :return: _description_
+    :rtype: _type_
+    &#34;&#34;&#34;
 
     list_list_precompute = []
     for series in sample_0.dict_series.values():
@@ -110,13 +166,29 @@ def hist(sample_0: SeriesFederated, bin_count: int):
 <span>def <span class="ident">run</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, bin_count: int)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Runs federated histogram function</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param bin_count: <em>description</em>
+:type bin_count: int
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def run(sample_0: SeriesFederated, bin_count: int):
+    &#34;&#34;&#34;
+    Runs federated histogram function
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param bin_count: _description_
+    :type bin_count: int
+    :return: _description_
+    :rtype: _type_
+    &#34;&#34;&#34;
     return HistogramFederate.hist(sample_0, bin_count)</code></pre>
 </details>
 </dd>

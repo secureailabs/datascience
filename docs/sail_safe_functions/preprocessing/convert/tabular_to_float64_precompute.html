@@ -34,9 +34,17 @@ from sail_safe_functions.preprocessing.convert.categorical_to_onehot import (
 
 
 class TabularToFloat64Precompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Convert tabular to float64
+
+        :param table_schema: dictionary containing column schema
+        :type table_schema: dict
+        :param data_frame_source: dataframe source
+        :type data_frame_source: pandas.DataFrame
+        :return: _description_
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
 
         list_data_frame_target = []
         for name_column in data_frame_source.columns:
@@ -45,13 +53,9 @@ class TabularToFloat64Precompute:
             if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
                 pass
             elif column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    CategoricalToOnehot.run(column_schema, data_frame_source)
-                )
+                list_data_frame_target.append(CategoricalToOnehot.run(column_schema, data_frame_source))
             elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-                list_data_frame_target.append(
-                    data_frame_source[name_column].astype(numpy.float64).to_frame()
-                )
+                list_data_frame_target.append(data_frame_source[name_column].astype(numpy.float64).to_frame())
 
         return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>
@@ -75,9 +79,17 @@ class TabularToFloat64Precompute:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TabularToFloat64Precompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Convert tabular to float64
+
+        :param table_schema: dictionary containing column schema
+        :type table_schema: dict
+        :param data_frame_source: dataframe source
+        :type data_frame_source: pandas.DataFrame
+        :return: _description_
+        :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
 
         list_data_frame_target = []
         for name_column in data_frame_source.columns:
@@ -86,13 +98,9 @@ class TabularToFloat64Precompute:
             if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
                 pass
             elif column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    CategoricalToOnehot.run(column_schema, data_frame_source)
-                )
+                list_data_frame_target.append(CategoricalToOnehot.run(column_schema, data_frame_source))
             elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-                list_data_frame_target.append(
-                    data_frame_source[name_column].astype(numpy.float64).to_frame()
-                )
+                list_data_frame_target.append(data_frame_source[name_column].astype(numpy.float64).to_frame())
 
         return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>
@@ -102,14 +110,28 @@ class TabularToFloat64Precompute:
 <span>def <span class="ident">run</span></span>(<span>table_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Convert tabular to float64</p>
+<p>:param table_schema: dictionary containing column schema
+:type table_schema: dict
+:param data_frame_source: dataframe source
+:type data_frame_source: pandas.DataFrame
+:return: <em>description</em>
+:rtype: pandas.DataFrame</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    table_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
+<pre><code class="python">def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+    &#34;&#34;&#34;
+    Convert tabular to float64
+
+    :param table_schema: dictionary containing column schema
+    :type table_schema: dict
+    :param data_frame_source: dataframe source
+    :type data_frame_source: pandas.DataFrame
+    :return: _description_
+    :rtype: pandas.DataFrame
+    &#34;&#34;&#34;
 
     list_data_frame_target = []
     for name_column in data_frame_source.columns:
@@ -118,13 +140,9 @@ class TabularToFloat64Precompute:
         if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
             pass
         elif column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-            list_data_frame_target.append(
-                CategoricalToOnehot.run(column_schema, data_frame_source)
-            )
+            list_data_frame_target.append(CategoricalToOnehot.run(column_schema, data_frame_source))
         elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-            list_data_frame_target.append(
-                data_frame_source[name_column].astype(numpy.float64).to_frame()
-            )
+            list_data_frame_target.append(data_frame_source[name_column].astype(numpy.float64).to_frame())
 
     return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>

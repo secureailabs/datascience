@@ -49,6 +49,14 @@ class MinMax(Estimator):
         super().__init__([&#34;min&#34;, &#34;max&#34;])
 
     def run(self, sample_0: SeriesFederated) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Run the federated MinMax function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
@@ -110,6 +118,14 @@ class MinMax(Estimator):
         super().__init__([&#34;min&#34;, &#34;max&#34;])
 
     def run(self, sample_0: SeriesFederated) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Run the federated MinMax function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
@@ -136,12 +152,24 @@ class MinMax(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Run the federated MinMax function</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:return: <em>description</em>
+:rtype: Tuple[float, float]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated) -&gt; Tuple[float, float]:
+    &#34;&#34;&#34;
+    Run the federated MinMax function
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :return: _description_
+    :rtype: Tuple[float, float]
+    &#34;&#34;&#34;
     list_list_precompute = []
     # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 

@@ -68,7 +68,17 @@ class Pearson(Estimator):
     def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Run federated pearson function
 
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises ValueError: _description_
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -166,7 +176,17 @@ class Pearson(Estimator):
     def run(
         self, sample_0: SeriesFederated, sample_1: SeriesFederated
     ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Run federated pearson function
 
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :param sample_1: _description_
+        :type sample_1: SeriesFederated
+        :raises ValueError: _description_
+        :return: _description_
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -206,7 +226,14 @@ class Pearson(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Run federated pearson function</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:param sample_1: <em>description</em>
+:type sample_1: SeriesFederated
+:raises ValueError: <em>description</em>
+:return: <em>description</em>
+:rtype: Tuple[float, float]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -214,7 +241,17 @@ class Pearson(Estimator):
 <pre><code class="python">def run(
     self, sample_0: SeriesFederated, sample_1: SeriesFederated
 ) -&gt; Tuple[float, float]:
+    &#34;&#34;&#34;
+    Run federated pearson function
 
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :param sample_1: _description_
+    :type sample_1: SeriesFederated
+    :raises ValueError: _description_
+    :return: _description_
+    :rtype: Tuple[float, float]
+    &#34;&#34;&#34;
     list_list_precompute = []
     list_key_dataframe = list(sample_0.dict_series.keys())
     # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

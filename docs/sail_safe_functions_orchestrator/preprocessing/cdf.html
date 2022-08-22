@@ -56,6 +56,14 @@ class CumulativeDistributionFunction:
 
     @staticmethod
     def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+        &#34;&#34;&#34;
+        Main function run for Estimator for non-disclosive CDF
+
+        :param sample_0: Input sample
+        :type sample_0: SeriesFederated
+        :return: Federated CDF final value
+        :rtype: Tuple[List[float], List[float]]
+        &#34;&#34;&#34;
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
@@ -134,6 +142,14 @@ size equally spaced between a estimate of the min and the max</p>
 
     @staticmethod
     def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+        &#34;&#34;&#34;
+        Main function run for Estimator for non-disclosive CDF
+
+        :param sample_0: Input sample
+        :type sample_0: SeriesFederated
+        :return: Federated CDF final value
+        :rtype: Tuple[List[float], List[float]]
+        &#34;&#34;&#34;
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
@@ -165,13 +181,25 @@ size equally spaced between a estimate of the min and the max</p>
 <span>def <span class="ident">run</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[List[float], List[float]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Main function run for Estimator for non-disclosive CDF</p>
+<p>:param sample_0: Input sample
+:type sample_0: SeriesFederated
+:return: Federated CDF final value
+:rtype: Tuple[List[float], List[float]]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+    &#34;&#34;&#34;
+    Main function run for Estimator for non-disclosive CDF
+
+    :param sample_0: Input sample
+    :type sample_0: SeriesFederated
+    :return: Federated CDF final value
+    :rtype: Tuple[List[float], List[float]]
+    &#34;&#34;&#34;
 
     domain_min, domain_max = MinMax.min_max(sample_0)
 
