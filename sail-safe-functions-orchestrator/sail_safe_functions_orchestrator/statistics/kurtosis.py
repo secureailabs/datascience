@@ -1,6 +1,4 @@
 from typing import Tuple
-
-import pandas
 from sail_safe_functions.statistics.kurtosis_aggregate import KurtosisAggregate
 from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -9,6 +7,14 @@ from scipy import stats
 
 
 def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
+    """
+    It takes one federated series, and returns the kurtosis value of the series
+
+    :param sample_0: sample series
+    :type sample_0: SeriesFederated
+    :return: Kurtosis value
+    :rtype: Tuple[float]
+    """
     estimator = Kurtosis()
     return estimator.run(sample_0)
 

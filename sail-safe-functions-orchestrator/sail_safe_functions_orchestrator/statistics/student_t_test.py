@@ -19,6 +19,10 @@ def student_t_test(
 
 
 class StudentTTest(Estimator):
+    """
+    This class contains method for federated Student T test
+    """
+
     def __init__(self, alternative) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
@@ -26,6 +30,16 @@ class StudentTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        """
+        It takes two federated series, and returns the p-value and t-statistics
+
+        :param sample_0: First sample series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second sample series
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: float, float
+        """
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

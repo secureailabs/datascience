@@ -28,12 +28,8 @@
 </summary>
 <pre><code class="python">from typing import Tuple
 
-from sail_safe_functions.statistics.student_t_test_aggregate import (
-    StudentTTestAggregate,
-)
-from sail_safe_functions.statistics.unpaired_t_test_precompute import (
-    UnpairedTTestPrecompute,
-)
+from sail_safe_functions.statistics.student_t_test_aggregate import StudentTTestAggregate
+from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
@@ -45,12 +41,16 @@ def student_t_test(
     sample_1: SeriesFederated,
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
-    
+
     estimator = StudentTTest(alternative)
     return estimator.run(sample_0, sample_1)
 
 
 class StudentTTest(Estimator):
+    &#34;&#34;&#34;
+    This class contains method for federated Student T test
+    &#34;&#34;&#34;
+
     def __init__(self, alternative) -&gt; None:
         super().__init__([&#34;t_statistic&#34;, &#34;p_value&#34;])
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -58,6 +58,16 @@ class StudentTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes two federated series, and returns the p-value and t-statistics
+
+        :param sample_0: First sample series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second sample series
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: float, float
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -69,9 +79,7 @@ class StudentTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(
-            list_list_precompute
-        )
+        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == &#34;less&#34;:
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -113,7 +121,7 @@ class StudentTTest(Estimator):
     sample_1: SeriesFederated,
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
-    
+
     estimator = StudentTTest(alternative)
     return estimator.run(sample_0, sample_1)</code></pre>
 </details>
@@ -128,12 +136,16 @@ class StudentTTest(Estimator):
 <span>(</span><span>alternative)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This class contains method for federated Student T test</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class StudentTTest(Estimator):
+    &#34;&#34;&#34;
+    This class contains method for federated Student T test
+    &#34;&#34;&#34;
+
     def __init__(self, alternative) -&gt; None:
         super().__init__([&#34;t_statistic&#34;, &#34;p_value&#34;])
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -141,6 +153,16 @@ class StudentTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes two federated series, and returns the p-value and t-statistics
+
+        :param sample_0: First sample series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second sample series
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: float, float
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -152,9 +174,7 @@ class StudentTTest(Estimator):
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(
-            list_list_precompute
-        )
+        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == &#34;less&#34;:
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -184,12 +204,28 @@ class StudentTTest(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>It takes two federated series, and returns the p-value and t-statistics</p>
+<p>:param sample_0: First sample series
+:type sample_0: SeriesFederated
+:param sample_1: Second sample series
+:type sample_1: SeriesFederated
+:return: t_statistic, p_value
+:rtype: float, float</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    &#34;&#34;&#34;
+    It takes two federated series, and returns the p-value and t-statistics
+
+    :param sample_0: First sample series
+    :type sample_0: SeriesFederated
+    :param sample_1: Second sample series
+    :type sample_1: SeriesFederated
+    :return: t_statistic, p_value
+    :rtype: float, float
+    &#34;&#34;&#34;
     list_list_precompute = []
     list_key_dataframe = list(sample_0.dict_series.keys())
     # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -201,9 +237,7 @@ class StudentTTest(Estimator):
             )
         )
 
-    t_statistic, degrees_of_freedom = StudentTTestAggregate.run(
-        list_list_precompute
-    )
+    t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
     p_value = t.cdf(t_statistic, degrees_of_freedom)
     if self.alternative == &#34;less&#34;:
         p_value = t.cdf(t_statistic, degrees_of_freedom)

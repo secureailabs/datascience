@@ -41,27 +41,29 @@ class MannWhitneyUTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        """
+        It takes two federated series, and returns the p-value and test statistic of the mann whitney u test
+
+        :param sample_0: First sample series
+        :type sample_0: SeriesFederated
+        :param sample_1: Two sample series
+        :type sample_1: SeriesFederated
+        :return: _description_
+        :rtype: Tuple[float, float]
+        """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
         n0, n1 = sample_0.size, sample_1.size
 
         sample_concatenated = preprocessing.concatenate(sample_0, sample_1)
-        sample_concatenated_ranked = preprocessing.rank(
-            sample_concatenated, self.type_ranking
-        )
+        sample_concatenated_ranked = preprocessing.rank(sample_concatenated, self.type_ranking)
 
         list_precompute = []
         for dataset_id in sample_0.dict_series:
             series_0 = sample_0.dict_series[dataset_id]
-            series_concatenated_ranked = sample_concatenated_ranked.dict_series[
-                dataset_id
-            ]
-            list_precompute.append(
-                MannWhitneyUTestPrecompute.run(series_0, series_concatenated_ranked)
-            )
+            series_concatenated_ranked = sample_concatenated_ranked.dict_series[dataset_id]
+            list_precompute.append(MannWhitneyUTestPrecompute.run(series_0, series_concatenated_ranked))
 
         sum_ranks_0 = MannWhitneyUTestAggregate.run(list_precompute)
 

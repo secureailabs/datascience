@@ -48,6 +48,10 @@ def welch_t_test(
 
 
 class WelchTTest(Estimator):
+    &#34;&#34;&#34;
+    This class contains method for federated Welch T test
+    &#34;&#34;&#34;
+
     def __init__(self, alternative) -&gt; None:
         super().__init__([&#34;t_statistic&#34;, &#34;p_value&#34;])
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -55,6 +59,16 @@ class WelchTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes two federated series, and returns the p-value and test statistic of the Levene test
+
+        :param sample_0: First series sample
+        :type sample_0: SeriesFederated
+        :param sample_1: Second series sample
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: Float, Float
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -122,12 +136,16 @@ class WelchTTest(Estimator):
 <span>(</span><span>alternative)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This class contains method for federated Welch T test</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WelchTTest(Estimator):
+    &#34;&#34;&#34;
+    This class contains method for federated Welch T test
+    &#34;&#34;&#34;
+
     def __init__(self, alternative) -&gt; None:
         super().__init__([&#34;t_statistic&#34;, &#34;p_value&#34;])
         if alternative not in [&#34;less&#34;, &#34;two-sided&#34;, &#34;greater&#34;]:
@@ -135,6 +153,16 @@ class WelchTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes two federated series, and returns the p-value and test statistic of the Levene test
+
+        :param sample_0: First series sample
+        :type sample_0: SeriesFederated
+        :param sample_1: Second series sample
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: Float, Float
+        &#34;&#34;&#34;
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -176,12 +204,28 @@ class WelchTTest(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>It takes two federated series, and returns the p-value and test statistic of the Levene test</p>
+<p>:param sample_0: First series sample
+:type sample_0: SeriesFederated
+:param sample_1: Second series sample
+:type sample_1: SeriesFederated
+:return: t_statistic, p_value
+:rtype: Float, Float</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    &#34;&#34;&#34;
+    It takes two federated series, and returns the p-value and test statistic of the Levene test
+
+    :param sample_0: First series sample
+    :type sample_0: SeriesFederated
+    :param sample_1: Second series sample
+    :type sample_1: SeriesFederated
+    :return: t_statistic, p_value
+    :rtype: Float, Float
+    &#34;&#34;&#34;
     list_list_precompute = []
     list_key_dataframe = list(sample_0.dict_series.keys())
     # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

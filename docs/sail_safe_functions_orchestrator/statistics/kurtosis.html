@@ -27,8 +27,6 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from typing import Tuple
-
-import pandas
 from sail_safe_functions.statistics.kurtosis_aggregate import KurtosisAggregate
 from sail_safe_functions.statistics.kurtosis_precompute import KurtosisPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -37,6 +35,14 @@ from scipy import stats
 
 
 def kurtosis(sample_0: SeriesFederated) -&gt; Tuple[float]:
+    &#34;&#34;&#34;
+    It takes one federated series, and returns the kurtosis value of the series
+
+    :param sample_0: sample series
+    :type sample_0: SeriesFederated
+    :return: Kurtosis value
+    :rtype: Tuple[float]
+    &#34;&#34;&#34;
     estimator = Kurtosis()
     return estimator.run(sample_0)
 
@@ -76,12 +82,24 @@ class Kurtosis(Estimator):
 <span>def <span class="ident">kurtosis</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>It takes one federated series, and returns the kurtosis value of the series</p>
+<p>:param sample_0: sample series
+:type sample_0: SeriesFederated
+:return: Kurtosis value
+:rtype: Tuple[float]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def kurtosis(sample_0: SeriesFederated) -&gt; Tuple[float]:
+    &#34;&#34;&#34;
+    It takes one federated series, and returns the kurtosis value of the series
+
+    :param sample_0: sample series
+    :type sample_0: SeriesFederated
+    :return: Kurtosis value
+    :rtype: Tuple[float]
+    &#34;&#34;&#34;
     estimator = Kurtosis()
     return estimator.run(sample_0)</code></pre>
 </details>

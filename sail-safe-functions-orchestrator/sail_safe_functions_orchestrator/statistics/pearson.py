@@ -11,7 +11,7 @@ from scipy.stats import t
 
 def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
     """
-    This is the federated pearson function
+    It takes two federated series, and returns the rho value and the p-value
     ----------------
         :param sample_0: The first sample of data
         :type sample_0: SeriesFederated

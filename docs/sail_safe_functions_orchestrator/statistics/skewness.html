@@ -28,7 +28,6 @@
 </summary>
 <pre><code class="python">from typing import Tuple
 
-import pandas
 from sail_safe_functions.statistics.skewness_aggregate import SkewnessAggregate
 from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -54,6 +53,14 @@ class Skewness(Estimator):
         super().__init__([&#34;skewness&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes one federated series, and returns the skewness value of the series.
+
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: skewness value of series
+        :rtype: float
+        &#34;&#34;&#34;
         list_list_precompute = []
 
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -118,6 +125,14 @@ class Skewness(Estimator):
         super().__init__([&#34;skewness&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes one federated series, and returns the skewness value of the series.
+
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: skewness value of series
+        :rtype: float
+        &#34;&#34;&#34;
         list_list_precompute = []
 
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -143,12 +158,24 @@ class Skewness(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>It takes one federated series, and returns the skewness value of the series.</p>
+<p>:param sample_0: sample series
+:type sample_0: SeriesFederated
+:return: skewness value of series
+:rtype: float</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated):
+    &#34;&#34;&#34;
+    It takes one federated series, and returns the skewness value of the series.
+
+    :param sample_0: sample series
+    :type sample_0: SeriesFederated
+    :return: skewness value of series
+    :rtype: float
+    &#34;&#34;&#34;
     list_list_precompute = []
 
     # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
