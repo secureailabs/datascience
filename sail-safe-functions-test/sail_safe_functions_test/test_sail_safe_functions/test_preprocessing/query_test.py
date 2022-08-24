@@ -88,7 +88,8 @@ def test_unauthorized_var_type(
     :type dataframe_kidney: DataFrameFederated
     """
     # Arrange
-    forbidden_type_var = lambda: print("arbitrary code")
+    def forbidden_type_var():
+        print("arbitrary code")
 
     query = "age == @forbidden_type_var"
 
