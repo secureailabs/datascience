@@ -1,8 +1,17 @@
 from typing import Any, List
 
 import sys
-
+import os
+import io
 import ast
+import test.support
+from test.test_tools import toolsdir
+
+# Small hack to get access to python's AST unparser
+parser_path = os.path.join(toolsdir, "parser")
+with test.support.DirsOnSysPath(parser_path):
+    import unparse
+
 import numpy as np
 import pandas as pd
 from pandas.core.computation.expr import Expr, Scope
@@ -183,7 +192,9 @@ class Query:
                 raise ValueError("Invalid query")
 
         if force_parse:
-            validated_query = ast.unparse(query_ast)
+            unparse_buffer = io.StringIO()
+            unparse.Unparser(query_ast, unparse_buffer)
+            validated_query = unparse_buffer.getvalue()
         else:
             validated_query = pandas_cleaned_string
 
