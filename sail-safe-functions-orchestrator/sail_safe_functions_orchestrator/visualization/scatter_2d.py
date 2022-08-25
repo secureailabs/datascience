@@ -14,7 +14,7 @@ def scatter_2d(
     # TODO add privacy
     sample_x = data_frame[name_feature_x]
     sample_y = data_frame[name_feature_y]
-    fig = plt.figure()
+    fig = plt.figure(figsize=(20, 12), dpi=80)
     if sample_split is None:
         plt.scatter(sample_x.to_numpy(), sample_y.to_numpy())
     else:

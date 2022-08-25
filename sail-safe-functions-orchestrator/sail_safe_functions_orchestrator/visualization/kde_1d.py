@@ -26,18 +26,18 @@ def kde_1d(
     sample_0 = data_frame[name_feature_data]
     # TODO add plotly
     # TODO add privacy
-    fig = plt.figure()
+
     domain_min, domain_max = statistics.min_max(sample_0)
     array_domain = numpy.linspace(domain_min, domain_max, 100)
     if sample_split is None:
         array_value = kde(array_domain, sample_0.to_numpy(), kernel_standard_deviation)
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(20, 12), dpi=80)
         ax.plot(array_domain, array_value)
         ax.fill_between(array_domain, numpy.zeros(len(array_domain)), array_value, alpha=0.2)
     else:
         array_split = sample_split.to_numpy()
         array_unique = numpy.unique(array_split)
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(20, 12), dpi=80)
         list_unique = []
         for unique in array_unique:
             if 1 < len(sample_0.to_numpy()[array_split == unique]):
