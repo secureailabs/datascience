@@ -1,3 +1,5 @@
+# Code taken from Python 3.8.10's source code. It's the same as the ast.unparse function in python 3.10
+
 "Usage: unparse.py <path to source file>"
 import sys
 import ast
@@ -63,12 +65,12 @@ class Unparser:
         meth = getattr(self, "_" + tree.__class__.__name__)
         meth(tree)
 
-    ############### Unparsing methods ######################
+    # Unparsing methods                                    #
     # There should be one method per concrete grammar type #
     # Constructors should be grouped by sum type. Ideally, #
     # this would follow the order in the grammar, but      #
     # currently doesn't.                                   #
-    ########################################################
+    #                                                      #
 
     def _Module(self, tree):
         for stmt in tree.body:
