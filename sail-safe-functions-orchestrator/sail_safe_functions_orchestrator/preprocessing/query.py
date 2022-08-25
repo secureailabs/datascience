@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 from pandas.core.computation.expr import Expr, Scope
 from sail_safe_functions.preprocessing.query_precompute import QueryPrecompute
-from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.data_frame_federated import \
+    DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 from sail_safe_functions_orchestrator.tools_specific.parser import unparse
 
@@ -41,37 +42,15 @@ class Query:
 
         :param data_frame_source: The target DataFrame
         :type data_frame_source: DataFrameFederated
-        :param query_expression: The query string to evaluate.
-            You can refer to variables in the environment by prefixing them
-            with an ‘@’ character like @a + b.
-            You can refer to column names that are not
-            valid Python variable names by surrounding them in backticks.
-            Thus, column names containing spaces or punctuations
-            (besides underscores) or starting with digits must be surrounded
-            by backticks.
-            (For example, a column named
-            “Area (cm^2)” would be referenced as `Area (cm^2)`).
-            Column names which are Python keywords
-            (like “list”, “for”, “import”, etc) cannot be used. For example,
-            if one of your columns is called a a and you want to sum it with b,
-            your query should be `a a` + b.
+        :param query_expression: The query string to evaluate. You can refer to variables in the environment by prefixing them with an ‘@’ character like @a + b. You can refer to column names that are not valid Python variable names by surrounding them in backticks. Thus, column names containing spaces or punctuations (besides underscores) or starting with digits must be surrounded by backticks. (For example, a column named “Area (cm^2)” would be referenced as `Area (cm^2)`). Column names which are Python keywords (like “list”, “for”, “import”, etc) cannot be used. For example, if one of your columns is called a a and you want to sum it with b, your query should be `a a` + b.
         :type query_expression: str
-        :param parser: The parser to use to construct the syntax
-            tree from the expression.
-            The default of 'pandas' parses code slightly different
-            than standard Python.
-            Alternatively, you can parse an expression using the 'python'
-            parser to retain strict Python semantics.
-            See the https://pandas.pydata.org/docs/user_guide/enhancingperf.html#enhancingperf-eval documentation for more details.
+        :param parser: The parser to use to construct the syntax tree from the expression. The default of 'pandas' parses code slightly different than standard Python. Alternatively, you can parse an expression using the 'python' parser to retain strict Python semantics. See the https://pandas.pydata.org/docs/user_guide/enhancingperf.html#enhancingperf-eval documentation for more details.
         :type parser: str
-        :param local_dict: A dictionary of local variables,
-            taken from locals() by default.
+        :param local_dict: A dictionary of local variables, taken from locals() by default.
         :type local_dict: dict
-        :param global_dict: A dictionary of global variables,
-            taken from globals() by default.
+        :param global_dict: A dictionary of global variables, taken from globals() by default.
         :type global_dict: dict
-        :return: Federated DataFrame resulting from the provided query
-            expression.
+        :return: Federated DataFrame resulting from the provided query expression.
         :rtype: DataFrameFederated
         """
         check_instance(data_frame_source, DataFrameFederated)
@@ -170,8 +149,7 @@ class Query:
         parser : str
             Same as pd.DataFrame.query parser parameter.
         force_parse : bool = True
-            str -> AST -> str parsing can make output code less optimize than the input (https://docs.python.org/3/library/ast.html#ast.unparse).
-            However, for security purposes it's better to return a parsed string rather than just a validated string.
+            str -> AST -> str parsing can make output code less optimize than the input (https://docs.python.org/3/library/ast.html#ast.unparse). However, for security purposes it's better to return a parsed string rather than just a validated string.
         Returns
         -------
         str
