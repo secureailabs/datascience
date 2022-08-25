@@ -1,11 +1,11 @@
 # Code taken from Python 3.8.10's source code. It's the same as the ast.unparse function in python 3.10
 
 "Usage: unparse.py <path to source file>"
-import sys
 import ast
-import tokenize
 import io
 import os
+import sys
+import tokenize
 
 # Large float and imaginary literals get turned into infinities in the AST.
 # We unparse those infinities to INFSTR.
@@ -26,13 +26,17 @@ def interleave(inter, f, seq):
 
 
 class Unparser:
-    """Methods in this class recursively traverse an AST and
+    """
+    Methods in this class recursively traverse an AST and
     output source code for the abstract syntax; original formatting
-    is disregarded."""
+    is disregarded.
+    """
 
     def __init__(self, tree, file=sys.stdout):
-        """Unparser(tree, file=sys.stdout) -> None.
-        Print the source for tree to file."""
+        """
+        Unparser(tree, file=sys.stdout) -> None.
+        Print the source for tree to file.
+        """
         self.f = file
         self._indent = 0
         self.dispatch(tree)
@@ -40,24 +44,34 @@ class Unparser:
         self.f.flush()
 
     def fill(self, text=""):
-        "Indent a piece of text, according to the current indentation level"
+        """
+        Indent a piece of text, according to the current indentation level
+        """
         self.f.write("\n" + "    " * self._indent + text)
 
     def write(self, text):
-        "Append a piece of text to the current line."
+        """
+        Append a piece of text to the current line.
+        """
         self.f.write(text)
 
     def enter(self):
-        "Print ':', and increase the indentation."
+        """
+        Print ':', and increase the indentation.
+        """
         self.write(":")
         self._indent += 1
 
     def leave(self):
-        "Decrease the indentation level."
+        """
+        Decrease the indentation level.
+        """
         self._indent -= 1
 
     def dispatch(self, tree):
-        "Dispatcher function, dispatching tree type T to method _T."
+        """
+        Dispatcher function, dispatching tree type T to method _T.
+        """
         if isinstance(tree, list):
             for t in tree:
                 self.dispatch(t)
@@ -593,11 +607,7 @@ class Unparser:
     def _Subscript(self, t):
         self.dispatch(t.value)
         self.write("[")
-        if (
-            isinstance(t.slice, ast.Index)
-            and isinstance(t.slice.value, ast.Tuple)
-            and t.slice.value.elts
-        ):
+        if isinstance(t.slice, ast.Index) and isinstance(t.slice.value, ast.Tuple) and t.slice.value.elts:
             if len(t.slice.value.elts) == 1:
                 elt = t.slice.value.elts[0]
                 self.dispatch(elt)

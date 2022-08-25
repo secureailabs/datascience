@@ -1,14 +1,12 @@
-from typing import Any, List
-
-import sys
-import os
-import io
 import ast
+import io
+import os
+import sys
+from typing import Any, List
 
 import numpy as np
 import pandas as pd
 from pandas.core.computation.expr import Expr, Scope
-
 from sail_safe_functions.preprocessing.query_precompute import QueryPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
@@ -22,14 +20,12 @@ def query(
     local_dict: dict = None,
     global_dict: dict = None,
 ) -> DataFrameFederated:
-    return Query.run(
-        data_frame_source, query_expression, parser, local_dict, global_dict
-    )
+    return Query.run(data_frame_source, query_expression, parser, local_dict, global_dict)
 
 
 class Query:
     """
-    Federated equivalent of data_frame_source.query(queryExpression) - (pd.DataFrame.query)
+    Federated equivalent of (pd.DataFrame.query)
     """
 
     @staticmethod
@@ -45,15 +41,37 @@ class Query:
 
         :param data_frame_source: The target DataFrame
         :type data_frame_source: DataFrameFederated
-        :param query_expression: The query string to evaluate. You can refer to variables in the environment by prefixing them with an ‘@’ character like @a + b. You can refer to column names that are not valid Python variable names by surrounding them in backticks. Thus, column names containing spaces or punctuations (besides underscores) or starting with digits must be surrounded by backticks. (For example, a column named “Area (cm^2)” would be referenced as `Area (cm^2)`). Column names which are Python keywords (like “list”, “for”, “import”, etc) cannot be used. For example, if one of your columns is called a a and you want to sum it with b, your query should be `a a` + b.
+        :param query_expression: The query string to evaluate.
+            You can refer to variables in the environment by prefixing them
+            with an ‘@’ character like @a + b.
+            You can refer to column names that are not
+            valid Python variable names by surrounding them in backticks.
+            Thus, column names containing spaces or punctuations
+            (besides underscores) or starting with digits must be surrounded
+            by backticks.
+            (For example, a column named
+            “Area (cm^2)” would be referenced as `Area (cm^2)`).
+            Column names which are Python keywords
+            (like “list”, “for”, “import”, etc) cannot be used. For example,
+            if one of your columns is called a a and you want to sum it with b,
+            your query should be `a a` + b.
         :type query_expression: str
-        :param parser: The parser to use to construct the syntax tree from the expression. The default of 'pandas' parses code slightly different than standard Python. Alternatively, you can parse an expression using the 'python' parser to retain strict Python semantics. See the https://pandas.pydata.org/docs/user_guide/enhancingperf.html#enhancingperf-eval documentation for more details.
+        :param parser: The parser to use to construct the syntax
+            tree from the expression.
+            The default of 'pandas' parses code slightly different
+            than standard Python.
+            Alternatively, you can parse an expression using the 'python'
+            parser to retain strict Python semantics.
+            See the https://pandas.pydata.org/docs/user_guide/enhancingperf.html#enhancingperf-eval documentation for more details.
         :type parser: str
-        :param local_dict: A dictionary of local variables, taken from locals() by default.
+        :param local_dict: A dictionary of local variables,
+            taken from locals() by default.
         :type local_dict: dict
-        :param global_dict: A dictionary of global variables, taken from globals() by default.
+        :param global_dict: A dictionary of global variables,
+            taken from globals() by default.
         :type global_dict: dict
-        :return: Federated DataFrame resulting from the provided query expression.
+        :return: Federated DataFrame resulting from the provided query
+            expression.
         :rtype: DataFrameFederated
         """
         check_instance(data_frame_source, DataFrameFederated)
@@ -70,9 +88,7 @@ class Query:
             query_expression,
             parser,
         )
-        validated_local_dict, validated_global_dict = Query._validate_envs(
-            local_dict, global_dict
-        )
+        validated_local_dict, validated_global_dict = Query._validate_envs(local_dict, global_dict)
 
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
@@ -166,9 +182,9 @@ class Query:
         check_instance(force_parse, bool)
 
         # Only an empty string query '' is evaluated here, it's just string manipulation to support special Pandas syntax (e.g. backticks (``))
-        pandas_cleaned_string = Expr(
-            "''", engine="numexpr", parser=parser, env=Scope(0)
-        )._visitor.preparser(query_string)
+        pandas_cleaned_string = Expr("''", engine="numexpr", parser=parser, env=Scope(0))._visitor.preparser(
+            query_string
+        )
 
         # AST as generated and cleaned in Pandas but with Python builtin module
         query_ast = ast.fix_missing_locations(ast.parse(pandas_cleaned_string))
@@ -176,9 +192,7 @@ class Query:
         # Now that we have the exact same AST as Pandas will have while evaluating our query,
         # we inspect it to make sure it doesn't contain anything we don't want
         # (More rigorous implementation with NodeVisitor subclass could potentially be usefull for implementing DP)
-        expended_allowed_node_types = AstUtils.get_expended_allowed_node_types(
-            Query._allowed_node_types
-        )
+        expended_allowed_node_types = AstUtils.get_expended_allowed_node_types(Query._allowed_node_types)
         for node in ast.walk(query_ast):
             # Only allow allowed node types
             if type(node) not in expended_allowed_node_types:
@@ -213,16 +227,8 @@ class Query:
             global_dict :
                 Safe global dict
         """
-        safe_local_dict = {
-            key: value
-            for key, value in local_dict.items()
-            if type(value) in Query._allowed_var_types
-        }
-        safe_global_dict = {
-            key: value
-            for key, value in global_dict.items()
-            if type(value) in Query._allowed_var_types
-        }
+        safe_local_dict = {key: value for key, value in local_dict.items() if type(value) in Query._allowed_var_types}
+        safe_global_dict = {key: value for key, value in global_dict.items() if type(value) in Query._allowed_var_types}
         # Without this, eval would be allowed to use all of builtins module (see https://docs.python.org/3/library/functions.html#eval)
         safe_local_dict["__builtins__"] = Query._allowed_builtins
         safe_global_dict["__builtins__"] = Query._allowed_builtins
@@ -244,9 +250,7 @@ class AstUtils:
         """
         Filter out AST nodes that are subclasses of ``superclass``.
         """
-        node_names = [
-            node for node in AstUtils._all_nodes if issubclass(node, superclass)
-        ]
+        node_names = [node for node in AstUtils._all_nodes if issubclass(node, superclass)]
         return node_names
 
     # We have to do it this way instead of using issubclass directly on query nodes because

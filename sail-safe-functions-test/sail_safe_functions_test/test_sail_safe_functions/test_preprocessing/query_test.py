@@ -1,13 +1,11 @@
-import pytest
 import pandas as pd
+import pytest
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 
 
 @pytest.mark.active
-def test_comparison_on_constant(
-    dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated
-):
+def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
     """
     Tests comparison with constant query
 
@@ -29,9 +27,7 @@ def test_comparison_on_constant(
 
 
 @pytest.mark.active
-def test_comparison_on_columns(
-    dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated
-):
+def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
     """
     Tests comparison with column query
 
@@ -53,9 +49,7 @@ def test_comparison_on_columns(
 
 
 @pytest.mark.active
-def test_comparison_on_variable(
-    dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated
-):
+def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
     """
     Tests comparison with variable query
 
@@ -82,11 +76,13 @@ def test_comparison_on_variable(
 def test_unauthorized_var_type(
     data_frame_federated_kidney: DataFrameFederated,
 ):
-    """Tests that environment gets sanitized properly
+    """
+    Tests that environment gets sanitized properly
 
     :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+    :type data_frame_federated_kidney: DataFrameFederated
     """
+
     # Arrange
     def forbidden_type_var():
         print("arbitrary code")
@@ -107,14 +103,16 @@ def test_unauthorized_var_type(
 def test_object_attribute(
     data_frame_federated_kidney: DataFrameFederated,
 ):
-    """Tests that we can't access attributes
+    """
+    Tests that we can't access attributes
     (it would be extremely inneficient to go check all the attributes of all the variables in the env,
     if the user wants to use the attribute of an objet they have to assign it to a variable so we can check it)
     (This will be more useful when/if we start allowing more variables types)
 
     :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+    :type data_frame_federated_kidney: DataFrameFederated
     """
+
     # Arrange
     string_var = "string of length 19"
 
