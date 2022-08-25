@@ -4,13 +4,6 @@ import sys
 import os
 import io
 import ast
-import test.support
-from test.test_tools import toolsdir
-
-# Small hack to get access to python's AST unparser
-parser_path = os.path.join(toolsdir, "parser")
-with test.support.DirsOnSysPath(parser_path):
-    import unparse
 
 import numpy as np
 import pandas as pd
@@ -19,6 +12,7 @@ from pandas.core.computation.expr import Expr, Scope
 from sail_safe_functions.preprocessing.query_precompute import QueryPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
+from sail_safe_functions_orchestrator.tools_specific.parser import unparse
 
 
 def query(
