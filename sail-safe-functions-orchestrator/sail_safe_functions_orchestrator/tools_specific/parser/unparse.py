@@ -13,7 +13,9 @@ INFSTR = "1e" + repr(sys.float_info.max_10_exp + 1)
 
 
 def interleave(inter, f, seq):
-    """Call f on each item in seq, calling inter() in between."""
+    """
+    Call f on each item in seq, calling inter() in between.
+    """
     seq = iter(seq)
     try:
         f(next(seq))

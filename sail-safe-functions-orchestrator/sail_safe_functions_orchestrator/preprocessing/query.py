@@ -20,6 +20,9 @@ def query(
     local_dict: dict = None,
     global_dict: dict = None,
 ) -> DataFrameFederated:
+    """
+    Federated equivalent of (pd.DataFrame.query)
+    """
     return Query.run(data_frame_source, query_expression, parser, local_dict, global_dict)
 
 
@@ -213,10 +216,11 @@ class Query:
         return safe_local_dict, safe_global_dict
 
 
-# AST utils adapted from
-# https://github.com/pandas-dev/pandas/blob/a6aaeb6baf679fe133e968e0f65199fc56d177b2/pandas/core/computation/expr.py#L180
 class AstUtils:
-    # Partition all AST nodes
+    """
+    AST utils adapted from https://github.com/pandas-dev/pandas/blob/a6aaeb6baf679fe133e968e0f65199fc56d177b2/pandas/core/computation/expr.py#L180
+    """
+
     _all_nodes = frozenset(
         node
         for node in (getattr(ast, name) for name in dir(ast))
