@@ -8,8 +8,7 @@ import numpy as np
 import pandas as pd
 from pandas.core.computation.expr import Expr, Scope
 from sail_safe_functions.preprocessing.query_precompute import QueryPrecompute
-from sail_safe_functions_orchestrator.data_frame_federated import \
-    DataFrameFederated
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 from sail_safe_functions_orchestrator.tools_specific.parser import unparse
 
