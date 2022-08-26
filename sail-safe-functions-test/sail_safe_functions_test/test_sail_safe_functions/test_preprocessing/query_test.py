@@ -116,7 +116,7 @@ def test_object_attribute(
     # Arrange
     string_var = "string of length 19"
 
-    query = "@string_var.partition()"
+    query = "@string_var.partition"
 
     # Act
     with pytest.raises(
