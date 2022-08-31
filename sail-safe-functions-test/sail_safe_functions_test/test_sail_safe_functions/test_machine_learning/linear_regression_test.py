@@ -152,11 +152,6 @@ def test_basic_linear_data_acceptable():
     # Assert scores are acceptable
     assert R2 >= 0.95
 
-    # Assert scores are better after multiple rounds of averaging
-    # assert precision_1000_5 >= precision_1000_1
-    # assert recall_1000_5 >= recall_1000_1
-    # assert f1_1000_5 >= f1_1000_1
-
     # TODO: Produce plot of accuracy improvement over federal epochs
 
 
@@ -183,10 +178,5 @@ def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
 
     # Assert scores are acceptable
     assert R2 >= 0.95
-
-    # Assert scores are better after multiple rounds of averaging
-    # assert precision_1000_5 >= precision_1000_1
-    # assert recall_1000_5 >= recall_1000_1
-    # assert f1_1000_5 >= f1_1000_1
 
     # TODO: Produce plot of accuracy improvement over federal epochs
