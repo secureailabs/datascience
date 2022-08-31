@@ -12,8 +12,8 @@ def spearman(
     alternative: str,
     type_ranking: str,
 ) -> Tuple[float, float]:
-    """spearman
-    Computes the spearman coeffcient by ranking both sample and
+    """
+    It takes two federated series, and returns the rho and the p-value
 
     :param sample_0: sample 0
     :type sample_0: SeriesFederated

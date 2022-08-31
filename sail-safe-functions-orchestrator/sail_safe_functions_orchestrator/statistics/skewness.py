@@ -1,6 +1,5 @@
 from typing import Tuple
 
-import pandas
 from sail_safe_functions.statistics.skewness_aggregate import SkewnessAggregate
 from sail_safe_functions.statistics.skewness_precompute import SkewnessPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -26,6 +25,14 @@ class Skewness(Estimator):
         super().__init__(["skewness"])
 
     def run(self, sample_0: SeriesFederated):
+        """
+        It takes one federated series, and returns the skewness value of the series.
+
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: skewness value of series
+        :rtype: float
+        """
         list_list_precompute = []
 
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

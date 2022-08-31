@@ -42,14 +42,72 @@ def levene_test(
     sample_1: SeriesFederated,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    This the main function where Levenes Fedration happens
+    Perform federated Levene test for equal variances.
+    It takes two federated series, and returns the p-value and test statistic of the Levene test.
 
-    :param sample_0: fedrated series
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1:  fedrsated series
-    :return: F-stat, p-value
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1:  federated series
+        :return: F-stat, p-value
+        :rtype: Tuple[float, float]
+
+
+    Definition
+    -----------
+    The Levene test tests the null hypothesis that all input samples
+    are from populations with equal variances.  Levene&#39;s test is an
+    alternative to Bartlett&#39;s test `bartlett` in the case where
+    there are significant deviations from normality.
+
+    In statistics, Levene’s test is an inferential statistic used to
+    evaluate the equality of variances for a variable determined for two
+    or more groups. Some standard statistical procedures find that variances
+    of the populations from which various samples are formed are equal.
+    Levene’s test assesses this assumption. It examines the null hypothesis
+    that the population variances are equal called homogeneity of variance or
+    homoscedasticity. It compares the variances of k samples, where k can be more
+    than two samples.
+    It’s an alternative to Bartlett’s test that is less sensitive to
+    departures from normality.
+    There are several solutions to test for the equality (homogeneity)
+    of variance across groups, including:
+
+    -F-test
+
+    -Bartlett’s test
+
+    -Levene’s test
+
+    -Fligner-Killeen test
+
+    Examples
+    --------
+    Test whether or not the lists `a`, `b` and `c` come from populations
+    with equal variances.
+
+    &gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
+    &gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+    &gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    &gt;&gt;&gt; sample_0.add_array(&#34;array_test&#34;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
+    &gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    &gt;&gt;&gt; sample_1.add_array(&#34;array_test&#34;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
+
+    &gt;&gt;&gt; estimator = LeveneTest()
+    &gt;&gt;&gt; f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
+
+    The small p-value suggests that the populations do not have equal
+    variances.
+    This is not surprising, given that the sample variance of `b` is much
+    larger than that of `a` and `c`:
+
+    References
+    -----------
+    ..[1] https://en.wikipedia.org/wiki/Levene%27s_test
+    ..[2] https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
+
+
     &#34;&#34;&#34;
     estimator = LeveneTest()
     return estimator.run(sample_0, sample_1)
@@ -60,6 +118,7 @@ class LeveneTest(Estimator):
     This class contains the federated Levenes method
 
     :return: f_statistic(statistics from levenes test)  , p-value
+
     :rtype: float
     &#34;&#34;&#34;
 
@@ -102,14 +161,58 @@ class LeveneTest(Estimator):
 <span>def <span class="ident">levene_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This the main function where Levenes Fedration happens</p>
-<p>:param sample_0: fedrated series
+<div class="desc"><p>Perform federated Levene test for equal variances.
+It takes two federated series, and returns the p-value and test statistic of the Levene test.</p>
+<pre><code>:param sample_0: The first sample of data
 :type sample_0: SeriesFederated
-:param sample_1: <em>description</em>
-:type sample_1:
-fedrsated series
+:param sample_1: The second sample of data
+:type sample_1:  federated series
 :return: F-stat, p-value
-:rtype: Tuple[float, float]</p></div>
+:rtype: Tuple[float, float]
+</code></pre>
+<h2 id="definition">Definition</h2>
+<p>The Levene test tests the null hypothesis that all input samples
+are from populations with equal variances.
+Levene's test is an
+alternative to Bartlett's test <code>bartlett</code> in the case where
+there are significant deviations from normality.</p>
+<p>In statistics, Levene’s test is an inferential statistic used to
+evaluate the equality of variances for a variable determined for two
+or more groups. Some standard statistical procedures find that variances
+of the populations from which various samples are formed are equal.
+Levene’s test assesses this assumption. It examines the null hypothesis
+that the population variances are equal called homogeneity of variance or
+homoscedasticity. It compares the variances of k samples, where k can be more
+than two samples.
+It’s an alternative to Bartlett’s test that is less sensitive to
+departures from normality.
+There are several solutions to test for the equality (homogeneity)
+of variance across groups, including:</p>
+<p>-F-test</p>
+<p>-Bartlett’s test</p>
+<p>-Levene’s test</p>
+<p>-Fligner-Killeen test</p>
+<h2 id="examples">Examples</h2>
+<p>Test whether or not the lists <code>a</code>, <code>b</code> and <code>c</code> come from populations
+with equal variances.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
+&gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&quot;sample_0&quot;)
+&gt;&gt;&gt; sample_0.add_array(&quot;array_test&quot;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
+&gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&quot;sample_1&quot;)
+&gt;&gt;&gt; sample_1.add_array(&quot;array_test&quot;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; estimator = LeveneTest()
+&gt;&gt;&gt; f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
+</code></pre>
+<p>The small p-value suggests that the populations do not have equal
+variances.
+This is not surprising, given that the sample variance of <code>b</code> is much
+larger than that of <code>a</code> and <code>c</code>:</p>
+<h2 id="references">References</h2>
+<p>..[1] <a href="https://en.wikipedia.org/wiki/Levene%27s_test">https://en.wikipedia.org/wiki/Levene%27s_test</a>
+..[2] <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -119,14 +222,72 @@ fedrsated series
     sample_1: SeriesFederated,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    This the main function where Levenes Fedration happens
+    Perform federated Levene test for equal variances.
+    It takes two federated series, and returns the p-value and test statistic of the Levene test.
 
-    :param sample_0: fedrated series
-    :type sample_0: SeriesFederated
-    :param sample_1: _description_
-    :type sample_1:  fedrsated series
-    :return: F-stat, p-value
-    :rtype: Tuple[float, float]
+        :param sample_0: The first sample of data
+        :type sample_0: SeriesFederated
+        :param sample_1: The second sample of data
+        :type sample_1:  federated series
+        :return: F-stat, p-value
+        :rtype: Tuple[float, float]
+
+
+    Definition
+    -----------
+    The Levene test tests the null hypothesis that all input samples
+    are from populations with equal variances.  Levene&#39;s test is an
+    alternative to Bartlett&#39;s test `bartlett` in the case where
+    there are significant deviations from normality.
+
+    In statistics, Levene’s test is an inferential statistic used to
+    evaluate the equality of variances for a variable determined for two
+    or more groups. Some standard statistical procedures find that variances
+    of the populations from which various samples are formed are equal.
+    Levene’s test assesses this assumption. It examines the null hypothesis
+    that the population variances are equal called homogeneity of variance or
+    homoscedasticity. It compares the variances of k samples, where k can be more
+    than two samples.
+    It’s an alternative to Bartlett’s test that is less sensitive to
+    departures from normality.
+    There are several solutions to test for the equality (homogeneity)
+    of variance across groups, including:
+
+    -F-test
+
+    -Bartlett’s test
+
+    -Levene’s test
+
+    -Fligner-Killeen test
+
+    Examples
+    --------
+    Test whether or not the lists `a`, `b` and `c` come from populations
+    with equal variances.
+
+    &gt;&gt;&gt; from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
+    &gt;&gt;&gt; from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+    &gt;&gt;&gt; sample_0 = SeriesFederatedLocal(&#34;sample_0&#34;)
+    &gt;&gt;&gt; sample_0.add_array(&#34;array_test&#34;, np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5,]) )
+    &gt;&gt;&gt; sample_1 = SeriesFederatedLocal(&#34;sample_1&#34;)
+    &gt;&gt;&gt; sample_1.add_array(&#34;array_test&#34;, np.array([21.5, 22.8, 21.0, 23.0, 21.6, 23.6, 22.5,]))
+
+    &gt;&gt;&gt; estimator = LeveneTest()
+    &gt;&gt;&gt; f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
+
+    The small p-value suggests that the populations do not have equal
+    variances.
+    This is not surprising, given that the sample variance of `b` is much
+    larger than that of `a` and `c`:
+
+    References
+    -----------
+    ..[1] https://en.wikipedia.org/wiki/Levene%27s_test
+    ..[2] https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
+
+
     &#34;&#34;&#34;
     estimator = LeveneTest()
     return estimator.run(sample_0, sample_1)</code></pre>
@@ -143,8 +304,8 @@ fedrsated series
 <dd>
 <div class="desc"><p>This class contains the federated Levenes method</p>
 <p>:return: f_statistic(statistics from levenes test)
-, p-value
-:rtype: float</p></div>
+, p-value</p>
+<p>:rtype: float</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -154,6 +315,7 @@ fedrsated series
     This class contains the federated Levenes method
 
     :return: f_statistic(statistics from levenes test)  , p-value
+
     :rtype: float
     &#34;&#34;&#34;
 

@@ -36,10 +36,9 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 
 
-def chisquare(
-    sample_0: SeriesFederated, sample_1: SeriesFederated
-) -&gt; Tuple[float, float]:
+def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated chisquare test.
     This test can be used to examine if there is a interaction between two paired categorical samples.
 
     The null hypothesis is that there is no interaction between samples.
@@ -74,9 +73,7 @@ class Chisquare(Estimator):
         #    raise ValueException()
 
         list_precompute = []
-        for series_0, series_1 in zip(
-            sample_0.dict_series.values(), sample_1.dict_series.values()
-        ):
+        for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
             list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
         return ChisquareAggregate.run(list_precompute)
 
@@ -97,16 +94,12 @@ class Chisquare(Estimator):
 
         for i_0 in range(len(list_unique_0)):
             for i_1 in range(len(list_unique_1)):
-                array_pred[i_0, i_1] = (
-                    array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-                )
+                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
         ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
             len(array_true.ravel()) - 1
         )  # 2d instead of 1d
-        chisquare_statistic, p_value = stats.chisquare(
-            array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof
-        )
+        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
         return chisquare_statistic, p_value</code></pre>
 </details>
 </section>
@@ -121,7 +114,8 @@ class Chisquare(Estimator):
 <span>def <span class="ident">chisquare</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This test can be used to examine if there is a interaction between two paired categorical samples.</p>
+<div class="desc"><p>Perform federated chisquare test.
+This test can be used to examine if there is a interaction between two paired categorical samples.</p>
 <p>The null hypothesis is that there is no interaction between samples.</p>
 <p>This test is invalid when the observed or expected frequencies in each category are too small.
 A typical rule is that all of the observed and expected frequencies should be at least 5.
@@ -136,10 +130,9 @@ The total number of samples is recommended to be greater than 13.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def chisquare(
-    sample_0: SeriesFederated, sample_1: SeriesFederated
-) -&gt; Tuple[float, float]:
+<pre><code class="python">def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated chisquare test.
     This test can be used to examine if there is a interaction between two paired categorical samples.
 
     The null hypothesis is that there is no interaction between samples.
@@ -188,9 +181,7 @@ The total number of samples is recommended to be greater than 13.</p>
         #    raise ValueException()
 
         list_precompute = []
-        for series_0, series_1 in zip(
-            sample_0.dict_series.values(), sample_1.dict_series.values()
-        ):
+        for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
             list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
         return ChisquareAggregate.run(list_precompute)
 
@@ -211,16 +202,12 @@ The total number of samples is recommended to be greater than 13.</p>
 
         for i_0 in range(len(list_unique_0)):
             for i_1 in range(len(list_unique_1)):
-                array_pred[i_0, i_1] = (
-                    array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-                )
+                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
         ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
             len(array_true.ravel()) - 1
         )  # 2d instead of 1d
-        chisquare_statistic, p_value = stats.chisquare(
-            array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof
-        )
+        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
         return chisquare_statistic, p_value</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -244,9 +231,7 @@ The total number of samples is recommended to be greater than 13.</p>
     #    raise ValueException()
 
     list_precompute = []
-    for series_0, series_1 in zip(
-        sample_0.dict_series.values(), sample_1.dict_series.values()
-    ):
+    for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
         list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
     return ChisquareAggregate.run(list_precompute)</code></pre>
 </details>
@@ -277,16 +262,12 @@ The total number of samples is recommended to be greater than 13.</p>
 
     for i_0 in range(len(list_unique_0)):
         for i_1 in range(len(list_unique_1)):
-            array_pred[i_0, i_1] = (
-                array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-            )
+            array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
     ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
         len(array_true.ravel()) - 1
     )  # 2d instead of 1d
-    chisquare_statistic, p_value = stats.chisquare(
-        array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof
-    )
+    chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
     return chisquare_statistic, p_value</code></pre>
 </details>
 </dd>
