@@ -19,11 +19,8 @@ def test_kl_divergence():
     # Act
     estimator = kl_divergence()
     forward_value = estimator.run(sample_0, sample_1, False)
-    reverse_value = estimator.run(sample_0, sample_1, True)
 
     scipy_forward_value = sum(rel_entr(sample_0, sample_1))
-    scipy_reverse_value = sum(rel_entr(sample_1, sample_0))
 
     # Assert
     assert scipy_forward_value == pytest.approx(forward_value, 0.0001)
-    assert scipy_reverse_value == pytest.approx(reverse_value, 0.0001)
