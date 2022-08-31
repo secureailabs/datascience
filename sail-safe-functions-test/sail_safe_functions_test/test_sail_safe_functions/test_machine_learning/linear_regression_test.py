@@ -46,22 +46,6 @@ def get_test_federation_split(df):
     return result, test
 
 
-def score_model(predicted, Y_test):
-    predictions = []
-    for prediction in predicted:
-        predictions.append(prediction.argmax())
-
-    labels = []
-    for y in Y_test:
-        labels.append(int(y.argmax()))
-
-    precision = precision_score(predictions, labels, average="weighted")
-    recall = recall_score(predictions, labels, average="weighted")
-    f1 = f1_score(predictions, labels, average="weighted")
-
-    return precision, recall, f1
-
-
 def predict_basic_linear(epochs, federal_epochs, data_federation, test):
     """Test if the strategy parameter gets checked
 
