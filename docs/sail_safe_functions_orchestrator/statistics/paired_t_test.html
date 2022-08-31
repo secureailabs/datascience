@@ -44,8 +44,7 @@ def paired_t_test(
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Preforms a federated paired t-test.
-
+    Perform federated paired t test.
     It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
         :param sample_0: The first sample of data
@@ -152,8 +151,8 @@ class PairedTTest(Estimator):
 <span>def <span class="ident">paired_t_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, alternative: str = 'less') ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preforms a federated paired t-test.</p>
-<p>It takes two federated series, and returns the t-statistic and p-value for a paired t-test.</p>
+<div class="desc"><p>Perform federated paired t test.
+It takes two federated series, and returns the t-statistic and p-value for a paired t-test.</p>
 <pre><code>:param sample_0: The first sample of data
 :type sample_0: SeriesFederated
 :param sample_1: The second sample of data
@@ -207,8 +206,7 @@ large t-statistics.</p>
     alternative: str = &#34;less&#34;,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Preforms a federated paired t-test.
-
+    Perform federated paired t test.
     It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
         :param sample_0: The first sample of data

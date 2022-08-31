@@ -42,6 +42,7 @@ def levene_test(
     sample_1: SeriesFederated,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated Levene test for equal variances.
     It takes two federated series, and returns the p-value and test statistic of the Levene test.
 
         :param sample_0: The first sample of data
@@ -160,7 +161,8 @@ class LeveneTest(Estimator):
 <span>def <span class="ident">levene_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>It takes two federated series, and returns the p-value and test statistic of the Levene test.</p>
+<div class="desc"><p>Perform federated Levene test for equal variances.
+It takes two federated series, and returns the p-value and test statistic of the Levene test.</p>
 <pre><code>:param sample_0: The first sample of data
 :type sample_0: SeriesFederated
 :param sample_1: The second sample of data
@@ -220,6 +222,7 @@ larger than that of <code>a</code> and <code>c</code>:</p>
     sample_1: SeriesFederated,
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated Levene test for equal variances.
     It takes two federated series, and returns the p-value and test statistic of the Levene test.
 
         :param sample_0: The first sample of data

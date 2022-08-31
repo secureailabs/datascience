@@ -22,6 +22,7 @@ class MinMax(Estimator):
 
     def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
         """
+        Perform federated min max.
         It takes one federated series, and returns min and max value for it.
 
         :param sample_0: sample series

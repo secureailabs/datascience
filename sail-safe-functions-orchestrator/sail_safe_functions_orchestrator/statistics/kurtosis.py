@@ -8,6 +8,7 @@ from scipy import stats
 
 def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
     """
+    Perform federated kurtosis.
     It takes one federated series, and returns the kurtosis value of the series
 
     :param sample_0: sample series

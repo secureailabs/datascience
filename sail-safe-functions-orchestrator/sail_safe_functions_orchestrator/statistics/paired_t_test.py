@@ -16,8 +16,7 @@ def paired_t_test(
     alternative: str = "less",
 ) -> Tuple[float, float]:
     """
-    Preforms a federated paired t-test.
-
+    Perform federated paired t test.
     It takes two federated series, and returns the t-statistic and p-value for a paired t-test.
 
         :param sample_0: The first sample of data

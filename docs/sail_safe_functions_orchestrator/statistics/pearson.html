@@ -39,6 +39,7 @@ from scipy.stats import t
 
 def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated Pearson.
     It takes two federated series, and returns the rho value and the p-value
     ----------------
         :param sample_0: The first sample of data
@@ -150,7 +151,9 @@ class Pearson(Estimator):
 <span>def <span class="ident">pearson</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, alternative: str) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="it-takes-two-federated-series-and-returns-the-rho-value-and-the-p-value">It takes two federated series, and returns the rho value and the p-value</h2>
+<div class="desc"><p>Perform federated Pearson.
+It takes two federated series, and returns the rho value and the p-value</p>
+<hr>
 <pre><code>:param sample_0: The first sample of data
 :type sample_0: SeriesFederated
 :param sample_1: The Second sample of data
@@ -204,6 +207,7 @@ Statistics), Vol. 21, No. 1 (1972), pp. 1-12.</p></div>
 </summary>
 <pre><code class="python">def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
+    Perform federated Pearson.
     It takes two federated series, and returns the rho value and the p-value
     ----------------
         :param sample_0: The first sample of data

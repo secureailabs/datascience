@@ -8,7 +8,8 @@ class HistogramFederate:
     @staticmethod
     def hist(sample_0: SeriesFederated, bin_count: int):
         """
-        This the federated histogram
+        Performs the federated histogram.
+        It take on federated series and bin count. Returns the histogram.
         -----------
             :param sample_0: The first sample of data
             :type sample_0: SeriesFederated

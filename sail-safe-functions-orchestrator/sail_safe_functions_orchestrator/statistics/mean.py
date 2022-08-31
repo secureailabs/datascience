@@ -7,6 +7,7 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
 def mean(sample_0: SeriesFederated):
     """
+    Perform federated Mean.
     It takes one federated series, and returns the mean value
 
     :param sample_0: sample series

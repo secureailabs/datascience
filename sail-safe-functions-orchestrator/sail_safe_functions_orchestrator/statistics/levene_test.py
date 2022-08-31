@@ -14,6 +14,7 @@ def levene_test(
     sample_1: SeriesFederated,
 ) -> Tuple[float, float]:
     """
+    Perform federated Levene test for equal variances.
     It takes two federated series, and returns the p-value and test statistic of the Levene test.
 
         :param sample_0: The first sample of data
