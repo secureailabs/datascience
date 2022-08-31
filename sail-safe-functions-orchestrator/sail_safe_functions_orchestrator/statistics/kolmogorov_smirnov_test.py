@@ -20,7 +20,8 @@ def kolmogorov_smirnov_test(
     sample_0: SeriesFederated, type_distribution: str, type_ranking: str
 ) -> Tuple[float, float]:
     """
-    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
+    Perform federated kolmogorov_smirnov test.
+    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.
 
     :param sample_0: sample to be tested
     :type sample_0: SeriesFederated
@@ -69,17 +70,11 @@ class KolmogorovSmirnovTest(Estimator):
             raise Exception()
         size_sample = sample_0.size
 
-        series_sample_ranked_0 = preprocessing.rank(
-            sample_0, type_ranking=self.type_ranking
-        )
+        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
         list_list_precompute = []
-        for series, series_ranked in zip(
-            sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
-        ):
+        for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
             list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(
-                    series, series_ranked, distribution, size_sample
-                )
+                KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
             )
         k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
 
