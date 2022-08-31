@@ -48,7 +48,8 @@ def kolmogorov_smirnov_test(
     sample_0: SeriesFederated, type_distribution: str, type_ranking: str
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
+    Perform federated kolmogorov_smirnov test.
+    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.
 
     :param sample_0: sample to be tested
     :type sample_0: SeriesFederated
@@ -97,17 +98,11 @@ class KolmogorovSmirnovTest(Estimator):
             raise Exception()
         size_sample = sample_0.size
 
-        series_sample_ranked_0 = preprocessing.rank(
-            sample_0, type_ranking=self.type_ranking
-        )
+        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
         list_list_precompute = []
-        for series, series_ranked in zip(
-            sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
-        ):
+        for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
             list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(
-                    series, series_ranked, distribution, size_sample
-                )
+                KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
             )
         k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
 
@@ -133,7 +128,8 @@ class KolmogorovSmirnovTest(Estimator):
 <span>def <span class="ident">kolmogorov_smirnov_test</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, type_distribution: str, type_ranking: str) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution</p>
+<div class="desc"><p>Perform federated kolmogorov_smirnov test.
+Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.</p>
 <p>:param sample_0: sample to be tested
 :type sample_0: SeriesFederated
 :param type_distribution: type of ranking employed
@@ -153,7 +149,8 @@ class KolmogorovSmirnovTest(Estimator):
     sample_0: SeriesFederated, type_distribution: str, type_ranking: str
 ) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
-    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
+    Perform federated kolmogorov_smirnov test.
+    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.
 
     :param sample_0: sample to be tested
     :type sample_0: SeriesFederated
@@ -217,17 +214,11 @@ class KolmogorovSmirnovTest(Estimator):
             raise Exception()
         size_sample = sample_0.size
 
-        series_sample_ranked_0 = preprocessing.rank(
-            sample_0, type_ranking=self.type_ranking
-        )
+        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
         list_list_precompute = []
-        for series, series_ranked in zip(
-            sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
-        ):
+        for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
             list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(
-                    series, series_ranked, distribution, size_sample
-                )
+                KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
             )
         k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
 
@@ -271,17 +262,11 @@ class KolmogorovSmirnovTest(Estimator):
         raise Exception()
     size_sample = sample_0.size
 
-    series_sample_ranked_0 = preprocessing.rank(
-        sample_0, type_ranking=self.type_ranking
-    )
+    series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
     list_list_precompute = []
-    for series, series_ranked in zip(
-        sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
-    ):
+    for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
         list_list_precompute.append(
-            KolmogorovSmirnovTestPrecompute.run(
-                series, series_ranked, distribution, size_sample
-            )
+            KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
         )
     k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
 

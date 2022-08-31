@@ -32,6 +32,7 @@ class WelchTTest(Estimator):
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         """
+        Perform federated Welch T test.
         It takes two federated series, and returns the p-value and test statistic of the Levene test
 
         :param sample_0: First series sample
