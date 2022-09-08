@@ -3,6 +3,7 @@ from typing import Dict
 import matplotlib.pyplot as plt  # TODO replace
 import numpy
 import pandas
+from matplotlib.axes import Axes
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
@@ -116,3 +117,17 @@ def survival_query(
     plt.legend(list_legend)
     plt.show()
     return fig
+
+
+def plot_survival_confidence(
+    ax: Axes,
+    domain: numpy.ndarray,
+    mean: numpy.ndarray,
+    lower: numpy.ndarray,
+    upper: numpy.ndarray,
+    label: str,
+    *,
+    line_style: str = "solid",
+):
+    ax.plot(domain, mean, label=label, linestyle=line_style)
+    ax.fill_between(domain, lower, upper, alpha=0.2)
