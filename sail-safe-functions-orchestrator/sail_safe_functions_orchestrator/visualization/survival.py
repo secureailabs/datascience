@@ -130,8 +130,22 @@ def plot_survival_curve(
     mean = survival_curve["mean"]
     lower = survival_curve["lower"]
     upper = survival_curve["upper"]
-    ax.plot(domain, mean, label=label, linestyle=line_style)
-    ax.fill_between(domain, lower, upper, alpha=0.2)
+
+    domain_plot = [0.0]
+    mean_plot = [1.0]
+    lower_plot = [1.0]
+    upper_plot = [1.0]
+    for i in range(1, len(domain)):
+        domain_plot.append(domain[i])
+        mean_plot.append(mean[i - 1])
+        lower_plot.append(lower[i - 1])
+        upper_plot.append(upper[i - 1])
+        domain_plot.append(domain[i])
+        mean_plot.append(mean[i])
+        lower_plot.append(lower[i])
+        upper_plot.append(upper[i])
+    ax.plot(domain_plot, mean_plot, label=label, linestyle=line_style)
+    ax.fill_between(domain_plot, lower_plot, upper_plot, alpha=0.2)
 
 
 def plot_survival_confidence(

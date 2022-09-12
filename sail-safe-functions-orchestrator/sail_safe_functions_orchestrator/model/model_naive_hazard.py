@@ -30,13 +30,17 @@ class ModelNaiveHazard(ModelBase):
 
         fraction_observed = data_frame[name_feature_observation].sum() / data_frame[name_feature_observation].shape[0]
         domain = kmf.survival_function_.index.to_numpy()
-        mean = kmf.survival_function_.to_numpy()[:, 0] * fraction_observed + (1 - fraction_observed)
-        lower = kmf.confidence_interval_survival_function_.to_numpy()[:, 0] * fraction_observed + (
-            1 - fraction_observed
-        )
-        upper = kmf.confidence_interval_survival_function_.to_numpy()[:, 1] * fraction_observed + (
-            1 - fraction_observed
-        )
+        # mean = kmf.survival_function_.to_numpy()[:, 0] * fraction_observed + (1 - fraction_observed)
+        # lower = kmf.confidence_interval_survival_function_.to_numpy()[:, 0] * fraction_observed + (
+        #     1 - fraction_observed
+        # )
+        # upper = kmf.confidence_interval_survival_function_.to_numpy()[:, 1] * fraction_observed + (
+        #     1 - fraction_observed
+        # )
+
+        mean = kmf.survival_function_.to_numpy()[:, 0]
+        lower = kmf.confidence_interval_survival_function_.to_numpy()[:, 0]
+        upper = kmf.confidence_interval_survival_function_.to_numpy()[:, 1]
 
         kaplan_meier_fit = {}
         kaplan_meier_fit["count_total"] = count_total
