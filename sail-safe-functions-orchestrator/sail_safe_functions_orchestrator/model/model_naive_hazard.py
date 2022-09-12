@@ -1,21 +1,22 @@
-from typing import Dict
+from typing import Dict, List
 
+import matplotlib.pyplot as plt
 import numpy
 import pandas
 import scipy
 from lifelines import KaplanMeierFitter
+from sail_safe_functions_orchestrator import visualization
 from sail_safe_functions_orchestrator.model.model_base import ModelBase
-from sail_safe_functions_orchestrator.schema_date_frame import SchemaDataFrame
 
 
 class ModelNaiveHazard(ModelBase):
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self, time_point) -> None:
         super().__init__()
+        self.list_name_feature_hazard = []
         self.name_feature_duration = ""
         self.name_feature_observation = ""
         self.dict_dict_hazard = {}
+        self.time_point = time_point
 
     @staticmethod
     def fit_kaplan_meier(data_frame: pandas.DataFrame, name_feature_duration: str, name_feature_observation: str):
@@ -76,7 +77,7 @@ class ModelNaiveHazard(ModelBase):
         else:
             is_default = False
         hazard = {}
-        hazard["kaplan_meier_fit"] = kaplan_meier_fit
+        hazard["survival_curve"] = kaplan_meier_fit
         hazard["count_total"] = count_total
         hazard["count_observed"] = count_observed
         hazard["is_default"] = is_default
@@ -87,25 +88,63 @@ class ModelNaiveHazard(ModelBase):
 
     def add_feature_hazard(self, data_frame: pandas.DataFrame, name_feature_hazard: str, include_missing: bool):
         # TODO loop
-        kaplan_meier_fit = ModelNaiveHazard.fit_kaplan_meier(
-            data_frame, self.name_feature_duration, self.name_feature_observation
+        # TODO refactor this
+        # TODO properly use the fitter without the dead_fraction BS
+        # TODO properly use None and nan instead of magic missing attribute
+        data_frame_target = data_frame[[self.name_feature_duration, self.name_feature_observation, name_feature_hazard]]
+        data_frame_target = data_frame_target[
+            data_frame_target[self.name_feature_observation].notna()
+        ]  # TODO this is shit
+
+        contains_missing = 0 < data_frame_target[name_feature_hazard].isna().sum()
+        if include_missing and contains_missing:
+            list_name_value = pandas.unique(data_frame_target[name_feature_hazard])
+            if "missing" in list_name_value:
+                raise ValueError("feature contains both nan and missing")
+            data_frame_target = data_frame_target.fillna("missing")
+            list_name_value = sorted(pandas.unique(data_frame_target[name_feature_hazard]))
+            list_name_value.remove("missing")
+            list_name_value.append("missing")
+        else:
+            data_frame_target = data_frame_target[data_frame_target[name_feature_hazard].notna()]
+            list_name_value = sorted(pandas.unique(data_frame_target[name_feature_hazard]))
+
+        name_value = "all"
+        survival_curve_all = ModelNaiveHazard.fit_kaplan_meier(
+            data_frame_target, self.name_feature_duration, self.name_feature_observation
         )
-        dict_hazard = {}
-        hazard = ModelNaiveHazard.compute_hazard()
-        self.dict_dict_hazard[name_feature_hazard] = dict_hazard
+
+        ratio_reference = scipy.interpolate.interp1d(survival_curve_all["domain"], survival_curve_all["mean"])(
+            self.time_point
+        )
+
+        self.dict_dict_hazard[name_feature_hazard] = {}
+        # TODO this next line is problematic, since it it a magic value
+        self.dict_dict_hazard[name_feature_hazard]["all"] = ModelNaiveHazard.compute_hazard(
+            ratio_reference, survival_curve_all, self.time_point
+        )
+        for name_value in list_name_value:
+            data_frame_hazard = data_frame_target.query(f"(`{name_feature_hazard}` == '{name_value}')")
+            survival_curve = ModelNaiveHazard.fit_kaplan_meier(
+                data_frame_hazard, self.name_feature_duration, self.name_feature_observation
+            )
+            self.dict_dict_hazard[name_feature_hazard][name_value] = ModelNaiveHazard.compute_hazard(
+                ratio_reference, survival_curve, self.time_point
+            )
 
     def fit(
         self,
         data_frame: pandas.DataFrame,
         name_feature_duration: str,
         name_feature_observation: str,
+        list_name_feature_hazard: List[str],
         include_missing: bool = True,
     ) -> None:
         self.name_feature_duration = name_feature_duration
         self.name_feature_observation = name_feature_observation
-        for name_feature in data_frame.columns:
-            if name_feature not in [self.name_feature_duration, self.name_feature_observation]:
-                self.add_feature_hazard(data_frame, name_feature, include_missing)
+        self.list_name_feature_hazard = list_name_feature_hazard
+        for name_feature in list_name_feature_hazard:
+            self.add_feature_hazard(data_frame, name_feature, include_missing)
 
     def predict(self, data_frame: pandas.DataFrame, name_feature_score: str):
         list_score = []
@@ -122,3 +161,65 @@ class ModelNaiveHazard(ModelBase):
             list_score.append(score)
         data_frame[name_feature_score] = list_score
         return data_frame
+
+    def print(self) -> None:
+        for name_feature, dict_hazard in self.dict_dict_hazard.items():
+            print(name_feature)
+            for name_value, hazard in dict_hazard.items():
+                str_value = name_value[:20].ljust(20)
+                str_hr = "HR = "
+                str_hr += "{:.2f}".format(hazard["hazzard_ratio_mean"])
+                str_hr += " (CI = "
+                str_hr += "{:.2f}".format(hazard["hazzard_ratio_lower"])
+                str_hr += " - "
+                str_hr += "{:.2f}".format(hazard["hazzard_ratio_upper"])
+                str_hr += ")"
+                if hazard["is_default"]:
+                    str_hr += " default"
+                print(f"  {str_value} {str_hr}")
+
+    def plot(self, data_frame: pandas.DataFrame, name_feature_group: str):
+        figure, axes = plt.subplots(figsize=(15, 8), dpi=80)
+        list_name_value = pandas.unique(data_frame[name_feature_group])
+        for name_value in list_name_value:
+            data_frame_target = data_frame[
+                [self.name_feature_duration, self.name_feature_observation, name_feature_group]
+            ]
+            data_frame_target = data_frame_target[data_frame_target[self.name_feature_observation].notna()]
+            data_frame_hazard = data_frame_target.query(f"(`{name_feature_group}` == '{name_value}')")
+
+            survival_curve = ModelNaiveHazard.fit_kaplan_meier(
+                data_frame_hazard, self.name_feature_duration, self.name_feature_observation
+            )
+            count_observed = survival_curve["count_observed"]
+            count_total = survival_curve["count_total"]
+            name_series = f"{name_value} (N={count_observed}/{count_total})"
+            visualization.plot_survival_curve(axes, survival_curve, name_series)
+        plt.legend()
+        plt.ylabel("survival faction")
+        plt.xlabel("name_feature_duration")
+        plt.title(name_feature_group)
+        plt.show()
+        return figure
+
+    def plot_hazard(self) -> List:
+        list_figure = []
+        for name_feature_hazard, dict_hazard in self.dict_dict_hazard.items():
+            figure, axes = plt.subplots(figsize=(15, 8), dpi=80)
+            for name_value, hazard in dict_hazard.items():
+                survival_curve = hazard["survival_curve"]
+                count_observed = survival_curve["count_observed"]
+                count_total = survival_curve["count_total"]
+                name_series = f"{name_value} (N={count_observed}/{count_total})"
+                if name_value == "all":
+                    visualization.plot_survival_curve(axes, survival_curve, name_series, line_style="dashed")
+                elif name_value == "missing":
+                    visualization.plot_survival_curve(axes, survival_curve, name_series, line_style="dotted")
+                else:
+                    visualization.plot_survival_curve(axes, survival_curve, name_series)
+            axes.legend()
+            axes.set_ylabel("survival faction")
+            axes.set_label("name_feature_duration")
+            axes.set_title(name_feature_hazard)
+            list_figure.append(figure)
+        return list_figure
