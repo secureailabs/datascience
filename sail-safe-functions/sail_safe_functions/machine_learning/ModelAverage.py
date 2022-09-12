@@ -5,7 +5,18 @@ import torch
 
 
 class ModelAverage:
+    """This safe function averages a set of models"""
+
     def run(models: List[torch.nn.Module], verbose: bool = False) -> torch.nn.Module:
+        """Runs the ModelAvg safe funciton
+
+        :param: models: A list of models which are to be averaged
+        :type: models: List[torch.nn.Module]
+        :param: verbose: whether to print out a limited amount of information
+        :type: Boolean
+        :return: fresh model with parameters set to the average
+        :type: torch.nn.Module
+        """
 
         model_parameters = []
         for model in models:

@@ -7,6 +7,8 @@ import torch
 
 
 class ModelTrain:
+    """Trains a model on local data"""
+
     def run(
         epochs: int,
         X: DataFrame,
@@ -16,7 +18,25 @@ class ModelTrain:
         criterion: String,
         optimizer: String,
     ) -> torch.nn.Module:
+        """Runs the ModelTrain function
 
+        :param: epochs: The number of epochs to run training for
+        :type: Integer
+        :param: X: The input data
+        :type: DataFrame
+        :param: X: The output data
+        :type: DataFrame
+        :param: learn_rate: the learn rate ofthe model
+        :type: Float
+        :param: model: the model to be trained
+        :type: torch.nn.Module
+        :param: criterion: the evaluation metric of the model
+        :type: criterion: String
+        :param: optimizer: the optimisation method of the model
+        :type: criterion: String
+        :return: The trained model
+        :type: torch.nn.Module
+        """
         if ModelUtility.check_valid_model(model):
             model = ModelUtility.get_clean_model(model)
             if model == 0:
