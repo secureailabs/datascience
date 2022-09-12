@@ -119,6 +119,21 @@ def survival_query(
     return fig
 
 
+def plot_survival_curve(
+    ax: Axes,
+    survival_curve: Dict,
+    label: str,
+    *,
+    line_style: str = "solid",
+):
+    domain = survival_curve["domain"]
+    mean = survival_curve["mean"]
+    lower = survival_curve["lower"]
+    upper = survival_curve["upper"]
+    ax.plot(domain, mean, label=label, linestyle=line_style)
+    ax.fill_between(domain, lower, upper, alpha=0.2)
+
+
 def plot_survival_confidence(
     ax: Axes,
     domain: numpy.ndarray,
