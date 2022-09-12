@@ -18,7 +18,8 @@ def federated_averaging(
     criterion: String,
     optimizer: String,
 ) -> torch.nn.Module:
-    """Runs federted averaging over a data federation.
+    """
+    Runs federted averaging over a data federation.
 
     :param: epochs: number of epochs to train for on each local SCN
     :type: int

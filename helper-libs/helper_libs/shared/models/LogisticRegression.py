@@ -2,11 +2,14 @@ import torch
 
 
 class LogisticRegression(torch.nn.Module):
-    """A SAFE Logistic Regression Model. Parameters have been restricted in order to harden security posture."""
+    """
+    A SAFE Logistic Regression Model. Parameters have been restricted in order to harden security posture.
+    """
 
     # TODO: Add more parameters for model
     def __init__(self, inputSize, outputSize, bias=False):
-        """Constructor for SAFE Logistic Model
+        """
+        Constructor for SAFE Logistic Model
 
         :param: inputSize: The number of inputs leading into the Logistic model.
         :type: Integer
@@ -19,7 +22,8 @@ class LogisticRegression(torch.nn.Module):
         self.model = torch.nn.Linear(inputSize, outputSize, bias)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """The forward function of the model
+        """
+        The forward function of the model
 
         :param: x: The input data
         :type: torch.Tensor

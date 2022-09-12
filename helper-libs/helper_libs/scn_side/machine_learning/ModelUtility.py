@@ -9,14 +9,17 @@ import pandas as pd
 
 
 class ModelUtility:
-    """A helper Library to be used on the SCN side to do common operations needed by different SAFE functions."""
+    """
+    A helper Library to be used on the SCN side to do common operations needed by different SAFE functions.
+    """
 
     # set the parameters from a serialised model of equal shape
     @staticmethod
     def set_parameters_from_tensor(
         model: torch.nn.Module, weights: torch.Tensor
     ) -> torch.nn.Module:
-        """Sets a model to the parameters supplied in tensor form.
+        """
+        Sets a model to the parameters supplied in tensor form.
 
         :param: model: Model whose parameters are to be set
         :type: torch.nn.Module
@@ -41,7 +44,8 @@ class ModelUtility:
     # return a serialised version of the model
     @staticmethod
     def get_parameters_as_tensor(model: torch.nn.Module) -> torch.Tensor:
-        """Serialises model parameters into tensor form
+        """
+        Serialises model parameters into tensor form
 
         :param: model: Model whose parameters are to be serialised
         :type: torch.nn.Module
@@ -55,7 +59,8 @@ class ModelUtility:
     # return our current privacy parameter
     @staticmethod
     def get_epsilon(data: object) -> float:
-        """Retrieves epsilon from given data
+        """
+        Retrieves epsilon from given data
         TODO: Works with solution which has not been implemented
 
         :param: data: data item whose epsilon attribute is to be queried
@@ -68,7 +73,8 @@ class ModelUtility:
 
     @staticmethod
     def check_valid_model(model: torch.nn.Module) -> bool:
-        """Checks whether the model is one of our supported models
+        """
+        Checks whether the model is one of our supported models
 
         :param: model: Model to be checked
         :type: Torch.nn.Module
@@ -86,7 +92,8 @@ class ModelUtility:
 
     @staticmethod
     def get_clean_model(model: torch.nn.Module) -> torch.nn.Module:
-        """Returns a 'clean' version of the model supplied. One which is newly instantiated with only approved attributes and functions.
+        """
+        Returns a 'clean' version of the model supplied. One which is newly instantiated with only approved attributes and functions.
 
         :param: model: Model to be cleaned
         :type: torch.nn.Module

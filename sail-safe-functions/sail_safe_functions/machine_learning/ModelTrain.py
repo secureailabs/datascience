@@ -7,7 +7,9 @@ import torch
 
 
 class ModelTrain:
-    """Trains a model on local data"""
+    """
+    Trains a model on local data
+    """
 
     def run(
         epochs: int,
@@ -18,7 +20,8 @@ class ModelTrain:
         criterion: String,
         optimizer: String,
     ) -> torch.nn.Module:
-        """Runs the ModelTrain function
+        """
+        Runs the ModelTrain function
 
         :param: epochs: The number of epochs to run training for
         :type: Integer

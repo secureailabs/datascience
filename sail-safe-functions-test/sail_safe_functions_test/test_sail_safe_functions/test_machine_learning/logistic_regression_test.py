@@ -17,7 +17,8 @@ import random
 
 
 def get_iris_dataframe():
-    """To be used by test function. This pulls a copy of the iris dataset and creates a Dataframe containing a one hot encoded version of it.
+    """
+    To be used by test function. This pulls a copy of the iris dataset and creates a Dataframe containing a one hot encoded version of it.
 
     :return: A one hot encded Dataframe containing points belonging to the iris dataset
     :type: pd.DataFrame
@@ -35,7 +36,8 @@ def get_iris_dataframe():
 
 
 def get_test_federation_split(df):
-    """To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+    """
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
 
     :param: df: dataframe to be split into federated participants
     :type df: pd.DataFrame
@@ -58,7 +60,8 @@ def get_test_federation_split(df):
 
 
 def score_model(predicted, Y_test):
-    """Evaluates a set of predictions vs their actual labels.
+    """
+    Evaluates a set of predictions vs their actual labels.
 
     :param: predicted: a list of precitions in one-hot encoding
     :type: predicted: Torch.Tensor
@@ -87,7 +90,8 @@ def score_model(predicted, Y_test):
 
 
 def predict_iris(epochs, federal_epochs, data_federation, test):
-    """To be used by test function. Runs federated averaging on iris data and returns metrics of trained model.
+    """
+    To be used by test function. Runs federated averaging on iris data and returns metrics of trained model.
 
     :param epochs: The number of epochs each federated member will run for
     :type: epochs: Integer
@@ -139,7 +143,8 @@ def predict_iris(epochs, federal_epochs, data_federation, test):
 
 
 def predict_kidney(epochs, federal_epochs, data_federation, test):
-    """To be used by test function. Runs federated averaging on kidney data and returns metrics of trained model.
+    """
+    To be used by test function. Runs federated averaging on kidney data and returns metrics of trained model.
 
     :param epochs: The number of epochs each federated member will run for
     :type: epochs: Integer
@@ -198,7 +203,8 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
 
 @pytest.mark.active
 def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
-    """This tests whether the model is learning on the real kidney data. The precision, recall and f1 score is evaluated
+    """
+    This tests whether the model is learning on the real kidney data. The precision, recall and f1 score is evaluated
     to see whether it meets a a threshold in order to pass this test.
 
     :param:  dataframe_kidney_clean: Dataframe containing kidney data
@@ -242,6 +248,10 @@ def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
 
 @pytest.mark.active
 def test_iris_data_acceptable():
+    """
+    This tests whether the model is learning on the sample iris data. The precision, recall and f1 score is evaluated
+    to see whether it meets a a threshold in order to pass this test.
+    """
     # Arrange
     random_seed = 1
     torch.manual_seed(random_seed)

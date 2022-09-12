@@ -18,7 +18,8 @@ import random
 
 
 def get_basic_linear_dataframe():
-    """To be used by test function. This generates a dataframe containing two linear functions to be learned
+    """
+    To be used by test function. This generates a dataframe containing two linear functions to be learned
 
     :return: A Dataframe containing points belonging to two linear functions
     :type: pd.DataFrame
@@ -41,7 +42,8 @@ def get_basic_linear_dataframe():
 
 
 def get_test_federation_split(df):
-    """To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+    """
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
 
     :param: df: dataframe to be split into federated participants
     :type df: pd.DataFrame
@@ -64,7 +66,8 @@ def get_test_federation_split(df):
 
 
 def predict_basic_linear(epochs, federal_epochs, data_federation, test):
-    """To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+    """
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
 
     :param epochs: The number of epochs each federated member will run for
     :type: epochs: Integer
@@ -105,7 +108,8 @@ def predict_basic_linear(epochs, federal_epochs, data_federation, test):
 
 
 def predict_basic_kidney(epochs, federal_epochs, data_federation, test):
-    """To be used by test function. This runs federated averaging on kidney and returns the r2 score of the trained model.
+    """
+    To be used by test function. This runs federated averaging on kidney and returns the r2 score of the trained model.
         TODO: This is currently using X and Y as the same column as nothing suitable was found in kidney data for learning for now.
 
     :param epochs: The number of epochs each federated member will run for
@@ -148,7 +152,8 @@ def predict_basic_kidney(epochs, federal_epochs, data_federation, test):
 
 @pytest.mark.active
 def test_basic_linear_data_acceptable():
-    """This tests whether the model is learning basic linear functions. The R2 score is evaluated
+    """
+    This tests whether the model is learning basic linear functions. The R2 score is evaluated
     to see whether it meets a a threshold of 0.95 in order to pass this test.
     """
 
@@ -179,7 +184,8 @@ def test_basic_linear_data_acceptable():
 
 @pytest.mark.active
 def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
-    """This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
+    """
+    This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
     to see whether it meets a a threshold of 0.95 in order to pass this test.
     TODO: currently a suitable set of inputs was not found to predict the kidny data well. For now X and Y are clones of each other
     """
