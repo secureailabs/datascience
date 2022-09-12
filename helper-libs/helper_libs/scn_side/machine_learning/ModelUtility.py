@@ -13,7 +13,9 @@ class ModelUtility:
 
     # set the parameters from a serialised model of equal shape
     @staticmethod
-    def set_parameters_from_tensor(model: torch.nn.Module, weights: torch.Tensor):
+    def set_parameters_from_tensor(
+        model: torch.nn.Module, weights: torch.Tensor
+    ) -> torch.nn.Module:
         """Sets a model to the parameters supplied in tensor form.
 
         :param: model: Model whose parameters are to be set
@@ -38,7 +40,7 @@ class ModelUtility:
 
     # return a serialised version of the model
     @staticmethod
-    def get_parameters_as_tensor(model: torch.nn.Module):
+    def get_parameters_as_tensor(model: torch.nn.Module) -> torch.Tensor:
         """Serialises model parameters into tensor form
 
         :param: model: Model whose parameters are to be serialised
@@ -52,7 +54,7 @@ class ModelUtility:
 
     # return our current privacy parameter
     @staticmethod
-    def get_epsilon(data: object):
+    def get_epsilon(data: object) -> float:
         """Retrieves epsilon from given data
         TODO: Works with solution which has not been implemented
 
@@ -65,7 +67,7 @@ class ModelUtility:
         return 0.1
 
     @staticmethod
-    def check_valid_model(model: torch.nn.Module):
+    def check_valid_model(model: torch.nn.Module) -> bool:
         """Checks whether the model is one of our supported models
 
         :param: model: Model to be checked
@@ -83,7 +85,7 @@ class ModelUtility:
             return False
 
     @staticmethod
-    def get_clean_model(model: torch.nn.Module):
+    def get_clean_model(model: torch.nn.Module) -> torch.nn.Module:
         """Returns a 'clean' version of the model supplied. One which is newly instantiated with only approved attributes and functions.
 
         :param: model: Model to be cleaned
@@ -107,7 +109,7 @@ class ModelUtility:
 
     # TODO: Types hard coded for now
     @staticmethod
-    def dataframe_to_tensor(data: pd.DataFrame):
+    def dataframe_to_tensor(data: pd.DataFrame) -> torch.Tensor:
         """Transforms a DataFrame to a tensor.
 
         :param: data: DataFrame to be transformed

@@ -18,7 +18,7 @@ class LinearRegression(torch.nn.Module):
         super(LinearRegression, self).__init__()
         self.model = torch.nn.Linear(inputSize, outputSize, bias=False)
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """The forward function of the model
 
         :param: x: The input data
