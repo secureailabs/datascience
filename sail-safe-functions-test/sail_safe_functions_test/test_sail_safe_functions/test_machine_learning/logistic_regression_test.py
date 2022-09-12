@@ -17,6 +17,11 @@ import random
 
 
 def get_iris_dataframe():
+    """To be used by test function. This pulls a copy of the iris dataset and creates a Dataframe containing a one hot encoded version of it.
+
+    :return: A one hot encded Dataframe containing points belonging to the iris dataset
+    :type: pd.DataFrame
+    """
 
     iris = load_iris()
     df1 = pd.DataFrame(iris.data, columns=iris.feature_names)
@@ -30,17 +35,42 @@ def get_iris_dataframe():
 
 
 def get_test_federation_split(df):
+    """To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
 
-    train = df.sample(frac=0.8, random_state=0)
+    :param: df: dataframe to be split into federated participants
+    :type df: pd.DataFrame
+    :return result: A list of dataframes containing a representation of the data federation
+    :type result: List[pd.DataFrame]
+    :return test: A sample from the original Dataframe which will be used for testing
+    :type test: pd.DataFrame
+    """
+
+    NUMBER_PARTICIPANTS = 5
+    TEST_SAMPLE = 0.8
+
+    train = df.sample(frac=TEST_SAMPLE, random_state=0)
     test = df.drop(train.index)
 
     shuffled = train.sample(frac=1)
-    result = np.array_split(shuffled, 5)
+    result = np.array_split(shuffled, NUMBER_PARTICIPANTS)
 
     return result, test
 
 
 def score_model(predicted, Y_test):
+    """Evaluates a set of predictions vs their actual labels.
+
+    :param: predicted: a list of precitions in one-hot encoding
+    :type: predicted: Torch.Tensor
+    :param Y_test: The List of labels
+    :type: Y_test: Torch.Tensor
+    :return: precision: The precision metric
+    :type: precision: float
+    :return recall: The recall metric
+    :type: recall: float
+    :return: f1: The f1 score of the predictions
+    :type: f1: float
+    """
     predictions = []
     for prediction in predicted:
         predictions.append(prediction.argmax())
@@ -57,10 +87,22 @@ def score_model(predicted, Y_test):
 
 
 def predict_iris(epochs, federal_epochs, data_federation, test):
-    """Test if the strategy parameter gets checked
+    """To be used by test function. Runs federated averaging on iris data and returns metrics of trained model.
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[pd.DataFrame]
+    :param: test: Test data to be used to validate the model
+    :type: pd.DataFrame
+    :return: precision: The precision metric
+    :type: precision: float
+    :return recall: The recall metric
+    :type: recall: float
+    :return: f1: The f1 score of the predictions
+    :type: f1: float
     """
     X_col = [
         "sepal length (cm)",
@@ -97,6 +139,23 @@ def predict_iris(epochs, federal_epochs, data_federation, test):
 
 
 def predict_kidney(epochs, federal_epochs, data_federation, test):
+    """To be used by test function. Runs federated averaging on kidney data and returns metrics of trained model.
+
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[Dataframe]
+    :param: test: Test data to be used to validate the model
+    :type: DataFrame
+    :return: precision: The precision metric
+    :type: precision: float
+    :return recall: The recall metric
+    :type: recall: float
+    :return: f1: The f1 score of the predictions
+    :type: f1: float
+    """
 
     X_col = ["age", "bp", "sg", "al"]
     Y_col = ["classification_ckd"]
@@ -139,6 +198,12 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
 
 @pytest.mark.active
 def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+    """This tests whether the model is learning on the real kidney data. The precision, recall and f1 score is evaluated
+    to see whether it meets a a threshold in order to pass this test.
+
+    :param:  dataframe_kidney_clean: Dataframe containing kidney data
+    :type: dataframe_kidney_clean:: pd.DataFrame
+    """
     # Arrange
     random_seed = 1
     torch.manual_seed(random_seed)
