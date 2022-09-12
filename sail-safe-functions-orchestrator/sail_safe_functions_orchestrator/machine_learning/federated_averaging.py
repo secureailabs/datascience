@@ -18,6 +18,29 @@ def federated_averaging(
     criterion: String,
     optimizer: String,
 ) -> torch.nn.Module:
+    """Runs federted averaging over a data federation.
+
+    :param: epochs: number of epochs to train for on each local SCN
+    :type: int
+    :param: federal_epochs: Number of rounds fo averaging to run for
+    :type: int
+    :param: data_federation: a set of Dataframes representing the data federation
+    :type: List[DataFrame]
+    :param: X_col: A list ofcolumn names to be used for input data
+    :type: List[String]
+    :param: X_col: A list ofcolumn names to be used for label data
+    :type: List[String]
+    :param: learn_rate: the learn rate to train with
+    :type: learn_rate: float
+    :param: starting_model: The model at the start of training
+    :type: torch.nn.Module
+    :param: criterion: the evaluation metric to be used by each model
+    :type: String
+    :param: optimizer: The optimization method to be used by each model
+    :type: String
+    :return: Model after training with federated averaging
+    :type: torch.nn.Module
+    """
 
     avg_model = starting_model
 
