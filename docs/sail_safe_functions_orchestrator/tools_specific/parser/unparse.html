@@ -1,0 +1,1793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>sail_safe_functions_orchestrator.tools_specific.parser.unparse API documentation</title>
+<meta name="description" content="Usage: unparse.py &lt;path to source file&gt;" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sail_safe_functions_orchestrator.tools_specific.parser.unparse</code></h1>
+</header>
+<section id="section-intro">
+<p>Usage: unparse.py <path to source file></p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Code taken from Python 3.8.10&#39;s source code. It&#39;s the same as the ast.unparse function in python 3.10
+
+&#34;Usage: unparse.py &lt;path to source file&gt;&#34;
+import ast
+import io
+import os
+import sys
+import tokenize
+
+# Large float and imaginary literals get turned into infinities in the AST.
+# We unparse those infinities to INFSTR.
+INFSTR = &#34;1e&#34; + repr(sys.float_info.max_10_exp + 1)
+
+
+def interleave(inter, f, seq):
+    &#34;&#34;&#34;
+    Call f on each item in seq, calling inter() in between.
+    &#34;&#34;&#34;
+    seq = iter(seq)
+    try:
+        f(next(seq))
+    except StopIteration:
+        pass
+    else:
+        for x in seq:
+            inter()
+            f(x)
+
+
+class Unparser:
+    &#34;&#34;&#34;
+    Methods in this class recursively traverse an AST and
+    output source code for the abstract syntax; original formatting
+    is disregarded.
+    &#34;&#34;&#34;
+
+    def __init__(self, tree, file=sys.stdout):
+        &#34;&#34;&#34;
+        Unparser(tree, file=sys.stdout) -&gt; None.
+        Print the source for tree to file.
+        &#34;&#34;&#34;
+        self.f = file
+        self._indent = 0
+        self.dispatch(tree)
+        print(&#34;&#34;, file=self.f)
+        self.f.flush()
+
+    def fill(self, text=&#34;&#34;):
+        &#34;&#34;&#34;
+        Indent a piece of text, according to the current indentation level
+        &#34;&#34;&#34;
+        self.f.write(&#34;\n&#34; + &#34;    &#34; * self._indent + text)
+
+    def write(self, text):
+        &#34;&#34;&#34;
+        Append a piece of text to the current line.
+        &#34;&#34;&#34;
+        self.f.write(text)
+
+    def enter(self):
+        &#34;&#34;&#34;
+        Print &#39;:&#39;, and increase the indentation.
+        &#34;&#34;&#34;
+        self.write(&#34;:&#34;)
+        self._indent += 1
+
+    def leave(self):
+        &#34;&#34;&#34;
+        Decrease the indentation level.
+        &#34;&#34;&#34;
+        self._indent -= 1
+
+    def dispatch(self, tree):
+        &#34;&#34;&#34;
+        Dispatcher function, dispatching tree type T to method _T.
+        &#34;&#34;&#34;
+        if isinstance(tree, list):
+            for t in tree:
+                self.dispatch(t)
+            return
+        meth = getattr(self, &#34;_&#34; + tree.__class__.__name__)
+        meth(tree)
+
+    # Unparsing methods                                    #
+    # There should be one method per concrete grammar type #
+    # Constructors should be grouped by sum type. Ideally, #
+    # this would follow the order in the grammar, but      #
+    # currently doesn&#39;t.                                   #
+    #                                                      #
+
+    def _Module(self, tree):
+        for stmt in tree.body:
+            self.dispatch(stmt)
+
+    # stmt
+    def _Expr(self, tree):
+        self.fill()
+        self.dispatch(tree.value)
+
+    def _NamedExpr(self, tree):
+        self.write(&#34;(&#34;)
+        self.dispatch(tree.target)
+        self.write(&#34; := &#34;)
+        self.dispatch(tree.value)
+        self.write(&#34;)&#34;)
+
+    def _Import(self, t):
+        self.fill(&#34;import &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.names)
+
+    def _ImportFrom(self, t):
+        self.fill(&#34;from &#34;)
+        self.write(&#34;.&#34; * t.level)
+        if t.module:
+            self.write(t.module)
+        self.write(&#34; import &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.names)
+
+    def _Assign(self, t):
+        self.fill()
+        for target in t.targets:
+            self.dispatch(target)
+            self.write(&#34; = &#34;)
+        self.dispatch(t.value)
+
+    def _AugAssign(self, t):
+        self.fill()
+        self.dispatch(t.target)
+        self.write(&#34; &#34; + self.binop[t.op.__class__.__name__] + &#34;= &#34;)
+        self.dispatch(t.value)
+
+    def _AnnAssign(self, t):
+        self.fill()
+        if not t.simple and isinstance(t.target, ast.Name):
+            self.write(&#34;(&#34;)
+        self.dispatch(t.target)
+        if not t.simple and isinstance(t.target, ast.Name):
+            self.write(&#34;)&#34;)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.annotation)
+        if t.value:
+            self.write(&#34; = &#34;)
+            self.dispatch(t.value)
+
+    def _Return(self, t):
+        self.fill(&#34;return&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+
+    def _Pass(self, t):
+        self.fill(&#34;pass&#34;)
+
+    def _Break(self, t):
+        self.fill(&#34;break&#34;)
+
+    def _Continue(self, t):
+        self.fill(&#34;continue&#34;)
+
+    def _Delete(self, t):
+        self.fill(&#34;del &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.targets)
+
+    def _Assert(self, t):
+        self.fill(&#34;assert &#34;)
+        self.dispatch(t.test)
+        if t.msg:
+            self.write(&#34;, &#34;)
+            self.dispatch(t.msg)
+
+    def _Global(self, t):
+        self.fill(&#34;global &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.write, t.names)
+
+    def _Nonlocal(self, t):
+        self.fill(&#34;nonlocal &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.write, t.names)
+
+    def _Await(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;await&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _Yield(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;yield&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _YieldFrom(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;yield from&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _Raise(self, t):
+        self.fill(&#34;raise&#34;)
+        if not t.exc:
+            assert not t.cause
+            return
+        self.write(&#34; &#34;)
+        self.dispatch(t.exc)
+        if t.cause:
+            self.write(&#34; from &#34;)
+            self.dispatch(t.cause)
+
+    def _Try(self, t):
+        self.fill(&#34;try&#34;)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        for ex in t.handlers:
+            self.dispatch(ex)
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+        if t.finalbody:
+            self.fill(&#34;finally&#34;)
+            self.enter()
+            self.dispatch(t.finalbody)
+            self.leave()
+
+    def _ExceptHandler(self, t):
+        self.fill(&#34;except&#34;)
+        if t.type:
+            self.write(&#34; &#34;)
+            self.dispatch(t.type)
+        if t.name:
+            self.write(&#34; as &#34;)
+            self.write(t.name)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _ClassDef(self, t):
+        self.write(&#34;\n&#34;)
+        for deco in t.decorator_list:
+            self.fill(&#34;@&#34;)
+            self.dispatch(deco)
+        self.fill(&#34;class &#34; + t.name)
+        self.write(&#34;(&#34;)
+        comma = False
+        for e in t.bases:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _FunctionDef(self, t):
+        self.__FunctionDef_helper(t, &#34;def&#34;)
+
+    def _AsyncFunctionDef(self, t):
+        self.__FunctionDef_helper(t, &#34;async def&#34;)
+
+    def __FunctionDef_helper(self, t, fill_suffix):
+        self.write(&#34;\n&#34;)
+        for deco in t.decorator_list:
+            self.fill(&#34;@&#34;)
+            self.dispatch(deco)
+        def_str = fill_suffix + &#34; &#34; + t.name + &#34;(&#34;
+        self.fill(def_str)
+        self.dispatch(t.args)
+        self.write(&#34;)&#34;)
+        if t.returns:
+            self.write(&#34; -&gt; &#34;)
+            self.dispatch(t.returns)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _For(self, t):
+        self.__For_helper(&#34;for &#34;, t)
+
+    def _AsyncFor(self, t):
+        self.__For_helper(&#34;async for &#34;, t)
+
+    def __For_helper(self, fill, t):
+        self.fill(fill)
+        self.dispatch(t.target)
+        self.write(&#34; in &#34;)
+        self.dispatch(t.iter)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _If(self, t):
+        self.fill(&#34;if &#34;)
+        self.dispatch(t.test)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        # collapse nested ifs into equivalent elifs.
+        while t.orelse and len(t.orelse) == 1 and isinstance(t.orelse[0], ast.If):
+            t = t.orelse[0]
+            self.fill(&#34;elif &#34;)
+            self.dispatch(t.test)
+            self.enter()
+            self.dispatch(t.body)
+            self.leave()
+        # final else
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _While(self, t):
+        self.fill(&#34;while &#34;)
+        self.dispatch(t.test)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _With(self, t):
+        self.fill(&#34;with &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.items)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _AsyncWith(self, t):
+        self.fill(&#34;async with &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.items)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    # expr
+    def _JoinedStr(self, t):
+        self.write(&#34;f&#34;)
+        string = io.StringIO()
+        self._fstring_JoinedStr(t, string.write)
+        self.write(repr(string.getvalue()))
+
+    def _FormattedValue(self, t):
+        self.write(&#34;f&#34;)
+        string = io.StringIO()
+        self._fstring_FormattedValue(t, string.write)
+        self.write(repr(string.getvalue()))
+
+    def _fstring_JoinedStr(self, t, write):
+        for value in t.values:
+            meth = getattr(self, &#34;_fstring_&#34; + type(value).__name__)
+            meth(value, write)
+
+    def _fstring_Constant(self, t, write):
+        assert isinstance(t.value, str)
+        value = t.value.replace(&#34;{&#34;, &#34;{{&#34;).replace(&#34;}&#34;, &#34;}}&#34;)
+        write(value)
+
+    def _fstring_FormattedValue(self, t, write):
+        write(&#34;{&#34;)
+        expr = io.StringIO()
+        Unparser(t.value, expr)
+        expr = expr.getvalue().rstrip(&#34;\n&#34;)
+        if expr.startswith(&#34;{&#34;):
+            write(&#34; &#34;)  # Separate pair of opening brackets as &#34;{ {&#34;
+        write(expr)
+        if t.conversion != -1:
+            conversion = chr(t.conversion)
+            assert conversion in &#34;sra&#34;
+            write(f&#34;!{conversion}&#34;)
+        if t.format_spec:
+            write(&#34;:&#34;)
+            meth = getattr(self, &#34;_fstring_&#34; + type(t.format_spec).__name__)
+            meth(t.format_spec, write)
+        write(&#34;}&#34;)
+
+    def _Name(self, t):
+        self.write(t.id)
+
+    def _write_constant(self, value):
+        if isinstance(value, (float, complex)):
+            # Substitute overflowing decimal literal for AST infinities.
+            self.write(repr(value).replace(&#34;inf&#34;, INFSTR))
+        else:
+            self.write(repr(value))
+
+    def _Constant(self, t):
+        value = t.value
+        if isinstance(value, tuple):
+            self.write(&#34;(&#34;)
+            if len(value) == 1:
+                self._write_constant(value[0])
+                self.write(&#34;,&#34;)
+            else:
+                interleave(lambda: self.write(&#34;, &#34;), self._write_constant, value)
+            self.write(&#34;)&#34;)
+        elif value is ...:
+            self.write(&#34;...&#34;)
+        else:
+            if t.kind == &#34;u&#34;:
+                self.write(&#34;u&#34;)
+            self._write_constant(t.value)
+
+    def _List(self, t):
+        self.write(&#34;[&#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;]&#34;)
+
+    def _ListComp(self, t):
+        self.write(&#34;[&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;]&#34;)
+
+    def _GeneratorExp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;)&#34;)
+
+    def _SetComp(self, t):
+        self.write(&#34;{&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;}&#34;)
+
+    def _DictComp(self, t):
+        self.write(&#34;{&#34;)
+        self.dispatch(t.key)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.value)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;}&#34;)
+
+    def _comprehension(self, t):
+        if t.is_async:
+            self.write(&#34; async for &#34;)
+        else:
+            self.write(&#34; for &#34;)
+        self.dispatch(t.target)
+        self.write(&#34; in &#34;)
+        self.dispatch(t.iter)
+        for if_clause in t.ifs:
+            self.write(&#34; if &#34;)
+            self.dispatch(if_clause)
+
+    def _IfExp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.body)
+        self.write(&#34; if &#34;)
+        self.dispatch(t.test)
+        self.write(&#34; else &#34;)
+        self.dispatch(t.orelse)
+        self.write(&#34;)&#34;)
+
+    def _Set(self, t):
+        assert t.elts  # should be at least one element
+        self.write(&#34;{&#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;}&#34;)
+
+    def _Dict(self, t):
+        self.write(&#34;{&#34;)
+
+        def write_key_value_pair(k, v):
+            self.dispatch(k)
+            self.write(&#34;: &#34;)
+            self.dispatch(v)
+
+        def write_item(item):
+            k, v = item
+            if k is None:
+                # for dictionary unpacking operator in dicts {**{&#39;y&#39;: 2}}
+                # see PEP 448 for details
+                self.write(&#34;**&#34;)
+                self.dispatch(v)
+            else:
+                write_key_value_pair(k, v)
+
+        interleave(lambda: self.write(&#34;, &#34;), write_item, zip(t.keys, t.values))
+        self.write(&#34;}&#34;)
+
+    def _Tuple(self, t):
+        self.write(&#34;(&#34;)
+        if len(t.elts) == 1:
+            elt = t.elts[0]
+            self.dispatch(elt)
+            self.write(&#34;,&#34;)
+        else:
+            interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;)&#34;)
+
+    unop = {&#34;Invert&#34;: &#34;~&#34;, &#34;Not&#34;: &#34;not&#34;, &#34;UAdd&#34;: &#34;+&#34;, &#34;USub&#34;: &#34;-&#34;}
+
+    def _UnaryOp(self, t):
+        self.write(&#34;(&#34;)
+        self.write(self.unop[t.op.__class__.__name__])
+        self.write(&#34; &#34;)
+        self.dispatch(t.operand)
+        self.write(&#34;)&#34;)
+
+    binop = {
+        &#34;Add&#34;: &#34;+&#34;,
+        &#34;Sub&#34;: &#34;-&#34;,
+        &#34;Mult&#34;: &#34;*&#34;,
+        &#34;MatMult&#34;: &#34;@&#34;,
+        &#34;Div&#34;: &#34;/&#34;,
+        &#34;Mod&#34;: &#34;%&#34;,
+        &#34;LShift&#34;: &#34;&lt;&lt;&#34;,
+        &#34;RShift&#34;: &#34;&gt;&gt;&#34;,
+        &#34;BitOr&#34;: &#34;|&#34;,
+        &#34;BitXor&#34;: &#34;^&#34;,
+        &#34;BitAnd&#34;: &#34;&amp;&#34;,
+        &#34;FloorDiv&#34;: &#34;//&#34;,
+        &#34;Pow&#34;: &#34;**&#34;,
+    }
+
+    def _BinOp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.left)
+        self.write(&#34; &#34; + self.binop[t.op.__class__.__name__] + &#34; &#34;)
+        self.dispatch(t.right)
+        self.write(&#34;)&#34;)
+
+    cmpops = {
+        &#34;Eq&#34;: &#34;==&#34;,
+        &#34;NotEq&#34;: &#34;!=&#34;,
+        &#34;Lt&#34;: &#34;&lt;&#34;,
+        &#34;LtE&#34;: &#34;&lt;=&#34;,
+        &#34;Gt&#34;: &#34;&gt;&#34;,
+        &#34;GtE&#34;: &#34;&gt;=&#34;,
+        &#34;Is&#34;: &#34;is&#34;,
+        &#34;IsNot&#34;: &#34;is not&#34;,
+        &#34;In&#34;: &#34;in&#34;,
+        &#34;NotIn&#34;: &#34;not in&#34;,
+    }
+
+    def _Compare(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.left)
+        for o, e in zip(t.ops, t.comparators):
+            self.write(&#34; &#34; + self.cmpops[o.__class__.__name__] + &#34; &#34;)
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+    boolops = {ast.And: &#34;and&#34;, ast.Or: &#34;or&#34;}
+
+    def _BoolOp(self, t):
+        self.write(&#34;(&#34;)
+        s = &#34; %s &#34; % self.boolops[t.op.__class__]
+        interleave(lambda: self.write(s), self.dispatch, t.values)
+        self.write(&#34;)&#34;)
+
+    def _Attribute(self, t):
+        self.dispatch(t.value)
+        # Special case: 3.__abs__() is a syntax error, so if t.value
+        # is an integer literal then we need to either parenthesize
+        # it or add an extra space to get 3 .__abs__().
+        if isinstance(t.value, ast.Constant) and isinstance(t.value.value, int):
+            self.write(&#34; &#34;)
+        self.write(&#34;.&#34;)
+        self.write(t.attr)
+
+    def _Call(self, t):
+        self.dispatch(t.func)
+        self.write(&#34;(&#34;)
+        comma = False
+        for e in t.args:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+    def _Subscript(self, t):
+        self.dispatch(t.value)
+        self.write(&#34;[&#34;)
+        if isinstance(t.slice, ast.Index) and isinstance(t.slice.value, ast.Tuple) and t.slice.value.elts:
+            if len(t.slice.value.elts) == 1:
+                elt = t.slice.value.elts[0]
+                self.dispatch(elt)
+                self.write(&#34;,&#34;)
+            else:
+                interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.slice.value.elts)
+        else:
+            self.dispatch(t.slice)
+        self.write(&#34;]&#34;)
+
+    def _Starred(self, t):
+        self.write(&#34;*&#34;)
+        self.dispatch(t.value)
+
+    # slice
+    def _Ellipsis(self, t):
+        self.write(&#34;...&#34;)
+
+    def _Index(self, t):
+        self.dispatch(t.value)
+
+    def _Slice(self, t):
+        if t.lower:
+            self.dispatch(t.lower)
+        self.write(&#34;:&#34;)
+        if t.upper:
+            self.dispatch(t.upper)
+        if t.step:
+            self.write(&#34;:&#34;)
+            self.dispatch(t.step)
+
+    def _ExtSlice(self, t):
+        if len(t.dims) == 1:
+            elt = t.dims[0]
+            self.dispatch(elt)
+            self.write(&#34;,&#34;)
+        else:
+            interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.dims)
+
+    # argument
+    def _arg(self, t):
+        self.write(t.arg)
+        if t.annotation:
+            self.write(&#34;: &#34;)
+            self.dispatch(t.annotation)
+
+    # others
+    def _arguments(self, t):
+        first = True
+        # normal arguments
+        all_args = t.posonlyargs + t.args
+        defaults = [None] * (len(all_args) - len(t.defaults)) + t.defaults
+        for index, elements in enumerate(zip(all_args, defaults), 1):
+            a, d = elements
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.dispatch(a)
+            if d:
+                self.write(&#34;=&#34;)
+                self.dispatch(d)
+            if index == len(t.posonlyargs):
+                self.write(&#34;, /&#34;)
+
+        # varargs, or bare &#39;*&#39; if no varargs but keyword-only arguments present
+        if t.vararg or t.kwonlyargs:
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.write(&#34;*&#34;)
+            if t.vararg:
+                self.write(t.vararg.arg)
+                if t.vararg.annotation:
+                    self.write(&#34;: &#34;)
+                    self.dispatch(t.vararg.annotation)
+
+        # keyword-only arguments
+        if t.kwonlyargs:
+            for a, d in zip(t.kwonlyargs, t.kw_defaults):
+                if first:
+                    first = False
+                else:
+                    self.write(&#34;, &#34;)
+                self.dispatch(a),
+                if d:
+                    self.write(&#34;=&#34;)
+                    self.dispatch(d)
+
+        # kwargs
+        if t.kwarg:
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.write(&#34;**&#34; + t.kwarg.arg)
+            if t.kwarg.annotation:
+                self.write(&#34;: &#34;)
+                self.dispatch(t.kwarg.annotation)
+
+    def _keyword(self, t):
+        if t.arg is None:
+            self.write(&#34;**&#34;)
+        else:
+            self.write(t.arg)
+            self.write(&#34;=&#34;)
+        self.dispatch(t.value)
+
+    def _Lambda(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;lambda &#34;)
+        self.dispatch(t.args)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.body)
+        self.write(&#34;)&#34;)
+
+    def _alias(self, t):
+        self.write(t.name)
+        if t.asname:
+            self.write(&#34; as &#34; + t.asname)
+
+    def _withitem(self, t):
+        self.dispatch(t.context_expr)
+        if t.optional_vars:
+            self.write(&#34; as &#34;)
+            self.dispatch(t.optional_vars)
+
+
+def roundtrip(filename, output=sys.stdout):
+    with open(filename, &#34;rb&#34;) as pyfile:
+        encoding = tokenize.detect_encoding(pyfile.readline)[0]
+    with open(filename, &#34;r&#34;, encoding=encoding) as pyfile:
+        source = pyfile.read()
+    tree = compile(source, filename, &#34;exec&#34;, ast.PyCF_ONLY_AST)
+    Unparser(tree, output)
+
+
+def testdir(a):
+    try:
+        names = [n for n in os.listdir(a) if n.endswith(&#34;.py&#34;)]
+    except OSError:
+        print(&#34;Directory not readable: %s&#34; % a, file=sys.stderr)
+    else:
+        for n in names:
+            fullname = os.path.join(a, n)
+            if os.path.isfile(fullname):
+                output = io.StringIO()
+                print(&#34;Testing %s&#34; % fullname)
+                try:
+                    roundtrip(fullname, output)
+                except Exception as e:
+                    print(&#34;  Failed to compile, exception is %s&#34; % repr(e))
+            elif os.path.isdir(fullname):
+                testdir(fullname)
+
+
+def main(args):
+    if args[0] == &#34;--testdir&#34;:
+        for a in args[1:]:
+            testdir(a)
+    else:
+        for a in args:
+            roundtrip(a)
+
+
+if __name__ == &#34;__main__&#34;:
+    main(sys.argv[1:])</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.interleave"><code class="name flex">
+<span>def <span class="ident">interleave</span></span>(<span>inter, f, seq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Call f on each item in seq, calling inter() in between.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def interleave(inter, f, seq):
+    &#34;&#34;&#34;
+    Call f on each item in seq, calling inter() in between.
+    &#34;&#34;&#34;
+    seq = iter(seq)
+    try:
+        f(next(seq))
+    except StopIteration:
+        pass
+    else:
+        for x in seq:
+            inter()
+            f(x)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>args)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main(args):
+    if args[0] == &#34;--testdir&#34;:
+        for a in args[1:]:
+            testdir(a)
+    else:
+        for a in args:
+            roundtrip(a)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.roundtrip"><code class="name flex">
+<span>def <span class="ident">roundtrip</span></span>(<span>filename, output=sys.stdout)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def roundtrip(filename, output=sys.stdout):
+    with open(filename, &#34;rb&#34;) as pyfile:
+        encoding = tokenize.detect_encoding(pyfile.readline)[0]
+    with open(filename, &#34;r&#34;, encoding=encoding) as pyfile:
+        source = pyfile.read()
+    tree = compile(source, filename, &#34;exec&#34;, ast.PyCF_ONLY_AST)
+    Unparser(tree, output)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.testdir"><code class="name flex">
+<span>def <span class="ident">testdir</span></span>(<span>a)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def testdir(a):
+    try:
+        names = [n for n in os.listdir(a) if n.endswith(&#34;.py&#34;)]
+    except OSError:
+        print(&#34;Directory not readable: %s&#34; % a, file=sys.stderr)
+    else:
+        for n in names:
+            fullname = os.path.join(a, n)
+            if os.path.isfile(fullname):
+                output = io.StringIO()
+                print(&#34;Testing %s&#34; % fullname)
+                try:
+                    roundtrip(fullname, output)
+                except Exception as e:
+                    print(&#34;  Failed to compile, exception is %s&#34; % repr(e))
+            elif os.path.isdir(fullname):
+                testdir(fullname)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser"><code class="flex name class">
+<span>class <span class="ident">Unparser</span></span>
+<span>(</span><span>tree, file=sys.stdout)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Methods in this class recursively traverse an AST and
+output source code for the abstract syntax; original formatting
+is disregarded.</p>
+<p>Unparser(tree, file=sys.stdout) -&gt; None.
+Print the source for tree to file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Unparser:
+    &#34;&#34;&#34;
+    Methods in this class recursively traverse an AST and
+    output source code for the abstract syntax; original formatting
+    is disregarded.
+    &#34;&#34;&#34;
+
+    def __init__(self, tree, file=sys.stdout):
+        &#34;&#34;&#34;
+        Unparser(tree, file=sys.stdout) -&gt; None.
+        Print the source for tree to file.
+        &#34;&#34;&#34;
+        self.f = file
+        self._indent = 0
+        self.dispatch(tree)
+        print(&#34;&#34;, file=self.f)
+        self.f.flush()
+
+    def fill(self, text=&#34;&#34;):
+        &#34;&#34;&#34;
+        Indent a piece of text, according to the current indentation level
+        &#34;&#34;&#34;
+        self.f.write(&#34;\n&#34; + &#34;    &#34; * self._indent + text)
+
+    def write(self, text):
+        &#34;&#34;&#34;
+        Append a piece of text to the current line.
+        &#34;&#34;&#34;
+        self.f.write(text)
+
+    def enter(self):
+        &#34;&#34;&#34;
+        Print &#39;:&#39;, and increase the indentation.
+        &#34;&#34;&#34;
+        self.write(&#34;:&#34;)
+        self._indent += 1
+
+    def leave(self):
+        &#34;&#34;&#34;
+        Decrease the indentation level.
+        &#34;&#34;&#34;
+        self._indent -= 1
+
+    def dispatch(self, tree):
+        &#34;&#34;&#34;
+        Dispatcher function, dispatching tree type T to method _T.
+        &#34;&#34;&#34;
+        if isinstance(tree, list):
+            for t in tree:
+                self.dispatch(t)
+            return
+        meth = getattr(self, &#34;_&#34; + tree.__class__.__name__)
+        meth(tree)
+
+    # Unparsing methods                                    #
+    # There should be one method per concrete grammar type #
+    # Constructors should be grouped by sum type. Ideally, #
+    # this would follow the order in the grammar, but      #
+    # currently doesn&#39;t.                                   #
+    #                                                      #
+
+    def _Module(self, tree):
+        for stmt in tree.body:
+            self.dispatch(stmt)
+
+    # stmt
+    def _Expr(self, tree):
+        self.fill()
+        self.dispatch(tree.value)
+
+    def _NamedExpr(self, tree):
+        self.write(&#34;(&#34;)
+        self.dispatch(tree.target)
+        self.write(&#34; := &#34;)
+        self.dispatch(tree.value)
+        self.write(&#34;)&#34;)
+
+    def _Import(self, t):
+        self.fill(&#34;import &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.names)
+
+    def _ImportFrom(self, t):
+        self.fill(&#34;from &#34;)
+        self.write(&#34;.&#34; * t.level)
+        if t.module:
+            self.write(t.module)
+        self.write(&#34; import &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.names)
+
+    def _Assign(self, t):
+        self.fill()
+        for target in t.targets:
+            self.dispatch(target)
+            self.write(&#34; = &#34;)
+        self.dispatch(t.value)
+
+    def _AugAssign(self, t):
+        self.fill()
+        self.dispatch(t.target)
+        self.write(&#34; &#34; + self.binop[t.op.__class__.__name__] + &#34;= &#34;)
+        self.dispatch(t.value)
+
+    def _AnnAssign(self, t):
+        self.fill()
+        if not t.simple and isinstance(t.target, ast.Name):
+            self.write(&#34;(&#34;)
+        self.dispatch(t.target)
+        if not t.simple and isinstance(t.target, ast.Name):
+            self.write(&#34;)&#34;)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.annotation)
+        if t.value:
+            self.write(&#34; = &#34;)
+            self.dispatch(t.value)
+
+    def _Return(self, t):
+        self.fill(&#34;return&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+
+    def _Pass(self, t):
+        self.fill(&#34;pass&#34;)
+
+    def _Break(self, t):
+        self.fill(&#34;break&#34;)
+
+    def _Continue(self, t):
+        self.fill(&#34;continue&#34;)
+
+    def _Delete(self, t):
+        self.fill(&#34;del &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.targets)
+
+    def _Assert(self, t):
+        self.fill(&#34;assert &#34;)
+        self.dispatch(t.test)
+        if t.msg:
+            self.write(&#34;, &#34;)
+            self.dispatch(t.msg)
+
+    def _Global(self, t):
+        self.fill(&#34;global &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.write, t.names)
+
+    def _Nonlocal(self, t):
+        self.fill(&#34;nonlocal &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.write, t.names)
+
+    def _Await(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;await&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _Yield(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;yield&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _YieldFrom(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;yield from&#34;)
+        if t.value:
+            self.write(&#34; &#34;)
+            self.dispatch(t.value)
+        self.write(&#34;)&#34;)
+
+    def _Raise(self, t):
+        self.fill(&#34;raise&#34;)
+        if not t.exc:
+            assert not t.cause
+            return
+        self.write(&#34; &#34;)
+        self.dispatch(t.exc)
+        if t.cause:
+            self.write(&#34; from &#34;)
+            self.dispatch(t.cause)
+
+    def _Try(self, t):
+        self.fill(&#34;try&#34;)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        for ex in t.handlers:
+            self.dispatch(ex)
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+        if t.finalbody:
+            self.fill(&#34;finally&#34;)
+            self.enter()
+            self.dispatch(t.finalbody)
+            self.leave()
+
+    def _ExceptHandler(self, t):
+        self.fill(&#34;except&#34;)
+        if t.type:
+            self.write(&#34; &#34;)
+            self.dispatch(t.type)
+        if t.name:
+            self.write(&#34; as &#34;)
+            self.write(t.name)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _ClassDef(self, t):
+        self.write(&#34;\n&#34;)
+        for deco in t.decorator_list:
+            self.fill(&#34;@&#34;)
+            self.dispatch(deco)
+        self.fill(&#34;class &#34; + t.name)
+        self.write(&#34;(&#34;)
+        comma = False
+        for e in t.bases:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _FunctionDef(self, t):
+        self.__FunctionDef_helper(t, &#34;def&#34;)
+
+    def _AsyncFunctionDef(self, t):
+        self.__FunctionDef_helper(t, &#34;async def&#34;)
+
+    def __FunctionDef_helper(self, t, fill_suffix):
+        self.write(&#34;\n&#34;)
+        for deco in t.decorator_list:
+            self.fill(&#34;@&#34;)
+            self.dispatch(deco)
+        def_str = fill_suffix + &#34; &#34; + t.name + &#34;(&#34;
+        self.fill(def_str)
+        self.dispatch(t.args)
+        self.write(&#34;)&#34;)
+        if t.returns:
+            self.write(&#34; -&gt; &#34;)
+            self.dispatch(t.returns)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _For(self, t):
+        self.__For_helper(&#34;for &#34;, t)
+
+    def _AsyncFor(self, t):
+        self.__For_helper(&#34;async for &#34;, t)
+
+    def __For_helper(self, fill, t):
+        self.fill(fill)
+        self.dispatch(t.target)
+        self.write(&#34; in &#34;)
+        self.dispatch(t.iter)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _If(self, t):
+        self.fill(&#34;if &#34;)
+        self.dispatch(t.test)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        # collapse nested ifs into equivalent elifs.
+        while t.orelse and len(t.orelse) == 1 and isinstance(t.orelse[0], ast.If):
+            t = t.orelse[0]
+            self.fill(&#34;elif &#34;)
+            self.dispatch(t.test)
+            self.enter()
+            self.dispatch(t.body)
+            self.leave()
+        # final else
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _While(self, t):
+        self.fill(&#34;while &#34;)
+        self.dispatch(t.test)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+        if t.orelse:
+            self.fill(&#34;else&#34;)
+            self.enter()
+            self.dispatch(t.orelse)
+            self.leave()
+
+    def _With(self, t):
+        self.fill(&#34;with &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.items)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    def _AsyncWith(self, t):
+        self.fill(&#34;async with &#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.items)
+        self.enter()
+        self.dispatch(t.body)
+        self.leave()
+
+    # expr
+    def _JoinedStr(self, t):
+        self.write(&#34;f&#34;)
+        string = io.StringIO()
+        self._fstring_JoinedStr(t, string.write)
+        self.write(repr(string.getvalue()))
+
+    def _FormattedValue(self, t):
+        self.write(&#34;f&#34;)
+        string = io.StringIO()
+        self._fstring_FormattedValue(t, string.write)
+        self.write(repr(string.getvalue()))
+
+    def _fstring_JoinedStr(self, t, write):
+        for value in t.values:
+            meth = getattr(self, &#34;_fstring_&#34; + type(value).__name__)
+            meth(value, write)
+
+    def _fstring_Constant(self, t, write):
+        assert isinstance(t.value, str)
+        value = t.value.replace(&#34;{&#34;, &#34;{{&#34;).replace(&#34;}&#34;, &#34;}}&#34;)
+        write(value)
+
+    def _fstring_FormattedValue(self, t, write):
+        write(&#34;{&#34;)
+        expr = io.StringIO()
+        Unparser(t.value, expr)
+        expr = expr.getvalue().rstrip(&#34;\n&#34;)
+        if expr.startswith(&#34;{&#34;):
+            write(&#34; &#34;)  # Separate pair of opening brackets as &#34;{ {&#34;
+        write(expr)
+        if t.conversion != -1:
+            conversion = chr(t.conversion)
+            assert conversion in &#34;sra&#34;
+            write(f&#34;!{conversion}&#34;)
+        if t.format_spec:
+            write(&#34;:&#34;)
+            meth = getattr(self, &#34;_fstring_&#34; + type(t.format_spec).__name__)
+            meth(t.format_spec, write)
+        write(&#34;}&#34;)
+
+    def _Name(self, t):
+        self.write(t.id)
+
+    def _write_constant(self, value):
+        if isinstance(value, (float, complex)):
+            # Substitute overflowing decimal literal for AST infinities.
+            self.write(repr(value).replace(&#34;inf&#34;, INFSTR))
+        else:
+            self.write(repr(value))
+
+    def _Constant(self, t):
+        value = t.value
+        if isinstance(value, tuple):
+            self.write(&#34;(&#34;)
+            if len(value) == 1:
+                self._write_constant(value[0])
+                self.write(&#34;,&#34;)
+            else:
+                interleave(lambda: self.write(&#34;, &#34;), self._write_constant, value)
+            self.write(&#34;)&#34;)
+        elif value is ...:
+            self.write(&#34;...&#34;)
+        else:
+            if t.kind == &#34;u&#34;:
+                self.write(&#34;u&#34;)
+            self._write_constant(t.value)
+
+    def _List(self, t):
+        self.write(&#34;[&#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;]&#34;)
+
+    def _ListComp(self, t):
+        self.write(&#34;[&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;]&#34;)
+
+    def _GeneratorExp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;)&#34;)
+
+    def _SetComp(self, t):
+        self.write(&#34;{&#34;)
+        self.dispatch(t.elt)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;}&#34;)
+
+    def _DictComp(self, t):
+        self.write(&#34;{&#34;)
+        self.dispatch(t.key)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.value)
+        for gen in t.generators:
+            self.dispatch(gen)
+        self.write(&#34;}&#34;)
+
+    def _comprehension(self, t):
+        if t.is_async:
+            self.write(&#34; async for &#34;)
+        else:
+            self.write(&#34; for &#34;)
+        self.dispatch(t.target)
+        self.write(&#34; in &#34;)
+        self.dispatch(t.iter)
+        for if_clause in t.ifs:
+            self.write(&#34; if &#34;)
+            self.dispatch(if_clause)
+
+    def _IfExp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.body)
+        self.write(&#34; if &#34;)
+        self.dispatch(t.test)
+        self.write(&#34; else &#34;)
+        self.dispatch(t.orelse)
+        self.write(&#34;)&#34;)
+
+    def _Set(self, t):
+        assert t.elts  # should be at least one element
+        self.write(&#34;{&#34;)
+        interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;}&#34;)
+
+    def _Dict(self, t):
+        self.write(&#34;{&#34;)
+
+        def write_key_value_pair(k, v):
+            self.dispatch(k)
+            self.write(&#34;: &#34;)
+            self.dispatch(v)
+
+        def write_item(item):
+            k, v = item
+            if k is None:
+                # for dictionary unpacking operator in dicts {**{&#39;y&#39;: 2}}
+                # see PEP 448 for details
+                self.write(&#34;**&#34;)
+                self.dispatch(v)
+            else:
+                write_key_value_pair(k, v)
+
+        interleave(lambda: self.write(&#34;, &#34;), write_item, zip(t.keys, t.values))
+        self.write(&#34;}&#34;)
+
+    def _Tuple(self, t):
+        self.write(&#34;(&#34;)
+        if len(t.elts) == 1:
+            elt = t.elts[0]
+            self.dispatch(elt)
+            self.write(&#34;,&#34;)
+        else:
+            interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.elts)
+        self.write(&#34;)&#34;)
+
+    unop = {&#34;Invert&#34;: &#34;~&#34;, &#34;Not&#34;: &#34;not&#34;, &#34;UAdd&#34;: &#34;+&#34;, &#34;USub&#34;: &#34;-&#34;}
+
+    def _UnaryOp(self, t):
+        self.write(&#34;(&#34;)
+        self.write(self.unop[t.op.__class__.__name__])
+        self.write(&#34; &#34;)
+        self.dispatch(t.operand)
+        self.write(&#34;)&#34;)
+
+    binop = {
+        &#34;Add&#34;: &#34;+&#34;,
+        &#34;Sub&#34;: &#34;-&#34;,
+        &#34;Mult&#34;: &#34;*&#34;,
+        &#34;MatMult&#34;: &#34;@&#34;,
+        &#34;Div&#34;: &#34;/&#34;,
+        &#34;Mod&#34;: &#34;%&#34;,
+        &#34;LShift&#34;: &#34;&lt;&lt;&#34;,
+        &#34;RShift&#34;: &#34;&gt;&gt;&#34;,
+        &#34;BitOr&#34;: &#34;|&#34;,
+        &#34;BitXor&#34;: &#34;^&#34;,
+        &#34;BitAnd&#34;: &#34;&amp;&#34;,
+        &#34;FloorDiv&#34;: &#34;//&#34;,
+        &#34;Pow&#34;: &#34;**&#34;,
+    }
+
+    def _BinOp(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.left)
+        self.write(&#34; &#34; + self.binop[t.op.__class__.__name__] + &#34; &#34;)
+        self.dispatch(t.right)
+        self.write(&#34;)&#34;)
+
+    cmpops = {
+        &#34;Eq&#34;: &#34;==&#34;,
+        &#34;NotEq&#34;: &#34;!=&#34;,
+        &#34;Lt&#34;: &#34;&lt;&#34;,
+        &#34;LtE&#34;: &#34;&lt;=&#34;,
+        &#34;Gt&#34;: &#34;&gt;&#34;,
+        &#34;GtE&#34;: &#34;&gt;=&#34;,
+        &#34;Is&#34;: &#34;is&#34;,
+        &#34;IsNot&#34;: &#34;is not&#34;,
+        &#34;In&#34;: &#34;in&#34;,
+        &#34;NotIn&#34;: &#34;not in&#34;,
+    }
+
+    def _Compare(self, t):
+        self.write(&#34;(&#34;)
+        self.dispatch(t.left)
+        for o, e in zip(t.ops, t.comparators):
+            self.write(&#34; &#34; + self.cmpops[o.__class__.__name__] + &#34; &#34;)
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+    boolops = {ast.And: &#34;and&#34;, ast.Or: &#34;or&#34;}
+
+    def _BoolOp(self, t):
+        self.write(&#34;(&#34;)
+        s = &#34; %s &#34; % self.boolops[t.op.__class__]
+        interleave(lambda: self.write(s), self.dispatch, t.values)
+        self.write(&#34;)&#34;)
+
+    def _Attribute(self, t):
+        self.dispatch(t.value)
+        # Special case: 3.__abs__() is a syntax error, so if t.value
+        # is an integer literal then we need to either parenthesize
+        # it or add an extra space to get 3 .__abs__().
+        if isinstance(t.value, ast.Constant) and isinstance(t.value.value, int):
+            self.write(&#34; &#34;)
+        self.write(&#34;.&#34;)
+        self.write(t.attr)
+
+    def _Call(self, t):
+        self.dispatch(t.func)
+        self.write(&#34;(&#34;)
+        comma = False
+        for e in t.args:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        for e in t.keywords:
+            if comma:
+                self.write(&#34;, &#34;)
+            else:
+                comma = True
+            self.dispatch(e)
+        self.write(&#34;)&#34;)
+
+    def _Subscript(self, t):
+        self.dispatch(t.value)
+        self.write(&#34;[&#34;)
+        if isinstance(t.slice, ast.Index) and isinstance(t.slice.value, ast.Tuple) and t.slice.value.elts:
+            if len(t.slice.value.elts) == 1:
+                elt = t.slice.value.elts[0]
+                self.dispatch(elt)
+                self.write(&#34;,&#34;)
+            else:
+                interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.slice.value.elts)
+        else:
+            self.dispatch(t.slice)
+        self.write(&#34;]&#34;)
+
+    def _Starred(self, t):
+        self.write(&#34;*&#34;)
+        self.dispatch(t.value)
+
+    # slice
+    def _Ellipsis(self, t):
+        self.write(&#34;...&#34;)
+
+    def _Index(self, t):
+        self.dispatch(t.value)
+
+    def _Slice(self, t):
+        if t.lower:
+            self.dispatch(t.lower)
+        self.write(&#34;:&#34;)
+        if t.upper:
+            self.dispatch(t.upper)
+        if t.step:
+            self.write(&#34;:&#34;)
+            self.dispatch(t.step)
+
+    def _ExtSlice(self, t):
+        if len(t.dims) == 1:
+            elt = t.dims[0]
+            self.dispatch(elt)
+            self.write(&#34;,&#34;)
+        else:
+            interleave(lambda: self.write(&#34;, &#34;), self.dispatch, t.dims)
+
+    # argument
+    def _arg(self, t):
+        self.write(t.arg)
+        if t.annotation:
+            self.write(&#34;: &#34;)
+            self.dispatch(t.annotation)
+
+    # others
+    def _arguments(self, t):
+        first = True
+        # normal arguments
+        all_args = t.posonlyargs + t.args
+        defaults = [None] * (len(all_args) - len(t.defaults)) + t.defaults
+        for index, elements in enumerate(zip(all_args, defaults), 1):
+            a, d = elements
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.dispatch(a)
+            if d:
+                self.write(&#34;=&#34;)
+                self.dispatch(d)
+            if index == len(t.posonlyargs):
+                self.write(&#34;, /&#34;)
+
+        # varargs, or bare &#39;*&#39; if no varargs but keyword-only arguments present
+        if t.vararg or t.kwonlyargs:
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.write(&#34;*&#34;)
+            if t.vararg:
+                self.write(t.vararg.arg)
+                if t.vararg.annotation:
+                    self.write(&#34;: &#34;)
+                    self.dispatch(t.vararg.annotation)
+
+        # keyword-only arguments
+        if t.kwonlyargs:
+            for a, d in zip(t.kwonlyargs, t.kw_defaults):
+                if first:
+                    first = False
+                else:
+                    self.write(&#34;, &#34;)
+                self.dispatch(a),
+                if d:
+                    self.write(&#34;=&#34;)
+                    self.dispatch(d)
+
+        # kwargs
+        if t.kwarg:
+            if first:
+                first = False
+            else:
+                self.write(&#34;, &#34;)
+            self.write(&#34;**&#34; + t.kwarg.arg)
+            if t.kwarg.annotation:
+                self.write(&#34;: &#34;)
+                self.dispatch(t.kwarg.annotation)
+
+    def _keyword(self, t):
+        if t.arg is None:
+            self.write(&#34;**&#34;)
+        else:
+            self.write(t.arg)
+            self.write(&#34;=&#34;)
+        self.dispatch(t.value)
+
+    def _Lambda(self, t):
+        self.write(&#34;(&#34;)
+        self.write(&#34;lambda &#34;)
+        self.dispatch(t.args)
+        self.write(&#34;: &#34;)
+        self.dispatch(t.body)
+        self.write(&#34;)&#34;)
+
+    def _alias(self, t):
+        self.write(t.name)
+        if t.asname:
+            self.write(&#34; as &#34; + t.asname)
+
+    def _withitem(self, t):
+        self.dispatch(t.context_expr)
+        if t.optional_vars:
+            self.write(&#34; as &#34;)
+            self.dispatch(t.optional_vars)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.binop"><code class="name">var <span class="ident">binop</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.boolops"><code class="name">var <span class="ident">boolops</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.cmpops"><code class="name">var <span class="ident">cmpops</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.unop"><code class="name">var <span class="ident">unop</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.dispatch"><code class="name flex">
+<span>def <span class="ident">dispatch</span></span>(<span>self, tree)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dispatcher function, dispatching tree type T to method _T.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dispatch(self, tree):
+    &#34;&#34;&#34;
+    Dispatcher function, dispatching tree type T to method _T.
+    &#34;&#34;&#34;
+    if isinstance(tree, list):
+        for t in tree:
+            self.dispatch(t)
+        return
+    meth = getattr(self, &#34;_&#34; + tree.__class__.__name__)
+    meth(tree)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.enter"><code class="name flex">
+<span>def <span class="ident">enter</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Print ':', and increase the indentation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def enter(self):
+    &#34;&#34;&#34;
+    Print &#39;:&#39;, and increase the indentation.
+    &#34;&#34;&#34;
+    self.write(&#34;:&#34;)
+    self._indent += 1</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.fill"><code class="name flex">
+<span>def <span class="ident">fill</span></span>(<span>self, text='')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Indent a piece of text, according to the current indentation level</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fill(self, text=&#34;&#34;):
+    &#34;&#34;&#34;
+    Indent a piece of text, according to the current indentation level
+    &#34;&#34;&#34;
+    self.f.write(&#34;\n&#34; + &#34;    &#34; * self._indent + text)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.leave"><code class="name flex">
+<span>def <span class="ident">leave</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decrease the indentation level.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def leave(self):
+    &#34;&#34;&#34;
+    Decrease the indentation level.
+    &#34;&#34;&#34;
+    self._indent -= 1</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, text)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Append a piece of text to the current line.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, text):
+    &#34;&#34;&#34;
+    Append a piece of text to the current line.
+    &#34;&#34;&#34;
+    self.f.write(text)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser" href="index.html">sail_safe_functions_orchestrator.tools_specific.parser</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.interleave" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.interleave">interleave</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.main" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.main">main</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.roundtrip" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.roundtrip">roundtrip</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.testdir" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.testdir">testdir</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser">Unparser</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.binop" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.binop">binop</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.boolops" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.boolops">boolops</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.cmpops" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.cmpops">cmpops</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.dispatch" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.dispatch">dispatch</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.enter" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.enter">enter</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.fill" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.fill">fill</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.leave" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.leave">leave</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.unop" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.unop">unop</a></code></li>
+<li><code><a title="sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.write" href="#sail_safe_functions_orchestrator.tools_specific.parser.unparse.Unparser.write">write</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

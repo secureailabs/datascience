@@ -8,10 +8,9 @@ from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 
 
-def chisquare(
-    sample_0: SeriesFederated, sample_1: SeriesFederated
-) -> Tuple[float, float]:
+def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
     """
+    Perform federated chisquare test.
     This test can be used to examine if there is a interaction between two paired categorical samples.
 
     The null hypothesis is that there is no interaction between samples.
@@ -46,9 +45,7 @@ class Chisquare(Estimator):
         #    raise ValueException()
 
         list_precompute = []
-        for series_0, series_1 in zip(
-            sample_0.dict_series.values(), sample_1.dict_series.values()
-        ):
+        for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
             list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
         return ChisquareAggregate.run(list_precompute)
 
@@ -69,14 +66,10 @@ class Chisquare(Estimator):
 
         for i_0 in range(len(list_unique_0)):
             for i_1 in range(len(list_unique_1)):
-                array_pred[i_0, i_1] = (
-                    array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-                )
+                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
         ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
             len(array_true.ravel()) - 1
         )  # 2d instead of 1d
-        chisquare_statistic, p_value = stats.chisquare(
-            array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof
-        )
+        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
         return chisquare_statistic, p_value
