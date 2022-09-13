@@ -223,7 +223,7 @@ class ModelNaiveHazard(ModelBase):
                     visualization.plot_survival_curve(axes, survival_curve, name_series)
             axes.legend()
             axes.set_ylabel("survival faction")
-            axes.set_label("name_feature_duration")
+            axes.set_label(self.name_feature_duration)
             axes.set_title(name_feature_hazard)
             list_figure.append(figure)
         return list_figure

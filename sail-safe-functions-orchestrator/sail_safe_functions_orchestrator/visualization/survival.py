@@ -146,6 +146,7 @@ def plot_survival_curve(
         upper_plot.append(upper[i])
     ax.plot(domain_plot, mean_plot, label=label, linestyle=line_style)
     ax.fill_between(domain_plot, lower_plot, upper_plot, alpha=0.2)
+    ax.set_ylim([0, 1])
 
 
 def plot_survival_confidence(
