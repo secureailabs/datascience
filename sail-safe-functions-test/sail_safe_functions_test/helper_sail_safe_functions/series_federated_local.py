@@ -16,6 +16,13 @@ class SeriesFederatedLocal(SeriesFederated):
         self.dtype = None
         self.is_numeric = None
 
+    @property
+    def size(self):
+        size = 0
+        for series in self._dict_series.values():
+            size += series.size
+        return size
+
     def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
