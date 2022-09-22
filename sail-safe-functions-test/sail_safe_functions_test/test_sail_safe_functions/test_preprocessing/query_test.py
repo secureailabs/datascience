@@ -9,11 +9,11 @@ def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_feder
     """
     Tests comparison with constant query
 
-    :param dataframe_kidney: a dataframe with nans
-    :type: pd.DataFrame
+        :param dataframe_kidney: a dataframe with nans
+        :type: pd.DataFrame
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+        :param data_frame_federated_kidney: a dataframe with nans
+        :type dataframe_kidney: DataFrameFederated
     """
     # Arrange
     query = "pcc == 'notpresent'"
@@ -31,11 +31,11 @@ def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federa
     """
     Tests comparison with column query
 
-    :param dataframe_kidney: a dataframe with nans
-    :type: pd.DataFrame
+        :param dataframe_kidney: a dataframe with nans
+        :type: pd.DataFrame
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+        :param data_frame_federated_kidney: a dataframe with nans
+        :type dataframe_kidney: DataFrameFederated
     """
     # Arrange
     query = "sg < al"
@@ -53,11 +53,11 @@ def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_feder
     """
     Tests comparison with variable query
 
-    :param dataframe_kidney: a dataframe with nans
-    :type: pd.DataFrame
+        :param dataframe_kidney: a dataframe with nans
+        :type: pd.DataFrame
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type dataframe_kidney: DataFrameFederated
+        :param data_frame_federated_kidney: a dataframe with nans
+        :type dataframe_kidney: DataFrameFederated
     """
     # Arrange
     min_age, max_age = 18, 25
@@ -79,8 +79,8 @@ def test_unauthorized_var_type(
     """
     Tests that environment gets sanitized properly
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type data_frame_federated_kidney: DataFrameFederated
+        :param data_frame_federated_kidney: a dataframe with nans
+        :type data_frame_federated_kidney: DataFrameFederated
     """
 
     # Arrange
@@ -109,8 +109,8 @@ def test_object_attribute(
     if the user wants to use the attribute of an objet they have to assign it to a variable so we can check it)
     (This will be more useful when/if we start allowing more variables types)
 
-    :param data_frame_federated_kidney: a dataframe with nans
-    :type data_frame_federated_kidney: DataFrameFederated
+        :param data_frame_federated_kidney: a dataframe with nans
+        :type data_frame_federated_kidney: DataFrameFederated
     """
 
     # Arrange
