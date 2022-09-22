@@ -9,10 +9,10 @@ from scipy import stats
 @pytest.mark.active
 def test_kurtosis(one_sample_big: SeriesFederatedLocal):
     """
-    This test our federated kurtosis module
+    This function is here to test the sail-statistics federated kurtosis
 
-    Args:
-        one_sample_big (SeriesFederatedLocal): A single federated series fixture
+        :param one_sample_big: Input sample values
+        :type one_sample_big: SeriesFederatedLocal
     """
     # Arrange
     sample_0 = one_sample_big
