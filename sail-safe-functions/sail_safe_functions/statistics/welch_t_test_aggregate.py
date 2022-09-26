@@ -13,12 +13,12 @@ class WelchTTestAggregate:
         list_list_precompute: List[List[float]],
     ):
         """
-        Function Aggregates data for doing a unpaired t-test
+        Function Aggregates data for doing a unpaired t-test.
 
-        :param list_list_precompute: List of precompute.
-        :type list_list_precompute: List[List[float]]
-        :return: t_statistic, degrees_of_freedom
-        :rtype: _type_
+            :param list_list_precompute: List of precompute.
+            :type list_list_precompute: List[List[float]]
+            :return: t_statistic, degrees_of_freedom
+            :rtype: _type_
         """
 
         sum_x_0 = 0

@@ -13,16 +13,16 @@ class CumulativeDistributionFunctionPrecompute:
     def run(sample_0: pandas.Series, domain_min: float, domain_max: float) -> Tuple[List[float], List[float], int]:
         # TODO test this for series of size 1
         """
-        precomputes for federated cdf
+        Precomputes for federated cdf
 
-        :param sample_0: input series
-        :type sample_0: pandas.Series
-        :param domain_min: The starting value of the sequence.
-        :type domain_min: float
-        :param domain_max: The end value of the sequence
-        :type domain_max: float
-        :return: values required for aggregates
-        :rtype: Tuple[List[float], List[float], int]
+            :param sample_0: input series
+            :type sample_0: pandas.Series
+            :param domain_min: The starting value of the sequence.
+            :type domain_min: float
+            :param domain_max: The end value of the sequence
+            :type domain_max: float
+            :return: values required for aggregates
+            :rtype: Tuple[List[float], List[float], int]
         """
         array_sample_0 = sample_0.to_numpy()
         size_sample_0 = len(array_sample_0)

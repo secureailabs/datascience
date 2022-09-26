@@ -5,14 +5,14 @@ import pandas
 class OnehotToCategorical:
     def run(column_schema: dict, data_frame_source: pandas.DataFrame) -> pandas.DataFrame:
         """
-        encoded(one hot encoding) feature to categorical
+        Encoded(one hot encoding) feature to categorical
 
-        :param column_schema: dictionary containing column schema
-        :type column_schema: dict
-        :param data_frame_source: dataframe containing source
-        :type data_frame_source: pandas.DataFrame
-        :return: _description_
-        :rtype: pandas.DataFrame
+            :param column_schema: dictionary containing column schema
+            :type column_schema: dict
+            :param data_frame_source: dataframe containing source
+            :type data_frame_source: pandas.DataFrame
+            :return: _description_
+            :rtype: pandas.DataFrame
         """
         name_column = column_schema["name_column"]
         type_missing_policy = column_schema["type_missing_policy"]

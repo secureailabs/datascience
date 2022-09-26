@@ -6,6 +6,16 @@ from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def concatenate(sample_0: SeriesFederated, sample_1: SeriesFederated) -> SeriesFederated:
+    """
+    Function to concatenate SeriesFederated
+
+        :param sample_0: First input series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second input series
+        :type sample_1: SeriesFederated
+        :return: concatenated series
+        :rtype: series
+    """
     return Concatenate.run(sample_0, sample_1)
 
 
@@ -16,12 +26,12 @@ class Concatenate:
         """
         Federate wrapper safe function for the pandas concatenate
 
-        :param sample_0: First input series
-        :type sample_0: SeriesFederated
-        :param sample_1: Second input series
-        :type sample_1: SeriesFederated
-        :return: concatenated series
-        :rtype: series
+            :param sample_0: First input series
+            :type sample_0: SeriesFederated
+            :param sample_1: Second input series
+            :type sample_1: SeriesFederated
+            :return: concatenated series
+            :rtype: series
         """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)

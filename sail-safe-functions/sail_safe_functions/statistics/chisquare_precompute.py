@@ -10,14 +10,14 @@ class ChisquarePrecompute:
 
     def run(sample_0: pandas.Series, sample_1: pandas.Series) -> Dict:
         """
-        collect the precompute for chisquare
+        Collect the precompute for chisquare
 
-        :param sample_0: First input sample
-        :type sample_0: pandas.Series
-        :param sample_1: Second input sample
-        :type sample_1: pandas.Series
-        :return: dicitoanry containing precompute
-        :rtype: Dict
+            :param sample_0: First input sample
+            :type sample_0: pandas.Series
+            :param sample_1: Second input sample
+            :type sample_1: pandas.Series
+            :return: dicitoanry containing precompute
+            :rtype: Dict
         """
         precompute = {}
         for tuple_value in zip(sample_0, sample_1):

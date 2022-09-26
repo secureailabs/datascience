@@ -10,10 +10,10 @@ class VarianceAggregate:
         """
         This method to run aggregated variance
 
-        :param list_list_precompute: list of precomputes
-        :type list_list_precompute: List[List[float]]
-        :return: Variance Value
-        :rtype: Float
+            :param list_list_precompute: list of precomputes
+            :type list_list_precompute: List[List[float]]
+            :return: Variance Value
+            :rtype: Float
         """
         sum_x_0 = 0
         sum_xx_0 = 0

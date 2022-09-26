@@ -11,16 +11,8 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
 def wilcoxon_singed_rank_test_difference_tranform(
     sample_0: SeriesFederated, sample_1: SeriesFederated
 ) -> Tuple[List[float], List[float]]:
-    return WilcoxonSingedRankTestDifferenceTranform.run(sample_0, sample_1)
-
-
-class WilcoxonSingedRankTestDifferenceTranform:
-    "Tranform for Wilcoxon Singed Rank Test"
-
-    @staticmethod
-    def run(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[List[float], List[float]]:
-        """
-        Tranform for Wilcoxon Singed Rank Test
+    """
+    Function to Transform for Wilcoxon Singed Rank Test
 
         :param sample_0: First input series
         :type sample_0: SeriesFederated
@@ -28,6 +20,24 @@ class WilcoxonSingedRankTestDifferenceTranform:
         :type sample_1: SeriesFederated
         :return: sample_difference, sample_difference_absolute
         :rtype: Tuple[List[float], List[float]]
+    """
+    return WilcoxonSingedRankTestDifferenceTranform.run(sample_0, sample_1)
+
+
+class WilcoxonSingedRankTestDifferenceTranform:
+    """Transform for Wilcoxon Singed Rank Test"""
+
+    @staticmethod
+    def run(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[List[float], List[float]]:
+        """
+        Transform for Wilcoxon Singed Rank Test
+
+            :param sample_0: First input series
+            :type sample_0: SeriesFederated
+            :param sample_1: Second input series
+            :type sample_1: SeriesFederated
+            :return: sample_difference, sample_difference_absolute
+            :rtype: Tuple[List[float], List[float]]
         """
         sample_difference = SeriesFederatedLocal()  # TODO make transforms smarter
         sample_difference_absolute = SeriesFederatedLocal()  # TODO make transforms smarter

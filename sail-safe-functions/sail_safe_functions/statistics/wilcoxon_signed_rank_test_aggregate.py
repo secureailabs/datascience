@@ -8,12 +8,12 @@ class WilcoxonSingedRankTestAggregate:
 
     def run(list_precompute: List):
         """
-        function Aggregates data for WilcoxonSingedRankTest
+        Function Aggregates data for WilcoxonSingedRankTest
 
-        :param list_precompute: _description_
-        :type list_precompute: List
-        :return: _description_
-        :rtype: _type_
+            :param list_precompute: _description_
+            :type list_precompute: List
+            :return: _description_
+            :rtype: _type_
         """
         rank_minus = 0
         rank_plus = 0

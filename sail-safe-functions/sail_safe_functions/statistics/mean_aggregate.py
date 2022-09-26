@@ -10,10 +10,10 @@ class MeanAggregate:
         """
         Aggregate the precomptes for mean
 
-        :param list_list_precompute: list of precompute for mean
-        :type list_list_precompute: List[List[float]]
-        :return: Aggregated mean
-        :rtype: _type_
+            :param list_list_precompute: list of precompute for mean
+            :type list_list_precompute: List[List[float]]
+            :return: Aggregated mean
+            :rtype: float
         """
         sum_x_0 = 0
         degrees_of_freedom_0 = 0

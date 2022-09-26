@@ -15,10 +15,10 @@ class VariancePrecompute:
         """
         Function collects the precomptues requireds for calculating variance
 
-        :param sample_0: input series
-        :type sample_0: pd.Series
-        :return: value of varaince
-        :rtype: Tuple[ List[float], List[bool] ]
+            :param sample_0: input series
+            :type sample_0: pd.Series
+            :return: value of varaince
+            :rtype: Tuple[ List[float], List[bool] ]
         """
         sample_0 = sample_0.to_numpy()
 

@@ -14,16 +14,16 @@ class KolmogorovSmirnovTestPrecompute:
         """
         Calculate the preceomputes for KolmogorovSmirnov test
 
-        :param sample_0: First input sample
-        :type sample_0: Series
-        :param sample_ranked_0: Second input sample
-        :type sample_ranked_0: Series
-        :param distribution: Type of distribution ypu want to have
-        :type distribution: str
-        :param count_total: total count
-        :type count_total: int
-        :return: KS Test precompute
-        :rtype: List[float]
+            :param sample_0: First input sample
+            :type sample_0: Series
+            :param sample_ranked_0: Second input sample
+            :type sample_ranked_0: Series
+            :param distribution: Type of distribution ypu want to have
+            :type distribution: str
+            :param count_total: total count
+            :type count_total: int
+            :return: KS Test precompute
+            :rtype: List[float]
         """
         type_distribution = distribution["type_distribution"]
 

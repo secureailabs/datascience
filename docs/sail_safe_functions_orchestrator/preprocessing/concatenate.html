@@ -34,6 +34,16 @@ from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 def concatenate(sample_0: SeriesFederated, sample_1: SeriesFederated) -&gt; SeriesFederated:
+    &#34;&#34;&#34;
+    Function to concatenate SeriesFederated
+
+        :param sample_0: First input series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second input series
+        :type sample_1: SeriesFederated
+        :return: concatenated series
+        :rtype: series
+    &#34;&#34;&#34;
     return Concatenate.run(sample_0, sample_1)
 
 
@@ -44,12 +54,12 @@ class Concatenate:
         &#34;&#34;&#34;
         Federate wrapper safe function for the pandas concatenate
 
-        :param sample_0: First input series
-        :type sample_0: SeriesFederated
-        :param sample_1: Second input series
-        :type sample_1: SeriesFederated
-        :return: concatenated series
-        :rtype: series
+            :param sample_0: First input series
+            :type sample_0: SeriesFederated
+            :param sample_1: Second input series
+            :type sample_1: SeriesFederated
+            :return: concatenated series
+            :rtype: series
         &#34;&#34;&#34;
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
@@ -73,12 +83,29 @@ class Concatenate:
 <span>def <span class="ident">concatenate</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>, sample_1: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function to concatenate SeriesFederated</p>
+<pre><code>:param sample_0: First input series
+:type sample_0: SeriesFederated
+:param sample_1: Second input series
+:type sample_1: SeriesFederated
+:return: concatenated series
+:rtype: series
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def concatenate(sample_0: SeriesFederated, sample_1: SeriesFederated) -&gt; SeriesFederated:
+    &#34;&#34;&#34;
+    Function to concatenate SeriesFederated
+
+        :param sample_0: First input series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second input series
+        :type sample_1: SeriesFederated
+        :return: concatenated series
+        :rtype: series
+    &#34;&#34;&#34;
     return Concatenate.run(sample_0, sample_1)</code></pre>
 </details>
 </dd>
@@ -103,12 +130,12 @@ class Concatenate:
         &#34;&#34;&#34;
         Federate wrapper safe function for the pandas concatenate
 
-        :param sample_0: First input series
-        :type sample_0: SeriesFederated
-        :param sample_1: Second input series
-        :type sample_1: SeriesFederated
-        :return: concatenated series
-        :rtype: series
+            :param sample_0: First input series
+            :type sample_0: SeriesFederated
+            :param sample_1: Second input series
+            :type sample_1: SeriesFederated
+            :return: concatenated series
+            :rtype: series
         &#34;&#34;&#34;
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
@@ -127,12 +154,13 @@ class Concatenate:
 </code></dt>
 <dd>
 <div class="desc"><p>Federate wrapper safe function for the pandas concatenate</p>
-<p>:param sample_0: First input series
+<pre><code>:param sample_0: First input series
 :type sample_0: SeriesFederated
 :param sample_1: Second input series
 :type sample_1: SeriesFederated
 :return: concatenated series
-:rtype: series</p></div>
+:rtype: series
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -141,12 +169,12 @@ class Concatenate:
     &#34;&#34;&#34;
     Federate wrapper safe function for the pandas concatenate
 
-    :param sample_0: First input series
-    :type sample_0: SeriesFederated
-    :param sample_1: Second input series
-    :type sample_1: SeriesFederated
-    :return: concatenated series
-    :rtype: series
+        :param sample_0: First input series
+        :type sample_0: SeriesFederated
+        :param sample_1: Second input series
+        :type sample_1: SeriesFederated
+        :return: concatenated series
+        :rtype: series
     &#34;&#34;&#34;
     check_instance(sample_0, SeriesFederated)
     check_instance(sample_1, SeriesFederated)

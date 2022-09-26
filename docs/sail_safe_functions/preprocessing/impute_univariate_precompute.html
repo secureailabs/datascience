@@ -38,25 +38,22 @@ class ImputeUnivariatePrecompute:
     Imputes one or more columns with a univariate strategy
     &#34;&#34;&#34;
 
-    def run(
-        data_frame: pd.DataFrame, list_name_column: List[str], strategy: str
-    ) -&gt; pd.DataFrame:
-        &#34;&#34;&#34;Imputes one or more columns with a univariate strategy
+    def run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Imputes one or more columns with a univariate strategy
 
-        :param data_frame: Input dataframe
-        :type data_frame: pd.DataFrame
-        :param list_name_column: a list of column names to impute, set to None to do all columns
-        :type list_name_column: list[str]
-        :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
-        :type strategy: str
-        :return: Output dataframe
-        :rtype: pd.DataFrame
+            :param data_frame: Input dataframe
+            :type data_frame: pd.DataFrame
+            :param list_name_column: a list of column names to impute, set to None to do all columns
+            :type list_name_column: list[str]
+            :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
+            :type strategy: str
+            :return: Output dataframe
+            :rtype: pd.DataFrame
         &#34;&#34;&#34;
 
         if strategy not in {&#34;mean&#34;, &#34;median&#34;, &#34;most_frequent&#34;}:
-            raise ValueError(
-                &#34;parameter `strategy` must be either mean, median or most_frequent&#34;
-            )
+            raise ValueError(&#34;parameter `strategy` must be either mean, median or most_frequent&#34;)
         imputer = SimpleImputer(strategy=strategy)
 
         data_frame = data_frame.copy()
@@ -97,25 +94,22 @@ class ImputeUnivariatePrecompute:
     Imputes one or more columns with a univariate strategy
     &#34;&#34;&#34;
 
-    def run(
-        data_frame: pd.DataFrame, list_name_column: List[str], strategy: str
-    ) -&gt; pd.DataFrame:
-        &#34;&#34;&#34;Imputes one or more columns with a univariate strategy
+    def run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Imputes one or more columns with a univariate strategy
 
-        :param data_frame: Input dataframe
-        :type data_frame: pd.DataFrame
-        :param list_name_column: a list of column names to impute, set to None to do all columns
-        :type list_name_column: list[str]
-        :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
-        :type strategy: str
-        :return: Output dataframe
-        :rtype: pd.DataFrame
+            :param data_frame: Input dataframe
+            :type data_frame: pd.DataFrame
+            :param list_name_column: a list of column names to impute, set to None to do all columns
+            :type list_name_column: list[str]
+            :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
+            :type strategy: str
+            :return: Output dataframe
+            :rtype: pd.DataFrame
         &#34;&#34;&#34;
 
         if strategy not in {&#34;mean&#34;, &#34;median&#34;, &#34;most_frequent&#34;}:
-            raise ValueError(
-                &#34;parameter `strategy` must be either mean, median or most_frequent&#34;
-            )
+            raise ValueError(&#34;parameter `strategy` must be either mean, median or most_frequent&#34;)
         imputer = SimpleImputer(strategy=strategy)
 
         data_frame = data_frame.copy()
@@ -139,37 +133,35 @@ class ImputeUnivariatePrecompute:
 </code></dt>
 <dd>
 <div class="desc"><p>Imputes one or more columns with a univariate strategy</p>
-<p>:param data_frame: Input dataframe
+<pre><code>:param data_frame: Input dataframe
 :type data_frame: pd.DataFrame
 :param list_name_column: a list of column names to impute, set to None to do all columns
 :type list_name_column: list[str]
-:param strategy: strategy, must be either <code>mean</code>, <code>median</code> or <code>most_frequent</code>, on non-numerical data only must frequent is valid
+:param strategy: strategy, must be either &lt;code&gt;mean&lt;/code&gt;, &lt;code&gt;median&lt;/code&gt; or &lt;code&gt;most\_frequent&lt;/code&gt;, on non-numerical data only must frequent is valid
 :type strategy: str
 :return: Output dataframe
-:rtype: pd.DataFrame</p></div>
+:rtype: pd.DataFrame
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    data_frame: pd.DataFrame, list_name_column: List[str], strategy: str
-) -&gt; pd.DataFrame:
-    &#34;&#34;&#34;Imputes one or more columns with a univariate strategy
+<pre><code class="python">def run(data_frame: pd.DataFrame, list_name_column: List[str], strategy: str) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Imputes one or more columns with a univariate strategy
 
-    :param data_frame: Input dataframe
-    :type data_frame: pd.DataFrame
-    :param list_name_column: a list of column names to impute, set to None to do all columns
-    :type list_name_column: list[str]
-    :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
-    :type strategy: str
-    :return: Output dataframe
-    :rtype: pd.DataFrame
+        :param data_frame: Input dataframe
+        :type data_frame: pd.DataFrame
+        :param list_name_column: a list of column names to impute, set to None to do all columns
+        :type list_name_column: list[str]
+        :param strategy: strategy, must be either `mean`, `median` or `most_frequent`, on non-numerical data only must frequent is valid
+        :type strategy: str
+        :return: Output dataframe
+        :rtype: pd.DataFrame
     &#34;&#34;&#34;
 
     if strategy not in {&#34;mean&#34;, &#34;median&#34;, &#34;most_frequent&#34;}:
-        raise ValueError(
-            &#34;parameter `strategy` must be either mean, median or most_frequent&#34;
-        )
+        raise ValueError(&#34;parameter `strategy` must be either mean, median or most_frequent&#34;)
     imputer = SimpleImputer(strategy=strategy)
 
     data_frame = data_frame.copy()

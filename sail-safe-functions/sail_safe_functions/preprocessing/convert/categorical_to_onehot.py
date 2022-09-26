@@ -7,12 +7,12 @@ class CategoricalToOnehot:
         """
         Categorical featurization function
 
-        :param column_schema: image.png
-        :type column_schema: dictionary conating column schema
-        :param data_frame_source: pandas dataframe conating source
-        :type data_frame_source: pandas.DataFrame
-        :return: featurized encoding on categorical feature
-        :rtype: pandas.DataFrame
+            :param column_schema: image.png
+            :type column_schema: dictionary conating column schema
+            :param data_frame_source: pandas dataframe conating source
+            :type data_frame_source: pandas.DataFrame
+            :return: featurized encoding on categorical feature
+            :rtype: pandas.DataFrame
         """
         name_column = column_schema["name_column"]
         type_missing_policy = column_schema["type_missing_policy"]

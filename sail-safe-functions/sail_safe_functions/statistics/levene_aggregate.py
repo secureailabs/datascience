@@ -15,12 +15,12 @@ class LeveneAggregate:
         """
          Aggregates data for Levens Test
 
-        :param list_list_precompute:  list of precompute
-        :type list_list_precompute: List[List[float]]
-        :param equal_variances: Applying for equal varaince or not, defaults to False
-        :type equal_variances: bool, optional
-        :return: _description_
-        :rtype: _type_
+            :param list_list_precompute:  list of precompute
+            :type list_list_precompute: List[List[float]]
+            :param equal_variances: Applying for equal varaince or not, defaults to False
+            :type equal_variances: bool, optional
+            :return: _description_
+            :rtype: _type_
         """
         sum_x_0 = 0
         sum_xx_0 = 0

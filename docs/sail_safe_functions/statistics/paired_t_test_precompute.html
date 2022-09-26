@@ -38,14 +38,15 @@ class PairedTTestPrecompute:
     &#34;&#34;&#34;
 
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -&gt; List[float]:
-        &#34;&#34;&#34;Generates the geometric moments for use in a T-Test
+        &#34;&#34;&#34;
+        Generates the geometric moments for use in a T-Test
 
-        :param sample_0_series:  The series for sample_0
-        :type sample_0_series: pd.Series
-        :param sample_1_series: The series for sample_1
-        :type sample_1_series: pd.Series
-        :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
-        :rtype: List[float]
+            :param sample_0_series:  The series for sample_0
+            :type sample_0_series: pd.Series
+            :param sample_1_series: The series for sample_1
+            :type sample_1_series: pd.Series
+            :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
+            :rtype: List[float]
         &#34;&#34;&#34;
 
         sample_0 = sample_0_series.to_numpy()
@@ -84,14 +85,15 @@ class PairedTTestPrecompute:
     &#34;&#34;&#34;
 
     def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -&gt; List[float]:
-        &#34;&#34;&#34;Generates the geometric moments for use in a T-Test
+        &#34;&#34;&#34;
+        Generates the geometric moments for use in a T-Test
 
-        :param sample_0_series:  The series for sample_0
-        :type sample_0_series: pd.Series
-        :param sample_1_series: The series for sample_1
-        :type sample_1_series: pd.Series
-        :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
-        :rtype: List[float]
+            :param sample_0_series:  The series for sample_0
+            :type sample_0_series: pd.Series
+            :param sample_1_series: The series for sample_1
+            :type sample_1_series: pd.Series
+            :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
+            :rtype: List[float]
         &#34;&#34;&#34;
 
         sample_0 = sample_0_series.to_numpy()
@@ -112,26 +114,27 @@ class PairedTTestPrecompute:
 </code></dt>
 <dd>
 <div class="desc"><p>Generates the geometric moments for use in a T-Test</p>
-<p>:param sample_0_series:
-The series for sample_0
+<pre><code>:param sample_0_series:  The series for sample_0
 :type sample_0_series: pd.Series
 :param sample_1_series: The series for sample_1
 :type sample_1_series: pd.Series
 :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
-:rtype: List[float]</p></div>
+:rtype: List[float]
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(sample_0_series: pd.Series, sample_1_series: pd.Series) -&gt; List[float]:
-    &#34;&#34;&#34;Generates the geometric moments for use in a T-Test
+    &#34;&#34;&#34;
+    Generates the geometric moments for use in a T-Test
 
-    :param sample_0_series:  The series for sample_0
-    :type sample_0_series: pd.Series
-    :param sample_1_series: The series for sample_1
-    :type sample_1_series: pd.Series
-    :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
-    :rtype: List[float]
+        :param sample_0_series:  The series for sample_0
+        :type sample_0_series: pd.Series
+        :param sample_1_series: The series for sample_1
+        :type sample_1_series: pd.Series
+        :return: a list of 3 floats, two moments for sample_d followed by the size of sample_d
+        :rtype: List[float]
     &#34;&#34;&#34;
 
     sample_0 = sample_0_series.to_numpy()

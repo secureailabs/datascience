@@ -13,10 +13,10 @@ class ChisquareAggregate:
         """
         Aggregates data for Chisquare test
 
-        :param list_precompute: list containing  precompute
-        :type list_precompute:  list of list
-        :return: chisquare_statistic, p_value
-        :rtype: Dict
+            :param list_precompute: list containing  precompute
+            :type list_precompute:  list of list
+            :return: chisquare_statistic, p_value
+            :rtype: Dict
         """
 
         list_unique_0 = []

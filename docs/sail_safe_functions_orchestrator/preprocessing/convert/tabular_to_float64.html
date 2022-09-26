@@ -33,20 +33,9 @@ from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFeder
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
-def tabular_to_float64(
-    table_schema: dict, data_frame_source: DataFrameFederated
-) -&gt; DataFrameFederated:
-    return TabularToFloat64.run(table_schema, data_frame_source)
-
-
-class TabularToFloat64:
-    def run(
-        table_schema: dict, data_frame_source: DataFrameFederated
-    ) -&gt; DataFrameFederated:
-        check_instance(table_schema, dict)
-        check_instance(data_frame_source, DataFrameFederated)
-        &#34;&#34;&#34;
-        Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
+def tabular_to_float64(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
+    &#34;&#34;&#34;
+    function to convert tabular to float
 
         :param table_schema: Schema of the source dataframe
         :type table_schema: dict
@@ -54,12 +43,27 @@ class TabularToFloat64:
         :type data_frame_source: DataFrameFederated
         :return: Resulting dataframe containg only float64 columns
         :rtype: DataFrameFederated
+    &#34;&#34;&#34;
+    return TabularToFloat64.run(table_schema, data_frame_source)
+
+
+class TabularToFloat64:
+    def run(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
+        check_instance(table_schema, dict)
+        check_instance(data_frame_source, DataFrameFederated)
+        &#34;&#34;&#34;
+        Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
+
+            :param table_schema: Schema of the source dataframe
+            :type table_schema: dict
+            :param data_frame_source: Dataframe to be converted
+            :type data_frame_source: DataFrameFederated
+            :return: Resulting dataframe containg only float64 columns
+            :rtype: DataFrameFederated
         &#34;&#34;&#34;
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[
-                dataset_id
-            ] = TabularToFloat64Precompute.run(
+            data_frame_target.dict_dataframe[dataset_id] = TabularToFloat64Precompute.run(
                 table_schema, data_frame_source.dict_dataframe[dataset_id]
             )
         return data_frame_target</code></pre>
@@ -76,14 +80,29 @@ class TabularToFloat64:
 <span>def <span class="ident">tabular_to_float64</span></span>(<span>table_schema: dict, data_frame_source: <a title="sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated" href="../../data_frame_federated.html#sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated">DataFrameFederated</a>) ‑> <a title="sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated" href="../../data_frame_federated.html#sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated">DataFrameFederated</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>function to convert tabular to float</p>
+<pre><code>:param table_schema: Schema of the source dataframe
+:type table_schema: dict
+:param data_frame_source: Dataframe to be converted
+:type data_frame_source: DataFrameFederated
+:return: Resulting dataframe containg only float64 columns
+:rtype: DataFrameFederated
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def tabular_to_float64(
-    table_schema: dict, data_frame_source: DataFrameFederated
-) -&gt; DataFrameFederated:
+<pre><code class="python">def tabular_to_float64(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
+    &#34;&#34;&#34;
+    function to convert tabular to float
+
+        :param table_schema: Schema of the source dataframe
+        :type table_schema: dict
+        :param data_frame_source: Dataframe to be converted
+        :type data_frame_source: DataFrameFederated
+        :return: Resulting dataframe containg only float64 columns
+        :rtype: DataFrameFederated
+    &#34;&#34;&#34;
     return TabularToFloat64.run(table_schema, data_frame_source)</code></pre>
 </details>
 </dd>
@@ -102,26 +121,22 @@ class TabularToFloat64:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TabularToFloat64:
-    def run(
-        table_schema: dict, data_frame_source: DataFrameFederated
-    ) -&gt; DataFrameFederated:
+    def run(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
         check_instance(table_schema, dict)
         check_instance(data_frame_source, DataFrameFederated)
         &#34;&#34;&#34;
         Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
 
-        :param table_schema: Schema of the source dataframe
-        :type table_schema: dict
-        :param data_frame_source: Dataframe to be converted
-        :type data_frame_source: DataFrameFederated
-        :return: Resulting dataframe containg only float64 columns
-        :rtype: DataFrameFederated
+            :param table_schema: Schema of the source dataframe
+            :type table_schema: dict
+            :param data_frame_source: Dataframe to be converted
+            :type data_frame_source: DataFrameFederated
+            :return: Resulting dataframe containg only float64 columns
+            :rtype: DataFrameFederated
         &#34;&#34;&#34;
         data_frame_target = data_frame_source.create_new()
         for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[
-                dataset_id
-            ] = TabularToFloat64Precompute.run(
+            data_frame_target.dict_dataframe[dataset_id] = TabularToFloat64Precompute.run(
                 table_schema, data_frame_source.dict_dataframe[dataset_id]
             )
         return data_frame_target</code></pre>
@@ -137,26 +152,22 @@ class TabularToFloat64:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    table_schema: dict, data_frame_source: DataFrameFederated
-) -&gt; DataFrameFederated:
+<pre><code class="python">def run(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
     check_instance(table_schema, dict)
     check_instance(data_frame_source, DataFrameFederated)
     &#34;&#34;&#34;
     Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
 
-    :param table_schema: Schema of the source dataframe
-    :type table_schema: dict
-    :param data_frame_source: Dataframe to be converted
-    :type data_frame_source: DataFrameFederated
-    :return: Resulting dataframe containg only float64 columns
-    :rtype: DataFrameFederated
+        :param table_schema: Schema of the source dataframe
+        :type table_schema: dict
+        :param data_frame_source: Dataframe to be converted
+        :type data_frame_source: DataFrameFederated
+        :return: Resulting dataframe containg only float64 columns
+        :rtype: DataFrameFederated
     &#34;&#34;&#34;
     data_frame_target = data_frame_source.create_new()
     for dataset_id in data_frame_source.dict_dataframe:
-        data_frame_target.dict_dataframe[
-            dataset_id
-        ] = TabularToFloat64Precompute.run(
+        data_frame_target.dict_dataframe[dataset_id] = TabularToFloat64Precompute.run(
             table_schema, data_frame_source.dict_dataframe[dataset_id]
         )
     return data_frame_target</code></pre>

@@ -10,10 +10,10 @@ class KolmogorovSmirnovTestAggregate:
         """
         Calculate the aggregate Kolmogorov Smirnov Test
 
-        :param list_precompute: list containing precomputes 
-        :type list_precompute: List[float]
-        :return: K-S test aggregate value
-        :rtype: _type_
+            :param list_precompute: list containing precomputes
+            :type list_precompute: List[float]
+            :return: K-S test aggregate value
+            :rtype: int
         """
         list_max = []
         for precompute in list_precompute:

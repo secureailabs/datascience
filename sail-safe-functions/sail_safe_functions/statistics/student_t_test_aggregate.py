@@ -16,10 +16,10 @@ class StudentTTestAggregate:
         Function to run Aggregates data for doing a unpaired t-test
         (either the student t-test or the welch t-test)
 
-        :param list_list_precompute: _description_
-        :type list_list_precompute: List[List[float]]
-        :return: _description_
-        :rtype: _type_
+            :param list_list_precompute: _description_
+            :type list_list_precompute: List[List[float]]
+            :return: _description_
+            :rtype: float, int
         """
         sum_x_0 = 0
         sum_xx_0 = 0

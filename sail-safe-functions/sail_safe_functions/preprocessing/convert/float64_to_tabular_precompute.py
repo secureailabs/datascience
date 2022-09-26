@@ -9,11 +9,11 @@ class Float64ToTabularPrecompute:
         """
         Convert dtype float64 to tabular
 
-        :type table_schema: dict
-        :param data_frame_source: datafrane source
-        :type data_frame_source: pandas.DataFrame
-        :return: return tabular precompute
-        :rtype: pandas.DataFrame
+            :type table_schema: dict
+            :param data_frame_source: datafrane source
+            :type data_frame_source: pandas.DataFrame
+            :return: return tabular precompute
+            :rtype: pandas.DataFrame
         """
         list_data_frame_target = []
         for name_column in table_schema["list_name_column"]:

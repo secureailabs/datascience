@@ -12,14 +12,14 @@ class WilcoxonSingedRankTestPrecompute:
         sample_absolute_difference_ranked: pandas.Series,
     ):
         """
-        function to Precomputes data for the  WilcoxonSingedRankTest
+        Function to Precomputes data for the  WilcoxonSingedRankTest
 
-        :param sample_difference: sample input
-        :type sample_difference: pandas.Series
-        :param sample_absolute_difference_ranked: absolute differences ranked
-        :type sample_absolute_difference_ranked: pandas.Series
-        :return: list rank_minus, rank_plus
-        :rtype: list
+            :param sample_difference: sample input
+            :type sample_difference: pandas.Series
+            :param sample_absolute_difference_ranked: absolute differences ranked
+            :type sample_absolute_difference_ranked: pandas.Series
+            :return: list rank_minus, rank_plus
+            :rtype: list
         """
         rank_minus = numpy.sum((sample_difference.to_numpy() < 0) * sample_absolute_difference_ranked.to_numpy())
         rank_plus = numpy.sum((sample_difference.to_numpy() > 0) * sample_absolute_difference_ranked.to_numpy())

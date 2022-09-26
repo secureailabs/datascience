@@ -15,12 +15,12 @@ class MeanPrecompute:
         List[float], List[bool]
     ]:  # there seems to be a problem here with this annotation
         """
-        function to calculate the precomputes for mean
+        Function to calculate the precomputes for mean
 
-        :param sample_0_dataframe: sample input
-        :type sample_0_dataframe: pd.Series
-        :return: precomputes of mean
-        :rtype: Tuple[ List[float], List[bool] ]
+            :param sample_0_dataframe: sample input
+            :type sample_0_dataframe: pd.Series
+            :return: precomputes of mean
+            :rtype: Tuple[ List[float], List[bool] ]
         """
         sample_0 = sample_0_dataframe.to_numpy()
 

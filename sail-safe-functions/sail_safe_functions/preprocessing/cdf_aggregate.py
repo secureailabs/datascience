@@ -17,14 +17,14 @@ class CumulativeDistributionFunctionAggregate:
         """
         Aggregate the cdf precompute
 
-        :param list_precompute: list of list of precomputes
-        :type list_precompute: List[Tuple[List[float], List[float], int]]
-        :param domain_min: The starting value of the sequence.
-        :type domain_min: array_like
-        :param domain_max: The end value of the sequence
-        :type domain_max: array_like
-        :return: cdf aggregate value
-        :rtype: Tuple[List[float], List[float]]
+            :param list_precompute: list of list of precomputes
+            :type list_precompute: List[Tuple[List[float], List[float], int]]
+            :param domain_min: The starting value of the sequence.
+            :type domain_min: array_like
+            :param domain_max: The end value of the sequence
+            :type domain_max: array_like
+            :return: cdf aggregate value
+            :rtype: Tuple[List[float], List[float]]
         """
 
         list_array_value_resampled = []
