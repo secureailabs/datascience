@@ -29,7 +29,7 @@ class CumulativeDistributionFunction:
     @staticmethod
     def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
 
-        domain_min, domain_max = MinMax.min_max(sample_0)
+        domain_min, domain_max = MinMax.run(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
