@@ -105,19 +105,12 @@ class ReadJsonzipPrecompute:
             elif type_feature == "categorical":
                 name_measurement = column_template["name_measurement"]
                 type_selector = column_template["type_selector"]
-                if name_measurement not in patient["dict_measurement"]:
-                    if type_selector == "count_occurance":
-                        return 0
-                    else:
-                        return None
 
                 list_measurement = patient["dict_measurement"][name_measurement]
                 if type_selector == "first_occurance":
                     return list_measurement[0]["event_value"]
                 if type_selector == "last_occurance":
                     return list_measurement[-1]["event_value"]
-                if type_selector == "count_occurance":
-                    return len(list_measurement)
                 if type_selector == "most_frequent":
                     raise NotImplementedError()  # TODO implement
                 else:

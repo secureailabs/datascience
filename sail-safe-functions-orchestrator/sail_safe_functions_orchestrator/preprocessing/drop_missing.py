@@ -1,10 +1,14 @@
-from typing import Any
+from typing import Any, List
 
-from sail_safe_functions.preprocessing.drop_missing_precompute import (
-    DropMissingPrecompute,
-)
+from sail_safe_functions.preprocessing.drop_missing_precompute import DropMissingPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
+
+
+def drop_rows_with_missing_data(
+    data_frame_source: DataFrameFederated, list_name_column: List[str] = None
+) -> DataFrameFederated:
+    return drop_missing(data_frame_source, axis=0, how="any", thresh=None, subset=list_name_column)
 
 
 def drop_missing(

@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 import numpy
 import pandas as pd
@@ -87,12 +87,42 @@ class DataFrameFederatedLocal(DataFrameFederated):
     def to_numpy_float64(self) -> numpy.ndarray:
         return self.to_numpy().astype(numpy.float64)
 
+    def to_pandas(self) -> pd.DataFrame:
+        return pd.concat(list(self.dict_dataframe.values()))
+
     @staticmethod
-    def from_numpy(dataset_id: str, array: numpy.ndarray, list_name_column=None) -> numpy.ndarray:
+    def from_numpy(dataset_id: str, array: numpy.ndarray, list_name_column=None) -> "DataFrameFederated":
         data_frame = pd.DataFrame(array)
         if list_name_column is not None:
             for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
                 data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
+        return DataFrameFederatedLocal.from_data_frame(dataset_id, data_frame)
+
+    @staticmethod
+    def from_data_frame(data_frame: pd.DataFrame, count_split=1) -> "DataFrameFederated":
+        size_split = int(data_frame.shape[0] / count_split)
+        if size_split == 0:
+            size_split = 1
+        if size_split == 1:
+            count_split = data_frame.shape[0]
+
+        index_from = 0
+        index_to = 0
+        dict_data_frame = {}
+        for i in range(count_split):
+            index_from = index_to
+            index_to = index_from + size_split
+            dict_data_frame[f"data_set_id_{str(i)}"] = data_frame.iloc[index_from:index_to, :]
+        return DataFrameFederatedLocal.from_dict_data_frame(dict_data_frame)
+
+    @staticmethod
+    def from_dict_data_frame(dict_data_frame: Dict[str, pd.DataFrame]) -> "DataFrameFederated":
         data_frame_federated = DataFrameFederatedLocal()
-        data_frame_federated.dict_dataframe[dataset_id] = data_frame
+        for dataset_id, data_frame in dict_data_frame.items():
+            data_frame_federated.dict_dataframe[dataset_id] = data_frame
         return data_frame_federated
+
+    def print(self):
+        for dataset_id, data_frame in self.dict_dataframe.items():
+            print(dataset_id)
+            print(data_frame.head())
