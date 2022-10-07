@@ -33,9 +33,9 @@ class ModelNaiveHazard(ModelBase):
         data_frame_target = preprocessing.drop_rows_with_missing_data(
             data_frame_target, [self.name_feature_observation]
         )
-        # TODO start probleblamtic section
-        data_frame_target = data_frame_target.to_pandas()
 
+        # TODO start problematic section
+        data_frame_target = data_frame_target.to_pandas()
         contains_missing = 0 < data_frame_target[name_feature_hazard].isna().sum()
         if include_missing and contains_missing:
             list_name_value = pandas.unique(data_frame_target[name_feature_hazard])
@@ -49,10 +49,8 @@ class ModelNaiveHazard(ModelBase):
         else:
             data_frame_target = data_frame_target[data_frame_target[name_feature_hazard].notna()]
             list_name_value = sorted(pandas.unique(data_frame_target[name_feature_hazard]))
-
         data_frame_target = DataFrameFederatedLocal.from_data_frame(data_frame_target, 3)
-
-        # TODO end probleblamtic section
+        # TODO end problematic section
 
         name_value = "all"
         model_kaplan_meier = ModelKaplanMeier()

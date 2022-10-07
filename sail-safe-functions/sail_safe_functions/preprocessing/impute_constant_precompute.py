@@ -33,23 +33,15 @@ class ImputeConstantPrecompute:
         elif type(missing_value) == str:
             missing_type_numeric = False
         else:
-            raise ValueError("missing_value is neither numeric nor a string")
+            raise ValueError(f"missing_value is neither numeric nor a string, but of type: {str(type(missing_value))}")
 
         data_frame = data_frame.copy()
         if list_name_column is None:
             list_name_column = list(data_frame.columns)
         for name_column in list_name_column:
             if missing_type_numeric and not is_numeric_dtype(data_frame[name_column]):
-                raise ValueError(
-                    f"missing_value is numeric type but column with name {name_column} is not"
-                )
-            if not missing_type_numeric and not is_string_dtype(
-                data_frame[name_column]
-            ):
-                raise ValueError(
-                    f"missing_value is string type but column with name {name_column} is not"
-                )
-            data_frame[name_column] = data_frame[name_column].replace(
-                np.nan, missing_value
-            )
+                raise ValueError(f"missing_value is numeric type but column with name {name_column} is not")
+            if not missing_type_numeric and not is_string_dtype(data_frame[name_column]):
+                raise ValueError(f"missing_value is string type but column with name {name_column} is not")
+            data_frame[name_column] = data_frame[name_column].replace(np.nan, missing_value)
         return data_frame

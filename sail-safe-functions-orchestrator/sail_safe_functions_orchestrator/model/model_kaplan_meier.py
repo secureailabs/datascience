@@ -26,7 +26,6 @@ class ModelKaplanMeier:
     ) -> None:
         # TODO check name_feature_duration is float?
         # TODO check name_feature_observation is boolean?
-        # alternitive 1
         list_survival_curve_dict = []
         for dataset_id in data_frame_source.dict_dataframe:
             list_survival_curve_dict.append(
@@ -36,7 +35,6 @@ class ModelKaplanMeier:
             )
         survival_curve_dict = SurvivalCurveKaplanMeierAgregate.run(list_survival_curve_dict)
 
-        # alternitive 2
         self.count_total = survival_curve_dict["count_total"]
         self.count_observed = survival_curve_dict["count_observed"]
 
