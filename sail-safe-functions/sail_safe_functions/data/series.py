@@ -4,7 +4,7 @@ import pandas as pd
 from pandas._libs.lib import no_default
 from zero import ProxyObject, SecretObject
 
-from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Scalar
+from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Scalar, copy_doc
 
 
 class RemoteSeries:
@@ -15,6 +15,18 @@ class RemoteSeries:
         typ=None,
         na=None,
     ):
+        """
+        constructor, accept same value as pd.Series or a raw pd.Seris instance object
+
+        :param d: input data, defaults to None
+        :type d: dict, arraylike, optional
+        :param ind: index, defaults to None
+        :type ind: str, list of str, optional
+        :param typ: data type, defaults to None
+        :type typ: str, optional
+        :param na: representation of missing value, defaults to None
+        :type na: no_default, optional
+        """
         if d is None or isinstance(d, pd.Series):
             self.series = d
         else:
@@ -54,6 +66,7 @@ class RemoteSeries:
         ans = self.series.ravel(order)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.repeat)
     def repeat(
         self,
         repeats: Union[int, List[int]],
@@ -62,6 +75,7 @@ class RemoteSeries:
         ans = self.series.repeat(repeats, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.reset_index)
     def reset_index(
         self,
         level: Optional[Union[int, str, tuple, list]] = None,
@@ -78,10 +92,12 @@ class RemoteSeries:
     # def iteritems(self) -> 'Iterable[tuple[Hashable, Any]]':
     #     ans = self.series.iteritems()
 
+    @copy_doc(pd.Series.keys)
     def keys(self) -> ArrayLike:
         ans = self.series.keys()
         return ans
 
+    @copy_doc(pd.Series.to_dict)
     def to_dict(
         self,
         into=dict,
@@ -96,6 +112,7 @@ class RemoteSeries:
         ans = self.series.to_series(name)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.to_numpy)
     def to_numpy(
         self,
         dtype: Optional[str] = None,
@@ -105,6 +122,7 @@ class RemoteSeries:
         return SecretObject(ans)
 
     # ?
+    @copy_doc(pd.Series.groupby)
     def groupby(
         self,
         by: IndexLabel = None,
@@ -120,6 +138,7 @@ class RemoteSeries:
         ans = self.series.groupby(by, axis, level, as_index, sort, group_keys, squeeze, observed, dropna)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.count)
     def count(
         self,
         level: Optional[Level] = None,
@@ -128,6 +147,7 @@ class RemoteSeries:
         return ans
 
     # ?
+    @copy_doc(pd.Series.mode)
     def mode(
         self,
         dropna: "bool" = True,
@@ -135,12 +155,14 @@ class RemoteSeries:
         ans = self.series.mode(dropna)
         return ans
 
+    @copy_doc(pd.Series.unique)
     def unique(
         self,
     ) -> "ArrayLike":
         ans = self.series.unique()
         return ans
 
+    @copy_doc(pd.Series.drop_duplicates)
     def drop_duplicates(
         self,
         keep: str = "first",
@@ -149,6 +171,7 @@ class RemoteSeries:
         ans = self.series.drop_duplicates(keep, inplace)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.duplicated)
     def duplicated(
         self,
         keep: str = "first",
@@ -156,6 +179,7 @@ class RemoteSeries:
         ans = self.series.duplicated(keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.idxmin)
     def idxmin(
         self,
         axis: Axis = 0,
@@ -166,6 +190,7 @@ class RemoteSeries:
         ans = self.series.idxmin(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.idxmax)
     def idxmax(
         self,
         axis: Axis = 0,
@@ -176,6 +201,7 @@ class RemoteSeries:
         ans = self.series.idxmax(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.round)
     def round(
         self,
         decimals=0,
@@ -185,6 +211,7 @@ class RemoteSeries:
         ans = self.series.round(decimals, *args, **kwargs)
         return ProxyObject[ans]
 
+    @copy_doc(pd.Series.quantile)
     def quantile(
         self,
         q: float = 0.5,
@@ -193,6 +220,7 @@ class RemoteSeries:
         ans = self.series.quantile(q, interpolation)
         return ans
 
+    @copy_doc(pd.Series.corr)
     def corr(
         self,
         other: pd.Series,
@@ -202,14 +230,25 @@ class RemoteSeries:
         ans = self.series.corr(other, method, min_periods)
         return ans
 
-    def cov(self, other: pd.Series, min_periods: "int | None" = None, ddof: "int | None" = 1) -> "float":
+    @copy_doc(pd.Series.cov)
+    def cov(
+        self,
+        other: pd.Series,
+        min_periods: "int | None" = None,
+        ddof: "int | None" = 1,
+    ) -> "float":
         ans = self.series.cov(other, min_periods, ddof)
         return ans
 
-    def diff(self, periods: "int" = 1) -> Type[ProxyObject]:
+    @copy_doc(pd.Series.diff)
+    def diff(
+        self,
+        periods: "int" = 1,
+    ) -> Type[ProxyObject]:
         ans = self.series.diff(periods)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.autocorr)
     def autocorr(
         self,
         lag: int = 1,
@@ -217,6 +256,7 @@ class RemoteSeries:
         ans = self.series.autocorr(lag)
         return ans
 
+    @copy_doc(pd.Series.dot)
     def dot(
         self,
         other: ArrayLike,
@@ -225,6 +265,7 @@ class RemoteSeries:
         return ProxyObject(ans)
 
     # ?
+    @copy_doc(pd.Series.searchsorted)
     def searchsorted(
         self,
         value: Union[ArrayLike, Scalar],
@@ -234,6 +275,7 @@ class RemoteSeries:
         ans = self.series.searchsorted(value, side, sorter)
         return ans
 
+    @copy_doc(pd.Series.compare)
     def compare(
         self,
         other: pd.Series,
@@ -244,6 +286,7 @@ class RemoteSeries:
         ans = self.series.compare(other, align_axis, keep_shape, keep_equal)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.combine)
     def combine(
         self,
         other: Union[Scalar, pd.Series],
@@ -253,6 +296,7 @@ class RemoteSeries:
         ans = self.series.combine(other, func, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.combine_first)
     def combine_first(
         self,
         other: pd.Series,
@@ -260,12 +304,14 @@ class RemoteSeries:
         ans = self.series.combine_first(other)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.update)
     def update(
         self,
         other: pd.Series,
     ) -> "None":
         ans = self.series.update(other)
 
+    @copy_doc(pd.Series.sort_values)
     def sort_values(
         self,
         axis: Axis = 0,
@@ -279,6 +325,7 @@ class RemoteSeries:
         ans = self.series.sort_values(axis, ascending, inplace, kind, na_position, ignore_index, key)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.sort_index)
     def sort_index(
         self,
         axis: Axis = 0,
@@ -294,6 +341,7 @@ class RemoteSeries:
         )
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.argsort)
     def argsort(
         self,
         axis: Axis = 0,
@@ -303,6 +351,7 @@ class RemoteSeries:
         ans = self.series.argsort(axis, kind, order)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.nlargest)
     def nlargest(
         self,
         n: int = 5,
@@ -311,6 +360,7 @@ class RemoteSeries:
         ans = self.series.nlargest(n, keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.nsmallest)
     def nsmallest(
         self,
         n: "int" = 5,
@@ -319,6 +369,7 @@ class RemoteSeries:
         ans = self.series.nsmallest(n, keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.swaplevel)
     def swaplevel(
         self,
         i: int = -2,
@@ -328,6 +379,7 @@ class RemoteSeries:
         ans = self.series.swaplevel(i, j, copy)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.reorder_levels)
     def reorder_levels(
         self,
         order: List[int],
@@ -335,6 +387,7 @@ class RemoteSeries:
         ans = self.series.reorder_levels(order)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.explode)
     def explode(
         self,
         ignore_index: "bool" = False,
@@ -342,6 +395,7 @@ class RemoteSeries:
         ans = self.series.explode(ignore_index)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.unstack)
     def unstack(
         self,
         level: int = -1,
@@ -350,6 +404,7 @@ class RemoteSeries:
         ans = self.series.unstack(level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.map)
     def map(
         self,
         arg: Callable,
@@ -358,6 +413,7 @@ class RemoteSeries:
         ans = self.series.map(arg, na_action)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.aggregate)
     def aggregate(
         self,
         func: Callable = None,
@@ -368,6 +424,7 @@ class RemoteSeries:
         ans = self.series.aggregate(func, axis, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.transform)
     def transform(
         self,
         func: Callable,
@@ -378,6 +435,7 @@ class RemoteSeries:
         ans = self.series.transform(func, axis, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.apply)
     def apply(
         self,
         func: Callable,
@@ -388,6 +446,7 @@ class RemoteSeries:
         ans = self.series.apply(func, convert_dtype, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.align)
     def align(
         self,
         other: Union[pd.DataFrame, pd.Series],
@@ -404,6 +463,7 @@ class RemoteSeries:
         ans = self.series.align(other, join, axis, level, copy, fill_value, method, limit, fill_axis, broadcast_axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rename)
     def rename(
         self,
         index: Union[Scalar, Hashable, dict, Callable] = None,
@@ -417,6 +477,7 @@ class RemoteSeries:
         ans = self.series.rename(index, axis, copy, inplace, level, errors)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.set_axis)
     def set_axis(
         self,
         labels: IndexLabel,
@@ -426,6 +487,7 @@ class RemoteSeries:
         ans = self.series.set_axis(labels, axis, inplace)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.reindex)
     def reindex(
         self,
         *args,
@@ -434,6 +496,7 @@ class RemoteSeries:
         ans = self.series.reindex(args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.drop)
     def drop(
         self,
         labels: Optional[IndexLabel] = None,
@@ -447,6 +510,7 @@ class RemoteSeries:
         ans = self.series.drop(labels, axis, index, columns, level, inplace, errors)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.fillna)
     def fillna(
         self,
         value: Optional[Union[Scalar, ArrayLike]] = None,
@@ -459,6 +523,7 @@ class RemoteSeries:
         ans = self.series.fillna(value, method, axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.pop)
     def pop(
         self,
         item: "Hashable",
@@ -466,6 +531,7 @@ class RemoteSeries:
         ans = self.series.pop(item)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.replace)
     def replace(
         self,
         to_replace: Optional[Union[Scalar, pd.Series]] = None,
@@ -478,6 +544,7 @@ class RemoteSeries:
         ans = self.series.replace(to_replace, value, inplace, limit, regex, method)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.shift)
     def shift(
         self,
         periods: int = 1,
@@ -488,6 +555,7 @@ class RemoteSeries:
         ans = self.series.shift(periods, freq, axis, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.memory_usage)
     def memory_usage(
         self,
         index: "bool" = True,
@@ -496,6 +564,7 @@ class RemoteSeries:
         ans = self.series.memory_usage(index, deep)
         return ans
 
+    @copy_doc(pd.Series.isin)
     def isin(
         self,
         values: Union[set, list],
@@ -503,6 +572,7 @@ class RemoteSeries:
         ans = self.series.isin(values)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.between)
     def between(
         self,
         left: Union[Scalar, list],
@@ -512,30 +582,35 @@ class RemoteSeries:
         ans = self.series.between(left, right, inclusive)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.isna)
     def isna(
         self,
     ) -> Type[ProxyObject]:
         ans = self.series.isna()
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.isnull)
     def isnull(
         self,
     ) -> Type[ProxyObject]:
         ans = self.series.isnull()
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.notna)
     def notna(
         self,
     ) -> Type[ProxyObject]:
         ans = self.series.notna()
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.notnull)
     def notnull(
         self,
     ) -> Type[ProxyObject]:
         ans = self.series.notnull()
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.dropna)
     def dropna(
         self,
         axis: Axis = 0,
@@ -545,6 +620,7 @@ class RemoteSeries:
         ans = self.series.dropna(axis, inplace, how)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.asfreq)
     def asfreq(
         self,
         freq: Frequency,
@@ -557,6 +633,7 @@ class RemoteSeries:
         return ProxyObject(ans)
 
     # ? todo
+    @copy_doc(pd.Series.resample)
     def resample(
         self,
         rule,
@@ -577,6 +654,7 @@ class RemoteSeries:
         )
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.to_timestamp)
     def to_timestamp(
         self,
         freq: Optional[Frequency] = None,
@@ -586,6 +664,7 @@ class RemoteSeries:
         ans = self.series.to_timestamp(freq, how, copy)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.to_period)
     def to_period(
         self,
         freq: Optional[Frequency] = None,
@@ -594,6 +673,7 @@ class RemoteSeries:
         ans = self.series.to_period(freq, copy)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.ffill)
     def ffill(
         self,
         axis: "None | Axis" = None,
@@ -604,6 +684,7 @@ class RemoteSeries:
         ans = self.series.ffill(axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.bfill)
     def bfill(
         self,
         axis: "None | Axis" = None,
@@ -614,6 +695,7 @@ class RemoteSeries:
         ans = self.series.bfill(axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.clip)
     def clip(
         self,
         lower: Optional[Union[float, ArrayLike]] = None,
@@ -626,6 +708,7 @@ class RemoteSeries:
         ans = self.series.clip(lower, upper, axis, inplace, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.interpolate)
     def interpolate(
         self,
         method: "str" = "linear",
@@ -640,6 +723,7 @@ class RemoteSeries:
         ans = self.series.interpolate(method, axis, limit, inplace, limit_direction, limit_area, downcast, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.where)
     def where(
         self,
         cond: Union[bool, ArrayLike, Callable],
@@ -653,6 +737,7 @@ class RemoteSeries:
         ans = self.series.where(cond, other, inplace, axis, level, errors, try_cast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.mask)
     def mask(
         self,
         cond: Union[bool, ArrayLike, Callable],
@@ -666,6 +751,7 @@ class RemoteSeries:
         ans = self.series.mask(cond, other, inplace, axis, level, errors, try_cast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.abs)
     def abs(
         self,
     ) -> Type[ProxyObject]:
@@ -673,6 +759,7 @@ class RemoteSeries:
         ans = RemoteSeries(d=ans)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.any)
     def any(
         self,
         axis: Axis = 0,
@@ -684,6 +771,7 @@ class RemoteSeries:
         ans = self.series.any(axis, bool_only, skipna, level, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.all)
     def all(
         self,
         axis: Axis = 0,
@@ -695,6 +783,7 @@ class RemoteSeries:
         ans = self.series.all(axis, bool_only, skipna, level, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.mad)
     def mad(
         self,
         axis: Optional[Axis] = None,
@@ -704,6 +793,7 @@ class RemoteSeries:
         ans = self.series.mad(axis, skipna, level)
         return ans
 
+    @copy_doc(pd.Series.sem)
     def sem(
         self,
         axis: Optional[Axis] = None,
@@ -716,6 +806,7 @@ class RemoteSeries:
         ans = self.series.sem(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.var)
     def var(
         self,
         axis: Optional[Axis] = None,
@@ -728,6 +819,7 @@ class RemoteSeries:
         ans = self.series.var(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.std)
     def std(
         self,
         axis: Optional[Axis] = None,
@@ -740,6 +832,7 @@ class RemoteSeries:
         ans = self.series.std(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.cummin)
     def cummin(
         self,
         axis: Optional[Axis] = None,
@@ -750,6 +843,7 @@ class RemoteSeries:
         ans = self.series.cummin(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.cummax)
     def cummax(
         self,
         axis: Optional[Axis] = None,
@@ -760,6 +854,7 @@ class RemoteSeries:
         ans = self.series.cummax(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.cumsum)
     def cumsum(
         self,
         axis: Optional[Axis] = None,
@@ -770,6 +865,7 @@ class RemoteSeries:
         ans = self.series.cumsum(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.cumprod)
     def cumprod(
         self,
         axis: Optional[Axis] = None,
@@ -780,6 +876,7 @@ class RemoteSeries:
         ans = self.series.cumprod(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.sum)
     def sum(
         self,
         axis: Axis = None,
@@ -792,6 +889,7 @@ class RemoteSeries:
         ans = self.series.sum(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.prod)
     def prod(
         self,
         axis: Axis = None,
@@ -804,6 +902,7 @@ class RemoteSeries:
         ans = self.series.prod(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.prod)
     def prod(
         self,
         axis: Axis = None,
@@ -816,6 +915,7 @@ class RemoteSeries:
         ans = self.series.prod(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.mean)
     def mean(
         self,
         axis: Optional[Axis] = no_default,
@@ -827,6 +927,7 @@ class RemoteSeries:
         ans = self.series.mean(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.skew)
     def skew(
         self,
         axis: Optional[Axis] = no_default,
@@ -838,6 +939,7 @@ class RemoteSeries:
         ans = self.series.skew(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.kurt)
     def kurt(
         self,
         axis: Optional[Axis] = no_default,
@@ -849,6 +951,7 @@ class RemoteSeries:
         ans = self.series.kurt(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.median)
     def median(
         self,
         axis: Optional[Axis] = no_default,
@@ -860,6 +963,7 @@ class RemoteSeries:
         ans = self.series.median(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.max)
     def max(
         self,
         axis: Optional[Axis] = no_default,
@@ -871,6 +975,7 @@ class RemoteSeries:
         ans = self.series.max(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.min)
     def min(
         self,
         axis: Optional[Axis] = no_default,
@@ -882,6 +987,7 @@ class RemoteSeries:
         ans = self.series.min(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.Series.add)
     def add(
         self,
         other: Union[Scalar, pd.Series],
@@ -892,6 +998,7 @@ class RemoteSeries:
         ans = self.series.add(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.radd)
     def radd(
         self,
         other: Union[Scalar, pd.Series],
@@ -902,6 +1009,7 @@ class RemoteSeries:
         ans = self.series.radd(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.mul)
     def mul(
         self,
         other: Union[Scalar, pd.Series],
@@ -912,6 +1020,7 @@ class RemoteSeries:
         ans = self.series.mul(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.truediv)
     def truediv(
         self,
         other: Union[Scalar, pd.Series],
@@ -922,6 +1031,7 @@ class RemoteSeries:
         ans = self.series.truediv(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.floordiv)
     def floordiv(
         self,
         other: Union[Scalar, pd.Series],
@@ -932,6 +1042,7 @@ class RemoteSeries:
         ans = self.series.floordiv(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.mod)
     def mod(
         self,
         other: Union[Scalar, pd.Series],
@@ -942,6 +1053,7 @@ class RemoteSeries:
         ans = self.series.mod(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.pow)
     def pow(
         self,
         other: Union[Scalar, pd.Series],
@@ -952,6 +1064,7 @@ class RemoteSeries:
         ans = self.series.pow(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rmul)
     def rmul(
         self,
         other: Union[Scalar, pd.Series],
@@ -962,6 +1075,7 @@ class RemoteSeries:
         ans = self.series.rmul(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rsub)
     def rsub(
         self,
         other: Union[Scalar, pd.Series],
@@ -972,6 +1086,7 @@ class RemoteSeries:
         ans = self.series.rsub(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rtruediv)
     def rtruediv(
         self,
         other: Union[Scalar, pd.Series],
@@ -982,6 +1097,7 @@ class RemoteSeries:
         ans = self.series.rtruediv(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rfloordiv)
     def rfloordiv(
         self,
         other: Union[Scalar, pd.Series],
@@ -992,6 +1108,7 @@ class RemoteSeries:
         ans = self.series.rfloordiv(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rpow)
     def rpow(
         self,
         other: Union[Scalar, pd.Series],
@@ -1002,6 +1119,7 @@ class RemoteSeries:
         ans = self.series.rpow(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rmod)
     def rmod(
         self,
         other: Union[Scalar, pd.Series],
@@ -1012,16 +1130,7 @@ class RemoteSeries:
         ans = self.series.rmod(other, level, fill_value, axis)
         return ProxyObject(ans)
 
-    def truediv(
-        self,
-        other: Union[Scalar, pd.Series],
-        level: Optional[Level] = None,
-        fill_value: Optional[Scalar] = None,
-        axis: Axis = 0,
-    ) -> Type[ProxyObject]:
-        ans = self.series.truediv(other, level, fill_value, axis)
-        return ProxyObject(ans)
-
+    @copy_doc(pd.Series.rtruediv)
     def rtruediv(
         self,
         other: Union[Scalar, pd.Series],
@@ -1032,6 +1141,7 @@ class RemoteSeries:
         ans = self.series.rtruediv(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.divmod)
     def divmod(
         self,
         other: Union[Scalar, pd.Series],
@@ -1042,6 +1152,7 @@ class RemoteSeries:
         ans = self.series.divmod(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.rdivmod)
     def rdivmod(
         self,
         other: Union[Scalar, pd.Series],
@@ -1052,6 +1163,7 @@ class RemoteSeries:
         ans = self.series.rdivmod(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.eq)
     def eq(
         self,
         other: Union[Scalar, pd.Series],
@@ -1062,6 +1174,7 @@ class RemoteSeries:
         ans = self.series.eq(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.ne)
     def ne(
         self,
         other: Union[Scalar, pd.Series],
@@ -1072,6 +1185,7 @@ class RemoteSeries:
         ans = self.series.ne(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.lt)
     def lt(
         self,
         other: Union[Scalar, pd.Series],
@@ -1082,6 +1196,7 @@ class RemoteSeries:
         ans = self.series.lt(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.gt)
     def gt(
         self,
         other: Union[Scalar, pd.Series],
@@ -1092,6 +1207,7 @@ class RemoteSeries:
         ans = self.series.gt(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.le)
     def le(
         self,
         other: Union[Scalar, pd.Series],
@@ -1102,6 +1218,7 @@ class RemoteSeries:
         ans = self.series.le(other, level, fill_value, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.Series.ge)
     def ge(
         self,
         other: Union[Scalar, pd.Series],
@@ -1112,16 +1229,7 @@ class RemoteSeries:
         ans = self.series.ge(other, level, fill_value, axis)
         return ProxyObject(ans)
 
-    def mul(
-        self,
-        other: Union[Scalar, pd.Series],
-        level: Optional[Level] = None,
-        fill_value: Optional[Scalar] = None,
-        axis: Axis = 0,
-    ) -> Type[ProxyObject]:
-        ans = self.series.mul(other, level, fill_value, axis)
-        return ProxyObject(ans)
-
+    @copy_doc(pd.Series.sub)
     def sub(
         self,
         other: "RemoteSeries",
@@ -1133,14 +1241,4 @@ class RemoteSeries:
             other = other.series
         ans = self.series.sub(other, level, fill_value, axis)
         ans = RemoteSeries(d=ans)
-        return ProxyObject(ans)
-
-    def truediv(
-        self,
-        other: Union[Scalar, pd.Series],
-        level: Optional[Level] = None,
-        fill_value: Optional[Scalar] = None,
-        axis: Axis = 0,
-    ) -> Type[ProxyObject]:
-        ans = self.series.truediv(other, level, fill_value, axis)
         return ProxyObject(ans)

@@ -67,6 +67,20 @@ def cdf_client(
     domain_min,
     domain_max,
 ):
+    """
+    client side function of cdf
+
+    :param client: client object
+    :type client: zero.ZeroClient
+    :param series: retmoe series
+    :type series: RemoteSeries
+    :param domain_min: min of the value domain
+    :type domain_min: float
+    :param domain_max: max of the value domain
+    :type domain_max: float
+    :return: cdf distribution
+    :rtype: List
+    """
     res = client.call("cdf", series, domain_min, domain_max)
     return res
 
@@ -77,6 +91,20 @@ def cdf_agg_client(
     domain_min,
     domain_max,
 ):
+    """
+    client side function of cdf aggregation from each party
+
+    :param client: client object
+    :type client: zero.ZeroClient
+    :param list_precompute: list of cdf from different parties
+    :type list_precompute: list
+    :param domain_min: min of value domain
+    :type domain_min: float
+    :param domain_max: max of value domain
+    :type domain_max: float
+    :return: aggregated cdf
+    :rtype: list
+    """
     res = client.call("cdf_agg", list_precompute, domain_min, domain_max)
     return res
 
@@ -88,6 +116,22 @@ def cdf_rank_client(
     list_domain_cdf,
     list_value_cdf,
 ):
+    """
+    client function to compute ranked cdf
+
+    :param client: client object
+    :type client: zero.ZeroClient
+    :param sample_0: remote sample
+    :type sample_0: Remote series
+    :param size_sample_total: remote sample total
+    :type size_sample_total: list
+    :param list_domain_cdf: domain cdf
+    :type list_domain_cdf: list
+    :param list_value_cdf: value cdf
+    :type list_value_cdf: list
+    :return: ranked cdf
+    :rtype: list
+    """
     return client.call("cdf_rank", sample_0, size_sample_total, list_domain_cdf, list_value_cdf)
 
 
@@ -95,6 +139,16 @@ def cdf(
     clients: list,
     sample_0: list,
 ) -> Tuple[List[float], List[float]]:
+    """
+    user interface to compute sample cdf
+
+    :param clients: _description_
+    :type clients: list
+    :param sample_0: _description_
+    :type sample_0: list
+    :return: _description_
+    :rtype: Tuple[List[float], List[float]]
+    """
 
     domain_min, domain_max = min_max(clients, sample_0)
 
@@ -108,6 +162,16 @@ def rank_cdf(
     clients,
     sample_0: list,
 ):
+    """
+    user interface to compute randed cdf
+
+    :param clients: _description_
+    :type clients: _type_
+    :param sample_0: _description_
+    :type sample_0: list
+    :return: _description_
+    :rtype: _type_
+    """
     list_domain_cdf, list_value_cdf = cdf(clients, sample_0)
     sample_ranked_0 = []
     size_sample_0 = 0
@@ -134,6 +198,36 @@ def concat_client(
     sort=False,
     copy=True,
 ):
+    """
+    client side function of series concatenation
+
+    :param client: _description_
+    :type client: _type_
+    :param obj1: _description_
+    :type obj1: _type_
+    :param obj2: _description_
+    :type obj2: _type_
+    :param axis: _description_, defaults to 0
+    :type axis: int, optional
+    :param join: _description_, defaults to "outer"
+    :type join: str, optional
+    :param ignore_index: _description_, defaults to False
+    :type ignore_index: bool, optional
+    :param keys: _description_, defaults to None
+    :type keys: _type_, optional
+    :param levels: _description_, defaults to None
+    :type levels: _type_, optional
+    :param names: _description_, defaults to None
+    :type names: _type_, optional
+    :param verify_integrity: _description_, defaults to False
+    :type verify_integrity: bool, optional
+    :param sort: _description_, defaults to False
+    :type sort: bool, optional
+    :param copy: _description_, defaults to True
+    :type copy: bool, optional
+    :return: _description_
+    :rtype: _type_
+    """
     return client.call(
         "concat",
         obj1,
@@ -164,6 +258,36 @@ def fed_concat(
     sort=False,
     copy=True,
 ):
+    """
+    federated series concatenation
+
+    :param clients: _description_
+    :type clients: _type_
+    :param objs1: _description_
+    :type objs1: _type_
+    :param objs2: _description_
+    :type objs2: _type_
+    :param axis: _description_, defaults to 0
+    :type axis: int, optional
+    :param join: _description_, defaults to "outer"
+    :type join: str, optional
+    :param ignore_index: _description_, defaults to False
+    :type ignore_index: bool, optional
+    :param keys: _description_, defaults to None
+    :type keys: _type_, optional
+    :param levels: _description_, defaults to None
+    :type levels: _type_, optional
+    :param names: _description_, defaults to None
+    :type names: _type_, optional
+    :param verify_integrity: _description_, defaults to False
+    :type verify_integrity: bool, optional
+    :param sort: _description_, defaults to False
+    :type sort: bool, optional
+    :param copy: _description_, defaults to True
+    :type copy: bool, optional
+    :return: _description_
+    :rtype: _type_
+    """
     res = []
     for i in range(len(objs1)):
         res.append(
@@ -189,6 +313,16 @@ def wilcoxon_singed_rank_test_difference_tranform(
     sample_0: list,
     sample_1: list,
 ) -> Tuple[List[float], List[float]]:
+    """
+    suer interface for wilcoxonsignedrank test transform
+
+    :param sample_0: _description_
+    :type sample_0: list
+    :param sample_1: _description_
+    :type sample_1: list
+    :return: _description_
+    :rtype: Tuple[List[float], List[float]]
+    """
 
     sample_difference = []
     sample_difference_absolute = []
@@ -213,6 +347,28 @@ def train_test_split_client(
     shuffle,
     stratify,
 ):
+    """
+    client side function for train test split
+
+    :param client: _description_
+    :type client: _type_
+    :param X: _description_
+    :type X: _type_
+    :param y: _description_
+    :type y: _type_
+    :param test_size: _description_
+    :type test_size: _type_
+    :param train_size: _description_
+    :type train_size: _type_
+    :param random_size: _description_
+    :type random_size: _type_
+    :param shuffle: _description_
+    :type shuffle: _type_
+    :param stratify: _description_
+    :type stratify: _type_
+    :return: _description_
+    :rtype: _type_
+    """
     return client.call("train_test_split", X, y, test_size, train_size, random_size, shuffle, stratify)
 
 
@@ -225,6 +381,27 @@ def train_test_split(
     shuffle=True,
     stratify=None,
 ):
+    """
+    user interface for train_test_split
+
+    :param Xs: _description_
+    :type Xs: _type_
+    :param ys: _description_
+    :type ys: _type_
+    :param test_size: _description_, defaults to None
+    :type test_size: _type_, optional
+    :param train_size: _description_, defaults to None
+    :type train_size: _type_, optional
+    :param random_state: _description_, defaults to None
+    :type random_state: _type_, optional
+    :param shuffle: _description_, defaults to True
+    :type shuffle: bool, optional
+    :param stratify: _description_, defaults to None
+    :type stratify: _type_, optional
+    :raises Exception: _description_
+    :return: _description_
+    :rtype: _type_
+    """
     X_train = []
     X_test = []
     y_train = []

@@ -1,16 +1,28 @@
-import pandas as pd
+import inspect
+import types
+from datetime import datetime, timedelta, tzinfo
+from typing import Any, Callable, Hashable, List, Mapping, Optional, Tuple, Union
+
 import numpy as np
-from typing import Union, Hashable, List, Callable, Mapping, Any, Tuple, Optional
-from pandas._libs import (
-    Period,
-    Timedelta,
-    Timestamp,
-)
-from datetime import (
-    datetime,
-    timedelta,
-    tzinfo,
-)
+import pandas as pd
+from pandas._libs import Period, Timedelta, Timestamp
+
+
+def copy_doc(func_name):
+    """
+    function decorator to reuse docstring
+
+    :param func_name: function docstring to reuse
+    :type func_name: callable
+    """
+
+    def wrapper(func):
+        doc = func_name.__doc__
+        func.__doc__ = doc
+        return func
+
+    return wrapper
+
 
 ArrayLike = Union[pd.Series, pd.DataFrame, np.ndarray, tuple, list]
 

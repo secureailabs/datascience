@@ -8,7 +8,7 @@ from zero import ProxyObject, SecretObject
 
 from .dataframe import RemoteDataFrame
 from .series import RemoteSeries
-from .typing import ArrayLike
+from .typing import ArrayLike, copy_doc
 
 
 def cdf(
@@ -16,6 +16,18 @@ def cdf(
     domain_min: float,
     domain_max: float,
 ) -> Tuple[List[float], List[float], int]:
+    """
+    generate cdf with raw data
+
+    :param sample_0: _description_
+    :type sample_0: Type[RemoteSeries]
+    :param domain_min: _description_
+    :type domain_min: float
+    :param domain_max: _description_
+    :type domain_max: float
+    :return: _description_
+    :rtype: Tuple[List[float], List[float], int]
+    """
     # TODO test this for series of size 1
     array_sample_0 = sample_0.series.to_numpy()
     size_sample_0 = len(array_sample_0)
@@ -43,6 +55,18 @@ def cdf_agg(
     domain_min: float,
     domain_max: float,
 ) -> Tuple[List[float], List[float]]:
+    """
+    aggreate cdf from different parties
+
+    :param list_precompute: _description_
+    :type list_precompute: List[Tuple[List[float], List[float], int]]
+    :param domain_min: _description_
+    :type domain_min: float
+    :param domain_max: _description_
+    :type domain_max: float
+    :return: _description_
+    :rtype: Tuple[List[float], List[float]]
+    """
     list_array_value_resampled = []
     count_total = 0
     for precompute in list_precompute:
@@ -72,6 +96,20 @@ def cdf_rank(
     list_domain_cdf: List[float],
     list_value_cdf: List[float],
 ) -> list:
+    """
+    rank cdf from raw data
+
+    :param sample_0: _description_
+    :type sample_0: Type[RemoteSeries]
+    :param size_sample_total: _description_
+    :type size_sample_total: int
+    :param list_domain_cdf: _description_
+    :type list_domain_cdf: List[float]
+    :param list_value_cdf: _description_
+    :type list_value_cdf: List[float]
+    :return: _description_
+    :rtype: list
+    """
     array_sample_0 = sample_0.series.to_numpy()
     function_cdf = scipy.interpolate.interp1d(np.array(list_domain_cdf), np.array(list_value_cdf))
     array_rank = np.round(function_cdf(array_sample_0) * size_sample_total)
@@ -81,11 +119,20 @@ def cdf_rank(
 def load_df_from_csv(
     path: str,
 ) -> Type[ProxyObject]:
+    """
+    load dataframe from csv file
+
+    :param path: csv file path
+    :type path: str
+    :return: dataframe as proxy object
+    :rtype: Type[ProxyObject]
+    """
     df = pd.read_csv(path)
     df = RemoteDataFrame(d=df)
     return ProxyObject(df)
 
 
+@copy_doc(pd.concat)
 def concat(
     obj1: Type[RemoteSeries],
     obj2: Type[RemoteSeries],
@@ -104,6 +151,7 @@ def concat(
     return ProxyObject(ans)
 
 
+@copy_doc(split)
 def train_test_split(
     *arrays: ArrayLike,
     test_size: float = None,

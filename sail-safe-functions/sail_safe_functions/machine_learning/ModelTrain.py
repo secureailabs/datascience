@@ -87,6 +87,14 @@ def model_train(
 def get_criterion(
     criterion: String,
 ) -> torch.nn.Module:
+    """
+    set the loss function of the model
+
+    :param criterion: loss function criterion
+    :type criterion: String
+    :return: loss function
+    :rtype: torch.nn.Module
+    """
     if criterion == "MSELoss":
         return torch.nn.MSELoss()
     elif criterion == "BCELoss":
@@ -101,4 +109,16 @@ def get_optimizer(
     learn_rate: float,
     optimizer: String,
 ) -> torch.optim.Optimizer:
+    """
+    set the optimizer of the model
+
+    :param model: model to be set
+    :type model: torch.nn.Module
+    :param learn_rate: learn rate
+    :type learn_rate: float
+    :param optimizer: optimizer type
+    :type optimizer: String
+    :return: optimizer
+    :rtype: torch.optim.Optimizer
+    """
     return torch.optim.SGD(model.parameters(), lr=learn_rate)

@@ -73,6 +73,16 @@ def load_model_dict(
     model_dict,
     model_type,
 ):
+    """
+    load state dict to torch model
+
+    :param model_dict: state dict
+    :type model_dict: dict
+    :param model_type: model type
+    :type model_type: str
+    :return: torch model
+    :rtype: torch.nn.Module
+    """
     model_dict = deserializer_table[str(torch.nn.Module)](model_dict)
     size = list(model_dict["model.weight"].size())
     if len(size) == 1:

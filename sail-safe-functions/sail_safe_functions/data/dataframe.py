@@ -7,7 +7,7 @@ from pandas._libs.lib import no_default
 from zero import ProxyObject, SecretObject
 
 from .series import RemoteSeries
-from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Renamer, Scalar, Suffixes
+from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Renamer, Scalar, Suffixes, copy_doc
 
 
 class RemoteDataFrame:
@@ -18,6 +18,18 @@ class RemoteDataFrame:
         cols=None,
         type=None,
     ):
+        """
+        constructor, can behave like normal dataframe constructor, also accept another dataframe to create the remote one
+
+        :param d: input data, defaults to None
+        :type d: dict, arraylike, optional
+        :param ind: index, defaults to None
+        :type ind: str or array of str, optional
+        :param cols: col index, defaults to None
+        :type cols: str or array of str, optional
+        :param type: data type, defaults to None
+        :type type: str, or array of str, optional
+        """
         if d is None or isinstance(d, pd.DataFrame):
             self.frame = d
         else:
@@ -75,6 +87,7 @@ class RemoteDataFrame:
             ans = RemoteDataFrame(d=ans)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.dot)
     def dot(
         self,
         other: ArrayLike,
@@ -83,6 +96,7 @@ class RemoteDataFrame:
         ans = RemoteDataFrame(d=ans)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.to_numpy)
     def to_numpy(
         self,
         dtype: Union[npt.DTypeLike, None] = None,
@@ -93,6 +107,7 @@ class RemoteDataFrame:
         return SecretObject(ans)
 
     # type of into
+    @copy_doc(pd.DataFrame.to_dict)
     def to_dict(
         self,
         orient: str = "dict",
@@ -101,6 +116,7 @@ class RemoteDataFrame:
         ans = self.frame.to_dict(orient, into)
         return SecretObject(ans)
 
+    @copy_doc(pd.DataFrame.memory_usage)
     def memory_usage(
         self,
         index: bool = True,
@@ -109,12 +125,14 @@ class RemoteDataFrame:
         ans = self.frame.memory_usage(index, deep)
         return ans
 
+    @copy_doc(pd.DataFrame.transpose)
     def transpose(
         self,
     ) -> Type[ProxyObject]:
         ans = self.frame.transpose()
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.query)
     def query(
         self,
         expr: str,
@@ -124,6 +142,7 @@ class RemoteDataFrame:
         ans = self.frame.query(expr, inplace, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.eval)
     def eval(
         self,
         expr: str,
@@ -133,6 +152,7 @@ class RemoteDataFrame:
         ans = self.frame.eval(expr, inplace, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.select_dtypes)
     def select_dtypes(
         self,
         include: List[str] = None,
@@ -141,6 +161,7 @@ class RemoteDataFrame:
         ans = self.frame.select_dtypes(include, exclude)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.insert)
     def insert(
         self,
         loc: int,
@@ -150,6 +171,7 @@ class RemoteDataFrame:
     ) -> None:
         self.frame.insert(loc, column, value, allow_duplicates)
 
+    @copy_doc(pd.DataFrame.assign)
     def assign(
         self,
         **kwargs,
@@ -160,6 +182,7 @@ class RemoteDataFrame:
     # def lookup(self, row_labels: 'Sequence[IndexLabel]', col_labels: 'Sequence[IndexLabel]',) -> 'np.ndarray':
     #     ans = self.frame.lookup(row_labels, col_labels)
 
+    @copy_doc(pd.DataFrame.align)
     def align(
         self,
         other: Union[pd.DataFrame, pd.Series],
@@ -176,6 +199,7 @@ class RemoteDataFrame:
         ans = self.frame.align(other, join, axis, level, copy, fill_value, method, limit, fill_axis, broadcast_axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.set_axis)
     def set_axis(
         self,
         labels: List,
@@ -185,6 +209,7 @@ class RemoteDataFrame:
         ans = self.frame.set_axis(labels, axis, inplace)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.reindex)
     def reindex(
         self,
         labels: Optional[IndexLabel] = None,
@@ -201,6 +226,7 @@ class RemoteDataFrame:
         ans = self.frame.reindex(labels, index, columns, axis, method, copy, level, fill_value, limit, tolerance)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.drop)
     def drop(
         self,
         labels: Optional[IndexLabel] = None,
@@ -215,6 +241,7 @@ class RemoteDataFrame:
         return ProxyObject(ans)
 
     # ? var args
+    @copy_doc(pd.DataFrame.rename)
     def rename(
         self,
         mapper: Optional[Renamer] = None,
@@ -230,6 +257,7 @@ class RemoteDataFrame:
         ans = self.frame.rename(mapper, index, columns, axis, copy, inplace, level, errors)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.fillna)
     def fillna(
         self,
         value: Optional[Any] = None,
@@ -242,6 +270,7 @@ class RemoteDataFrame:
         ans = self.frame.fillna(value, method, axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.pop)
     def pop(
         self,
         item: Hashable,
@@ -249,6 +278,7 @@ class RemoteDataFrame:
         ans = self.frame.pop(item)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.replace)
     def replace(
         self,
         to_replace: Union[str, list, dict, pd.Series, int, float] = None,
@@ -261,6 +291,7 @@ class RemoteDataFrame:
         ans = self.frame.replace(to_replace, value, inplace, limit, regex, method)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.shift)
     def shift(
         self,
         periods: int = 1,
@@ -271,6 +302,7 @@ class RemoteDataFrame:
         ans = self.frame.shift(periods, freq, axis, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.set_index)
     def set_index(
         self,
         keys: IndexLabel,
@@ -282,6 +314,7 @@ class RemoteDataFrame:
         ans = self.frame.set_index(keys, drop, append, inplace, verify_integrity)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.reset_index)
     def reset_index(
         self,
         level: Optional[IndexLabel] = None,
@@ -293,30 +326,35 @@ class RemoteDataFrame:
         ans = self.frame.reset_index(level, drop, inplace, col_level, col_fill)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.isna)
     def isna(
         self,
     ) -> Type[ProxyObject]:
         ans = self.frame.isna()
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.isnull)
     def isnull(
         self,
     ) -> Type[ProxyObject]:
         ans = self.frame.isnull()
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.notna)
     def notna(
         self,
     ) -> Type[ProxyObject]:
         ans = self.frame.notna()
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.notnull)
     def notnull(
         self,
     ) -> Type[ProxyObject]:
         ans = self.frame.notnull()
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.dropna)
     def dropna(
         self,
         axis: Axis = 0,
@@ -328,6 +366,7 @@ class RemoteDataFrame:
         ans = self.frame.dropna(axis, how, thresh, subset, inplace)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.drop_duplicates)
     def drop_duplicates(
         self,
         subset: Optional[IndexLabel] = None,
@@ -338,6 +377,7 @@ class RemoteDataFrame:
         ans = self.frame.drop_duplicates(subset, keep, inplace, ignore_index)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.duplicated)
     def duplicated(
         self,
         subset: Optional[IndexLabel] = None,
@@ -346,6 +386,7 @@ class RemoteDataFrame:
         ans = self.frame.duplicated(subset, keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.sort_values)
     def sort_values(
         self,
         by: IndexLabel,
@@ -360,6 +401,7 @@ class RemoteDataFrame:
         ans = self.frame.sort_values(by, axis, ascending, inplace, kind, na_position, ignore_index, key)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.sort_index)
     def sort_index(
         self,
         axis: Axis = 0,
@@ -377,6 +419,7 @@ class RemoteDataFrame:
         )
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.value_counts)
     def value_counts(
         self,
         subset: Optional[List[Hashable]] = None,
@@ -387,6 +430,7 @@ class RemoteDataFrame:
     ) -> pd.Series:
         ans = self.frame.value_counts(subset, normalize, sort, ascending, dropna)
 
+    @copy_doc(pd.DataFrame.nlargest)
     def nlargest(
         self,
         n: int,
@@ -396,6 +440,7 @@ class RemoteDataFrame:
         ans = self.frame.nlargest(n, columns, keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.nsmallest)
     def nsmallest(
         self,
         n: int,
@@ -405,6 +450,7 @@ class RemoteDataFrame:
         ans = self.frame.nsmallest(n, columns, keep)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.swaplevel)
     def swaplevel(
         self,
         i: Axis = -2,
@@ -414,6 +460,7 @@ class RemoteDataFrame:
         ans = self.frame.swaplevel(i, j, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.reorder_levels)
     def reorder_levels(
         self,
         order: List[Axis],
@@ -422,6 +469,7 @@ class RemoteDataFrame:
         ans = self.frame.reorder_levels(order, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.compare)
     def compare(
         self,
         other: pd.DataFrame,
@@ -432,6 +480,7 @@ class RemoteDataFrame:
         ans = self.frame.compare(other, align_axis, keep_shape, keep_equal)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.combine)
     def combine(
         self,
         other: pd.DataFrame,
@@ -442,6 +491,7 @@ class RemoteDataFrame:
         ans = self.frame.combine(other, func, fill_value, overwrite)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.combine_first)
     def combine_first(
         self,
         other: pd.DataFrame,
@@ -449,6 +499,7 @@ class RemoteDataFrame:
         ans = self.frame.combine_first(other)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.update)
     def update(
         self,
         other: pd.DataFrame,
@@ -460,6 +511,7 @@ class RemoteDataFrame:
         ans = self.frame.update(other, join, overwrite, filter_func, errors)
 
     # ? need to implement return class
+    @copy_doc(pd.DataFrame.groupby)
     def groupby(
         self,
         by: IndexLabel = None,
@@ -475,6 +527,7 @@ class RemoteDataFrame:
         ans = self.frame.groupby(by, axis, level, as_index, sort, group_keys, squeeze, observed, dropna)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.pivot)
     def pivot(
         self,
         index: Optional[IndexLabel] = None,
@@ -486,7 +539,7 @@ class RemoteDataFrame:
 
     # def pivot_table(self, values=None, index=None, columns=None, aggfunc='mean', fill_value=None, margins=False, dropna=True, margins_name='All', observed=False, sort=True,) -> 'DataFrame':
     #     ans = self.frame.pivot_table(values, index, columns, aggfunc, fill_value, margins, dropna, margins_name, observed, sort)
-
+    @copy_doc(pd.DataFrame.stack)
     def stack(
         self,
         level: Level = -1,
@@ -495,6 +548,7 @@ class RemoteDataFrame:
         ans = self.frame.stack(level, dropna)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.explode)
     def explode(
         self,
         column: "IndexLabel",
@@ -503,10 +557,12 @@ class RemoteDataFrame:
         ans = self.frame.explode(column, ignore_index)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.unstack)
     def unstack(self, level: "Level" = -1, fill_value: Union[int, str, dict] = None) -> Type[ProxyObject]:
         ans = self.frame.unstack(level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.melt)
     def melt(
         self,
         id_vars: Optional[ArrayLike] = None,
@@ -520,6 +576,7 @@ class RemoteDataFrame:
         return ProxyObject(ans)
 
     # ?
+    @copy_doc(pd.DataFrame.diff)
     def diff(
         self,
         periods: "int" = 1,
@@ -528,10 +585,12 @@ class RemoteDataFrame:
         ans = self.frame.diff(periods, axis)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.aggregate)
     def aggregate(self, func: Union[Callable, str, dict, list] = None, axis: Axis = 0, *args, **kwargs):
         ans = self.frame.aggregate(func, axis, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.transform)
     def transform(
         self,
         func: Union[Callable, str, list, dict],
@@ -542,6 +601,7 @@ class RemoteDataFrame:
         ans = self.frame.transform(func, axis, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.apply)
     def apply(
         self,
         func: Callable,
@@ -554,6 +614,7 @@ class RemoteDataFrame:
         ans = self.frame.apply(func, axis, raw, result_type, args, kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.applymap)
     def applymap(
         self,
         func: Callable,
@@ -573,6 +634,7 @@ class RemoteDataFrame:
     #     ans = self.frame.append(other, ignore_index, verify_integrity, sort)
     #     return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.join)
     def join(
         self,
         other: Union[pd.DataFrame, pd.Series],
@@ -585,6 +647,7 @@ class RemoteDataFrame:
         ans = self.frame.join(other, on, how, lsuffix, rsuffix, sort)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.merge)
     def merge(
         self,
         right: Union[pd.DataFrame, pd.Series],
@@ -605,6 +668,7 @@ class RemoteDataFrame:
         )
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.round)
     def round(
         self,
         decimals: Union[int, Dict[IndexLabel, int], pd.Series] = 0,
@@ -615,6 +679,7 @@ class RemoteDataFrame:
         return ProxyObject(ans)
 
     # no callable
+    @copy_doc(pd.DataFrame.corr)
     def corr(
         self,
         method: str = "pearson",
@@ -623,6 +688,7 @@ class RemoteDataFrame:
         ans = self.frame.corr(method, min_periods)
         return ans
 
+    @copy_doc(pd.DataFrame.cov)
     def cov(
         self,
         min_periods: Optional[int] = None,
@@ -631,6 +697,7 @@ class RemoteDataFrame:
         ans = self.frame.cov(min_periods, ddof)
         return ans
 
+    @copy_doc(pd.DataFrame.corrwith)
     def corrwith(
         self,
         other: Union[pd.DataFrame, pd.Series],
@@ -641,6 +708,7 @@ class RemoteDataFrame:
         ans = self.frame.corrwith(other, axis, drop, method)
         return ans
 
+    @copy_doc(pd.DataFrame.count)
     def count(
         self,
         axis: "Axis" = 0,
@@ -650,6 +718,7 @@ class RemoteDataFrame:
         ans = self.frame.count(axis, level, numeric_only)
         return ans
 
+    @copy_doc(pd.DataFrame.nunique)
     def nunique(
         self,
         axis: "Axis" = 0,
@@ -658,6 +727,7 @@ class RemoteDataFrame:
         ans = self.frame.nunique(axis, dropna)
         return ans
 
+    @copy_doc(pd.DataFrame.idxmin)
     def idxmin(
         self,
         axis: "Axis" = 0,
@@ -666,6 +736,7 @@ class RemoteDataFrame:
         ans = self.frame.idxmin(axis, skipna)
         return ans
 
+    @copy_doc(pd.DataFrame.idxmax)
     def idxmax(
         self,
         axis: "Axis" = 0,
@@ -675,6 +746,7 @@ class RemoteDataFrame:
         return ans
 
     # ? safe?
+    @copy_doc(pd.DataFrame.mode)
     def mode(
         self,
         axis: "Axis" = 0,
@@ -684,6 +756,7 @@ class RemoteDataFrame:
         ans = self.frame.mode(axis, numeric_only, dropna)
         return ans
 
+    @copy_doc(pd.DataFrame.quantile)
     def quantile(
         self,
         q: float = 0.5,
@@ -694,6 +767,7 @@ class RemoteDataFrame:
         ans = self.frame.quantile(q, axis, numeric_only, interpolation)
         return ans
 
+    @copy_doc(pd.DataFrame.asfreq)
     def asfreq(
         self,
         freq: "Frequency",
@@ -706,6 +780,7 @@ class RemoteDataFrame:
         return ProxyObject(ans)
 
     # ?to do
+    @copy_doc(pd.DataFrame.resample)
     def resample(
         self,
         rule,
@@ -723,6 +798,7 @@ class RemoteDataFrame:
     ) -> "Resampler":
         ans = self.frame.resample(rule, axis, closed, label, convention, kind, loffset, base, on, level, origin, offset)
 
+    @copy_doc(pd.DataFrame.to_timestamp)
     def to_timestamp(
         self,
         freq: Optional[Frequency],
@@ -733,6 +809,7 @@ class RemoteDataFrame:
         ans = self.frame.to_timestamp(freq, how, axis, copy)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.to_period)
     def to_period(
         self,
         freq: "Frequency | None" = None,
@@ -742,6 +819,7 @@ class RemoteDataFrame:
         ans = self.frame.to_period(freq, axis, copy)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.isin)
     def isin(
         self,
         values: Union[dict, pd.DataFrame, pd.Series],
@@ -755,6 +833,7 @@ class RemoteDataFrame:
     # def boxplot_frame(self, column=None, by=None, ax=None, fontsize=None, rot=0, grid=True, figsize=None, layout=None, return_type=None, backend=None, **kwargs):
     #     ans = self.frame.boxplot_frame(column, by, ax, fontsize, rot, grid, figsize, layout, return_type, backend, kwargs)
 
+    @copy_doc(pd.DataFrame.ffill)
     def ffill(
         self: pd.DataFrame,
         axis: Optional[Axis] = None,
@@ -765,6 +844,7 @@ class RemoteDataFrame:
         ans = self.frame.ffill(axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.bfill)
     def bfill(
         self: pd.DataFrame,
         axis: "None | Axis" = None,
@@ -775,6 +855,7 @@ class RemoteDataFrame:
         ans = self.frame.bfill(axis, inplace, limit, downcast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.clip)
     def clip(
         self: pd.DataFrame,
         lower: Union[float, ArrayLike] = None,
@@ -787,6 +868,7 @@ class RemoteDataFrame:
         ans = self.frame.clip(lower, upper, axis, inplace, *args, **kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.interpolate)
     def interpolate(
         self: pd.DataFrame,
         method: "str" = "linear",
@@ -801,6 +883,7 @@ class RemoteDataFrame:
         ans = self.frame.interpolate(method, axis, limit, inplace, limit_direction, limit_area, downcast, kwargs)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.where)
     def where(
         self,
         cond: Union[bool, ArrayLike, Callable],
@@ -814,6 +897,7 @@ class RemoteDataFrame:
         ans = self.frame.where(cond, other, inplace, axis, level, errors, try_cast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.mask)
     def mask(
         self,
         cond: Union[bool, ArrayLike, Callable],
@@ -827,6 +911,7 @@ class RemoteDataFrame:
         ans = self.frame.mask(cond, other, inplace, axis, level, errors, try_cast)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.any)
     def any(
         self,
         axis: Axis = 0,
@@ -838,6 +923,7 @@ class RemoteDataFrame:
         ans = self.frame.any(axis, bool_only, skipna, level, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.all)
     def all(
         self,
         axis: Axis = 0,
@@ -849,6 +935,7 @@ class RemoteDataFrame:
         ans = self.frame.all(axis, bool_only, skipna, level, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.mad)
     def mad(
         self,
         axis: Optional[Axis] = None,
@@ -858,6 +945,7 @@ class RemoteDataFrame:
         ans = self.frame.mad(axis, skipna, level)
         return ans
 
+    @copy_doc(pd.DataFrame.sem)
     def sem(
         self,
         axis: Optional[Axis] = None,
@@ -870,6 +958,7 @@ class RemoteDataFrame:
         ans = self.frame.sem(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.var)
     def var(
         self,
         axis: Optional[Axis] = None,
@@ -882,6 +971,7 @@ class RemoteDataFrame:
         ans = self.frame.var(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.std)
     def std(
         self,
         axis: Optional[Axis] = None,
@@ -894,6 +984,7 @@ class RemoteDataFrame:
         ans = self.frame.std(axis, skipna, level, ddof, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.cummin)
     def cummin(
         self,
         axis: Optional[Axis] = None,
@@ -904,6 +995,7 @@ class RemoteDataFrame:
         ans = self.frame.cummin(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.cummax)
     def cummax(
         self,
         axis: Optional[Axis] = None,
@@ -914,6 +1006,7 @@ class RemoteDataFrame:
         ans = self.frame.cummax(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.cumsum)
     def cumsum(
         self,
         axis: Optional[Axis] = None,
@@ -924,6 +1017,7 @@ class RemoteDataFrame:
         ans = self.frame.cumsum(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.cumprod)
     def cumprod(
         self,
         axis: Optional[Axis] = None,
@@ -934,6 +1028,7 @@ class RemoteDataFrame:
         ans = self.frame.cumprod(axis, skipna, *args, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.sum)
     def sum(
         self,
         axis: Optional[Axis] = None,
@@ -946,6 +1041,7 @@ class RemoteDataFrame:
         ans = self.frame.sum(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.prod)
     def prod(
         self,
         axis: Optional[Axis] = None,
@@ -958,6 +1054,7 @@ class RemoteDataFrame:
         ans = self.frame.prod(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.mean)
     def mean(
         self,
         axis: Axis = no_default,
@@ -969,6 +1066,7 @@ class RemoteDataFrame:
         ans = self.frame.mean(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.skew)
     def skew(
         self,
         axis: Axis = no_default,
@@ -980,6 +1078,7 @@ class RemoteDataFrame:
         ans = self.frame.skew(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.kurt)
     def kurt(
         self,
         axis: Axis = no_default,
@@ -991,6 +1090,7 @@ class RemoteDataFrame:
         ans = self.frame.kurt(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.median)
     def median(
         self,
         axis: Axis = no_default,
@@ -1002,6 +1102,7 @@ class RemoteDataFrame:
         ans = self.frame.median(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.max)
     def max(
         self,
         axis: Axis = no_default,
@@ -1013,6 +1114,7 @@ class RemoteDataFrame:
         ans = self.frame.max(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.min)
     def min(
         self,
         axis: Axis = no_default,
@@ -1024,6 +1126,7 @@ class RemoteDataFrame:
         ans = self.frame.min(axis, skipna, level, numeric_only, **kwargs)
         return ans
 
+    @copy_doc(pd.DataFrame.add)
     def add(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1034,6 +1137,7 @@ class RemoteDataFrame:
         ans = self.frame.add(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.radd)
     def radd(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1044,6 +1148,7 @@ class RemoteDataFrame:
         ans = self.frame.radd(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.sub)
     def sub(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1054,6 +1159,7 @@ class RemoteDataFrame:
         ans = self.frame.sub(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.mul)
     def mul(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1064,6 +1170,7 @@ class RemoteDataFrame:
         ans = self.frame.mul(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.truediv)
     def truediv(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1074,6 +1181,7 @@ class RemoteDataFrame:
         ans = self.frame.truediv(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.floordiv)
     def floordiv(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1084,6 +1192,7 @@ class RemoteDataFrame:
         ans = self.frame.floordiv(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.mod)
     def mod(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1094,6 +1203,7 @@ class RemoteDataFrame:
         ans = self.frame.mod(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.pow)
     def pow(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1104,6 +1214,7 @@ class RemoteDataFrame:
         ans = self.frame.pow(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rmul)
     def rmul(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1114,6 +1225,7 @@ class RemoteDataFrame:
         ans = self.frame.rmul(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rsub)
     def rsub(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1124,6 +1236,7 @@ class RemoteDataFrame:
         ans = self.frame.rsub(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rtruediv)
     def rtruediv(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1134,6 +1247,7 @@ class RemoteDataFrame:
         ans = self.frame.rtruediv(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rfloordiv)
     def rfloordiv(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1144,6 +1258,7 @@ class RemoteDataFrame:
         ans = self.frame.rfloordiv(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rpow)
     def rpow(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1154,6 +1269,7 @@ class RemoteDataFrame:
         ans = self.frame.rpow(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.rmod)
     def rmod(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1164,6 +1280,7 @@ class RemoteDataFrame:
         ans = self.frame.rmod(other, axis, level, fill_value)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.eq)
     def eq(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1173,6 +1290,7 @@ class RemoteDataFrame:
         ans = self.frame.eq(other, axis, level)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.ne)
     def ne(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1182,6 +1300,7 @@ class RemoteDataFrame:
         ans = self.frame.ne(other, axis, level)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.lt)
     def lt(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1191,6 +1310,7 @@ class RemoteDataFrame:
         ans = self.frame.lt(other, axis, level)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.gt)
     def gt(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1200,6 +1320,7 @@ class RemoteDataFrame:
         ans = self.frame.gt(other, axis, level)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.le)
     def le(
         self,
         other: Union[Scalar, ArrayLike],
@@ -1209,6 +1330,7 @@ class RemoteDataFrame:
         ans = self.frame.le(other, axis, level)
         return ProxyObject(ans)
 
+    @copy_doc(pd.DataFrame.ge)
     def ge(
         self,
         other: Union[Scalar, ArrayLike],

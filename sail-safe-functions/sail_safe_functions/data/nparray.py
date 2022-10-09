@@ -44,14 +44,20 @@ def random_normal(
     size: Optional[int] = None,
     seed: int = 42,
 ) -> Type[SecretObject]:
+    """
+    create a remote random array follows normal distribution
+
+    :param loc: mu, defaults to 0.0
+    :type loc: float, optional
+    :param scale: sigma, defaults to 1.0
+    :type scale: float, optional
+    :param size: sample size, defaults to None
+    :type size: Optional[int], optional
+    :param seed: random seed, defaults to 42
+    :type seed: int, optional
+    :return: a secret object reference to the array
+    :rtype: Type[SecretObject]
+    """
     np.random.seed(seed)
     res = np.random.normal(loc, scale, size)
     return SecretObject(res)
-
-
-# to do
-class RemoteNumpyArray:
-    def __init__(
-        self,
-    ):
-        pass
