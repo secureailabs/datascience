@@ -12,6 +12,14 @@ The repository contains 3 python packages
 - the `config` folder contains dependency management files  `ie: requirements.txt`
 - the `docs` folder contains the documentation that we generate and is published on github pages
 
+## Prerequisite
+The following libs depend on the RPCLib in the Engineering repo:
+- `sail-safe-functions`
+- `sail-safe-functions-test`
+To install the RPC lib, please follow the doc in the RPCLib
+To initialize the RPC server, please use the docker in the Docker repo
+The test will rely on the docker RPC server set up. Three servers are rquired for all the tests to run
+The ip/port setups are in the config file of `sail-safe_functions-test` lib
 
 ## Create virtual environment
 - Install Python 3.8
