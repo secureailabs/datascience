@@ -1,104 +1,80 @@
-import numpy
-import pandas
 import pytest
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test import (
-    WilcoxonSingedRankTest,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from scipy import stats
+from sail_safe_functions_orchestrator.statistics import wilcoxon_signed_rank, wilcoxon_signed_rank_local
 
 
 @pytest.mark.active
-def test_wilcoxon_singed_rank_test_two_sided():
+def test_wilcoxon_singed_rank_test_two_sided(
+    connect_to_one_VM,
+    two_sample_normal_remote,
+    two_sample_normal_local,
+):
     """
     This is our test for the two-sided wilcoxon singed rank test
     """
     # Arrange
-    numpy.random.seed(42)
-    sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0_remote = two_sample_normal_remote[0]
+    sample_1_remote = two_sample_normal_remote[1]
+    sample_0_local = two_sample_normal_local[0]
+    sample_1_local = two_sample_normal_local[1]
     alternative = "two-sided"
-    type_ranking = "unsafe"
+    clients = [connect_to_one_VM]
 
     # Act
-    estimator = WilcoxonSingedRankTest(
-        alternative=alternative, type_ranking=type_ranking
-    )
-    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = wilcoxon_signed_rank(clients, sample_0_remote, sample_1_remote, alternative)
+    w_statistic_scipy, p_value_scipy = wilcoxon_signed_rank_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
-    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
-    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.05)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.05)
 
 
 @pytest.mark.active
-def test_wilcoxon_singed_rank_test_less():
+def test_wilcoxon_singed_rank_test_less(
+    connect_to_one_VM,
+    two_sample_normal_remote,
+    two_sample_normal_local,
+):
     """
     This is our test for the less wilcoxon singed rank test
     """
     # Arrange
-    numpy.random.seed(42)
-    sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0_remote = two_sample_normal_remote[0]
+    sample_1_remote = two_sample_normal_remote[1]
+    sample_0_local = two_sample_normal_local[0]
+    sample_1_local = two_sample_normal_local[1]
     alternative = "less"
-    type_ranking = "unsafe"
+    clients = [connect_to_one_VM]
 
     # Act
-    estimator = WilcoxonSingedRankTest(
-        alternative=alternative, type_ranking=type_ranking
-    )
-    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = wilcoxon_signed_rank(clients, sample_0_remote, sample_1_remote, alternative)
+    w_statistic_scipy, p_value_scipy = wilcoxon_signed_rank_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
-    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
-    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.05)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.05)
 
 
 @pytest.mark.active
-def test_wilcoxon_singed_rank_test_greater():
+def test_wilcoxon_singed_rank_test_greater(
+    connect_to_one_VM,
+    two_sample_normal_remote,
+    two_sample_normal_local,
+):
     """
     This is our test for the less wilcoxon singed rank test
     """
     # Arrange
-    numpy.random.seed(42)
-    sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0_remote = two_sample_normal_remote[0]
+    sample_1_remote = two_sample_normal_remote[1]
+    sample_0_local = two_sample_normal_local[0]
+    sample_1_local = two_sample_normal_local[1]
     alternative = "greater"
-    type_ranking = "unsafe"
+    clients = [connect_to_one_VM]
 
     # Act
-    estimator = WilcoxonSingedRankTest(
-        alternative=alternative, type_ranking=type_ranking
-    )
-    w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    w_statistic_sail, p_value_sail = wilcoxon_signed_rank(clients, sample_0_remote, sample_1_remote, alternative)
+    w_statistic_scipy, p_value_scipy = wilcoxon_signed_rank_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
-    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
-    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.05)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.05)

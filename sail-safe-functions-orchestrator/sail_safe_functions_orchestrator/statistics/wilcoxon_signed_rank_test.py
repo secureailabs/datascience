@@ -1,103 +1,84 @@
 import numpy
 import scipy
-from sail_safe_functions.statistics.wilcoxon_signed_rank_test_aggregate import (
-    WilcoxonSingedRankTestAggregate,
-)
-from sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute import (
-    WilcoxonSingedRankTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
+from sail_safe_functions_orchestrator.data import utils
+
+from .clients import wilcoxon_signed_rank_agg_client, wilcoxon_signed_rank_client
 
 
-def wilcoxon_singed_rank_test(
-    sample_0: SeriesFederated,
-    sample_1: SeriesFederated,
-    alternative: str,
-    type_ranking: str,
+def wilcoxon_signed_rank(
+    clients,
+    sample_0: list,
+    sample_1: list,
+    alternative="less",
 ):
-    estimator = WilcoxonSingedRankTest(alternative, type_ranking)
-    return estimator.run(sample_0, sample_1)
-
-
-class WilcoxonSingedRankTest(Estimator):
     """
-    This class contains method for federated Wilcoxon Singed Rank Test
+    It takes two federated series, and returns the p-value and w_statistic of the Wilcoxon Singed Rank Test
+
+    :param sample_0: first sample series
+    :type sample_0: SeriesFederated
+    :param sample_1: Second sample series
+    :type sample_1: SeriesFederated
+    :raises ValueError: raise error for value error
+    :raises Exception: raise error for exception
+    :return: w_statistic, p_value
+    :rtype: float, float
     """
+    size_sample_0 = 0
+    size_sample_1 = 0
+    for i in range(len(sample_0)):
+        size_sample_0 += sample_0[i].size
+        size_sample_1 += sample_1[i].size
 
-    def __init__(self, alternative, type_ranking: str) -> None:
-        super().__init__(["w_statistic", "p_value"])
-        if alternative not in ["less", "two-sided", "greater"]:
-            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
-        if type_ranking not in {"unsafe", "cdf"}:
-            raise ValueError("`type_ranking` must be `unsafe` or `cdf`")
-        self.alternative = alternative
-        self.type_ranking = type_ranking
+    if size_sample_0 != size_sample_1:
+        raise ValueError("`sample_0` and `sample_1` must have the same length.")
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        """
-        It takes two federated series, and returns the p-value and w_statistic of the Wilcoxon Singed Rank Test
+    size_sample = size_sample_0
+    sample_difference, sample_difference_absolute = utils.wilcoxon_singed_rank_test_difference_tranform(
+        sample_0, sample_1
+    )
+    sample_difference_absolute_ranked = utils.rank_cdf(clients, sample_difference_absolute)
 
-        :param sample_0: first sample series
-        :type sample_0: SeriesFederated
-        :param sample_1: Second sample series
-        :type sample_1: SeriesFederated
-        :raises ValueError: raise error for value error
-        :raises Exception: raise error for exception
-        :return: w_statistic, p_value
-        :rtype: float, float
-        """
-
-        if sample_0.size != sample_1.size:
-            raise ValueError("`sample_0` and `sample_1` must have the same length.")
-
-        size_sample = sample_0.size
-        (
-            sample_difference,
-            sample_difference_absolute,
-        ) = preprocessing.wilcoxon_singed_rank_test_difference_tranform(sample_0, sample_1)
-        sample_difference_absolute_ranked = preprocessing.rank(sample_difference_absolute, self.type_ranking)
-
-        # Calculating precompute
-        list_precompute = []
-        for series_difference, series_difference_absolute_ranked in zip(
-            sample_difference.dict_series.values(),
-            sample_difference_absolute_ranked.dict_series.values(),
-        ):
-            list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.run(series_difference, series_difference_absolute_ranked)
-            )
-
-        # rank_minus rank_plus
-        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.run(list_precompute)
-
-        if self.alternative == "two-sided":
-            w_statistic = min(rank_minus, rank_plus)
-        else:
-            w_statistic = rank_plus
-
-        mean = size_sample * (size_sample + 1.0) * 0.25
-        standard_deviation = numpy.sqrt(size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24)
-        z_statistic = (w_statistic - mean) / standard_deviation
-
-        if self.alternative == "two-sided":
-            p_value = 2.0 * scipy.stats.distributions.norm.sf(abs(z_statistic))
-        elif self.alternative == "less":
-            p_value = scipy.stats.distributions.norm.cdf(z_statistic)
-        elif self.alternative == "greater":
-            p_value = scipy.stats.distributions.norm.sf(z_statistic)
-        else:
-            raise Exception()
-
-        return w_statistic, p_value
-
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        # we only do aproximation of T(aproximation does not work very wel below 10) and only do wilcox mode tie resolution
-        return scipy.stats.wilcoxon(
-            sample_0.to_numpy(),
-            sample_1.to_numpy(),
-            zero_method="wilcox",
-            alternative=self.alternative,
-            mode="approx",
+    # Calculating precompute
+    list_precompute = []
+    for i in range(len(sample_0)):
+        list_precompute.append(
+            wilcoxon_signed_rank_client(clients[i], sample_difference[i], sample_difference_absolute_ranked[i])
         )
+
+    # rank_minus rank_plus
+    rank_minus, rank_plus = wilcoxon_signed_rank_agg_client(clients[0], list_precompute)
+
+    if alternative == "two-sided":
+        w_statistic = min(rank_minus, rank_plus)
+    else:
+        w_statistic = rank_plus
+
+    mean = size_sample * (size_sample + 1.0) * 0.25
+    standard_deviation = numpy.sqrt(size_sample * (size_sample + 1.0) * (2.0 * size_sample + 1.0) / 24)
+    z_statistic = (w_statistic - mean) / standard_deviation
+
+    if alternative == "two-sided":
+        p_value = 2.0 * scipy.stats.distributions.norm.sf(abs(z_statistic))
+    elif alternative == "less":
+        p_value = scipy.stats.distributions.norm.cdf(z_statistic)
+    elif alternative == "greater":
+        p_value = scipy.stats.distributions.norm.sf(z_statistic)
+    else:
+        raise Exception()
+
+    return w_statistic, p_value
+
+
+def wilcoxon_signed_rank_local(
+    sample_0: list,
+    sample_1: list,
+    alternative: str = "less",
+):
+    # we only do aproximation of T(aproximation does not work very wel below 10) and only do wilcox mode tie resolution
+    return scipy.stats.wilcoxon(
+        sample_0,
+        sample_1,
+        zero_method="wilcox",
+        alternative=alternative,
+        mode="approx",
+    )

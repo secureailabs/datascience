@@ -1,13 +1,13 @@
 import pytest
-from sail_safe_functions_orchestrator.statistics.skewness import Skewness
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from scipy import stats
+from sail_safe_functions_orchestrator.statistics import skewness, skewness_local
 
 
 @pytest.mark.active
-def test_skewness(one_sample_big: SeriesFederatedLocal):
+def test_skewness(
+    connect_to_three_VMs,
+    one_sample_big_remote,
+    one_sample_big_local,
+):
     """This test our federated Skewness module
 
     :param one_sample_big: A single federated series fixture
@@ -15,12 +15,13 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
     """
 
     # Arrange
-    sample_0 = one_sample_big
+    sample_0_remote = one_sample_big_remote
+    sample_0_local = one_sample_big_local
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = Skewness()
-    skewness_sail = estimator.run(sample_0)
-    skewness_scipy = estimator.run_reference(sample_0)
+    skewness_sail = skewness(clients, sample_0_remote)
+    skewness_scipy = skewness_local(sample_0_local)
 
     # Assert
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)

@@ -1,16 +1,12 @@
-from typing import Tuple
-
 import pytest
-from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from scipy import stats
+from sail_safe_functions_orchestrator.statistics import student_t, student_t_local
 
 
 @pytest.mark.active
 def test_student_t_test_big(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    connect_to_three_VMs,
+    two_sample_big_remote,
+    two_sample_big_local,
 ):
     """Preform a unpaired t-test asuming equal variance
 
@@ -18,14 +14,16 @@ def test_student_t_test_big(
         two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
     """
     # Arrange
-    sample_0 = two_sample_big[0]
-    sample_1 = two_sample_big[1]
+    sample_0_remote = two_sample_big_remote[0]
+    sample_1_remote = two_sample_big_remote[1]
+    sample_0_local = two_sample_big_local[0]
+    sample_1_local = two_sample_big_local[1]
     alternative = "less"
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = StudentTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    t_statistic_sail, p_value_sail = student_t(clients, sample_0_remote, sample_1_remote)
+    t_statistic_scipy, p_value_scipy = student_t_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)

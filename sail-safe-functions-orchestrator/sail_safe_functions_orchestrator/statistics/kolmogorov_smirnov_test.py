@@ -1,89 +1,79 @@
 from typing import Tuple
 
-import numpy
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_aggregate import (
-    KolmogorovSmirnovTestAggregate,
-)
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import (
-    KolmogorovSmirnovTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.statistics.mean import Mean
-from sail_safe_functions_orchestrator.statistics.variance import Variance
+import numpy as np
+from sail_safe_functions_orchestrator.data import utils
 from scipy import stats
 from scipy.stats import kstwo
 
+from .clients import kolmogorov_smirnov_agg_client, kolmogorov_smirnov_client
+from .mean import mean
+from .variance import variance
 
-def kolmogorov_smirnov_test(
-    sample_0: SeriesFederated, type_distribution: str, type_ranking: str
+
+def kolmogorov_smirnov(
+    clients,
+    sample_0: list,
+    type_distribution="normal",
 ) -> Tuple[float, float]:
     """
     Perform federated kolmogorov_smirnov test.
     Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.
 
     :param sample_0: sample to be tested
-    :type sample_0: SeriesFederated
+    :type sample_0: list
     :param type_distribution: type of ranking employed
     :type type_distribution: str
     :param type_ranking: type of rankign employed
     :type type_ranking: str
-
-    :raises ValueError: raise a ValueError if `type_distribution` is not `normal` or `normalunit`
-    :raises ValueError: raise a ValueError if `type_ranking` is not  `unsafe` or `cdf`
     :return: returns the k-statistic and the p-value
     :rtype: Tuple[float, float]
     """
-    estimator = KolmogorovSmirnovTest(type_distribution, type_ranking)
-    return estimator.run(sample_0)
+
+    if type_distribution == "normal":
+        sample_mean = mean(clients, sample_0)
+        sample_standart_deviation = np.sqrt(variance(clients, sample_0))
+        distribution = {
+            "type_distribution": type_distribution,
+            "sample_mean": sample_mean,
+            "sample_standart_deviation": sample_standart_deviation,
+        }
+    elif type_distribution == "normalunit":
+        distribution = {"type_distribution": type_distribution}
+    else:
+        raise Exception()
+
+    size_sample = 0
+    for sample in sample_0:
+        size_sample += sample.size
+
+    series_sample_ranked_0 = utils.rank_cdf(clients, sample_0)
+    list_list_precompute = []
+    for i in range(len(sample_0)):
+        list_list_precompute.append(
+            kolmogorov_smirnov_client(clients[i], sample_0[i], series_sample_ranked_0[i], distribution, size_sample)
+        )
+    k_statistic = kolmogorov_smirnov_agg_client(clients[0], list_list_precompute)
+
+    p_value = kstwo.sf(k_statistic, size_sample)
+
+    return k_statistic, p_value
 
 
-class KolmogorovSmirnovTest(Estimator):
-
+def kolmogorov_smirnov_local(
+    sample_0: list,
+    type_distribution="normal",
+) -> Tuple[float, float]:
     """
-    Federated version of the KolmogorovSmirnovFederate test
+    local version of ks test, using scipy kstest function
+
+    :param sample_0: sample 0
+    :type sample_0: list
+    :param type_distribution: distribution type, defaults to "normal"
+    :type type_distribution: str, optional
+    :return: ks statistics
+    :rtype: Tuple[float, float]
     """
-
-    def __init__(self, type_distribution: str, type_ranking: str) -> None:
-        super().__init__(["k_statistic", "p_value"])
-
-        if type_distribution not in {"normal", "normalunit"}:
-            raise ValueError("`type_distribution` must be `normal` or `normalunit`")
-        if type_ranking not in {"unsafe", "cdf"}:
-            raise ValueError("`type_ranking` must be `unsafe` or `cdf`")
-        self.type_distribution = type_distribution
-        self.type_ranking = type_ranking
-
-    def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
-        if self.type_distribution == "normal":
-            sample_mean = Mean(sample_0)
-            sample_standart_deviation = numpy.sqrt(Variance(sample_0))
-            distribution = {
-                "type_distribution": self.type_distribution,
-                "sample_mean": sample_mean,
-                "sample_standart_deviation": sample_standart_deviation,
-            }
-        elif self.type_distribution == "normalunit":
-            distribution = {"type_distribution": self.type_distribution}
-        else:
-            raise Exception()
-        size_sample = sample_0.size
-
-        series_sample_ranked_0 = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
-        list_list_precompute = []
-        for series, series_ranked in zip(sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()):
-            list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(series, series_ranked, distribution, size_sample)
-            )
-        k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
-
-        p_value = kstwo.sf(k_statistic, size_sample)
-
-        return k_statistic, p_value
-
-    def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:
-        if self.type_distribution == "normalunit":
-            return stats.kstest(sample_0.to_numpy(), "norm")
-        else:
-            raise Exception()
+    if type_distribution == "normalunit":
+        return stats.kstest(sample_0, "norm")
+    else:
+        raise Exception()

@@ -1,75 +1,70 @@
-from typing import Tuple
+from typing import List
 
-import numpy
-from sail_safe_functions.statistics.chisquare_aggregate import ChisquareAggregate
-from sail_safe_functions.statistics.chisquare_precompute import ChisquarePrecompute
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
+import numpy as np
+import pandas as pd
 from scipy import stats
 
+from .clients import chisquare_agg_client, chisquare_client
 
-def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+
+def chisquare(
+    clients,
+    sample_0: List,
+    sample_1: List,
+):
     """
-    Perform federated chisquare test.
-    This test can be used to examine if there is a interaction between two paired categorical samples.
+    chi square test
 
-    The null hypothesis is that there is no interaction between samples.
-
-    This test is invalid when the observed or expected frequencies in each category are too small.
-    A typical rule is that all of the observed and expected frequencies should be at least 5.
-    The total number of samples is recommended to be greater than 13.
-
-
-    :param sample_0: Sample A
+    :param clients: operating client
+    :type clients: ZeroClient
+    :param sample_0: sample 1
     :type sample_0: SeriesFederated
-    :param sample_1: Sample B
+    :param sample_1: sample 2
     :type sample_1: SeriesFederated
-    :return: returns the chisquare-statistic and the p-value
-    :rtype: Tuple[float, float]
-    """
-    estimator = Chisquare()
-    return estimator.run(sample_0, sample_1)
+    :return: chi square statistics and p value
+    :rtype: tuple
 
-
-class Chisquare(Estimator):
-    """
-    Final function to run for Fedrated Chisquare test
     """
 
-    def __init__(self) -> None:
-        super().__init__(["chisquare_statistic", "p_value"])
+    precompute = []
+    for i, client in enumerate(clients):
+        res = chisquare_client(clients[i], sample_0[i], sample_1[i])
+        precompute.append(res)
+    return chisquare_agg_client(clients[0], precompute)
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
-        # if not (is_string_dtype(sample_0) and is_string_dtype(sample_1)): TODO would be nice to catch this here
-        #    raise ValueException()
+def chisquare_local(
+    sample_0: pd.Series,
+    sample_1: pd.Series,
+):
+    """
+    obtain corresponding chi square test results from local scipy compute
 
-        list_precompute = []
-        for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
-            list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
-        return ChisquareAggregate.run(list_precompute)
+    :param sample_0: sample 0
+    :type sample_0: pd.Series
+    :param sample_1: sample 1
+    :type sample_1: pd.Series
+    :return: chi square statistics and p value
+    :rtype: tuple
+    """
+    count_total = sample_0.size
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        count_total = sample_0.size
+    array_0 = list(sample_0)
+    array_1 = list(sample_1)
+    list_unique_0 = np.unique(array_0).tolist()
+    list_unique_1 = np.unique(array_1).tolist()
+    array_true = np.zeros((len(list_unique_0), len(list_unique_1)))
+    array_pred = np.zeros((len(list_unique_0), len(list_unique_1)))
 
-        array_0 = list(sample_0.to_numpy())
-        array_1 = list(sample_1.to_numpy())
-        list_unique_0 = numpy.unique(array_0).tolist()
-        list_unique_1 = numpy.unique(array_1).tolist()
-        array_true = numpy.zeros((len(list_unique_0), len(list_unique_1)))
-        array_pred = numpy.zeros((len(list_unique_0), len(list_unique_1)))
+    for i in range(len(array_0)):
+        index_0 = list_unique_0.index(array_0[i])
+        index_1 = list_unique_1.index(array_1[i])
+        array_true[index_0, index_1] += 1
 
-        for i in range(len(array_0)):
-            index_0 = list_unique_0.index(array_0[i])
-            index_1 = list_unique_1.index(array_1[i])
-            array_true[index_0, index_1] += 1
+    for i_0 in range(len(list_unique_0)):
+        for i_1 in range(len(list_unique_1)):
+            array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
 
-        for i_0 in range(len(list_unique_0)):
-            for i_1 in range(len(list_unique_1)):
-                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-
-        ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
-            len(array_true.ravel()) - 1
-        )  # 2d instead of 1d
-        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
-        return chisquare_statistic, p_value
+    ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (len(array_true.ravel()) - 1)  # 2d instead of 1d
+    chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
+    return chisquare_statistic, p_value

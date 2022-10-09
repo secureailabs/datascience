@@ -1,12 +1,13 @@
 import pytest
-from sail_safe_functions_orchestrator.statistics.min_max import MinMax
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_orchestrator.statistics import min_max, min_max_local
 
 
 @pytest.mark.active
-def test_min_max(one_sample_big: SeriesFederatedLocal):
+def test_min_max(
+    connect_to_three_VMs,
+    one_sample_big_remote,
+    one_sample_big_local,
+):
     """This test our federated Skewness module
 
     :param one_sample_big: A single federated series fixture
@@ -14,12 +15,13 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
     """
 
     # Arrange
-    sample_0 = one_sample_big
+    sample_0_remote = one_sample_big_remote
+    sample_0_local = one_sample_big_local
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = MinMax()
-    min_sail, max_sail = estimator.run(sample_0)
-    min_numpy, max_numpy = estimator.run_reference(sample_0)
+    min_sail, max_sail = min_max(clients, sample_0_remote)
+    min_numpy, max_numpy = min_max_local(sample_0_local)
 
     # Assert
     assert max_numpy <= max_sail

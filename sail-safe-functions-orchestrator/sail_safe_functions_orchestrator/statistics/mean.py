@@ -1,42 +1,28 @@
-import numpy
-from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
-from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
+import numpy as np
+
+from .clients import mean_agg_client, mean_client
 
 
-def mean(sample_0: SeriesFederated):
+def mean(
+    clients,
+    sample_0: list,
+):
     """
-    Perform federated Mean.
-    It takes one federated series, and returns the mean value
+    It takes one federated series, and returns the Mean
 
-    :param sample_0: sample series
+    :param sample_0: _description_
     :type sample_0: SeriesFederated
-    :return: mean value of federated series
-    :rtype: float
+    :return: _description_
+    :rtype: _type_
     """
-    estimator = Mean()
-    return estimator.run(sample_0)
+    list_list_precompute = []
+    for i in range(len(sample_0)):
+        list_list_precompute.append(mean_client(clients[i], sample_0[i]))
+    mean_statistic = mean_agg_client(clients[0], list_list_precompute)
+    return mean_statistic
 
 
-class Mean(Estimator):
-    def __init__(self) -> None:
-        super().__init__(["mean"])
-
-    def run(self, sample_0: SeriesFederated):
-        """
-        It takes one federated series, and returns the Mean
-
-        :param sample_0: _description_
-        :type sample_0: SeriesFederated
-        :return: _description_
-        :rtype: _type_
-        """
-        list_list_precompute = []
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(MeanPrecompute.run(series))
-        mean_statistic = MeanAggregate.run(list_list_precompute)
-        return mean_statistic
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return numpy.mean(sample_0.to_numpy())
+def mean_local(
+    sample_0: list,
+):
+    return np.mean(sample_0)

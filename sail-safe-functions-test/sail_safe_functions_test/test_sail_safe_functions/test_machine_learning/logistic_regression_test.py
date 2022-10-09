@@ -1,68 +1,17 @@
-import pytest
-from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-
-from sail_safe_functions_orchestrator.machine_learning.federated_averaging import (
-    federated_averaging,
-)
-from helper_libs.shared.models.LogisticRegression import LogisticRegression
-
-import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.datasets import load_iris
-from sklearn.metrics import precision_score, recall_score, f1_score
-import torch
 import numpy as np
-
-import random
-
-
-def get_iris_dataframe():
-    """
-    To be used by test function. This pulls a copy of the iris dataset and creates a Dataframe containing a one hot encoded version of it.
-
-    :return: A one hot encded Dataframe containing points belonging to the iris dataset
-    :type: pd.DataFrame
-    """
-
-    iris = load_iris()
-    df1 = pd.DataFrame(iris.data, columns=iris.feature_names)
-    target = iris.target_names
-    encoder = OneHotEncoder(sparse=False)
-    target = encoder.fit_transform(iris.target.reshape(-1, 1))
-    df2 = pd.get_dummies(pd.DataFrame(target, columns=iris.target_names))
-    dataframe = pd.concat([df1, df2], axis=1)
-
-    return dataframe
+import pandas as pd
+import pytest
+import torch
+from sail_safe_functions_orchestrator.machine_learning import LogisticRegression, federated_averaging
+from sklearn.metrics import f1_score, precision_score, recall_score
 
 
-def get_test_federation_split(df):
-    """
-    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
-
-    :param: df: dataframe to be split into federated participants
-    :type df: pd.DataFrame
-    :return result: A list of dataframes containing a representation of the data federation
-    :type result: List[pd.DataFrame]
-    :return test: A sample from the original Dataframe which will be used for testing
-    :type test: pd.DataFrame
-    """
-
-    NUMBER_PARTICIPANTS = 5
-    TEST_SAMPLE = 0.8
-
-    train = df.sample(frac=TEST_SAMPLE, random_state=0)
-    test = df.drop(train.index)
-
-    shuffled = train.sample(frac=1)
-    result = np.array_split(shuffled, NUMBER_PARTICIPANTS)
-
-    return result, test
-
-
-def score_model(predicted, Y_test):
+def score_model(
+    predicted,
+    Y_test,
+):
     """
     Evaluates a set of predictions vs their actual labels.
-
     :param: predicted: a list of precitions in one-hot encoding
     :type: predicted: Torch.Tensor
     :param Y_test: The List of labels
@@ -89,10 +38,15 @@ def score_model(predicted, Y_test):
     return precision, recall, f1
 
 
-def predict_iris(epochs, federal_epochs, data_federation, test):
+def predict_iris(
+    clients,
+    epochs,
+    federal_epochs,
+    data_federation,
+    test,
+):
     """
     To be used by test function. Runs federated averaging on iris data and returns metrics of trained model.
-
     :param epochs: The number of epochs each federated member will run for
     :type: epochs: Integer
     :param federal_epochs: The number of model averaging rounds the test will run for
@@ -120,11 +74,13 @@ def predict_iris(epochs, federal_epochs, data_federation, test):
     optimizer = "SGD"
     criterion = "MSELoss"
     starting_model = LogisticRegression(in_layer, out_layer)
+    model_type = "logistic_regression"
     learn_rate = 0.1
     epochs = 500
     federal_epochs = 5
 
     model = federated_averaging(
+        clients,
         epochs,
         federal_epochs,
         data_federation,
@@ -132,6 +88,7 @@ def predict_iris(epochs, federal_epochs, data_federation, test):
         Y_col,
         learn_rate,
         starting_model,
+        model_type,
         criterion,
         optimizer,
     )
@@ -142,10 +99,15 @@ def predict_iris(epochs, federal_epochs, data_federation, test):
     return score_model(predicted, Y_test)
 
 
-def predict_kidney(epochs, federal_epochs, data_federation, test):
+def predict_kidney(
+    clients,
+    epochs,
+    federal_epochs,
+    data_federation,
+    test,
+):
     """
     To be used by test function. Runs federated averaging on kidney data and returns metrics of trained model.
-
     :param epochs: The number of epochs each federated member will run for
     :type: epochs: Integer
     :param federal_epochs: The number of model averaging rounds the test will run for
@@ -169,9 +131,11 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
     optimizer = "SGD"
     criterion = "BCELoss"
     starting_model = LogisticRegression(in_layer, out_layer)
+    model_type = "logistic_regression"
     learn_rate = 0.001
 
     model = federated_averaging(
+        clients,
         epochs,
         federal_epochs,
         data_federation,
@@ -179,6 +143,7 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
         Y_col,
         learn_rate,
         starting_model,
+        model_type,
         criterion,
         optimizer,
     )
@@ -202,27 +167,27 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
 
 
 @pytest.mark.active
-def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+def test_kidney_data_acceptable(
+    connect_to_three_VMs,
+    get_kidney_federation_split,
+):
     """
     This tests whether the model is learning on the real kidney data. The precision, recall and f1 score is evaluated
     to see whether it meets a a threshold in order to pass this test.
-
     :param:  dataframe_kidney_clean: Dataframe containing kidney data
     :type: dataframe_kidney_clean:: pd.DataFrame
     """
     # Arrange
     random_seed = 1
     torch.manual_seed(random_seed)
-    torch.cuda.manual_seed(random_seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
 
-    dataframe = pd.get_dummies(data=dataframe_kidney_clean)
-    data_federation, test = get_test_federation_split(dataframe)
+    data_federation, test = get_kidney_federation_split
+    clients = connect_to_three_VMs
 
     # Action
     precision_1000_4, recall_1000_4, f1_1000_4 = predict_kidney(
+        clients,
         epochs=5000,
         federal_epochs=4,
         data_federation=data_federation,
@@ -247,7 +212,10 @@ def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
 
 
 @pytest.mark.active
-def test_iris_data_acceptable():
+def test_iris_data_acceptable(
+    connect_to_three_VMs,
+    get_iris_federation_split,
+):
     """
     This tests whether the model is learning on the sample iris data. The precision, recall and f1 score is evaluated
     to see whether it meets a a threshold in order to pass this test.
@@ -255,27 +223,25 @@ def test_iris_data_acceptable():
     # Arrange
     random_seed = 1
     torch.manual_seed(random_seed)
-    torch.cuda.manual_seed(random_seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
 
-    dataframe = get_iris_dataframe()
-    data_federation, test = get_test_federation_split(dataframe)
+    data_federation, test = get_iris_federation_split
+    clients = connect_to_three_VMs
 
     # Action
     precision_1000_5, recall_1000_5, f1_1000_5 = predict_iris(
+        clients,
         epochs=500,
         federal_epochs=5,
         data_federation=data_federation,
         test=test,
     )
-    precision_1000_1, recall_1000_1, f1_1000_1 = predict_iris(
-        epochs=500,
-        federal_epochs=1,
-        data_federation=data_federation,
-        test=test,
-    )
+    # precision_1000_1, recall_1000_1, f1_1000_1 = predict_iris(
+    #     epochs=500,
+    #     federal_epochs=1,
+    #     data_federation=data_federation,
+    #     test=test,
+    # )
 
     # Assert scores are acceptable
     assert precision_1000_5 >= 0.6

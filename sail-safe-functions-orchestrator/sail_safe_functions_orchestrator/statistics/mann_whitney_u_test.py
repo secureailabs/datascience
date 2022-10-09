@@ -2,104 +2,81 @@ from typing import Tuple
 
 import numpy
 import scipy
-from sail_safe_functions.statistics.mann_whitney_u_test_aggregate import (
-    MannWhitneyUTestAggregate,
-)
-from sail_safe_functions.statistics.mann_whitney_u_test_precompute import (
-    MannWhitneyUTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
-from sail_safe_functions_orchestrator.tools_common import check_instance
+from sail_safe_functions_orchestrator.data import utils
 from scipy import stats
 
-
-def mann_whitney_u_test(
-    sample_0: SeriesFederated,
-    sample_1: SeriesFederated,
-    alternative: str,
-    type_ranking: str,
-):
-    estimator = MannWhitneyUTest(alternative, type_ranking)
-    return estimator.run(sample_0, sample_1)
+from .clients import mann_whitney_agg_client, mann_whitney_client
 
 
-class MannWhitneyUTest(Estimator):
+def mann_whitney(
+    clients,
+    sample_0: list,
+    sample_1: list,
+    alternative: str = "less",
+    type_ranking: str = "unsafe",
+) -> Tuple[float, float]:
     """
+    It takes two federated series, and returns the p-value and test statistic of the mann whitney u test
     Federated version of the mann whiney u test, it makes two compromised
     1. Tie correction was removed, it has a small impact most of the time. The reference implementation still does this.
     2. The p values is always computed asymptotoicly, exact methods is only feasable for small smalle sizes.
+
+    :param sample_0: First sample series
+    :type sample_0: SeriesFederated
+    :param sample_1: Two sample series
+    :type sample_1: SeriesFederated
+    :return: _description_
+    :rtype: Tuple[float, float]
     """
+    n0 = 0
+    n1 = 0
+    for i in range(len(sample_0)):
+        n0 += sample_0[i].size
+        n1 += sample_1[i].size
 
-    def __init__(self, alternative: str, type_ranking: str) -> None:
-        super().__init__(["f_statistic", "p_value"])
-        if alternative not in ["less", "two-sided", "greater"]:
-            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
-        if type_ranking not in {"unsafe", "cdf"}:
-            raise ValueError("`type_ranking` must be `unsafe` or `cdf`")
-        self.alternative = alternative
-        self.type_ranking = type_ranking
+    sample_concatenated = utils.fed_concat(clients, sample_0, sample_1)
+    sample_concatenated_ranked = utils.rank_cdf(clients, sample_concatenated)
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        """
-        It takes two federated series, and returns the p-value and test statistic of the mann whitney u test
+    list_precompute = []
+    for i in range(len(sample_0)):
+        list_precompute.append(mann_whitney_client(clients[i], sample_0[i], sample_concatenated_ranked[i]))
 
-        :param sample_0: First sample series
-        :type sample_0: SeriesFederated
-        :param sample_1: Two sample series
-        :type sample_1: SeriesFederated
-        :return: _description_
-        :rtype: Tuple[float, float]
-        """
-        check_instance(sample_0, SeriesFederated)
-        check_instance(sample_1, SeriesFederated)
-        n0, n1 = sample_0.size, sample_1.size
+    sum_ranks_0 = mann_whitney_agg_client(clients[0], list_precompute)
 
-        sample_concatenated = preprocessing.concatenate(sample_0, sample_1)
-        sample_concatenated_ranked = preprocessing.rank(sample_concatenated, self.type_ranking)
+    U0 = sum_ranks_0 - n0 * (n0 + 1) / 2
+    U1 = n0 * n1 - U0
 
-        list_precompute = []
-        for dataset_id in sample_0.dict_series:
-            series_0 = sample_0.dict_series[dataset_id]
-            series_concatenated_ranked = sample_concatenated_ranked.dict_series[dataset_id]
-            list_precompute.append(MannWhitneyUTestPrecompute.run(series_0, series_concatenated_ranked))
+    mean = ((n0 * n1) + 1) / 2
+    standard_deviation = numpy.sqrt(n0 * n1 / 12 * ((n0 + n1 + 1)))
+    if alternative == "two-sided":
+        U = numpy.maximum(U0, U1)
+    elif alternative == "greater":
+        U = U0
+    elif alternative == "less":
+        U = U1
+    else:
+        raise Exception
 
-        sum_ranks_0 = MannWhitneyUTestAggregate.run(list_precompute)
+    z = (U - mean) / standard_deviation
+    p = scipy.stats.norm.sf(z)
+    if alternative == "two-sided":
+        p *= 2
 
-        U0 = sum_ranks_0 - n0 * (n0 + 1) / 2
-        U1 = n0 * n1 - U0
+    # Ensure that test statistic is not greater than 1
+    # This could happen for exact test when U = m*n/2
+    p = numpy.clip(p, 0, 1)
 
-        mean = ((n0 * n1) + 1) / 2
-        standard_deviation = numpy.sqrt(n0 * n1 / 12 * ((n0 + n1 + 1)))
-        if self.alternative == "two-sided":
-            U = numpy.maximum(U0, U1)
-        elif self.alternative == "greater":
-            U = U0
-        elif self.alternative == "less":
-            U = U1
-        else:
-            raise Exception
+    return U0, p
 
-        z = (U - mean) / standard_deviation
-        p = scipy.stats.norm.sf(z)
-        if self.alternative == "two-sided":
-            p *= 2
 
-        # Ensure that test statistic is not greater than 1
-        # This could happen for exact test when U = m*n/2
-        p = numpy.clip(p, 0, 1)
-
-        return U0, p
-
-    def run_reference(
-        self,
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-    ):
-        return stats.mannwhitneyu(
-            sample_0.to_numpy(),
-            sample_1.to_numpy(),
-            alternative=self.alternative,
-            method="asymptotic",
-        )
+def mann_whitney_local(
+    sample_0: list,
+    sample_1: list,
+    alternative: str = "less",
+):
+    return stats.mannwhitneyu(
+        sample_0,
+        sample_1,
+        alternative=alternative,
+        method="asymptotic",
+    )

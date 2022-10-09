@@ -1,13 +1,16 @@
 from tokenize import String
 from typing import List
-from pandas import DataFrame
-from sail_safe_functions.machine_learning.ModelTrain import ModelTrain
-from sail_safe_functions.machine_learning.ModelAverage import ModelAverage
-from sail_safe_functions.machine_learning.ModelRetrieve import ModelRetrieve
+
 import torch
+from pandas import DataFrame
+from zero import serializer_table
+
+from .client import model_average_client, model_retrieve_client, model_train_client
+from .model_utils import load_model_dict
 
 
 def federated_averaging(
+    clients: List,
     epochs: int,
     federal_epochs: int,
     data_federation: List[DataFrame],
@@ -15,6 +18,7 @@ def federated_averaging(
     Y_col: List[str],
     learn_rate: float,
     starting_model: torch.nn.Module,
+    model_type: str,
     criterion: String,
     optimizer: String,
 ) -> torch.nn.Module:
@@ -44,24 +48,28 @@ def federated_averaging(
     """
 
     avg_model = starting_model
+    avg_model = serializer_table[str(torch.nn.Module)](avg_model)
 
     # Train a model with every member of our data federation
     for epoch in range(federal_epochs):
         trained_models = []
         for j in range(len(data_federation)):
-            trained_models.append(
-                ModelTrain.run(
-                    epochs,
-                    data_federation[j][X_col],
-                    data_federation[j][Y_col],
-                    learn_rate,
-                    avg_model,
-                    criterion,
-                    optimizer,
-                )
+            remote_model = model_train_client(
+                epochs,
+                clients[j],
+                data_federation[j][X_col],
+                data_federation[j][Y_col],
+                learn_rate,
+                avg_model,
+                model_type,
+                criterion,
+                optimizer,
             )
-        avg_model = ModelAverage.run(trained_models)
+            trained_models.append(remote_model)
+        avg_model = model_average_client(clients[0], trained_models, model_type)
 
-        avg_model = ModelRetrieve.run(avg_model)
+        avg_model = model_retrieve_client(clients[0], avg_model, model_type)
+
+    avg_model = load_model_dict(avg_model, model_type)
 
     return avg_model

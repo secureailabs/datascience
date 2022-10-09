@@ -1,31 +1,26 @@
-import numpy as np
 import pytest
-from sail_safe_functions_orchestrator import statistics
-from sail_safe_functions_orchestrator.statistics.mean import Mean
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_orchestrator_lib.statistics import mean, mean_local
 
 
 @pytest.mark.active
-def test_mean_direct(one_sample_big: SeriesFederatedLocal):
-    statistics.mean(one_sample_big)
-
-
-@pytest.mark.active
-def test_mean(one_sample_big: SeriesFederatedLocal):
+def test_mean(
+    connect_to_three_VMs,
+    one_sample_big_remote,
+    one_sample_big_local,
+):
     """A test of the mean value statisc
 
     Args:
         one_sample_big (SeriesFederatedLocal): A single federated series fixture
     """
     # Arrange
-    sample_0 = one_sample_big
+    sample_0_local = one_sample_big_local
+    sample_0_remote = one_sample_big_remote
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = Mean()
-    mean_sail = estimator.run(sample_0)
-    mean_numpy = estimator.run_reference(sample_0)
+    mean_sail = mean(clients, sample_0_remote)
+    mean_numpy = mean_local(sample_0_local)
 
     # Assert
     assert mean_sail == pytest.approx(mean_numpy, 0.0001)

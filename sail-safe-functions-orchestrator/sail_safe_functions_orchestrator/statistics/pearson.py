@@ -1,15 +1,18 @@
 import math
 from typing import Tuple
 
-from sail_safe_functions.statistics.pearson_aggregate import PearsonAggregate
-from sail_safe_functions.statistics.pearson_precompute import PearsonPrecompute
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
 from scipy.stats import t
 
+from .clients import pearson_agg_client, pearson_client
 
-def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
+
+def pearson(
+    clients,
+    sample_0: list,
+    sample_1: list,
+    alternative: str = "less",
+) -> Tuple[float, float]:
     """
     Perform federated Pearson.
     It takes two federated series, and returns the rho value and the p-value
@@ -67,46 +70,29 @@ def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: s
         Statistics), Vol. 21, No. 1 (1972), pp. 1-12.
 
     """
-    estimator = Pearson(alternative)
-    return estimator.run(sample_0, sample_1)
-
-
-class Pearson(Estimator):
-    """
-    Estimator for pearson product
-    """
-
-    def __init__(self, alternative) -> None:
-        super().__init__(["rho", "p_value"])
-        if alternative not in ["less", "two-sided", "greater"]:
-            raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
-        self.alternative = alternative
-
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-
-        list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_series.keys())
-        # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        for key_dataframe in list_key_dataframe:
-            list_list_precompute.append(
-                PearsonPrecompute.run(
-                    sample_0.dict_series[key_dataframe],
-                    sample_1.dict_series[key_dataframe],
-                )
+    list_list_precompute = []
+    for i in range(len(sample_0)):
+        list_list_precompute.append(
+            pearson_client(
+                clients[i],
+                sample_0[i],
+                sample_1[i],
             )
-        rho, degrees_of_freedom = PearsonAggregate.run(list_list_precompute)
-        t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
-        if self.alternative == "less":
-            p_value = t.cdf(t_statistic, degrees_of_freedom)
-        elif self.alternative == "two-sided":
-            p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
-        elif self.alternative == "greater":
-            p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
-        else:
-            raise ValueError()
+        )
+    rho, degrees_of_freedom = pearson_agg_client(clients[0], list_list_precompute)
+    t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
+    if alternative == "less":
+        p_value = t.cdf(t_statistic, degrees_of_freedom)
+    elif alternative == "two-sided":
+        p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
+    elif alternative == "greater":
+        p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
+    else:
+        raise ValueError()
 
-        return rho, p_value
+    return rho, p_value
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
-        return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())
+def pearson_local(sample_0, sample_1) -> Tuple[float, float]:
+
+    return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

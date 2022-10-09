@@ -1,16 +1,12 @@
-from typing import Tuple
-
 import pytest
-from sail_safe_functions_orchestrator.statistics.spearman import Spearman
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from scipy import stats
+from sail_safe_functions_orchestrator.statistics import spearman, spearman_local
 
 
 @pytest.mark.active
 def test_spearman_two_sided(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    connect_to_three_VMs,
+    two_sample_big_remote,
+    two_sample_big_local,
 ):
     """
     This is our test for the Sails federated Spearman
@@ -19,15 +15,16 @@ def test_spearman_two_sided(
     :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
     """
     # Arrange
-    sample_0 = two_sample_big[0]
-    sample_1 = two_sample_big[1]
+    sample_0_remote = two_sample_big_remote[0]
+    sample_1_remote = two_sample_big_remote[1]
+    sample_0_local = two_sample_big_local[0]
+    sample_1_local = two_sample_big_local[1]
     alternative = "two-sided"
-    type_ranking = "unsafe"
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    spearman_sail, p_value_sail = spearman(clients, sample_0_remote, sample_1_remote, alternative)
+    spearman_scipy, p_value_scipy = spearman_local(sample_0_local, sample_1_local)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -36,7 +33,9 @@ def test_spearman_two_sided(
 
 @pytest.mark.active
 def test_spearman_less(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    connect_to_three_VMs,
+    two_sample_big_remote,
+    two_sample_big_local,
 ):
     """
     This is our test for the Sails federated Spearman
@@ -45,15 +44,16 @@ def test_spearman_less(
     :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
     """
     # Arrange
-    sample_0 = two_sample_big[0]
-    sample_1 = two_sample_big[1]
+    sample_0_remote = two_sample_big_remote[0]
+    sample_1_remote = two_sample_big_remote[1]
+    sample_0_local = two_sample_big_local[0]
+    sample_1_local = two_sample_big_local[1]
     alternative = "less"
-    type_ranking = "unsafe"
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    spearman_sail, p_value_sail = spearman(clients, sample_0_remote, sample_1_remote, alternative)
+    spearman_scipy, p_value_scipy = spearman_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -62,7 +62,9 @@ def test_spearman_less(
 
 @pytest.mark.active
 def test_spearman_greater(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    connect_to_three_VMs,
+    two_sample_big_remote,
+    two_sample_big_local,
 ):
     """
     This is our test for the Sails federated Spearman
@@ -71,15 +73,16 @@ def test_spearman_greater(
     :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
     """
     # Arrange
-    sample_0 = two_sample_big[0]
-    sample_1 = two_sample_big[1]
+    sample_0_remote = two_sample_big_remote[0]
+    sample_1_remote = two_sample_big_remote[1]
+    sample_0_local = two_sample_big_local[0]
+    sample_1_local = two_sample_big_local[1]
     alternative = "greater"
-    type_ranking = "unsafe"
+    clients = connect_to_three_VMs
 
     # Act
-    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    spearman_sail, p_value_sail = spearman(clients, sample_0_remote, sample_1_remote, alternative)
+    spearman_scipy, p_value_scipy = spearman_local(sample_0_local, sample_1_local, alternative)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)

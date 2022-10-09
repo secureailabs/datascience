@@ -1,17 +1,14 @@
 from typing import Tuple
 
 import pytest
-from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from scipy.stats import levene
-from sklearn.cluster import estimate_bandwidth
+from sail_safe_functions_orchestrator.statistics import levene, levene_local
 
 
 @pytest.mark.active
 def test_levene(
-    two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    connect_to_one_VM,
+    two_sample_small_two_remote,
+    two_sample_small_two_local,
 ):
     """
     This is our test for the Sails federated Levene test
@@ -20,13 +17,15 @@ def test_levene(
     :type two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
     """
     # Arrange
-    sample_0 = two_sample_small_two[0]
-    sample_1 = two_sample_small_two[1]
+    sample_0_remote = two_sample_small_two_remote[0]
+    sample_1_remote = two_sample_small_two_remote[1]
+    sample_0_local = two_sample_small_two_local[0]
+    sample_1_local = two_sample_small_two_local[1]
+    clients = [connect_to_one_VM]
 
     # Act
-    estimator = LeveneTest()
-    f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    f_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    f_statistic_sail, p_value_sail = levene(clients, sample_0_remote, sample_1_remote)
+    f_statistic_scipy, p_value_scipy = levene_local(sample_0_local, sample_1_local)
 
     # Assert
     assert f_statistic_scipy == pytest.approx(f_statistic_sail, 0.0001)
