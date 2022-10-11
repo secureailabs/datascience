@@ -6,6 +6,7 @@ from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import check_instance
+from sail_safe_functions_orchestrator import statistics
 from scipy.stats import rankdata
 
 
@@ -25,7 +26,7 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
 
     index_start = 0
     list_reference = []
-    for i, dataset_id in enumerate(sample_0.dict_reference_series):
+    for i, dataset_id in enumerate(sample_0.list_dataset_id):
         index_end = index_start + list_size[i]
         series = Series(dataset_id, data_model_series, array_rank[index_start:index_end].tolist())
         reference = ServiceReference.get_instance().series_to_reference(series)
@@ -37,14 +38,15 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
 
 def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     check_instance(sample_0, SeriesFederated)
-    list_domain_cdf, list_value_cdf = preprocessing.CumulativeDistributionFunction(sample_0)
-    sample_ranked_0 = sample_0.create_new()
-    for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
-        sample_ranked_0.add_series(
-            dataset_id,
-            RankCumulativeDistributionFunction.run(series, len(sample_0.to_numpy()), list_domain_cdf, list_value_cdf),
-        )
-    return sample_ranked_0
+    list_domain_cdf, list_value_cdf = preprocessing.cdf(sample_0)
+    list_reference = []
+    count = statistics.count(sample_0)
+    for dataset_id in sample_0.list_dataset_id:
+        client = sample_0.service_client.get_client(dataset_id)
+        reference_series_0 = sample_0.get_reference_series(dataset_id)
+        reference_series_0_ranked = client.call(RankCumulativeDistributionFunction, reference_series_0, count, list_domain_cdf, list_value_cdf)
+        list_reference.append(reference_series_0_ranked)
+    return SeriesFederated(sample_0.service_client, list_reference, reference_series_0.data_model_series)
 
 
 def rank(sample_0: SeriesFederated, type_ranking: str) -> SeriesFederated:

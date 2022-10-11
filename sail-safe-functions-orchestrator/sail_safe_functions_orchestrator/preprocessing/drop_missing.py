@@ -52,7 +52,7 @@ class DropMissing:
         list_reference = []
         for dataset_id in data_frame_source.list_dataset_id:
             client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
+            reference_data_frame = data_frame_source.get_reference_data_frame(dataset_id)
             list_reference.append(client.call(DropMissingPrecompute, reference_data_frame, axis, how, thresh, subset))
 
         return DataFrameFederated(

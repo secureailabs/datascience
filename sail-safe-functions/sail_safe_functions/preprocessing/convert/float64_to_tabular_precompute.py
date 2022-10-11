@@ -6,9 +6,9 @@ from sail_safe_functions_orchestrator.data_model.data_model_series import DataMo
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class Float64ToTabularPrecompute:
+class Float64ToTabularPrecompute(SafeFunctionBase):
     def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -> pandas.DataFrame:
         data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
         list_series = []

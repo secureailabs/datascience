@@ -6,9 +6,11 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
+    DataModelTabular
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
-from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import \
+    SerializerDatasetBase
 
 
 class SerializerDatasetCsvv1(SerializerDatasetBase):
@@ -38,7 +40,7 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
         dataset_name = header_dataset["dataset_name"]
         # TODO check header
         with ZipFile(path_file_data_model) as archive_data_model:
-            data_model_tabular = DataModelTabular.from_json(json.loads(archive_data_model.read("data_model.json")))
+            data_model_tabular = DataModelTabular.from_dict(json.loads(archive_data_model.read("data_model.json")))
         list_data_frame = []
         with ZipFile(path_file_data_content) as archive_data_content:
             for name_file in archive_data_content.namelist():
@@ -84,7 +86,7 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
         # write data model
         with ZipFile(path_file_data_model, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_model:
             name_file = "data_model.json"
-            zip_file_data_model.writestr(name_file, json.dumps(dataset_tabular.data_model.to_json()))
+            zip_file_data_model.writestr(name_file, json.dumps(dataset_tabular.data_model.to_dict()))
 
         # write data content
         with ZipFile(path_file_data_content, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_content:

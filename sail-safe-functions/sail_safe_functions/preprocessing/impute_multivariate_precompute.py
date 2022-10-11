@@ -8,9 +8,9 @@ from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sklearn.experimental import enable_iterative_imputer  # NOTE side effect import!!!
 from sklearn.impute import IterativeImputer, SimpleImputer
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class ImputeMultivariatePrecompute:
+class ImputeMultivariatePrecompute(SafeFunctionBase):
     """
     Imputes one or more columns with a multivariate strategy
     uses https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html#sklearn.impute.IterativeImputer

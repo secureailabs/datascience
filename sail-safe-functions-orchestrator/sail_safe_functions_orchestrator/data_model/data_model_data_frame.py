@@ -38,19 +38,20 @@ class DataModelDataFrame:
             raise Exception(f"Duplicate series: {data_model_series.series_name}")
         self.dict_data_model_series[data_model_series.series_name] = data_model_series
 
-    def to_json(self) -> Dict:
-        dict_json = {}
-        dict_json["data_frame_name"] = self.data_frame_name
-        dict_json["dict_data_model_series"] = {}
+    def to_dict(self) -> Dict:
+        dict = {}
+        dict["__type__"] = "DataModelDataFrame"
+        dict["data_frame_name"] = self.data_frame_name
+        dict["dict_data_model_series"] = {}
         for name_feature in self.dict_data_model_series:
-            dict_json["dict_data_model_series"][name_feature] = self.get_data_model_series(name_feature).to_json()
-        return dict_json
+            dict["dict_data_model_series"][name_feature] = self.get_data_model_series(name_feature).to_dict()
+        return dict
 
     @staticmethod
-    def from_json(dict_json: Dict) -> "DataModelDataFrame":
+    def from_dict(dict_json: Dict) -> "DataModelDataFrame":
         data_model_tabular = DataModelDataFrame(dict_json["data_frame_name"])
         for name_feature in dict_json["dict_data_model_series"]:
-            data_model_tabular.dict_data_model_series[name_feature] = DataModelSeries.from_json(
+            data_model_tabular.dict_data_model_series[name_feature] = DataModelSeries.from_dict(
                 dict_json["dict_data_model_series"][name_feature]
             )
         return data_model_tabular

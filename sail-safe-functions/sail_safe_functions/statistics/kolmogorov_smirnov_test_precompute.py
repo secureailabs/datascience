@@ -1,13 +1,14 @@
 from typing import List
 
 import numpy
-from pandas import Series
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from scipy import stats
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class KolmogorovSmirnovTestPrecompute:
+class KolmogorovSmirnovTestPrecompute(SafeFunctionBase):
+
     """
     Precomputes data for the KolmogorovSmirnov test
     """

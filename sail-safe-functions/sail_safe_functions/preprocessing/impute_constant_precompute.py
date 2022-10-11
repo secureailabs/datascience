@@ -6,9 +6,9 @@ from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class ImputeConstantPrecompute:
+class ImputeConstantPrecompute(SafeFunctionBase):
     """
     Imputes one or more columns with a constant value
     """
@@ -51,7 +51,25 @@ class ImputeConstantPrecompute:
                 series_pandas = data_frame_source[series_name].replace(np.nan, missing_value)
                 list_series.append(
                     Series.from_pandas(series_name, data_frame_source[series_name].data_model_series, series_pandas)
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+        if list_series_name_impute is None:
+            list_series_name_impute = data_frame_source.list_series_name
+        list_series = []
+        for series_name in data_frame_source.list_series_name:
+            if series_name in list_series_name_impute:
+                if missing_type_numeric and not is_numeric_dtype(data_frame_source[series_name]):
+                    raise ValueError(f"missing_value is numeric type but series with series_name {series_name} is not")
+                if not missing_type_numeric and not is_string_dtype(data_frame_source[series_name]):
+                    raise ValueError(f"missing_value is string type but series with series_name {series_name} is not")
+                series_pandas = data_frame_source[series_name].replace(np.nan, missing_value)
+                list_series.append(
+                    Series.from_pandas(series_name, data_frame_source[series_name].data_model_series, series_pandas)
                 )
+            else:
+                list_series.append(data_frame_source[series_name])
+        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        return reference_data_frame_target
             else:
                 list_series.append(data_frame_source[series_name])
         data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)

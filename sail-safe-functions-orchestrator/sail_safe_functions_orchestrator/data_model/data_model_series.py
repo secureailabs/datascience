@@ -173,28 +173,29 @@ class DataModelSeries:
             type_agregator=type_agregator,
         )
 
-    def to_json(self) -> Dict:
-        dict_json = {}
-        dict_json["series_name"] = self.series_name
-        dict_json["type_data_level"] = self.type_data_level
-        dict_json["unit"] = self.unit
-        dict_json["value_min"] = self.value_min
-        dict_json["value_max"] = self.value_max
-        dict_json["resolution"] = self.resolution
-        dict_json["list_value"] = self.list_value
-        dict_json["type_agregator"] = self.type_agregator
-        dict_json["measurement_source_name"] = self.measurement_source_name
-        return dict_json
+    def to_dict(self) -> Dict:
+        dict = {}
+        dict["__type__"] = "DataModelSeries"
+        dict["series_name"] = self.series_name
+        dict["type_data_level"] = self.type_data_level
+        dict["unit"] = self.unit
+        dict["value_min"] = self.value_min
+        dict["value_max"] = self.value_max
+        dict["resolution"] = self.resolution
+        dict["list_value"] = self.list_value
+        dict["type_agregator"] = self.type_agregator
+        dict["measurement_source_name"] = self.measurement_source_name
+        return dict
 
-    def from_json(dict_json: Dict) -> "DataModelSeries":
+    def from_dict(dict: Dict) -> "DataModelSeries":
         return DataModelSeries(
-            dict_json["series_name"],
-            dict_json["type_data_level"],
-            unit=dict_json["unit"],
-            value_min=dict_json["value_min"],
-            value_max=dict_json["value_max"],
-            resolution=dict_json["resolution"],
-            list_value=dict_json["list_value"],
-            type_agregator=dict_json["type_agregator"],
-            measurement_source_name=dict_json["measurement_source_name"],
+            dict["series_name"],
+            dict["type_data_level"],
+            unit=dict["unit"],
+            value_min=dict["value_min"],
+            value_max=dict["value_max"],
+            resolution=dict["resolution"],
+            list_value=dict["list_value"],
+            type_agregator=dict["type_agregator"],
+            measurement_source_name=dict["measurement_source_name"],
         )

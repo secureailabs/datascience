@@ -32,15 +32,13 @@ class ConvertToDatasetTabular:
         list_reference = []
         for dataset_id, dataset_refrence in dataset_source.dict_reference_dataset_longitudinal.items():
             dataset_name = dataset_id  # TODO fix this
-            list_reference.append(
-                # TODO use RPC here
-                ConvertToDatasetTabularPrecompute.run(
+            client = dataset_source.service_client.get_client(dataset_id)
+            dataset_tabular_reference = client.call(ConvertToDatasetTabularPrecompute,
                     dataset_refrence,
                     dataset_federation_id,
                     dataset_federation_name,
                     dataset_id,
                     dataset_name,
-                    data_model_tabular,
-                )
-            )
+                    data_model_tabular)
+            list_reference.append(dataset_tabular_reference)
         return DatasetTabularFederated(dataset_source.service_client, list_reference, data_model_tabular)

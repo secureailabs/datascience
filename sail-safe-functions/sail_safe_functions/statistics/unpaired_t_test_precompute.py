@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class UnpairedTTestPrecompute:
+class UnpairedTTestPrecompute(SafeFunctionBase):
     """
     Precomputes data for performing a unpaired t-test
     """

@@ -7,9 +7,9 @@ from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataF
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sklearn.impute import SimpleImputer
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class ImputeUnivariatePrecompute:
+class ImputeUnivariatePrecompute(SafeFunctionBase):
     """
     Imputes one or more columns with a univariate strategy
     """

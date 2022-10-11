@@ -102,3 +102,4 @@ class ServiceReference:
         if reference.reference_id not in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
+

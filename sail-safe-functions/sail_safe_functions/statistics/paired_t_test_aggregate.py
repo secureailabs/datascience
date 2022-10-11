@@ -1,9 +1,10 @@
 from typing import List, Tuple
 
 import numpy as np
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class PairedTTestAggregate:
+class PairedTTestAggregate(SafeFunctionBase):
     """
     Aggregates data for doing a paired t-test
     """

@@ -2,9 +2,10 @@ from typing import List
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
 
 import torch
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class ModelAverage:
+class ModelAverage(SafeFunctionBase):
     """
     This safe function averages a set of models
     """

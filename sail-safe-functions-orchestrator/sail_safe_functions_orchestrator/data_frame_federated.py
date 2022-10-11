@@ -7,36 +7,42 @@ from sail_safe_functions.preprocessing.select_series_precompute import SelectSer
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.service_client import ServiceClient
+from sail_safe_functions_orchestrator.service_client_base import ServiceClientBase
 
 
 class DataFrameFederated:
     # TODO reverse data_model_data_frame and list reference
     def __init__(
         self,
-        service_client: ServiceClient,
+        service_client: ServiceClientBase,
         list_reference: List[ReferenceDataFrame],
         data_model_data_frame: DataModelDataFrame,
     ) -> None:
-        self.service_client = service_client
-        self.data_model_data_frame = data_model_data_frame
-        self.dict_reference_data_frame = {}
+        self._service_client = service_client
+        self._data_model_data_frame = data_model_data_frame
+        self._dict_reference_data_frame = {}
         for reference in list_reference:
             self._add_reference_data_frame(reference)
 
     def _add_reference_data_frame(self, reference: ReferenceDataFrame):
-        if reference.dataset_id in self.dict_reference_data_frame:
+        if reference.dataset_id in self._dict_reference_data_frame:
             raise Exception(f"Duplicate data_frame for dataset_id: {reference.dataset_id}")
-        self.dict_reference_data_frame[reference.dataset_id] = reference
+        self._dict_reference_data_frame[reference.dataset_id] = reference
 
     def get_series(self, series_name: str) -> SeriesFederated:
         if series_name not in self.data_model_data_frame.dict_data_model_series:
             raise Exception(f"No such series: {series_name}")
         list_reference = []
-        for reference_data_frame in self.dict_reference_data_frame.values():
-            list_reference.append(SelectSeriesPrecompute.run(reference_data_frame, series_name))
+        for dataset_id, reference_data_frame in self._dict_reference_data_frame.items():
+            client = self._service_client.get_client(dataset_id)
+            reference_series = client.call(SelectSeriesPrecompute, reference_data_frame, series_name)
+            list_reference.append(reference_series)
         return SeriesFederated(self.service_client, list_reference, self.data_model_data_frame[series_name])
 
+    def get_reference_data_frame(self, dataset_id: str) -> ReferenceDataFrame:
+        if dataset_id not in self._dict_reference_data_frame:
+            raise Exception(f"No data_frame_reference for dataset_id: {dataset_id}")
+        return self._dict_reference_data_frame[dataset_id]
     # index section start
 
     def __delitem__(self, key) -> None:
@@ -54,10 +60,21 @@ class DataFrameFederated:
     # property section start
     @property
     def list_series_name(self) -> List[str]:
-        return self.data_model_data_frame.list_series_name
+        return self._data_model_data_frame.list_series_name
 
     @property
     def list_dataset_id(self):
-        return list(self.dict_reference_data_frame.keys())
+        return list(self._dict_reference_data_frame.keys())
 
+    @property
+    def data_model_data_frame(self) -> DataModelDataFrame:
+        return self._data_model_data_frame
+
+    @property
+    def service_client(self) -> ServiceClientBase:
+        return self._service_client
+
+    @property
+    def dict_reference_data_frame(self):
+        return self._dict_reference_data_frame.copy()  # TODO place holder, remove this in the next refactor
     # property section end

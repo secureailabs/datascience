@@ -1,13 +1,14 @@
 import math
 from typing import List
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class SkewnessAggregate:
+class SkewnessAggregate(SafeFunctionBase):
     """
     Aggregates data for computing skewness
     """
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -> float:
 
         """
         A Function to get the fedrated skewness value.
