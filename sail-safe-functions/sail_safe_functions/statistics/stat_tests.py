@@ -2,13 +2,13 @@ import math
 from typing import Dict, List, Tuple, Type
 
 import numpy as np
-from sail_scn_lib.data import RemoteSeries
+from sail_safe_functions.data import SeriesRemote
 from scipy import stats
 
 
 def chisquare(
-    sample_0: Type[RemoteSeries],
-    sample_1: Type[RemoteSeries],
+    sample_0: Type[SeriesRemote],
+    sample_1: Type[SeriesRemote],
 ) -> Dict:
     precompute = {}
     sample_0 = sample_0.series
@@ -60,7 +60,7 @@ def chisquare_agg(
 
 
 def kolmogorov_smirnovdef(
-    sample_0: Type[RemoteSeries],
+    sample_0: Type[SeriesRemote],
     sample_ranked_0: tuple,
     distribution: str,
     count_total: int,
@@ -92,8 +92,8 @@ def kolmogorov_smirnovdef_agg(
 
 
 def levene(
-    sample_0_series: Type[RemoteSeries],
-    sample_1_series: Type[RemoteSeries],
+    sample_0_series: Type[SeriesRemote],
+    sample_1_series: Type[SeriesRemote],
     mean_0: float,
     mean_1: float,
 ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
@@ -175,7 +175,7 @@ def levene_agg(
 
 
 def mann_whitney(
-    series_0: Type[RemoteSeries],
+    series_0: Type[SeriesRemote],
     series_concatenated_ranked: tuple,
 ) -> float:
     series_concatenated_ranked = np.array(series_concatenated_ranked)
@@ -187,8 +187,8 @@ def mann_whitney_agg(list_precompute: List[float]) -> float:
 
 
 def paired_t(
-    sample_0_series: Type[RemoteSeries],
-    sample_1_series: Type[RemoteSeries],
+    sample_0_series: Type[SeriesRemote],
+    sample_1_series: Type[SeriesRemote],
 ) -> List[float]:
     """Generates the geometric moments for use in a T-Test
     :param sample_0_series:  The series for sample_0
@@ -244,8 +244,8 @@ def paired_t_agg(
 
 
 def unpaired_t(
-    sample_0_series: Type[RemoteSeries],
-    sample_1_series: Type[RemoteSeries],
+    sample_0_series: Type[SeriesRemote],
+    sample_1_series: Type[SeriesRemote],
 ) -> List[float]:
     """Generates the geometric moments for use in a T-Test
     Parameters
@@ -411,7 +411,7 @@ def welch_t_agg(
 
 
 def wilcoxon_signed_rank(
-    sample_difference: Type[RemoteSeries],
+    sample_difference: Type[SeriesRemote],
     sample_absolute_difference_ranked: tuple,
 ) -> List[float]:
     rank_minus = np.sum((sample_difference.series.to_numpy() < 0) * np.array(sample_absolute_difference_ranked))

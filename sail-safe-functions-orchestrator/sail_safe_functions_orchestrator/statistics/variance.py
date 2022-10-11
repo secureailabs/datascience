@@ -1,6 +1,5 @@
 import numpy as np
-
-from .clients import variance_agg_client, variance_client
+from sail_safe_functions_orchestrator.statistics.clients import variance_agg_client, variance_client
 
 
 def variance(

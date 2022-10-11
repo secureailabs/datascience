@@ -1,6 +1,5 @@
 import numpy as np
-
-from .clients import mean_agg_client, mean_client
+from sail_safe_functions_orchestrator.statistics.clients import mean_agg_client, mean_client
 
 
 def mean(

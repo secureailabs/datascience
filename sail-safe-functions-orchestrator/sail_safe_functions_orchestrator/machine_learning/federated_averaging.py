@@ -3,10 +3,13 @@ from typing import List
 
 import torch
 from pandas import DataFrame
+from sail_safe_functions_orchestrator.machine_learning.client import (
+    model_average_client,
+    model_retrieve_client,
+    model_train_client,
+)
+from sail_safe_functions_orchestrator.machine_learning.model_utils import load_model_dict
 from zero import serializer_table
-
-from .client import model_average_client, model_retrieve_client, model_train_client
-from .model_utils import load_model_dict
 
 
 def federated_averaging(

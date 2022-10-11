@@ -1,10 +1,9 @@
 import math
 from typing import Tuple
 
+from sail_safe_functions_orchestrator.statistics.clients import pearson_agg_client, pearson_client
 from scipy import stats
 from scipy.stats import t
-
-from .clients import pearson_agg_client, pearson_client
 
 
 def pearson(

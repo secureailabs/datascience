@@ -4,13 +4,24 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 from pandas._libs.lib import no_default
+from sail_safe_functions.data.series import SeriesRemote
+from sail_safe_functions.data.typing import (
+    ArrayLike,
+    Axis,
+    Frequency,
+    IndexLabel,
+    Level,
+    Renamer,
+    Scalar,
+    Suffixes,
+    TimedeltaConvertibleTypes,
+    TimestampConvertibleTypes,
+    copy_doc,
+)
 from zero import ProxyObject, SecretObject
 
-from .series import RemoteSeries
-from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Renamer, Scalar, Suffixes, copy_doc
 
-
-class RemoteDataFrame:
+class DataFrameRemote:
     def __init__(
         self,
         d=None,
@@ -81,10 +92,10 @@ class RemoteDataFrame:
     ) -> Type[ProxyObject]:
         if isinstance(name, str):
             ans = self.frame[name]
-            ans = RemoteSeries(d=ans)
+            ans = SeriesRemote(d=ans)
         else:
             ans = self.frame[list(name)]
-            ans = RemoteDataFrame(d=ans)
+            ans = DataFrameRemote(d=ans)
         return ProxyObject(ans)
 
     @copy_doc(pd.DataFrame.dot)
@@ -93,7 +104,7 @@ class RemoteDataFrame:
         other: ArrayLike,
     ) -> Type[ProxyObject]:
         ans = self.frame.dot(other)
-        ans = RemoteDataFrame(d=ans)
+        ans = DataFrameRemote(d=ans)
         return ProxyObject(ans)
 
     @copy_doc(pd.DataFrame.to_numpy)
@@ -795,7 +806,7 @@ class RemoteDataFrame:
         level=None,
         origin: "str | TimestampConvertibleTypes" = "start_day",
         offset: "TimedeltaConvertibleTypes | None" = None,
-    ) -> "Resampler":
+    ) -> "None":
         ans = self.frame.resample(rule, axis, closed, label, convention, kind, loffset, base, on, level, origin, offset)
 
     @copy_doc(pd.DataFrame.to_timestamp)

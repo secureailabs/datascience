@@ -1,2 +1,2 @@
-from .federated_averaging import federated_averaging
-from .model_utils import LinearRegression, LogisticRegression
+from sail_safe_functions_orchestrator.machine_learning.federated_averaging import federated_averaging
+from sail_safe_functions_orchestrator.machine_learning.model_utils import LinearRegression, LogisticRegression

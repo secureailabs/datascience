@@ -1,13 +1,22 @@
-from typing import Any, Callable, Dict, Hashable, List, Literal, Optional, Type, Union
+from typing import Callable, Hashable, List, Literal, Optional, Type, Union
 
 import pandas as pd
 from pandas._libs.lib import no_default
+from sail_safe_functions.data.typing import (
+    ArrayLike,
+    Axis,
+    Frequency,
+    IndexLabel,
+    Level,
+    Scalar,
+    TimedeltaConvertibleTypes,
+    TimestampConvertibleTypes,
+    copy_doc,
+)
 from zero import ProxyObject, SecretObject
 
-from .typing import ArrayLike, Axis, Frequency, IndexLabel, Level, Scalar, copy_doc
 
-
-class RemoteSeries:
+class SeriesRemote:
     def __init__(
         self,
         d=None,
@@ -336,9 +345,7 @@ class RemoteSeries:
         ignore_index: bool = False,
         key: Optional[Callable] = None,
     ) -> Type[ProxyObject]:
-        ans = self.series.sort_index(
-            axis, level, ascending, inplace, kind, na_position, sort_remaining, ignore_index, key
-        )
+        ans = self.series.sort_index(axis, ascending, inplace, kind, na_position, ignore_index, key)
         return ProxyObject(ans)
 
     @copy_doc(pd.Series.argsort)
@@ -648,7 +655,7 @@ class RemoteSeries:
         level=None,
         origin: "str | TimestampConvertibleTypes" = "start_day",
         offset: "TimedeltaConvertibleTypes | None" = None,
-    ) -> "Resampler":
+    ) -> "None":
         ans = self.series.resample(
             rule, axis, closed, label, convention, kind, loffset, base, on, level, origin, offset
         )
@@ -756,7 +763,7 @@ class RemoteSeries:
         self,
     ) -> Type[ProxyObject]:
         ans = self.series.abs()
-        ans = RemoteSeries(d=ans)
+        ans = SeriesRemote(d=ans)
         return ProxyObject(ans)
 
     @copy_doc(pd.Series.any)
@@ -887,19 +894,6 @@ class RemoteSeries:
         **kwargs,
     ) -> Union[Scalar, pd.Series]:
         ans = self.series.sum(axis, skipna, level, numeric_only, min_count, **kwargs)
-        return ans
-
-    @copy_doc(pd.Series.prod)
-    def prod(
-        self,
-        axis: Axis = None,
-        skipna: bool = True,
-        level: Optional[Level] = None,
-        numeric_only: Optional[bool] = None,
-        min_count: int = 0,
-        **kwargs,
-    ) -> Union[Scalar, pd.Series]:
-        ans = self.series.prod(axis, skipna, level, numeric_only, min_count, **kwargs)
         return ans
 
     @copy_doc(pd.Series.prod)
@@ -1130,17 +1124,6 @@ class RemoteSeries:
         ans = self.series.rmod(other, level, fill_value, axis)
         return ProxyObject(ans)
 
-    @copy_doc(pd.Series.rtruediv)
-    def rtruediv(
-        self,
-        other: Union[Scalar, pd.Series],
-        level: Optional[Level] = None,
-        fill_value: Optional[Scalar] = None,
-        axis: Axis = 0,
-    ) -> Type[ProxyObject]:
-        ans = self.series.rtruediv(other, level, fill_value, axis)
-        return ProxyObject(ans)
-
     @copy_doc(pd.Series.divmod)
     def divmod(
         self,
@@ -1232,13 +1215,13 @@ class RemoteSeries:
     @copy_doc(pd.Series.sub)
     def sub(
         self,
-        other: "RemoteSeries",
+        other: "SeriesRemote",
         level: Optional[Level] = None,
         fill_value: Optional[Scalar] = None,
         axis: Axis = 0,
     ) -> Type[ProxyObject]:
-        if isinstance(other, RemoteSeries):
+        if isinstance(other, SeriesRemote):
             other = other.series
         ans = self.series.sub(other, level, fill_value, axis)
-        ans = RemoteSeries(d=ans)
+        ans = SeriesRemote(d=ans)
         return ProxyObject(ans)

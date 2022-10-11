@@ -1,8 +1,7 @@
+from sail_safe_functions_orchestrator.statistics.clients import levene_agg_client, levene_client
+from sail_safe_functions_orchestrator.statistics.mean import mean
 from scipy import stats
 from scipy.stats import distributions
-
-from .clients import levene_agg_client, levene_client
-from .mean import mean
 
 
 def levene(

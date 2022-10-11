@@ -1,8 +1,7 @@
 from typing import Tuple
 
 import numpy as np
-
-from .clients import min_max_agg_client, min_max_client
+from sail_safe_functions_orchestrator.statistics.clients import min_max_agg_client, min_max_client
 
 
 def min_max(

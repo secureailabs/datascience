@@ -1,7 +1,6 @@
+from sail_safe_functions_orchestrator.statistics.clients import student_t_agg_client, unpaired_t_client
 from scipy import stats
 from scipy.stats import t
-
-from .clients import student_t_agg_client, unpaired_t_client
 
 
 def student_t(

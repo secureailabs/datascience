@@ -3,9 +3,8 @@ from typing import Tuple
 import numpy
 import scipy
 from sail_safe_functions_orchestrator.data import utils
+from sail_safe_functions_orchestrator.statistics.clients import mann_whitney_agg_client, mann_whitney_client
 from scipy import stats
-
-from .clients import mann_whitney_agg_client, mann_whitney_client
 
 
 def mann_whitney(

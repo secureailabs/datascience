@@ -2,11 +2,11 @@ import math
 from typing import List, Tuple, Type
 
 import numpy as np
-from sail_safe_functions.data import RemoteSeries
+from sail_safe_functions.data import SeriesRemote
 
 
 def mean(
-    sample_0_dataframe: Type[RemoteSeries],
+    sample_0_dataframe: Type[SeriesRemote],
 ) -> Tuple[float, int]:  # there seems to be a problem here with this annotation
     sample_0 = sample_0_dataframe.series.to_numpy()
 
@@ -36,7 +36,7 @@ def mean_agg(
 
 
 def min_max(
-    series_sample: Type[RemoteSeries],
+    series_sample: Type[SeriesRemote],
 ) -> Tuple[float, float]:
     """This function is designed to counteract disclosure of the min and max while giving them estimates that
     are independant for sample size bigger than 2. The function guarantees that min <= sample_min and sample_max <= max
@@ -82,7 +82,7 @@ def min_max_agg(
 
 
 def skewness(
-    sample_0_dataframe: Type[RemoteSeries],
+    sample_0_dataframe: Type[SeriesRemote],
 ) -> List[float]:
     """Generates the geometric moments for use in a Skewness
     Parameters
@@ -152,8 +152,8 @@ def skewness_agg(
 
 
 def pearson(
-    sample_0_dataframe: Type[RemoteSeries],
-    sample_1_dataframe: Type[RemoteSeries],
+    sample_0_dataframe: Type[SeriesRemote],
+    sample_1_dataframe: Type[SeriesRemote],
 ) -> List[float]:
     """
     Parameters
@@ -168,13 +168,13 @@ def pearson(
     """
     sample_0 = None
     sample_1 = None
-    if isinstance(sample_0_dataframe, RemoteSeries):
+    if isinstance(sample_0_dataframe, SeriesRemote):
         sample_0 = sample_0_dataframe.series.to_numpy()
     elif isinstance(sample_0_dataframe, tuple):
         sample_0 = np.array(sample_0_dataframe)
     else:
         sample_0 = sample_0_dataframe
-    if isinstance(sample_1_dataframe, RemoteSeries):
+    if isinstance(sample_1_dataframe, SeriesRemote):
         sample_1 = sample_1_dataframe.series.to_numpy()
     elif isinstance(sample_1_dataframe, tuple):
         sample_1 = np.array(sample_1_dataframe)
@@ -247,7 +247,7 @@ def pearson_agg(
 
 
 def variance(
-    sample_0: Type[RemoteSeries],
+    sample_0: Type[SeriesRemote],
 ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
     sample_0 = sample_0.series.to_numpy()
 
@@ -281,7 +281,7 @@ def variance_agg(
 
 
 def kurtosis(
-    sample_0_dataframe: Type[RemoteSeries],
+    sample_0_dataframe: Type[SeriesRemote],
 ) -> List[float]:
     """Generates the geometric moments for use in a Kurtosis
     Parameters

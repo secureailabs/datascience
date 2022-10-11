@@ -2,9 +2,8 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions_orchestrator.statistics.clients import chisquare_agg_client, chisquare_client
 from scipy import stats
-
-from .clients import chisquare_agg_client, chisquare_client
 
 
 def chisquare(

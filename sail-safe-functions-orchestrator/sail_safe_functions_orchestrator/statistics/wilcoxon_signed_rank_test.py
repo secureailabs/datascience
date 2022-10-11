@@ -1,8 +1,10 @@
 import numpy
 import scipy
 from sail_safe_functions_orchestrator.data import utils
-
-from .clients import wilcoxon_signed_rank_agg_client, wilcoxon_signed_rank_client
+from sail_safe_functions_orchestrator.statistics.clients import (
+    wilcoxon_signed_rank_agg_client,
+    wilcoxon_signed_rank_client,
+)
 
 
 def wilcoxon_signed_rank(

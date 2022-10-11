@@ -2,12 +2,11 @@ from typing import Tuple
 
 import numpy as np
 from sail_safe_functions_orchestrator.data import utils
+from sail_safe_functions_orchestrator.statistics.clients import kolmogorov_smirnov_agg_client, kolmogorov_smirnov_client
+from sail_safe_functions_orchestrator.statistics.mean import mean
+from sail_safe_functions_orchestrator.statistics.variance import variance
 from scipy import stats
 from scipy.stats import kstwo
-
-from .clients import kolmogorov_smirnov_agg_client, kolmogorov_smirnov_client
-from .mean import mean
-from .variance import variance
 
 
 def kolmogorov_smirnov(

@@ -118,11 +118,11 @@ def dataframe_kidney_clean_remote(
     :param connect_to_one_VM: the clients object
     :type connect_to_one_VM: zero.ZeroClient
     :return: remote dataframe
-    :rtype: zero.RemoteDataFrame
+    :rtype: zero.DataFrameRemote
     """
     client = connect_to_one_VM
     df = dataframe_kidney_clean
-    return client.proxy("RemoteDataFrame", serializer_table[str(type(df))](df))
+    return client.proxy("DataFrameRemote", serializer_table[str(type(df))](df))
 
 
 @pytest.fixture
@@ -264,8 +264,8 @@ def two_sample_small_remote(
     sample_0_numpy = utils.array(client, sample_0_list)
     sample_1_numpy = utils.array(client, sample_1_list)
 
-    sample_0 = [client.proxy("RemoteSeries", sample_0_numpy)]
-    sample_1 = [client.proxy("RemoteSeries", sample_1_numpy)]
+    sample_0 = [client.proxy("SeriesRemote", sample_0_numpy)]
+    sample_1 = [client.proxy("SeriesRemote", sample_1_numpy)]
     return (sample_0, sample_1)
 
 
@@ -284,8 +284,8 @@ def two_sample_small_two_remote(
     sample_0_numpy = utils.array(client, [14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
     sample_1_numpy = utils.array(client, [34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
 
-    sample_0 = [client.proxy("RemoteSeries", sample_0_numpy)]
-    sample_1 = [client.proxy("RemoteSeries", sample_1_numpy)]
+    sample_0 = [client.proxy("SeriesRemote", sample_0_numpy)]
+    sample_1 = [client.proxy("SeriesRemote", sample_1_numpy)]
     return (sample_0, sample_1)
 
 
@@ -304,8 +304,8 @@ def two_sample_small_paired_remote(
     sample_0_numpy = utils.array(client, [30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
     sample_1_numpy = utils.array(client, [29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
 
-    sample_0 = [client.proxy("RemoteSeries", sample_0_numpy)]
-    sample_1 = [client.proxy("RemoteSeries", sample_1_numpy)]
+    sample_0 = [client.proxy("SeriesRemote", sample_0_numpy)]
+    sample_1 = [client.proxy("SeriesRemote", sample_1_numpy)]
     return (sample_0, sample_1)
 
 
@@ -325,7 +325,7 @@ def one_sample_normal_remote(
 
     sample_0_numpy = utils.random_normal(client, 0, 1, 17, 42)
 
-    sample_0 = [client.proxy("RemoteSeries", sample_0_numpy)]
+    sample_0 = [client.proxy("SeriesRemote", sample_0_numpy)]
     return sample_0
 
 
@@ -346,7 +346,7 @@ def two_sample_normal_remote(
     sample_0_numpy = utils.random_normal(client, 0, 1, 2000, 42)
     sample_1_numpy = utils.random_normal(client, 0, 1, 2000, 24)
 
-    return ([client.proxy("RemoteSeries", sample_0_numpy)], [client.proxy("RemoteSeries", sample_1_numpy)])
+    return ([client.proxy("SeriesRemote", sample_0_numpy)], [client.proxy("SeriesRemote", sample_1_numpy)])
 
 
 @pytest.fixture
@@ -567,7 +567,7 @@ def get_linear_federation_split(
     train_set = []
     for i in range(3):
 
-        train_data = clients[i].proxy("RemoteDataFrame", serializer_table[str(type(result[i]))](result[i]))
+        train_data = clients[i].proxy("DataFrameRemote", serializer_table[str(type(result[i]))](result[i]))
         train_set.append(train_data)
 
     return train_set, test
@@ -603,7 +603,7 @@ def get_kidney_federation_split(
 
     train_set = []
     for i in range(3):
-        train_data = clients[i].proxy("RemoteDataFrame", serializer_table[str(type(result[i]))](result[i]))
+        train_data = clients[i].proxy("DataFrameRemote", serializer_table[str(type(result[i]))](result[i]))
         train_set.append(train_data)
 
     return train_set, test
@@ -656,7 +656,7 @@ def get_iris_federation_split(
 
     train_set = []
     for i in range(3):
-        train_data = clients[i].proxy("RemoteDataFrame", serializer_table[str(type(result[i]))](result[i]))
+        train_data = clients[i].proxy("DataFrameRemote", serializer_table[str(type(result[i]))](result[i]))
         train_set.append(train_data)
 
     return train_set, test

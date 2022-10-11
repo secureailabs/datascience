@@ -1,7 +1,6 @@
 import numpy as np
+from sail_safe_functions_orchestrator.statistics.clients import skewness_agg_client, skewness_client
 from scipy import stats
-
-from .clients import skewness_agg_client, skewness_client
 
 
 def skewness(

@@ -3,16 +3,15 @@ from typing import List, Optional, Tuple, Type
 import numpy as np
 import pandas as pd
 import scipy
+from sail_safe_functions.data.dataframe import DataFrameRemote
+from sail_safe_functions.data.series import SeriesRemote
+from sail_safe_functions.data.typing import ArrayLike, copy_doc
 from sklearn.model_selection import train_test_split as split
-from zero import ProxyObject, SecretObject
-
-from .dataframe import RemoteDataFrame
-from .series import RemoteSeries
-from .typing import ArrayLike, copy_doc
+from zero import ProxyObject
 
 
 def cdf(
-    sample_0: Type[RemoteSeries],
+    sample_0: Type[SeriesRemote],
     domain_min: float,
     domain_max: float,
 ) -> Tuple[List[float], List[float], int]:
@@ -20,7 +19,7 @@ def cdf(
     generate cdf with raw data
 
     :param sample_0: _description_
-    :type sample_0: Type[RemoteSeries]
+    :type sample_0: Type[SeriesRemote]
     :param domain_min: _description_
     :type domain_min: float
     :param domain_max: _description_
@@ -91,7 +90,7 @@ def cdf_agg(
 
 
 def cdf_rank(
-    sample_0: Type[RemoteSeries],
+    sample_0: Type[SeriesRemote],
     size_sample_total: int,
     list_domain_cdf: List[float],
     list_value_cdf: List[float],
@@ -100,7 +99,7 @@ def cdf_rank(
     rank cdf from raw data
 
     :param sample_0: _description_
-    :type sample_0: Type[RemoteSeries]
+    :type sample_0: Type[SeriesRemote]
     :param size_sample_total: _description_
     :type size_sample_total: int
     :param list_domain_cdf: _description_
@@ -128,14 +127,14 @@ def load_df_from_csv(
     :rtype: Type[ProxyObject]
     """
     df = pd.read_csv(path)
-    df = RemoteDataFrame(d=df)
+    df = DataFrameRemote(d=df)
     return ProxyObject(df)
 
 
 @copy_doc(pd.concat)
 def concat(
-    obj1: Type[RemoteSeries],
-    obj2: Type[RemoteSeries],
+    obj1: Type[SeriesRemote],
+    obj2: Type[SeriesRemote],
     axis: int = 0,
     join: str = "outer",
     ignore_index: bool = False,
@@ -147,7 +146,7 @@ def concat(
     copy: bool = True,
 ) -> Type[ProxyObject]:
     ans = pd.concat([obj1.series, obj2.series])
-    ans = RemoteSeries(d=ans)
+    ans = SeriesRemote(d=ans)
     return ProxyObject(ans)
 
 
@@ -162,8 +161,8 @@ def train_test_split(
 ):
     X_train, X_test, y_train, y_test = split(*arrays, test_size, train_size, random_state, shuffle, stratify)
     # to do: dimension check
-    X_train = RemoteDataFrame(d=X_train)
-    X_test = RemoteDataFrame(d=X_test)
-    y_train = RemoteSeries(d=y_train)
-    y_test = RemoteSeries(d=y_test)
+    X_train = DataFrameRemote(d=X_train)
+    X_test = DataFrameRemote(d=X_test)
+    y_train = SeriesRemote(d=y_train)
+    y_test = SeriesRemote(d=y_test)
     return ProxyObject(X_train), ProxyObject(X_test), ProxyObject(y_train), ProxyObject(y_test)

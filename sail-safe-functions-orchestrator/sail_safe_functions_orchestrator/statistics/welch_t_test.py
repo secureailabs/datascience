@@ -1,7 +1,6 @@
+from sail_safe_functions_orchestrator.statistics.clients import unpaired_t_client, welch_t_agg_client
 from scipy import stats
 from scipy.stats import t
-
-from .clients import unpaired_t_client, welch_t_agg_client
 
 
 def welch_t(

@@ -2,10 +2,9 @@ from tokenize import String
 from typing import Type
 
 import torch
+from sail_safe_functions.machine_learning.ModelUtility import ModelUtility, load_model_dict
 from torch.autograd import Variable
 from zero import ProxyObject, serializer_table
-
-from .ModelUtility import ModelUtility, load_model_dict
 
 
 def model_train(

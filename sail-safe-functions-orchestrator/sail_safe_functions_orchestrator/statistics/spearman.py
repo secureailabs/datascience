@@ -1,9 +1,8 @@
 from typing import Tuple
 
 from sail_safe_functions_orchestrator.data import utils
+from sail_safe_functions_orchestrator.statistics.pearson import pearson
 from scipy import stats
-
-from .pearson import pearson
 
 
 def spearman(

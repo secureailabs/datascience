@@ -1,7 +1,6 @@
 import torch
+from sail_safe_functions.machine_learning.ModelUtility import ModelUtility, load_model_dict
 from zero import serializer_table
-
-from .ModelUtility import ModelUtility, load_model_dict
 
 
 def model_retrieve(

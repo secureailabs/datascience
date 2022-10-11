@@ -1,1 +1,1 @@
-from .pragmatic_noise import add_noise_to_dataset
+from sail_safe_functions.privacy_barrier.pragmatic_noise import add_noise_to_dataset

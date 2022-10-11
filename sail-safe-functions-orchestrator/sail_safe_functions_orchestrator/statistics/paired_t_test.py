@@ -1,9 +1,8 @@
 from typing import Tuple
 
+from sail_safe_functions_orchestrator.statistics.clients import paired_t_agg_client, paired_t_client
 from scipy import stats
 from scipy.stats import t
-
-from .clients import paired_t_agg_client, paired_t_client
 
 
 def paired_t(

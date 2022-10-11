@@ -1,6 +1,5 @@
+from sail_safe_functions_orchestrator.statistics.clients import kurtosis_agg_client, kurtosis_client
 from scipy import stats
-
-from .clients import kurtosis_agg_client, kurtosis_client
 
 
 def kurtosis(
