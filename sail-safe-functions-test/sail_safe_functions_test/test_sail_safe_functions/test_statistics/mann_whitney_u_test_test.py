@@ -1,12 +1,8 @@
 import numpy
 import pandas
 import pytest
-from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import (
-    MannWhitneyUTest,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import MannWhitneyUTest
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy import stats
 
 
@@ -18,14 +14,8 @@ def test_mann_whitney_u_test_two_sided():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_1", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
     type_ranking = "unsafe"
     # Act
@@ -49,14 +39,8 @@ def test_mann_whitney_u_test_less():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_1", numpy.random.normal(0, 1, sample_size))
     alternative = "less"
     type_ranking = "unsafe"
     # Act
@@ -80,14 +64,8 @@ def test_mann_whitney_u_test_greater():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal()
-    sample_0.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
-    sample_1 = SeriesFederatedLocal()
-    sample_1.add_series(
-        "dataset_0", pandas.Series(numpy.random.normal(0, 1, sample_size))
-    )
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_1", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
     # Act

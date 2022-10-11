@@ -8,7 +8,7 @@ from sail_safe_functions.preprocessing.cdf_precompute import (
     CumulativeDistributionFunctionPrecompute,
 )
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.statistics.min_max import MinMax
+from sail_safe_functions_orchestrator import statistics
 
 
 def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
@@ -29,13 +29,14 @@ class CumulativeDistributionFunction:
     @staticmethod
     def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
 
-        domain_min, domain_max = MinMax.min_max(sample_0)
-
+        domain_min, domain_max = statistics.min_max(sample_0)
         list_precompute = []
-        for series in sample_0.dict_series.values():  # TODO rework abcs
-            list_precompute.append(
-                CumulativeDistributionFunctionPrecompute.run(
-                    series, domain_min, domain_max
+        for dataset_id in sample_0.list_dataset_id:  # TODO rework abcs
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series = sample_0.get_reference_series(dataset_id)
+            list_precompute.append(client.call(
+                CumulativeDistributionFunctionPrecompute,
+                    reference_series, domain_min, domain_max
                 )
             )
         return CumulativeDistributionFunctionAggregate.run(

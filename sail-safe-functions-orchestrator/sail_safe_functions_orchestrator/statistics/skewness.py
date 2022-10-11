@@ -38,9 +38,11 @@ class Skewness(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
 
         # Calculating precompute
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(SkewnessPrecompute.run(series))
-
+        list_list_precompute = []
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            list_list_precompute.append(client.call(SkewnessPrecompute, reference_series_0))
         # Final Skew Value
         skewness = SkewnessAggregate.run(list_list_precompute)
         return skewness

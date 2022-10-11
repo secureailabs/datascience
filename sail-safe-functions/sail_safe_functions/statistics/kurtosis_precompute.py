@@ -1,27 +1,30 @@
 from typing import List
 
 import numpy as np
-import pandas as pd
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class KurtosisPrecompute:
+class KurtosisPrecompute(SafeFunctionBase):
+
     """
     Precomputes data for Kurtosis
     """
 
-    def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
+    def run(sample_0_series: ReferenceSeries) -> List[float]:
         """Generates the geometric moments for use in a Kurtosis
 
         Parameters
         ----------
-        sample_0_dataframe : pd.DataFrame
-            The dataframe for sample_0
+        sample_0_series : ReferenceSeries
+            The series for sample_0
         Returns
         -------
         a list of 3 floats precomputes value
         """
 
-        sample_0 = sample_0_dataframe.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         # First
         sum_x_0 = np.sum(sample_0)
         # second

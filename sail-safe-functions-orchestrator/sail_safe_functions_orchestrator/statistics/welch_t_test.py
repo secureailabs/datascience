@@ -1,8 +1,6 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.unpaired_t_test_precompute import (
-    UnpairedTTestPrecompute,
-)
+from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from sail_safe_functions.statistics.welch_t_test_aggregate import WelchTTestAggregate
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -43,13 +41,16 @@ class WelchTTest(Estimator):
         :rtype: Float, Float
         """
         list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        for key_dataframe in list_key_dataframe:
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            reference_series_1 = sample_1.get_reference_series(dataset_id)
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(
-                    sample_0.dict_series[key_dataframe],
-                    sample_1.dict_series[key_dataframe],
+                client.call(
+                    UnpairedTTestPrecompute,
+                    reference_series_0,
+                    reference_series_1,
                 )
             )
 

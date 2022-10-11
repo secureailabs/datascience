@@ -1,9 +1,7 @@
 from typing import Tuple
 
 from sail_safe_functions.statistics.paired_t_test_aggregate import PairedTTestAggregate
-from sail_safe_functions.statistics.paired_t_test_precompute import (
-    PairedTTestPrecompute,
-)
+from sail_safe_functions.statistics.paired_t_test_precompute import PairedTTestPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
@@ -87,13 +85,16 @@ class PairedTTest(Estimator):
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
         list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_series.keys())
-        # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        for key_dataframe in list_key_dataframe:
+        # TODO deal with posibilty sample_0 and sample_1 do not share same child frames: check indexes are the same
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            reference_series_1 = sample_1.get_reference_series(dataset_id)
             list_list_precompute.append(
-                PairedTTestPrecompute.run(
-                    sample_0.dict_series[key_dataframe],
-                    sample_1.dict_series[key_dataframe],
+                client.call(
+                    PairedTTestPrecompute,
+                    reference_series_0,
+                    reference_series_1,
                 )
             )
 

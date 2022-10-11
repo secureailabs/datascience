@@ -34,8 +34,10 @@ class MinMax(Estimator):
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
         # Calculating precompute
-        for series in sample_0.dict_series.values():  # TODO replace these
-            list_list_precompute.append(MinMaxPrecompute.run(series))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            list_list_precompute.append(client.call(MinMaxPrecompute, reference_series_0))
 
         # Final min max values
         min, max = MinMaxAggregate.run(list_list_precompute)

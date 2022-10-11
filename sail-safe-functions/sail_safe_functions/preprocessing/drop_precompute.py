@@ -1,7 +1,7 @@
 import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class DropPrecompute:
+class DropPrecompute(SafeFunctionBase):
     """
     Drop specific rows or columns
     """

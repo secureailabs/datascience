@@ -1,8 +1,9 @@
 import math
-from typing import List
+from typing import List, Tuple
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class PearsonAggregate(object):
+class PearsonAggregate(SafeFunctionBase):
     """
     Computing the pearson Aggregate
 
@@ -13,7 +14,7 @@ class PearsonAggregate(object):
     def __init__(self) -> None:
         super().__init__()
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -> Tuple[float, float]:
         """
         This function run to calculate the final precompute
         and calculate the federated pearson value.
@@ -56,8 +57,6 @@ class PearsonAggregate(object):
 
         E_xy = sum_x1_into_x2 / size_sample_0
 
-        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (
-            sample_standard_deviation_0 * sample_standard_deviation_1
-        )
+        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
         degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom

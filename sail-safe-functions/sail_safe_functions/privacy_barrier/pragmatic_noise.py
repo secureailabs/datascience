@@ -2,16 +2,16 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class PragmaticNoise:
+class PragmaticNoise(SafeFunctionBase):
     """
     Adds noise to categorical, boolean, numeric and continous columns in a pandas dataframe
     """
 
-    def col_noise_numeric(
-        self, column: pd.Series, col_resolution: float, scale: float
-    ) -> pd.Series:
+    def col_noise_numeric(self, column: pd.Series, col_resolution: float, scale: float) -> pd.Series:
         """
         Adds noise to numeric and continuous columns scaled
         to one standard deviation from the mean.
@@ -31,6 +31,7 @@ class PragmaticNoise:
         :return noised_column: The noised column to be added to the noised dataset
         :type noised_column: pd.Series
         """
+
         noised_column = column.copy()
         # find std_dev to help us scale our noise addition
         std_dev = noised_column.std()
@@ -39,14 +40,13 @@ class PragmaticNoise:
         # For each row in our column
         for i in range(len(noised_column)):
             # scale noise to the resolution size for this column
-            noise[i] = noise[i] - (noise[i] % col_resolution)
+            if col_resolution is not None:
+                noise[i] = noise[i] - (noise[i] % col_resolution)
             # Add the noise to the column
             noised_column[i] += noise[i]
         return noised_column
 
-    def col_noise_categorical(
-        self, column: pd.Series, list_values: List[str], frequency: float
-    ) -> pd.Series:
+    def col_noise_categorical(self, column: pd.Series, list_values: List[str], frequency: float) -> pd.Series:
         """
         Adds noise to categorical columns by swapping categories of elements based
         on frequency of occurence in the column at given intervals.
@@ -83,7 +83,7 @@ class PragmaticNoise:
     def run(
         self,
         dataset: pd.DataFrame,
-        schema: dict,
+        data_model: DataModelDataFrame,
         noise_scale: float,
         cat_swap_frequency: float,
     ) -> pd.DataFrame:
@@ -94,7 +94,7 @@ class PragmaticNoise:
         :type dataset: pd.DataFrame
 
         :param schema: The schema associated with the original dataset
-        :type schema: dict
+        :type schema: DataModelDataFrame
 
         :param noise_scale: This scales the magnitude of noise to be added to numeric values.
         1 is noise of up to 100% of a standard deviation from the column mean.
@@ -109,24 +109,23 @@ class PragmaticNoise:
         :type noised_dataset: pd.DataFrame
         """
         noised_dataset = dataset.copy()
-        for column in schema["dict_column"]:
-            if column == "classification":
+        for series_name in data_model.list_series_name:
+            data_model_series = data_model[series_name]
+            if series_name == "classification":
                 # print("Skipped Classification Column: "+column)
                 continue
-            elif schema["dict_column"][column]["type_data_level"] == "interval":
+            elif data_model_series.type_data_level == DataModelSeries.DataLevelInterval:
                 # print("Noising Numeric Column: "+ column)
-                noised_dataset[column] = self.col_noise_numeric(
-                    dataset[schema["dict_column"][column]["name_column"]],
-                    schema["dict_column"][column]["resolution"],
+                noised_dataset[series_name] = self.col_noise_numeric(
+                    dataset[series_name],
+                    data_model_series.resolution,
                     scale=noise_scale,
                 )
-            elif schema["dict_column"][column]["type_data_level"] == "categorical":
+            elif data_model_series.type_data_level == DataModelSeries.DataLevelCategorical:
                 # print("Noising Categorical Column: "+ column)
-                noised_dataset[
-                    schema["dict_column"][column]["name_column"]
-                ] = self.col_noise_categorical(
-                    dataset[schema["dict_column"][column]["name_column"]],
-                    schema["dict_column"][column]["list_value"],
+                noised_dataset[series_name] = self.col_noise_categorical(
+                    dataset[series_name],
+                    data_model_series.list_value,
                     frequency=cat_swap_frequency,
                 )
 

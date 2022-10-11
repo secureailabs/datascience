@@ -1,27 +1,29 @@
 from typing import List
 
 import numpy as np
-import pandas as pd
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class SkewnessPrecompute:
+class SkewnessPrecompute(SafeFunctionBase):
     """
     Precomputes data for computing skewness
     """
 
-    def run(sample_0_dataframe: pd.DataFrame) -> List[float]:
+    def run(sample_0_series: ReferenceSeries) -> List[float]:
         """Generates the geometric moments for use in a Skewness
 
         Parameters
         ----------
-        sample_0_dataframe : pd.DataFrame
-            The dataframe for sample_0
+        sample_0_series : ReferenceSeries
+            The reference to the series for sample_0
         Returns
         -------
         a list of 3 floats precompute value
         """
 
-        sample_0 = sample_0_dataframe.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         # First
         sum_x_0 = np.sum(sample_0)
         # second

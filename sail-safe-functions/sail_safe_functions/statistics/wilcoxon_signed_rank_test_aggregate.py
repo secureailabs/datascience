@@ -1,13 +1,13 @@
-import math
-from typing import List
+from typing import List, Tuple
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class WilcoxonSingedRankTestAggregate:
+class WilcoxonSingedRankTestAggregate(SafeFunctionBase):
     """
     Aggregates data for WilcoxonSingedRankTest
     """
 
-    def run(list_precompute: List):
+    def run(list_precompute: List) -> Tuple[float, float]:
         rank_minus = 0
         rank_plus = 0
         for precompute in list_precompute:

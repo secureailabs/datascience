@@ -1,12 +1,16 @@
 from typing import List
 
-import pandas as pd
+from pandas import DataFrame as DataFramePandas
 from pandas.api.types import is_numeric_dtype, is_string_dtype
+from sail_safe_functions_orchestrator.data_frame import DataFrame
+from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sklearn.experimental import enable_iterative_imputer  # NOTE side effect import!!!
 from sklearn.impute import IterativeImputer, SimpleImputer
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class ImputeMultivariatePrecompute:
+class ImputeMultivariatePrecompute(SafeFunctionBase):
     """
     Imputes one or more columns with a multivariate strategy
     uses https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html#sklearn.impute.IterativeImputer
@@ -18,15 +22,15 @@ class ImputeMultivariatePrecompute:
     """
 
     def run(
-        data_frame: pd.DataFrame,
-        list_name_column: List[str],
+        reference_data_frame_source: ReferenceDataFrame,
+        list_series_name_impute: List[str],
         imputation_order: str,
         max_iter: int = 10,
-    ) -> pd.DataFrame:
+    ) -> ReferenceDataFrame:
         """Imputes one or more columns with a multivariate strategy
 
         :param data_frame: Input dataframe
-        :type data_frame: pd.DataFrame
+        :type data_frame: ReferenceDataFrame
         :param list_name_column: a list of column names to impute, set to None to do all columns
         :type list_name_column: list[str]
         :param imputation_order: imputation_order, must be {`ascending`, `descending`}
@@ -37,47 +41,55 @@ class ImputeMultivariatePrecompute:
             The stopping criterion is met once max(abs(X_t - X_{t-1}))/max(abs(X[known_vals])) < tol, where X_t is X at iteration t.
         :type max_iter: int
         :return: Output dataframe
-        :rtype: pd.DataFrame
+        :rtype: ReferenceDataFrame
         """
 
         # if strategy not in {"mean", "median", "most_frequent"}:
         #     raise ValueError("parameter `strategy` must be either mean, median or most_frequent")
         if imputation_order not in {"ascending", "descending"}:
-            raise ValueError(
-                "parameter `imputation_order` must be either in {`ascending`, `descending`}"
-            )
-        numerical_imputer = IterativeImputer(
-            imputation_order=imputation_order, max_iter=max_iter
-        )
+            raise ValueError("parameter `imputation_order` must be either in {`ascending`, `descending`}")
+        numerical_imputer = IterativeImputer(imputation_order=imputation_order, max_iter=max_iter)
         string_imputer = SimpleImputer(strategy="most_frequent")
 
         # Gather columns for imputation
-        data_frame = data_frame.copy()
-        if list_name_column is None:
-            list_name_column_selected = list(data_frame.columns)
-        else:
-            list_name_column_selected = list_name_column
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+        if list_series_name_impute is None:
+            list_series_name_impute = data_frame_source.list_series_name
 
         # Gather numerical columns
-        list_name_column_numeric = []
-        for name_column in list(data_frame.columns):
-            if is_numeric_dtype(data_frame[name_column]):
-                list_name_column_numeric.append(name_column)
+        list_series_name_numeric = []
+        for series_name in list(data_frame_source.list_series_name):
+            if is_numeric_dtype(data_frame_source[series_name]):
+                list_series_name_numeric.append(series_name)
 
         # Impute numerical columns
         array_numeric_imputed = numerical_imputer.fit_transform(
-            data_frame[list_name_column_numeric]
+            data_frame_source.select_series(list_series_name_numeric)
         )
-        data_frame_numeric_imputed = pd.DataFrame(
-            array_numeric_imputed, columns=list_name_column_numeric
-        )
+        data_frame_numeric_imputed = DataFramePandas(array_numeric_imputed, columns=list_series_name_numeric)
 
+        list_series = []
         # Insert numerical columns
-        for name_column in list_name_column_selected:
-            if is_numeric_dtype(data_frame[name_column]):
-                data_frame[name_column] = data_frame_numeric_imputed[name_column]
-            elif is_string_dtype(data_frame[name_column]):
-                data_frame[name_column] = string_imputer.fit_transform(
-                    data_frame[[name_column]]
+        for series_name in data_frame_source.list_series_name:
+
+            if series_name in list_series_name_impute:
+                if series_name in list_series_name_numeric:
+                    series_list = data_frame_numeric_imputed[series_name].tolist()
+
+                elif is_string_dtype(data_frame_source[series_name]):
+                    series_list = string_imputer.fit_transform(data_frame_source.select_series([series_name]))[
+                        :, 0
+                    ].tolist()
+                series = Series(
+                    data_frame_source.dataset_id,
+                    data_frame_source[series_name].data_model_series,
+                    series_list,
                 )
-        return data_frame
+                series.index = data_frame_source[series_name].index  # reattach index that sklearn removed
+                list_series.append(series)
+            else:
+                list_series.append(data_frame_source[series_name])
+
+        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        return reference_data_frame_target

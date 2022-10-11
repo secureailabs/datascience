@@ -1,8 +1,8 @@
 import torch
 from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class ModelRetrieve:
+class ModelRetrieve(SafeFunctionBase):
     """
     Retrieves a given model back to the orchestrator
     """

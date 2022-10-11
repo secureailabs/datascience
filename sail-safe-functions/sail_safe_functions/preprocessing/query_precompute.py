@@ -1,15 +1,17 @@
-from typing import Any, List
+from typing import List
 
-import pandas
+from sail_safe_functions_orchestrator.data_frame import DataFrame
+from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class QueryPrecompute:
+class QueryPrecompute(SafeFunctionBase):
     """
     Query the columns of a DataFrame with a boolean expression.
     """
 
     def run(
-        data_frame: pandas.DataFrame,
+        reference_data_frame: ReferenceDataFrame,
         query_expresion: str,
         parser: str,
         local_dict: dict,
@@ -31,9 +33,18 @@ class QueryPrecompute:
         :return: DataFrame resulting from the provided query expression.
         :rtype: List
         """
-        return data_frame.query(
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame)
+        data_frame_pandas = data_frame_source.query(  # TODO overload this one
             query_expresion,
             parser=parser,
             local_dict=local_dict,
             global_dict=global_dict,
         )
+        data_frame_target = DataFrame.from_pandas(
+            data_frame_source.dataset_id,
+            data_frame_source.data_frame_name,
+            data_frame_source.data_model_data_frame,
+            data_frame_pandas,
+        )
+
+        return ServiceReference.get_instance().data_frame_to_reference(data_frame_target)

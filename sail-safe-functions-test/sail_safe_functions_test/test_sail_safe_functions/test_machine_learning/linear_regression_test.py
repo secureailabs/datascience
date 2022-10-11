@@ -1,20 +1,16 @@
-import pytest
-from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+import random
 
-from sail_safe_functions_orchestrator.machine_learning.federated_averaging import (
-    federated_averaging,
-)
-from helper_libs.shared.models.LinearRegression import LinearRegression
-
+import numpy as np
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+import pytest
+import torch
+from helper_libs.shared.models.LinearRegression import LinearRegression
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.machine_learning.federated_averaging import federated_averaging
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sklearn.datasets import load_iris
 from sklearn.metrics import r2_score
-import torch
-import numpy as np
-
-
-import random
+from sklearn.preprocessing import OneHotEncoder
 
 
 def get_basic_linear_dataframe():
@@ -183,13 +179,18 @@ def test_basic_linear_data_acceptable():
 
 
 @pytest.mark.active
-def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+def test_linear_kidney_data_acceptable(data_frame_federated_kidney: DataFrameFederated):
     """
     This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
     to see whether it meets a a threshold of 0.95 in order to pass this test.
     TODO: currently a suitable set of inputs was not found to predict the kidny data well. For now X and Y are clones of each other
     """
+
     # Arrange
+
+    reference_data_frame_source = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    data_frame = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+
     random_seed = 1
     torch.manual_seed(random_seed)
     torch.cuda.manual_seed(random_seed)
@@ -197,7 +198,7 @@ def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
     torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
 
-    dataframe = pd.get_dummies(data=dataframe_kidney_clean)
+    dataframe = pd.get_dummies(data=data_frame.copy())
     data_federation, test = get_test_federation_split(dataframe)
 
     # Action

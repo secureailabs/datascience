@@ -1,7 +1,9 @@
 from typing import List, Tuple
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class MinMaxAggregate:
+class MinMaxAggregate(SafeFunctionBase):
+
     """
     Aggregates min and max for a given sample
     """

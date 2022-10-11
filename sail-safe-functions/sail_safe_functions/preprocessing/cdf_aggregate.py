@@ -2,9 +2,9 @@ from typing import List, Tuple
 
 import numpy
 from scipy import interpolate
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-
-class CumulativeDistributionFunctionAggregate:
+class CumulativeDistributionFunctionAggregate(SafeFunctionBase):
     """
     Aggregates data for a federated cdf
     """
