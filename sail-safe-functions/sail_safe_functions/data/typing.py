@@ -47,7 +47,7 @@ Shape = Tuple[int, ...]
 Suffixes = Tuple[Optional[str], Optional[str]]
 Ordered = Optional[bool]
 # JSONSerializable = Optional[Union[PythonScalar, List, Dict]]
-Frequency = Union[str, "DateOffset"]
+Frequency = Union[str]
 # Axes = Collection[Any]
 
 # RandomState = Union[
