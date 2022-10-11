@@ -56,8 +56,7 @@ def tuple_kidney_schema_dataframe(
 
     schema = utils.load_schema(connect_to_one_VM, path_file_json)
     rdf = utils.load_df_from_csv(connect_to_one_VM, path_file_csv)
-    dataframe = DataFrameFederated()
-    dataframe.add(rdf)
+    dataframe = rdf
     return (schema, dataframe)
 
 
@@ -74,8 +73,7 @@ def data_frame_federated_kidney(
     path_file_csv = f"{DATA_PATH}/data_csv_kidney/kidney_disease.csv"
     rdf = utils.load_df_from_csv(connect_to_one_VM, path_file_csv)
 
-    data_frame_federated_kidney = DataFrameFederated()
-    data_frame_federated_kidney.add(rdf)
+    data_frame_federated_kidney = rdf
     return data_frame_federated_kidney
 
 
