@@ -1,27 +1,59 @@
 import json
-import statistics
+import os
+import shutil
+import tempfile
 import zipfile
-from typing import Dict, List
+from io import BytesIO
+from zipfile import ZIP_DEFLATED, ZipFile
 
 import dateutil.parser
-import pandas
-from sail_safe_functions_orchestrator.data_frame_logitudinal import DataFrameLogitudinal
+from sail_safe_functions_orchestrator.data_model_longitudinal import DataModelLongitudinal
+from sail_safe_functions_orchestrator.dataset_longitudinal import DatasetLongitudinal
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
 
 
-class ReadZipJsonFhirPrecompute:
-    def run(path_file_jsonzip_source: str):
-        # 1. Covert patients into events
+class SerializerDatasetFhirv1(SerializerDatasetBase):
+    # A general note on the ZipFile package: The initializer of ZipFile takes a fourth argument called allowZip64.
+    # It’s a Boolean argument that tells ZipFile to create ZIP files with the .zip64 extension for files larger than 4 GB.
+
+    # zipfile.ZIP_DEFLATED	Deflate	zlib
+    # zipfile.ZIP_BZIP2	    Bzip2	bz2
+    # zipfile.ZIP_LZMA	    LZMA	lzma
+    def __init__(self) -> None:
+        super().__init__("fhirv1")
+
+    def read_dataset(self, dataset_id):
+        pass
+
+    def read_dataset_for_path(self, path_dir_dataset) -> DatasetLongitudinal:
         list_patient = []
-        with zipfile.ZipFile(path_file_jsonzip_source, "r") as zip_file:
-            for name_file in zip_file.namelist():  # TODO change to all
+        path_file_header = os.path.join(path_dir_dataset, "dataset_header.json")
+        path_file_data_model = os.path.join(path_dir_dataset, "data_model.zip")
+        path_file_data_content = os.path.join(path_dir_dataset, "data_content.zip")
+
+        # read header
+        with open(path_file_header, "r") as file:
+            dataset_header = json.load(file)
+        if self.dataset_packaging_format != dataset_header["dataset_packaging_format"]:
+            raise Exception()
+
+        # data model
+        with ZipFile(path_file_data_model) as archive_data_model:
+            # header_dataset = json.loads(archive_data_model.read("data"))
+            data_model = DataModelLongitudinal.from_json({})
+
+        # data content
+        with ZipFile(path_file_data_content) as archive_data_content:
+            for name_file in archive_data_content.namelist():
                 if ".json" not in name_file:
-                    continue
+                    raise Exception(f"Non json file in fhirv1 archive: {name_file}")
+                patient = json.loads(archive_data_content.read(name_file))
+                list_patient.append(self.process_patient(patient))
 
-                patient = json.loads(zip_file.read(name_file))
-                list_patient.append(ReadZipJsonFhirPrecompute.process_patient(patient))
-        return DataFrameLogitudinal(list_patient)
+        dataset_id = dataset_header["dataset_id"]
+        return DatasetLongitudinal(dataset_id, data_model, list_patient)
 
-    def process_patient(dict_patient):
+    def process_patient(self, dict_patient):
         # step 1 find the patient resource
         patient = {}
         patient["resource"] = ""
@@ -34,7 +66,7 @@ class ReadZipJsonFhirPrecompute:
         list_event = []
         for entry in dict_patient["entry"]:
             resource = entry["resource"]
-            list_event.extend(ReadZipJsonFhirPrecompute.parse_list_event(resource))
+            list_event.extend(self.parse_list_event(resource))
 
         # print(f"{name_file} {len(dict)} {dict.keys()}")
         for event in list_event:
@@ -51,7 +83,7 @@ class ReadZipJsonFhirPrecompute:
 
         return patient
 
-    def parse_list_event(resource):
+    def parse_list_event(self, resource):
         list_event = []
         resource_type = resource["resourceType"]
         try:
@@ -127,6 +159,5 @@ class ReadZipJsonFhirPrecompute:
 
         return list_event
 
-
-#    def event_selector first, last
-# measurement selector value_of, seconds_between
+    #    def event_selector first, last
+    # measurement selector value_of, seconds_between

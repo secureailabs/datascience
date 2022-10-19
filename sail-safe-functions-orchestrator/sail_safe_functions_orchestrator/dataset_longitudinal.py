@@ -2,29 +2,31 @@ from typing import Dict, List
 
 import pandas
 
-from sail_safe_functions_orchestrator.data_model_table import DataModelTable
+from sail_safe_functions_orchestrator.data_model_longitudinal import DataModelLongitudinal
+from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
 
 
-class DataFrameLogitudinal:
-    def __init__(self, list_patient: List) -> None:
+class DatasetLongitudinal:
+    def __init__(self, dataset_id: str, data_model: DataModelLongitudinal, list_patient: List) -> None:
+        self.dataset_id = dataset_id
+        self.data_model = data_model
         self.list_patient = list_patient.copy()
 
-    def convert_to_data_frame_table(self, data_model_table: DataModelTable) -> pandas.DataFrame:
-        # 4. convert mesurements to table
+    def convert_to_dataset_tabular(self, data_model_tabular: DataModelTabular) -> pandas.DataFrame:
         dict_feature = {}
-        for name_feature in data_model_table.dict_data_model_feature:
+        for name_feature in data_model_tabular.dict_data_model_feature:
             dict_feature[name_feature] = []
 
         for patient in self.list_patient:
-            self.compile_columns(dict_feature, data_model_table, patient)
+            self.compile_columns(dict_feature, data_model_tabular, patient)
 
         data_frame = pandas.DataFrame()
-        for name_feature in data_model_table.dict_data_model_feature:
+        for name_feature in data_model_tabular.dict_data_model_feature:
             data_frame[name_feature] = pandas.Series(data=dict_feature[name_feature], name=name_feature)
 
         return data_frame
 
-    def compile_columns(self, dict_series: Dict[str, List], data_model_table: DataModelTable, patient):
+    def compile_columns(self, dict_series: Dict[str, List], data_model_table: DataModelTabular, patient):
         for feature_name, data_model_feature in data_model_table.dict_data_model_feature.items():
             feature_value = data_model_feature.agregate(patient)
             dict_series[feature_name].append(feature_value)

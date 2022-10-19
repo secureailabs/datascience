@@ -4,7 +4,8 @@ from sail_safe_functions_orchestrator.data_model_feature import DataModelFeature
 
 
 class DataModelTable:
-    def __init__(self) -> None:
+    def __init__(self, table_name) -> None:
+        self._table_name = table_name
         self.list_name_feature = []
         self.dict_data_model_feature = {}  # This could be an ordered dict but they do not map to json by default
 
@@ -19,6 +20,7 @@ class DataModelTable:
 
     def to_json(self) -> Dict:
         dict_json = {}
+        dict_json["table_name"] = self._table_name
         dict_json["list_name_feature"] = self.list_name_feature
         dict_json["dict_data_model_feature"] = {}
         for name_feature in self.dict_data_model_feature:
@@ -26,11 +28,11 @@ class DataModelTable:
         return dict_json
 
     @staticmethod
-    def from_json(dict_json: Dict):
-        data_model_table = DataModelTable()
-        data_model_table.list_name_feature = dict_json["list_name_feature"]
+    def from_json(dict_json: Dict) -> "DataModelTable":
+        data_model_tabular = DataModelTable(dict_json["table_name"])
+        data_model_tabular.list_name_feature = dict_json["list_name_feature"]
         for name_feature in dict_json["dict_data_model_feature"]:
-            data_model_table.dict_data_model_feature[name_feature] = DataModelFeature.from_json(
+            data_model_tabular.dict_data_model_feature[name_feature] = DataModelFeature.from_json(
                 dict_json["dict_data_model_feature"][name_feature]
             )
-        return data_model_table
+        return data_model_tabular
