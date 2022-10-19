@@ -9,9 +9,6 @@ import os
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
 )
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
 
 app = FastAPI()
 
@@ -38,13 +35,13 @@ async def root():
 @app.get("/mean")
 async def mean(dataframe_uuid: str, column_id: str):
 
-    ## BEGIN CHECKS
+    # BEGIN CHECKS
     # TODO:
     #       1. Implement input validation / safety checks
     #           1a. Check for pandas query injection in column_id string
     #           1b. Check query limit N on federated series
     #           1c. Check dataset UUID exists
-    ## CLOSE CHECKS
+    # CLOSE CHECKS
 
     if dataframe_uuid == "UUID":
         dataframe = get_data()
