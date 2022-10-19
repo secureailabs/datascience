@@ -5,11 +5,6 @@ from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_lo
 )
 import os
 
-
-from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
-    DataFrameFederatedLocal,
-)
-
 app = FastAPI()
 
 
