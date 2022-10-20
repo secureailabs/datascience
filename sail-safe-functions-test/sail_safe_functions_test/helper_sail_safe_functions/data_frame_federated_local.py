@@ -4,7 +4,9 @@ import numpy as np
 import pandas as pd
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 
 
 class DataFrameFederatedLocal(DataFrameFederated):
@@ -22,6 +24,13 @@ class DataFrameFederatedLocal(DataFrameFederated):
 
     def head(self):
         return self._get_dataframe_first().head()
+
+    def global_row_count(self) -> int:
+        count = 0
+        # Count sum of all rows in federated dataframe
+        for d in self.dict_dataframe.values():
+            count += len(d)
+        return count
 
     @property
     def columns(self):
@@ -77,8 +86,12 @@ class DataFrameFederatedLocal(DataFrameFederated):
     def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
         data_frame = pd.DataFrame(array)
         if list_name_column is not None:
-            for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
-                data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
+            for name_column_source, name_column_target in zip(
+                data_frame.columns, list_name_column
+            ):
+                data_frame.rename(
+                    columns={name_column_source: name_column_target}, inplace=True
+                )
         data_frame_federated = DataFrameFederatedLocal()
         data_frame_federated.dict_dataframe[dataset_id] = data_frame
         return data_frame_federated

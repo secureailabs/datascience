@@ -22,6 +22,10 @@ def get_data():
     return dataframe
 
 
+def query_limit_n(data, n=10):
+    return data.global_row_count() > n
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -30,22 +34,28 @@ async def root():
 @app.get("/mean")
 async def mean(dataframe_uuid: str, column_id: str):
 
-    # BEGIN CHECKS
-    # TODO:
-    #       1. Implement input validation / safety checks
-    #           1a. Check for pandas query injection in column_id string
-    #           1b. Check query limit N on federated series
-    #           1c. Check dataset UUID exists
-    # CLOSE CHECKS
-
+    # CHECK DATAFRAME EXISTS
+    # TODO: Link this into checking the store for accessible data.
+    #       This functionality is not available right now but should be after the system comes together.
     if dataframe_uuid == "UUID":
         dataframe = get_data()
-        federated_series = dataframe[column_id]
-        estimator = Mean()
-        mean_sail = estimator.run(federated_series)
-        return {"mean": mean_sail}
     else:
-        return {"mean": "Error: Federation UUID not found"}
+        return {"payload": "Error: Federation UUID not found"}
+
+    # CHECK DATAFRAME IS LONG ENOUGH
+    if not query_limit_n(dataframe):
+        return {"payload": "Error: Federation Length Too Small"}
+
+    # Return Mean Result
+    federated_series = dataframe[column_id]
+    estimator = Mean()
+    mean_sail = estimator.run(federated_series)
+    return {"payload": mean_sail}
+
+    # CHECKS
+    # TODO:
+    #       1. Check for pandas query injection in column_id string
+    # CLOSE CHECKS
 
 
 # if __name__ == "__main__":
