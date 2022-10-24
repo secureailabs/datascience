@@ -1,35 +1,51 @@
 from typing import Dict, List
 
-import pandas
+from lightgbm import Dataset
 
+from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_model_longitudinal import DataModelLongitudinal
 from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.dataset_base import DatasetBase
+from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
+from sail_safe_functions_orchestrator.series import Series
 
 
-class DatasetLongitudinal:
-    def __init__(self, dataset_id: str, data_model: DataModelLongitudinal, list_patient: List) -> None:
-        self.dataset_id = dataset_id
+class DatasetLongitudinal(DatasetBase):
+    def __init__(
+        self,
+        dataset_federation_id: str,
+        dataset_federation_name: str,
+        dataset_id: str,
+        dataset_name: str,
+        data_model: DataModelLongitudinal,
+        list_patient: List,
+    ) -> None:
+        super().__init__(dataset_federation_id, dataset_federation_name, dataset_id, dataset_name)
         self.data_model = data_model
         self.list_patient = list_patient.copy()
 
-    def convert_to_dataset_tabular(self, data_model_tabular: DataModelTabular) -> pandas.DataFrame:
-        dict_feature = {}
-        for name_feature in data_model_tabular.dict_data_model_feature:
-            dict_feature[name_feature] = []
+    def convert_to_dataset_tabular(
+        self,
+        dataset_federation_id: str,
+        dataset_federation_name: str,
+        dataset_id: str,
+        dataset_name: str,
+        data_model_tabular: DataModelTabular,
+    ) -> DatasetTabular:
+        list_data_frame = []
+        for data_frame_name in data_model_tabular.list_data_frame_name:
+            data_model_data_frame = data_model_tabular.get_data_model_data_frame(data_frame_name)
+            list_series = []
+            for series_name in data_model_data_frame.list_series_name:
+                data_model_series = data_model_data_frame.get_data_model_series(series_name)
+                list_data = []
+                for patient in self.list_patient:
+                    list_data.append(data_model_series.agregate(patient))
+                list_series.append(Series(series_name, data_model_series, list_data))
 
-        for patient in self.list_patient:
-            self.compile_columns(dict_feature, data_model_tabular, patient)
+            list_data_frame.append(DataFrame(data_frame_name, list_series))
 
-        data_frame = pandas.DataFrame()
-        for name_feature in data_model_tabular.dict_data_model_feature:
-            data_frame[name_feature] = pandas.Series(data=dict_feature[name_feature], name=name_feature)
-
-        return data_frame
-
-    def compile_columns(self, dict_series: Dict[str, List], data_model_table: DataModelTabular, patient):
-        for feature_name, data_model_feature in data_model_table.dict_data_model_feature.items():
-            feature_value = data_model_feature.agregate(patient)
-            dict_series[feature_name].append(feature_value)
+        return DatasetTabular(dataset_federation_id, dataset_federation_name, dataset_id, dataset_name, list_data_frame)
 
     def compute_statistics(self) -> Dict:
         dict_measurement_statistics = {}

@@ -50,8 +50,13 @@ class SerializerDatasetFhirv1(SerializerDatasetBase):
                 patient = json.loads(archive_data_content.read(name_file))
                 list_patient.append(self.process_patient(patient))
 
+        data_federation_id = dataset_header["data_federation_id"]
+        data_federation_name = dataset_header["data_federation_name"]
         dataset_id = dataset_header["dataset_id"]
-        return DatasetLongitudinal(dataset_id, data_model, list_patient)
+        dataset_name = dataset_header["dataset_id"]
+        return DatasetLongitudinal(
+            data_federation_id, data_federation_name, dataset_id, dataset_name, data_model, list_patient
+        )
 
     def process_patient(self, dict_patient):
         # step 1 find the patient resource
@@ -119,6 +124,7 @@ class SerializerDatasetFhirv1(SerializerDatasetBase):
                         event_value = resource["valueCodeableConcept"]["coding"][0]["display"]
 
                     # TODO add unit?
+
                     list_event.append(
                         {"event_type": event_type, "event_value": event_value, "datetime_object": datetime_object}
                     )

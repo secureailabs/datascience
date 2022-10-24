@@ -1,16 +1,14 @@
 import json
 import os
 import shutil
-import tempfile
 from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas
-from sail_safe_functions_orchestrator.data_model_tabular import \
-    DataModelTabular
+from sail_safe_functions_orchestrator.data_frame import DataFrame
+from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
-from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import \
-    SerializerDatasetBase
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
 
 
 class SerializerDatasetCsvv1(SerializerDatasetBase):
@@ -28,56 +26,67 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
 
     def read_dataset_for_path(self, path_dir_dataset_source) -> DatasetTabular:
         # TODO check signature
-        with ZipFile(path_dir_dataset_source) as zip_file_dataset:
 
-            path_file_dataset_header = "dataset_header.json"
-            path_file_data_model = "data_model.zip"
-            path_file_data_content = "data_content.zip"
-            header_dataset = json.loads(zip_file_dataset.read(path_file_dataset_header))
-            # TODO check header
+        path_file_dataset_header = os.path.join(path_dir_dataset_source, "dataset_header.json")
+        path_file_data_model = os.path.join(path_dir_dataset_source, "data_model.zip")
+        path_file_data_content = os.path.join(path_dir_dataset_source, "data_content.zip")
+        with open(path_file_dataset_header, "r") as file:
+            header_dataset = json.load(file)
+        data_federation_id = header_dataset["data_federation_id"]
+        data_federation_name = header_dataset["data_federation_name"]
+        dataset_id = header_dataset["dataset_id"]
+        dataset_name = header_dataset["dataset_name"]
+        # TODO check header
+        with ZipFile(path_file_data_model) as archive_data_model:
+            data_model_tabular = DataModelTabular.from_json(json.loads(archive_data_model.read("data_model.json")))
+        list_data_frame = []
+        with ZipFile(path_file_data_content) as archive_data_content:
+            for name_file in archive_data_content.namelist():
+                if not name_file.endswith(".csv"):
+                    raise Exception()
+                data_frame_name = name_file.split(".csv")[0]
+                print(name_file)
+                print(data_frame_name)
+                data_model_data_frame = data_model_tabular[data_frame_name]
+                list_data_frame.append(
+                    DataFrame.from_csv_str(
+                        data_frame_name,
+                        data_model_data_frame,
+                        archive_data_content.read(name_file),
+                    )
+                )
+        return DatasetTabular(data_federation_id, data_federation_name, dataset_id, dataset_name, list_data_frame)
 
-            data_model = DataModelTabular.from_json(json.loads(zip_file_dataset.read(path_file_data_model)))
-            dict_table = {}
-            with ZipFile(BytesIO(zip_file_dataset.read(path_file_data_content))) as zip_file_data_content:
-                for name_file in zip_file_data_content.namelist():
-                    if not name_file.endswith(".csv"):
-                        raise Exception()
-                    dict_table[name_file[:4]] = pandas.read_csv(zip_file_data_content.read(name_file))
-            return DatasetTabular(data_model, dict_table)
-
-    def write_dataset_tabular(self, path_file_dataset_target, dataset_tabular: DatasetTabular) -> None:
-        path_dir_temp = tempfile.mkdtemp()
-        path_file_dataset_header_temp = os.path.join(path_dir_temp, "dataset_header.json")
-        path_file_data_model_temp = os.path.join(path_dir_temp, "data_model.json")
-        path_file_data_content_temp = os.path.join(path_dir_temp, "data_content.zip")
+    def write_dataset_tabular_for_path(self, path_dir_dataset_target: str, dataset_tabular: DatasetTabular) -> None:
+        if os.path.isdir(path_dir_dataset_target):
+            shutil.rmtree(path_dir_dataset_target)
+        os.makedirs(path_dir_dataset_target)
+        path_file_dataset_header = os.path.join(path_dir_dataset_target, "dataset_header.json")
+        path_file_data_model = os.path.join(path_dir_dataset_target, "data_model.zip")
+        path_file_data_content = os.path.join(path_dir_dataset_target, "data_content.zip")
 
         # write dataset header
         header_dataset = {}
-        header_dataset["data_federation_id"] = ""  # TODOdataset_tabular.dataset_id
-        header_dataset["dataset_id"] = ""  # TODO dataset_tabular.dataset_id
-        with open(path_file_dataset_header_temp, "w") as file:
+        header_dataset["data_federation_id"] = dataset_tabular.dataset_federation_id
+        header_dataset["data_federation_name"] = dataset_tabular.dataset_federation_name
+        header_dataset["dataset_id"] = dataset_tabular.dataset_id
+        header_dataset["dataset_name"] = dataset_tabular.dataset_name
+
+        with open(path_file_dataset_header, "w") as file:
             json.dump(header_dataset, file)
 
         # write data model
-        with open(path_file_data_model_temp, "w") as file:
-            json.dump(file, dataset_tabular.data_model.to_json())
+        with ZipFile(path_file_data_model, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_model:
+            name_file = "data_model.json"
+            zip_file_data_model.writestr(name_file, json.dumps(dataset_tabular.data_model.to_json()))
 
         # write data content
-        with ZipFile(path_file_data_content_temp, "w", ZIP_DEFLATED) as zip_file_dataset:
-            for table_id, data_frame in dataset_tabular.dict_table.items():
+        with ZipFile(path_file_data_content, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_content:
+            for data_frame_name, data_frame in dataset_tabular.dict_data_frame.items():
                 # saving a data frame to a buffer (same as with a regular file):
                 buffer = BytesIO()
                 data_frame.to_csv(buffer)
+                buffer.seek(0)
                 # write buffer to zip
-                name_file = table_id + ".csv"
-                zip_file_dataset.write(buffer, arcname=name_file)
-        # TODO do data_content encryption here
-
-        with ZipFile(path_file_dataset_target, "w", ZIP_DEFLATED) as archive:
-            archive.write(path_file_dataset_header_temp, arcname="dataset_header.json")
-            archive.write(path_file_data_model_temp, arcname="data_model.json")
-            archive.write(path_file_data_content_temp, arcname="data_content.zip")
-
-        # TODO sign the resulting dataset with some signature to prevent tampering
-        shutil.rmtree(path_dir_temp)
-        # TODO potential security hazard when this does not get removed: solution do all of this in memory
+                name_file = data_frame_name + ".csv"
+                zip_file_data_content.writestr(name_file, buffer.read())

@@ -145,7 +145,7 @@ class PackagerDataFederation:
                 archive.extractall(path_dir_dataset_target)
         shutil.rmtree(path_dir_data_federation_temp)
 
-    def get_list_dataset_id(self, path_file_data_federation_source: str) -> List[str]:
+    def get_dict_dataset_id(self, path_file_data_federation_source: str) -> List[str]:
         path_dir_data_federation_temp = tempfile.mkdtemp()
         with ZipFile(path_file_data_federation_source, "r") as archive:
             archive.extractall(path_dir_data_federation_temp)

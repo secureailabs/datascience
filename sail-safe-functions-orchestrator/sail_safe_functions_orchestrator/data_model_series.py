@@ -3,7 +3,7 @@ import statistics
 from typing import Dict, List
 
 
-class DataModelFeature:
+class DataModelSeries:
     DataLevelUnique = "DataLevelUnique"
     DataLevelCategorical = "DataLevelCategorical"
     DataLevelInterval = "DataLevelInterval"
@@ -27,21 +27,25 @@ class DataModelFeature:
 
     def __init__(
         self,
-        feature_name: str,
+        series_name: str,
         type_data_level: str,
-        resolution: float,
-        list_value: List[str],
+        *,
+        unit: str = None,
+        value_min: str = None,
+        value_max: str = None,
+        resolution: float = None,
+        list_value: List[str] = None,
         measurement_source_name: str = None,
         type_agregator: str = None,
     ) -> None:
         if type_data_level not in [
-            DataModelFeature.DataLevelUnique,
-            DataModelFeature.DataLevelCategorical,
-            DataModelFeature.DataLevelInterval,
+            DataModelSeries.DataLevelUnique,
+            DataModelSeries.DataLevelCategorical,
+            DataModelSeries.DataLevelInterval,
         ]:
             raise ValueError(f"Illegal value data_level: {type_data_level}")
 
-        if type_data_level == DataModelFeature.DataLevelCategorical:
+        if type_data_level == DataModelSeries.DataLevelCategorical:
             if list_value is None:
                 raise ValueError(f"list_value cannot be None")
             if len(list_value) == 0:
@@ -49,78 +53,80 @@ class DataModelFeature:
             if len(list_value) != len(set(list_value)):
                 raise ValueError(f"list_value can only contain unique values")
 
-        self.feature_name = feature_name
+        self.series_name = series_name
         self.type_data_level = type_data_level
-        self.type_agregator = type_agregator
-        self.measurement_source_name = measurement_source_name
-        self.unit = ""  # for numerical
-        self.value_min = ""  # for numerical
-        self.value_max = ""  # for numerical
+
+        self.unit = unit
+        self.value_min = value_min
+        self.value_max = value_max
         self.resolution = resolution  # for numerical
 
         self.list_value = list_value  # for cathegorical
+
+        self.type_agregator = type_agregator
+        self.measurement_source_name = measurement_source_name
 
     def agregate(self, patient):
         try:
             # patient resource lookup
             # TODO refactor this
-            if self.type_data_level == DataModelFeature.AgregatorPatientGender:
+            if self.type_data_level == DataModelSeries.AgregatorPatientGender:
                 return patient["resource"]["gender"]
                 # TODO there is also this attribute
                 #          {
                 #     "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
                 #     "valueCode": "F"
                 # },
-            elif self.type_data_level == DataModelFeature.AgregatorPatientMaritalStatus:
+            elif self.type_data_level == DataModelSeries.AgregatorPatientMaritalStatus:
                 return patient["resource"]["maritalStatus"]["coding"][0]["display"]
-            elif self.type_data_level == DataModelFeature.AgregatorPatientRace:
+            elif self.type_data_level == DataModelSeries.AgregatorPatientRace:
                 for extension in patient["resource"]["extension"]:
                     if extension["url"] == "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race":
                         return extension["extension"][0]["valueCoding"]["display"]
                 return None
-            elif self.type_data_level == DataModelFeature.AgregatorPatientEthnicity:
+            elif self.type_data_level == DataModelSeries.AgregatorPatientEthnicity:
                 for extension in patient["resource"]["extension"]:
                     if extension["url"] == "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity":
                         return extension["extension"][0]["valueCoding"]["display"]
                 return None
 
-            elif self.type_data_level == DataModelFeature.DataLevelInterval:
+            elif self.type_data_level == DataModelSeries.DataLevelInterval:
                 # TODO also enforce resolution, and add that to the schema
                 if self.measurement_source_name not in patient["dict_measurement"]:
-                    if self.type_agregator == DataModelFeature.AgregatorIntervalCountOccurance:
+                    if self.type_agregator == DataModelSeries.AgregatorIntervalCountOccurance:
                         return 0
                     else:
                         return None
 
                 list_measurement = patient["dict_measurement"][self.measurement_source_name]
-                if self.type_agregator == DataModelFeature.AgregatorIntervalFirstOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorIntervalFirstOccurance:
                     return list_measurement[0]["event_value"]
-                if self.type_agregator == DataModelFeature.AgregatorIntervalLastOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorIntervalLastOccurance:
                     return list_measurement[-1]["event_value"]
-                if self.type_agregator == DataModelFeature.AgregatorIntervalCountOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorIntervalCountOccurance:
                     return len(list_measurement)
-                if self.type_agregator == DataModelFeature.AgregatorIntervalMean:
+                if self.type_agregator == DataModelSeries.AgregatorIntervalMean:
                     list_measurement_value = [measurement["event_value"] for measurement in list_measurement]
                     return statistics.mean(list_measurement_value)
 
                 else:
                     raise Exception(f"unkown type_agregator {self.type_agregator}")
 
-            elif self.type_data_level == DataModelFeature.DataLevelCategorical:
+            elif self.type_data_level == DataModelSeries.DataLevelCategorical:
                 if self.measurement_source_name not in patient["dict_measurement"]:
-                    if self.type_agregator == DataModelFeature.AgregatorCategoricalCountOccurance:
+                    if self.type_agregator == DataModelSeries.AgregatorCategoricalCountOccurance:
                         return 0
                     else:
                         return None
 
                 list_measurement = patient["dict_measurement"][self.measurement_source_name]
-                if self.type_agregator == DataModelFeature.AgregatorCategoricalFirstOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorCategoricalFirstOccurance:
                     return list_measurement[0]["event_value"]
-                if self.type_agregator == DataModelFeature.AgregatorCategoricalLastOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorCategoricalLastOccurance:
                     return list_measurement[-1]["event_value"]
-                if self.type_agregator == DataModelFeature.AgregatorCategoricalCountOccurance:
+                if self.type_agregator == DataModelSeries.AgregatorCategoricalCountOccurance:
                     return len(list_measurement)
-                if self.type_agregator == DataModelFeature.AgregatorCategoricalMostFrequent:
+                if self.type_agregator == DataModelSeries.AgregatorCategoricalMostFrequent:
                     raise NotImplementedError()  # TODO implement
                 else:
                     raise Exception(f"unkown type_agregator {self.type_agregator}")
@@ -133,39 +139,54 @@ class DataModelFeature:
             raise exception
         raise Exception(f"cannot return default")
 
-    def create_unique(feature_name: str) -> "DataModelFeature":
-        return DataModelFeature(feature_name, DataModelFeature.DataLevelUnique, None, None, None, None)
+    def create_unique(series_name: str) -> "DataModelSeries":
+        return DataModelSeries(series_name, DataModelSeries.DataLevelUnique, None, None, None, None)
 
     def create_numerical(
-        feature_name: str, resolution: float = -1, measurement_source_name: str = None, type_agregator: str = None
-    ) -> "DataModelFeature":
-        return DataModelFeature(
-            feature_name, DataModelFeature.DataLevelInterval, resolution, None, measurement_source_name, type_agregator
+        series_name: str,
+        resolution: float = None,
+        measurement_source_name: str = None,
+        type_agregator: str = None,
+        unit: str = "unitless",
+    ) -> "DataModelSeries":
+        return DataModelSeries(
+            series_name,
+            DataModelSeries.DataLevelInterval,
+            resolution=resolution,
+            unit=unit,
+            measurement_source_name=measurement_source_name,
+            type_agregator=type_agregator,
         )
 
     def create_categorical(
-        feature_name: str, list_value: List[str], measurement_source_name: str = None, type_agregator: str = None
-    ) -> "DataModelFeature":
-        return DataModelFeature(
-            feature_name, DataModelFeature.DataLevelInterval, None, list_value, measurement_source_name, type_agregator
+        series_name: str, list_value: List[str], measurement_source_name: str = None, type_agregator: str = None
+    ) -> "DataModelSeries":
+        return DataModelSeries(
+            series_name, DataModelSeries.DataLevelCategorical, None, list_value, measurement_source_name, type_agregator
         )
 
     def to_json(self) -> Dict:
         dict_json = {}
-        dict_json["feature_name"] = self.feature_name
-        dict_json["type_agregator"] = self.type_data_level
+        dict_json["series_name"] = self.series_name
+        dict_json["type_data_level"] = self.type_data_level
+        dict_json["unit"] = self.unit
+        dict_json["value_min"] = self.value_min
+        dict_json["value_max"] = self.value_max
         dict_json["resolution"] = self.resolution
         dict_json["list_value"] = self.list_value
-        dict_json["measurement_source_name"] = self.measurement_source_name
         dict_json["type_agregator"] = self.type_agregator
+        dict_json["measurement_source_name"] = self.measurement_source_name
         return dict_json
 
-    def from_json(dict_json: Dict) -> "DataModelFeature":
-        return DataModelFeature(
-            dict_json["feature_name"],
-            dict_json["type_agregator"],
-            dict_json["resolution"],
-            dict_json["list_value"],
-            dict_json["measurement_source_name"],
-            dict_json["type_agregator"],
+    def from_json(dict_json: Dict) -> "DataModelSeries":
+        return DataModelSeries(
+            dict_json["series_name"],
+            dict_json["type_data_level"],
+            unit=dict_json["unit"],
+            value_min=dict_json["value_min"],
+            value_max=dict_json["value_max"],
+            resolution=dict_json["resolution"],
+            list_value=dict_json["list_value"],
+            type_agregator=dict_json["type_agregator"],
+            measurement_source_name=dict_json["measurement_source_name"],
         )
