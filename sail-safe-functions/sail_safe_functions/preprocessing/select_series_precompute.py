@@ -7,4 +7,4 @@ class SelectSeriesPrecompute:
     def run(reference: ReferenceDataFrame, series_name: str) -> ReferenceSeries:
         data_frame = ServiceReference.get_instance().reference_to_data_frame(reference)
         series = data_frame[series_name]
-        return ServiceReference.get_instance().series_to_reference(data_frame)
+        return ServiceReference.get_instance().series_to_reference(series)

@@ -1,17 +1,38 @@
 from typing import List
 
 from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.dataset_longitudinal import DatasetLongitudinal
+from sail_safe_functions_orchestrator.packager_dataset.packager_data_federation import PackagerDataFederation
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_fhirv1 import SerializerDatasetFhirv1
+from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class DatasetLongitudinalFederated:
-    def __init__(self, data_model_longitudinal: DataModelLongitudinal) -> None:
-        self.dict_dataset = {}
+    def __init__(
+        self, list_reference: List[ReferenceDatasetLongitudinal], data_model_longitudinal: DataModelLongitudinal
+    ) -> None:
         self.data_model_longitudinal = data_model_longitudinal
+        self.dict_reference_dataset_longitudinal = {}
+        for reference in list_reference:
+            self._add_reference_dataset_longitudinal(reference)
 
-    def add_dataset(self, dataset: DatasetLongitudinal) -> None:
-        self.dict_dataset[dataset.dataset_id] = dataset
+    def _add_reference_dataset_longitudinal(self, data_frame_longitudinal: ReferenceDatasetLongitudinal):
+        self.dict_reference_dataset_longitudinal[data_frame_longitudinal.dataset_id] = data_frame_longitudinal
 
-    def convert_to_table(list_agregator_tabular: DataModelTabular):
-        raise NotImplementedError()
+    # TODO move this to testing library
+    @staticmethod
+    def read_for_path_file(path_file_data_federation: str):
+        # TODO call safe function via RPC ReadDatasetFhirv1Precompute
+        packager = PackagerDataFederation()
+        packager.prepare_data_federation(path_file_data_federation)
+        dict_dataset_name_to_dataset_id = packager.get_dict_dataset_name_to_dataset_id(path_file_data_federation)
+        data_model_longitudinal = {}
+        serializer = SerializerDatasetFhirv1()
+        list_reference = []
+        for dataset_id in dict_dataset_name_to_dataset_id.values():
+            dataset_longitudinal = serializer.read_dataset(dataset_id)
+            list_reference.append(
+                ServiceReference.get_instance().dataset_longitudinal_to_reference(dataset_longitudinal)
+            )
+
+        return DatasetLongitudinalFederated(list_reference, data_model_longitudinal)

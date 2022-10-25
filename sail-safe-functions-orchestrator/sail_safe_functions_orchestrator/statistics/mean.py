@@ -33,7 +33,7 @@ class Mean(Estimator):
         :rtype: _type_
         """
         list_list_precompute = []
-        for series in sample_0.dict_series.values():
+        for series in sample_0.dict_reference_series.values():
             list_list_precompute.append(MeanPrecompute.run(series))
         mean_statistic = MeanAggregate.run(list_list_precompute)
         return mean_statistic

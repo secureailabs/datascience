@@ -22,7 +22,7 @@ class DatasetTabularFederated:
             raise Exception(f"No such data_frame: {data_frame_name}")
         list_reference = []
         for reference_dataset_tabular in self.dict_reference_dataset_tabular.values():
-            list_reference.append(SelectDataFramePrecompute.run(reference_dataset_tabular))
+            list_reference.append(SelectDataFramePrecompute.run(reference_dataset_tabular, data_frame_name))
         return DataFrameFederated(list_reference, self.data_model_tabular[data_frame_name])
 
     # index section start

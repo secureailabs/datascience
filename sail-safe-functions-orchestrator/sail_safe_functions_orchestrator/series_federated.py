@@ -1,8 +1,11 @@
 from abc import ABC
 from typing import List
 
+import numpy
+
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class SeriesFederated(ABC):
@@ -27,3 +30,11 @@ class SeriesFederated(ABC):
 
     def create_new(self) -> "SeriesFederated":
         raise NotImplementedError()
+
+    # TODO move to local client
+    def to_numpy(self) -> numpy.ndarray:
+        list_array_numpy = []
+        for reference_series in self.dict_reference_series.values():
+            series = ServiceReference.get_instance().reference_to_series(reference_series)
+            list_array_numpy.append(series.to_numpy())
+        return numpy.concatenate(list_array_numpy)

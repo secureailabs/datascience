@@ -28,10 +28,11 @@ class ConvertToDatasetTabular:
     ) -> DataFrameFederated:
         check_instance(dataset_source, DatasetLongitudinalFederated)
         check_instance(data_model_tabular, DataModelTabular)
-
+        print("len(dataset_source.dict_dataset")
+        print(len(dataset_source.dict_reference_dataset_longitudinal))
         list_reference = []
-        for dataset_id, dataset_refrence in dataset_source.dict_dataset.items():
-            dataset_name = dataset_id
+        for dataset_id, dataset_refrence in dataset_source.dict_reference_dataset_longitudinal.items():
+            dataset_name = dataset_id  # TODO fix this
             list_reference.append(
                 # TODO use RPC here
                 ConvertToDatasetTabularPrecompute.run(

@@ -6,6 +6,8 @@ from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
 
 
 class ServiceReference:
@@ -15,19 +17,23 @@ class ServiceReference:
         # TODO split the referencer into different types to enable series and dataframes and use random guids
         # (or allow set guids fro the computgrah)
 
+        # TODO all the references could be merged because we are not using the datamodel anyway
+
     def __call__(self):
         raise TypeError("Singletons must be accessed through `get_instance()`.")
 
     def get_instance() -> "ServiceReference":
         try:
-            print("get!!!")
             return ServiceReference._instance
 
         except AttributeError:
-            print("Create!!!")
             ServiceReference._instance = ServiceReference()
             return ServiceReference._instance
 
+    def generate_reference_id(self) -> str:
+        return str(uuid.uuid4())
+
+    ###
     def reference_to_dataset_longitudinal(
         self,
         reference: ReferenceDatasetLongitudinal,
@@ -56,8 +62,6 @@ class ServiceReference:
         return self.dict_reference[reference.dataset_id]
 
     ###
-    def generate_reference_id(self):
-        return uuid.uuid4()
 
     def data_frame_to_reference(self, data_frame: DataFrame) -> ReferenceDatasetTabular:
         reference_id = self.generate_reference_id()
@@ -67,7 +71,21 @@ class ServiceReference:
     def reference_to_data_frame(
         self,
         reference: ReferenceDataFrame,
-    ) -> DatasetTabular:
+    ) -> DataFrame:
+        if not reference.reference_id in self.dict_reference:
+            raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
+        return self.dict_reference[reference.reference_id]
+
+    ###
+    def series_to_reference(self, series: Series) -> ReferenceSeries:
+        reference_id = self.generate_reference_id()
+        self.dict_reference[reference_id] = series
+        return ReferenceSeries(reference_id, series.data_model_series)
+
+    def reference_to_series(
+        self,
+        reference: ReferenceSeries,
+    ) -> Series:
         if not reference.reference_id in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
