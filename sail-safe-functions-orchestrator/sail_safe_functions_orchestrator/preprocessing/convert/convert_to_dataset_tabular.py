@@ -1,10 +1,8 @@
-from sail_safe_functions.preprocessing.convert.float64_to_tabular_precompute import Float64ToTabularPrecompute
 from sail_safe_functions.preprocessing.convert_to_dataset_tabular_precompute import ConvertToDatasetTabularPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions_orchestrator.dataset_tabular_federated import DatasetTabularFederated
-from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
@@ -44,4 +42,4 @@ class ConvertToDatasetTabular:
                     data_model_tabular,
                 )
             )
-        return DatasetTabularFederated(list_reference, data_model_tabular)
+        return DatasetTabularFederated(dataset_source.service_client, list_reference, data_model_tabular)

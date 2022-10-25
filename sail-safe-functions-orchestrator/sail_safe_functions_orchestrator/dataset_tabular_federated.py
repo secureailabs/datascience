@@ -5,10 +5,17 @@ from sail_safe_functions.preprocessing.select_data_frame_precompute import Selec
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
+from sail_safe_functions_orchestrator.service_client import ServiceClient
 
 
 class DatasetTabularFederated:
-    def __init__(self, list_reference: List[ReferenceDatasetTabular], data_model_tabular: DataModelTabular) -> None:
+    def __init__(
+        self,
+        service_client: ServiceClient,
+        list_reference: List[ReferenceDatasetTabular],
+        data_model_tabular: DataModelTabular,
+    ) -> None:
+        self.service_client = service_client
         self.data_model_tabular = data_model_tabular
         self.dict_reference_dataset_tabular = {}
         for reference in list_reference:
@@ -23,7 +30,7 @@ class DatasetTabularFederated:
         list_reference = []
         for reference_dataset_tabular in self.dict_reference_dataset_tabular.values():
             list_reference.append(SelectDataFramePrecompute.run(reference_dataset_tabular, data_frame_name))
-        return DataFrameFederated(list_reference, self.data_model_tabular[data_frame_name])
+        return DataFrameFederated(self.service_client, list_reference, self.data_model_tabular[data_frame_name])
 
     # index section start
 

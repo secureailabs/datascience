@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from config import DATA_PATH
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
@@ -100,12 +101,12 @@ def one_sample_big() -> SeriesFederatedLocal:
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
 
-    dataframe = DataFrameFederatedLocal()
+    dict_csv = {}
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
-        dataframe.add_csv(path_file_csv)
-
-    return dataframe[id_column_0]
+        dict_csv[name_file_csv] = path_file_csv
+    data_frame_federated = DataFrameFederatedLocal.from_csv(dict_csv)
+    return data_frame_federated[id_column_0]
 
 
 @pytest.fixture
@@ -120,12 +121,13 @@ def two_sample_big() -> SeriesFederatedLocal:
     id_column_0 = "PD-L1 level before treatment"
     id_column_1 = "PD-L1 level after treatment"
 
-    dataframe = DataFrameFederatedLocal()
+    dict_csv = {}
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
-        dataframe.add_csv(path_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    data_frame = DataFrameFederatedLocal.from_csv(dict_csv)
 
-    return (dataframe[id_column_0], dataframe[id_column_1])
+    return (data_frame[id_column_0], data_frame[id_column_1])
 
 
 @pytest.fixture
@@ -182,10 +184,8 @@ def two_sample_small() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
         ]
     )
 
-    sample_0 = SeriesFederatedLocal("sample_0")
-    sample_0.add_array("array_test", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal("sample_1")
-    sample_1.add_array("array_test", sample_1_numpy)
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
     return (sample_0, sample_1)
 
 
@@ -200,15 +200,13 @@ def two_sample_small_two() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
     sample_0_numpy = np.array([14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
     sample_1_numpy = np.array([34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
 
-    sample_0 = SeriesFederatedLocal("sample_0")
-    sample_0.add_array("array_test", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal("sample_1")
-    sample_1.add_array("array_test", sample_1_numpy)
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
     return (sample_0, sample_1)
 
 
 @pytest.fixture
-def two_sample_small_paired() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+def two_sample_small_paired() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     A two sample tuple with data from https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples
 
@@ -218,8 +216,7 @@ def two_sample_small_paired() -> Tuple[SeriesFederatedLocal, SeriesFederatedLoca
     sample_0_numpy = np.array([30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
     sample_1_numpy = np.array([29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
 
-    sample_0 = SeriesFederatedLocal("sample_0")
-    sample_0.add_array("array_test", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal("sample_1")
-    sample_1.add_array("array_test", sample_1_numpy)
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
+
     return (sample_0, sample_1)

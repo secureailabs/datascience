@@ -14,8 +14,8 @@ class ServiceReference:
     def __init__(self) -> None:
         self.dict_reference = {}
 
-        # TODO split the referencer into different types to enable series and dataframes and use random guids
-        # (or allow set guids fro the computgrah)
+        # TODO split the referencer into different types?
+        # (or allow set guids for the computgrah)
 
         # TODO all the references could be merged because we are not using the datamodel anyway
 
@@ -34,24 +34,26 @@ class ServiceReference:
         return str(uuid.uuid4())
 
     ###
+    def dataset_longitudinal_to_reference(
+        self, dataset_longitudinal: DatasetLongitudinal
+    ) -> ReferenceDatasetLongitudinal:
+        reference_id = self.generate_reference_id()
+        self.dict_reference[reference_id] = dataset_longitudinal
+        return ReferenceDatasetTabular(dataset_longitudinal.dataset_id, reference_id, dataset_longitudinal.data_model)
+
     def reference_to_dataset_longitudinal(
         self,
         reference: ReferenceDatasetLongitudinal,
     ) -> DatasetLongitudinal:
         if not reference.dataset_id in self.dict_reference:
             raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
-        return self.dict_reference[reference.dataset_id]
-
-    def dataset_longitudinal_to_reference(
-        self, dataset_longitudinal: DatasetLongitudinal
-    ) -> ReferenceDatasetLongitudinal:
-        self.dict_reference[dataset_longitudinal.dataset_id] = dataset_longitudinal
-        return ReferenceDatasetTabular(dataset_longitudinal.dataset_id, dataset_longitudinal.data_model)
+        return self.dict_reference[reference.reference_id]
 
     ###
     def dataset_tabular_to_reference(self, dataset_tabular: DatasetTabular) -> ReferenceDatasetTabular:
-        self.dict_reference[dataset_tabular.dataset_id] = dataset_tabular
-        return ReferenceDatasetTabular(dataset_tabular.dataset_id, dataset_tabular.data_model)
+        reference_id = self.generate_reference_id()
+        self.dict_reference[reference_id] = dataset_tabular
+        return ReferenceDatasetTabular(dataset_tabular.dataset_id, reference_id, dataset_tabular.data_model)
 
     def reference_to_dataset_tabular(
         self,
@@ -59,14 +61,14 @@ class ServiceReference:
     ) -> DatasetTabular:
         if not reference.dataset_id in self.dict_reference:
             raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
-        return self.dict_reference[reference.dataset_id]
+        return self.dict_reference[reference.reference_id]
 
     ###
 
     def data_frame_to_reference(self, data_frame: DataFrame) -> ReferenceDatasetTabular:
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_frame
-        return ReferenceDataFrame(reference_id, data_frame.data_model_data_frame)
+        return ReferenceDataFrame(data_frame.dataset_id, reference_id, data_frame.data_model_data_frame)
 
     def reference_to_data_frame(
         self,
@@ -80,7 +82,7 @@ class ServiceReference:
     def series_to_reference(self, series: Series) -> ReferenceSeries:
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = series
-        return ReferenceSeries(reference_id, series.data_model_series)
+        return ReferenceSeries(series.dataset_id, reference_id, series.data_model_series)
 
     def reference_to_series(
         self,

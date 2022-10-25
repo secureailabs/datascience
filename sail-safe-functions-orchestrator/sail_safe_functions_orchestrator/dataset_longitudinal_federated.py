@@ -1,16 +1,24 @@
+from re import S
 from typing import List
+
+from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
 
 from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
 from sail_safe_functions_orchestrator.packager_dataset.packager_data_federation import PackagerDataFederation
 from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_fhirv1 import SerializerDatasetFhirv1
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
+from sail_safe_functions_orchestrator.service_client import ServiceClient
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class DatasetLongitudinalFederated:
     def __init__(
-        self, list_reference: List[ReferenceDatasetLongitudinal], data_model_longitudinal: DataModelLongitudinal
+        self,
+        service_client: ServiceClient,
+        list_reference: List[ReferenceDatasetLongitudinal],
+        data_model_longitudinal: DataModelLongitudinal,
     ) -> None:
+        self.service_client = service_client
         self.data_model_longitudinal = data_model_longitudinal
         self.dict_reference_dataset_longitudinal = {}
         for reference in list_reference:
@@ -35,4 +43,5 @@ class DatasetLongitudinalFederated:
                 ServiceReference.get_instance().dataset_longitudinal_to_reference(dataset_longitudinal)
             )
 
-        return DatasetLongitudinalFederated(list_reference, data_model_longitudinal)
+        service_client_local = ServiceClientLocal()
+        return DatasetLongitudinalFederated(service_client_local, list_reference, data_model_longitudinal)

@@ -50,6 +50,7 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
                 data_model_data_frame = data_model_tabular[data_frame_name]
                 list_data_frame.append(
                     DataFrame.from_csv_str(
+                        dataset_id,
                         data_frame_name,
                         data_model_data_frame,
                         archive_data_content.read(name_file),

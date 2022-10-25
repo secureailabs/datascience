@@ -3,7 +3,11 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
 
 
 class SeriesFederatedLocal(SeriesFederated):
@@ -73,7 +77,17 @@ class SeriesFederatedLocal(SeriesFederated):
         return dict_discribe
 
     @staticmethod
-    def from_array(name: str, array: np.ndarray) -> pd.Series:
-        series = SeriesFederatedLocal(name)
-        series.add_array("dataset_0", array, name)
-        return series
+    def from_array(dataset_id, series_name: str, array: np.ndarray) -> pd.Series:
+        data_model_series = DataModelSeries.create_numerical(
+            series_name,
+            resolution=None,
+            measurement_source_name="",
+            type_agregator=DataModelSeries.AgregatorCsv,
+            unit="unitless",
+        )
+
+        series = Series(dataset_id, series_name, data_model_series, array.tolist())
+        list_reference = [ServiceReference.get_instance().series_to_reference(series)]
+
+        service_client = ServiceClientLocal()
+        return SeriesFederated(service_client, list_reference, data_model_series)

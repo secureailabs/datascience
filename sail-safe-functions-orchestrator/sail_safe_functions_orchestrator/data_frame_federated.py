@@ -7,10 +7,17 @@ from sail_safe_functions.preprocessing.select_series_precompute import SelectSer
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.service_client import ServiceClient
 
 
 class DataFrameFederated(ABC):
-    def __init__(self, list_reference: List[ReferenceDataFrame], data_model_data_frame: DataModelDataFrame) -> None:
+    def __init__(
+        self,
+        service_client: ServiceClient,
+        list_reference: List[ReferenceDataFrame],
+        data_model_data_frame: DataModelDataFrame,
+    ) -> None:
+        self.service_client = service_client
         self.data_model_data_frame = data_model_data_frame
         self.dict_reference_data_frame = {}
         for reference in list_reference:
@@ -20,9 +27,9 @@ class DataFrameFederated(ABC):
         raise NotImplementedError()
 
     def _add_reference_data_frame(self, reference: ReferenceDataFrame):
-        if reference.reference_id in self.dict_reference_data_frame:
-            raise Exception(f"Duplicate data_frame such series: {reference.reference_id}")
-        self.dict_reference_data_frame[reference.reference_id] = reference
+        if reference.dataset_id in self.dict_reference_data_frame:
+            raise Exception(f"Duplicate data_frame for dataset_id: {reference.dataset_id}")
+        self.dict_reference_data_frame[reference.dataset_id] = reference
 
     def get_series(self, series_name: str) -> SeriesFederated:
         if series_name not in self.data_model_data_frame.dict_data_model_series:
@@ -30,7 +37,7 @@ class DataFrameFederated(ABC):
         list_reference = []
         for reference_data_frame in self.dict_reference_data_frame.values():
             list_reference.append(SelectSeriesPrecompute.run(reference_data_frame, series_name))
-        return SeriesFederated(list_reference, self.data_model_data_frame[series_name])
+        return SeriesFederated(self.service_client, list_reference, self.data_model_data_frame[series_name])
 
     # index section start
 

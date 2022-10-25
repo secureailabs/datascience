@@ -16,6 +16,7 @@ class PairedTTestAggregate:
         :return: returns a t-statistic and its effect size
         :rtype: Tuple[float, float]
         """
+
         sum_d_0 = 0
         sum_dd_0 = 0
         size_sample_d = 0
@@ -26,18 +27,11 @@ class PairedTTestAggregate:
             size_sample_d += list_precompute[2]
 
         sample_mean_d = sum_d_0 / size_sample_d
-        sample_variance_d = (
-            (sum_dd_0 / size_sample_d) - (sample_mean_d * sample_mean_d)
-        ) * (
-            size_sample_d
-            / (
-                size_sample_d - 1
-            )  # unbiased estimator (numpy version is biased by default)
+        sample_variance_d = ((sum_dd_0 / size_sample_d) - (sample_mean_d * sample_mean_d)) * (
+            size_sample_d / (size_sample_d - 1)  # unbiased estimator (numpy version is biased by default)
         )
 
-        t_statistic = sample_mean_d / (
-            np.sqrt(sample_variance_d) / np.sqrt(size_sample_d)
-        )
+        t_statistic = sample_mean_d / (np.sqrt(sample_variance_d) / np.sqrt(size_sample_d))
         degrees_of_freedom = size_sample_d - 1
 
         # TODO we need to enable this when error handling is implemented
