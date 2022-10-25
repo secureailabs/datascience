@@ -7,7 +7,7 @@ from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import dateutil.parser
-from sail_safe_functions_orchestrator.data_model_longitudinal import DataModelLongitudinal
+from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
 from sail_safe_functions_orchestrator.dataset_longitudinal import DatasetLongitudinal
 from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
 
@@ -22,8 +22,8 @@ class SerializerDatasetFhirv1(SerializerDatasetBase):
     def __init__(self) -> None:
         super().__init__("fhirv1")
 
-    def read_dataset(self, dataset_id):
-        pass
+    def read_dataset(self, dataset_id: str) -> DatasetLongitudinal:
+        return self.read_dataset_for_path(os.path.join(self.path_dir_dataset_store, dataset_id))
 
     def read_dataset_for_path(self, path_dir_dataset) -> DatasetLongitudinal:
         list_patient = []

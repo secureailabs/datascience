@@ -10,7 +10,11 @@ from genericpath import isdir
 
 class PackagerDataFederation:
     def __init__(self) -> None:
-        pass
+        path_dir_dataset_store = os.environ.get("PATH_DIR_DATASET")
+        if path_dir_dataset_store is None:
+            raise Exception("Evironment variable: `PATH_DIR_DATASET` not set")
+
+        self.path_dir_dataset_store = path_dir_dataset_store
 
     def package_data_federation(
         self,
@@ -126,7 +130,12 @@ class PackagerDataFederation:
     ###
     ### prepare section
     ###
-    def prepare_data_federation(self, path_file_data_federation_source: str, path_dir_dataset_prepared: str) -> None:
+    def prepare_data_federation(self, path_file_data_federation_source):
+        self.prepare_data_federation_for_path(path_file_data_federation_source, self.path_dir_dataset_store)
+
+    def prepare_data_federation_for_path(
+        self, path_file_data_federation_source: str, path_dir_dataset_prepared: str
+    ) -> None:
         path_dir_data_federation_temp = tempfile.mkdtemp()
         # unzip entire data federation to tempdir
         with ZipFile(path_file_data_federation_source, "r") as archive:
@@ -145,7 +154,7 @@ class PackagerDataFederation:
                 archive.extractall(path_dir_dataset_target)
         shutil.rmtree(path_dir_data_federation_temp)
 
-    def get_dict_dataset_id(self, path_file_data_federation_source: str) -> List[str]:
+    def get_dict_dataset_name_to_dataset_id(self, path_file_data_federation_source: str) -> Dict[str, str]:
         path_dir_data_federation_temp = tempfile.mkdtemp()
         with ZipFile(path_file_data_federation_source, "r") as archive:
             archive.extractall(path_dir_data_federation_temp)

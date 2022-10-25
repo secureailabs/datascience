@@ -4,7 +4,7 @@ from typing import List
 import pandas
 from pandas import DataFrame as DataFramePandas
 
-from sail_safe_functions_orchestrator.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.series import Series
 
 

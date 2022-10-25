@@ -2,7 +2,7 @@ from typing import List
 
 from pandas import Series as SeriesPandas
 
-from sail_safe_functions_orchestrator.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 
 
 class Series(SeriesPandas):

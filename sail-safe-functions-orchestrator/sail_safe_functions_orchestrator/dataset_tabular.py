@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_base import DatasetBase
 
 

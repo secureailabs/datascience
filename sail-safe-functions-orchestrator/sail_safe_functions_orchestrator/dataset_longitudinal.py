@@ -3,8 +3,8 @@ from typing import Dict, List
 from lightgbm import Dataset
 
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model_longitudinal import DataModelLongitudinal
-from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_base import DatasetBase
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
 from sail_safe_functions_orchestrator.series import Series

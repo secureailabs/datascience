@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from sail_safe_functions_orchestrator.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 
 
 class DataModelDataFrame:

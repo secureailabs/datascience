@@ -6,7 +6,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
 from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
 
@@ -21,8 +21,8 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
     def __init__(self) -> None:
         super().__init__("csvv1")
 
-    def read_dataset(self, path_dirdataset_id) -> DatasetTabular:
-        pass
+    def read_dataset(self, dataset_id) -> DatasetTabular:
+        self.read_dataset_for_path(os.path.join(self.path_dir_dataset_store, dataset_id))
 
     def read_dataset_for_path(self, path_dir_dataset_source) -> DatasetTabular:
         # TODO check signature
@@ -57,7 +57,12 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
                 )
         return DatasetTabular(data_federation_id, data_federation_name, dataset_id, dataset_name, list_data_frame)
 
-    def write_dataset_tabular_for_path(self, path_dir_dataset_target: str, dataset_tabular: DatasetTabular) -> None:
+    def write_dataset(self, dataset_tabular: DatasetTabular) -> None:
+        self.write_dataset_for_path(
+            os.path.join(self.path_dir_dataset_store, dataset_tabular.dataset_id), dataset_tabular
+        )
+
+    def write_dataset_for_path(self, path_dir_dataset_target: str, dataset_tabular: DatasetTabular) -> None:
         if os.path.isdir(path_dir_dataset_target):
             shutil.rmtree(path_dir_dataset_target)
         os.makedirs(path_dir_dataset_target)
