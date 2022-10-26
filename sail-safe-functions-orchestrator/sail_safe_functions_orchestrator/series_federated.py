@@ -31,6 +31,14 @@ class SeriesFederated(ABC):
             size += series.size
         return size
 
+    @property
+    def list_dataset_id(self):
+        return list(self.dict_reference_series.keys())
+
+    @property
+    def series_name(self):
+        return self.data_model_series.series_name
+
     def items(self):
         return self.dict_series.items()
 

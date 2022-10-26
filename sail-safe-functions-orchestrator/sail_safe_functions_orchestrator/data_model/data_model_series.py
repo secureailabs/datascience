@@ -12,6 +12,7 @@ class DataModelSeries:
     MissingPolicyRaiseException = "MissingPolicyRaiseException"
 
     AgregatorCsv = "AgregatorCsv"
+    AgregatorComputed = "AgregatorComputed"
     AgregatorPatientGender = "AgregatorPatientGender"
     AgregatorPatientMaritalStatus = "AgregatorPatientMaritalStatus"
     AgregatorPatientRace = "AgregatorPatientRace"

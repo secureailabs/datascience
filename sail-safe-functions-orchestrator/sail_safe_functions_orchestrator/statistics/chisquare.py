@@ -41,16 +41,20 @@ class Chisquare(Estimator):
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
 
-        # if not (is_string_dtype(sample_0) and is_string_dtype(sample_1)): TODO would be nice to catch this here
-        #    raise ValueException()
-
         list_precompute = []
-        for series_0, series_1 in zip(sample_0.dict_series.values(), sample_1.dict_series.values()):
-            list_precompute.append(ChisquarePrecompute.run(series_0, series_1))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            list_precompute.append(
+                client.call(
+                    ChisquarePrecompute,
+                    sample_0.dict_reference_series[dataset_id],
+                    sample_1.dict_reference_series[dataset_id],
+                )
+            )
         return ChisquareAggregate.run(list_precompute)
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        count_total = sample_0.size
+        count_total = sample_0.to_numpy().size
 
         array_0 = list(sample_0.to_numpy())
         array_1 = list(sample_1.to_numpy())

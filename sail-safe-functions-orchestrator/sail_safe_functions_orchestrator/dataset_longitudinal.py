@@ -41,7 +41,7 @@ class DatasetLongitudinal(DatasetBase):
                 list_data = []
                 for patient in self.list_patient:
                     list_data.append(data_model_series.agregate(patient))
-                list_series.append(Series(dataset_id, series_name, data_model_series, list_data))
+                list_series.append(Series(dataset_id, data_model_series, list_data))
 
             list_data_frame.append(DataFrame(dataset_id, data_frame_name, list_series))
 

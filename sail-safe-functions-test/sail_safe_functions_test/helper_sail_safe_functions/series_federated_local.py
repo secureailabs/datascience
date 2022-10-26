@@ -86,7 +86,7 @@ class SeriesFederatedLocal(SeriesFederated):
             unit="unitless",
         )
 
-        series = Series(dataset_id, series_name, data_model_series, array.tolist())
+        series = Series(dataset_id, data_model_series, array.tolist())
         list_reference = [ServiceReference.get_instance().series_to_reference(series)]
 
         service_client = ServiceClientLocal()

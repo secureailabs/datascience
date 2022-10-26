@@ -2,6 +2,8 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class MinMaxPrecompute:
@@ -9,7 +11,7 @@ class MinMaxPrecompute:
     Precomputes min and max for a given sample
     """
 
-    def run(series_sample: pd.Series) -> Tuple[float, float]:
+    def run(sample_0_series: ReferenceSeries) -> Tuple[float, float]:
         """This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min <= sample_min and sample_max <= max
         For uniform distributions this follows the UMVU-estimator altough with bigger variance
@@ -17,26 +19,23 @@ class MinMaxPrecompute:
         min and max to protect outliers.
         TODO this function can be improved by doing the actual estimation in the aggregate section
 
-        :param series_sample: the sample from witch to estimate the min and max
-        :type series_sample: pd.Series
+        :param sample_0_series: the sample from witch to estimate the min and max
+        :type sample_0_series: ReferenceSeries
         :raises ValueError: raises a ValueError if the series contains `na` values
         :return: The min and max estimate from the series
         :rtype: Tuple[float, float]
         """
-        if 0 < series_sample.isna().sum():
+
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        if np.isnan(np.sum(sample_0)):
             raise ValueError("Sample contains `na` values")
-        array_sample = np.array(
-            series_sample.sort_values(ascending=True, inplace=False)
-        )
-        subsample_size = int(np.ceil(np.sqrt(series_sample.size)))
-        subsample_min = array_sample[:subsample_size]
-        subsample_max = array_sample[-subsample_size:]
+        sample_0 = np.sort(sample_0)
+
+        subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
+        subsample_min = sample_0[:subsample_size]
+        subsample_max = sample_0[-subsample_size:]
         subsample_min_width = np.max(subsample_min) - np.min(subsample_min)
-        estimate_min = np.min(subsample_min) - (
-            subsample_min_width**2 / series_sample.size
-        )
+        estimate_min = np.min(subsample_min) - (subsample_min_width**2 / sample_0.size)
         subsample_max_width = np.max(subsample_max) - np.min(subsample_max)
-        estimate_max = np.max(subsample_max) + (
-            subsample_max_width**2 / series_sample.size
-        )
+        estimate_max = np.max(subsample_max) + (subsample_max_width**2 / sample_0.size)
         return estimate_min, estimate_max

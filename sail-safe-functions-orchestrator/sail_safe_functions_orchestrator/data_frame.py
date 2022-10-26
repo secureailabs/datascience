@@ -25,7 +25,6 @@ class DataFrame(DataFramePandas):
             raise Exception(f"No such series: {series_name}")
         return Series(
             self.dataset_id,
-            series_name,
             self.data_model_data_frame[series_name],
             super().__getitem__(series_name).to_list(),
         )
@@ -74,7 +73,7 @@ class DataFrame(DataFramePandas):
         list_series = []
         for series_name in data_model_data_frame.list_series_name:
             list_data = data_frame_pandas[series_name].to_list()
-            list_series.append(Series(dataset_id, series_name, data_model_data_frame[series_name], list_data))
+            list_series.append(Series(dataset_id, data_model_data_frame[series_name], list_data))
             set_series_name.remove(series_name)
 
         if 0 < len(set_series_name):

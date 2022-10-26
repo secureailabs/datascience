@@ -2,13 +2,9 @@ from typing import Tuple
 
 import numpy
 import scipy
-from sail_safe_functions.statistics.mann_whitney_u_test_aggregate import (
-    MannWhitneyUTestAggregate,
-)
-from sail_safe_functions.statistics.mann_whitney_u_test_precompute import (
-    MannWhitneyUTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
+from sail_safe_functions.statistics.mann_whitney_u_test_aggregate import MannWhitneyUTestAggregate
+from sail_safe_functions.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
+from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from sail_safe_functions_orchestrator.tools_common import check_instance
@@ -54,16 +50,18 @@ class MannWhitneyUTest(Estimator):
         """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
-        n0, n1 = sample_0.size, sample_1.size
+        n0 = statistics.count(sample_0)
+        n1 = statistics.count(sample_1)
 
         sample_concatenated = preprocessing.concatenate(sample_0, sample_1)
         sample_concatenated_ranked = preprocessing.rank(sample_concatenated, self.type_ranking)
 
         list_precompute = []
-        for dataset_id in sample_0.dict_series:
-            series_0 = sample_0.dict_series[dataset_id]
-            series_concatenated_ranked = sample_concatenated_ranked.dict_series[dataset_id]
-            list_precompute.append(MannWhitneyUTestPrecompute.run(series_0, series_concatenated_ranked))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            series_0 = sample_0.dict_reference_series[dataset_id]
+            series_concatenated_ranked = sample_concatenated_ranked.dict_reference_series[dataset_id]
+            list_precompute.append(client.call(MannWhitneyUTestPrecompute, series_0, series_concatenated_ranked))
 
         sum_ranks_0 = MannWhitneyUTestAggregate.run(list_precompute)
 

@@ -142,12 +142,13 @@ def two_sample_categorical() -> SeriesFederatedLocal:
     id_column_0 = "rbc"
     id_column_1 = "classification"
 
-    dataframe = DataFrameFederatedLocal()
+    dict_csv = {}
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
-        dataframe.add_csv(path_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    data_frame = DataFrameFederatedLocal.from_csv(dict_csv)
 
-    return (dataframe[id_column_0], dataframe[id_column_1])
+    return (data_frame[id_column_0], data_frame[id_column_1])
 
 
 @pytest.fixture
