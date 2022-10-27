@@ -44,8 +44,10 @@ def test_age(data_frame_federated_kidney_hasnan: DataFrameFederated):
 
     reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
     reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+
     data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
     data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 9 == data_frame_kidney["age"].isna().sum()
     assert 0 == data_frame_kidney_fixed["age"].isna().sum()
