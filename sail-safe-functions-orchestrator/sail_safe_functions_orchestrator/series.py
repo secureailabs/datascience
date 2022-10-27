@@ -17,4 +17,14 @@ class Series(SeriesPandas):
     def series_name(self):
         return self.data_model_series.series_name
 
+    @staticmethod
+    def from_pandas(
+        dataset_id: str,
+        data_model_series: DataModelSeries,
+        series_pandas: SeriesPandas,
+    ) -> "Series":
+        series = Series(dataset_id, data_model_series, series_pandas.to_list())
+        series.index = series_pandas.index
+        return series
+
     # TODO check what feature we use on the Pandas sereies that return pandas series, those will need overloading

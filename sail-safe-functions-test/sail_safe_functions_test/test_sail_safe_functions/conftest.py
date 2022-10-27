@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from config import DATA_PATH
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
@@ -35,44 +36,39 @@ def tuple_kidney_schema_dataframe() -> Tuple[dict, DataFrameFederatedLocal]:
 
 
 @pytest.fixture
-def data_frame_federated_kidney() -> Tuple[dict, DataFrameFederatedLocal]:
+def data_frame_federated_kidney() -> DataFrameFederatedLocal:
     """
     Fixture for loading a dataframe with missing values
     :return: data_frame_federated_kidney: a federated dataframe
     :rtype: class : DataFrameFederatedLocal
     """
 
-    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", "kidney_disease.csv")
+    list_name_file_csv = ["kidney_disease_clean.csv"]
+    id_column_0 = "PD-L1 level before treatment"
 
-    data_frame_federated_kidney = DataFrameFederatedLocal()
-    data_frame_federated_kidney.add_csv(path_file_csv)
-    return data_frame_federated_kidney
-
-
-@pytest.fixture
-def dataframe_kidney() -> pd.DataFrame:
-    """
-    Fixture for loading a dataframe with some missing values
-
-    :return: dataframe_kidney: A dataframe with some missing fields
-    :rtype: class : pd.DataFrame
-    """
-
-    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", "kidney_disease.csv")
-    return pd.read_csv(path_file_csv)
+    dict_csv = {}
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    return DataFrameFederatedLocal.from_csv(dict_csv)
 
 
 @pytest.fixture
-def dataframe_kidney_clean() -> pd.DataFrame:
+def data_frame_federated_kidney_hasnan() -> DataFrameFederatedLocal:
     """
-    Fixture for loading a dataframe with no missing values
-
-    :return: dataframe_kidney_clean: A dataframe with no missing fields
-    :rtype: class : pd.DataFrame
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
     """
 
-    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv")
-    return pd.read_csv(path_file_csv)
+    list_name_file_csv = ["kidney_disease.csv"]
+    id_column_0 = "PD-L1 level before treatment"
+
+    dict_csv = {}
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", name_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    return DataFrameFederatedLocal.from_csv(dict_csv)
 
 
 @pytest.fixture

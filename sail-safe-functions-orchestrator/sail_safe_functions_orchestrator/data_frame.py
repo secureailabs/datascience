@@ -18,7 +18,14 @@ class DataFrame(DataFramePandas):
         self.data_frame_name = data_frame_name
         self.data_model_data_frame = DataModelDataFrame(data_frame_name)
         for series in list_series:
-            self.add_series(series)
+            self._add_series(series)
+
+    def _add_series(self, series: Series):
+        if series.series_name in self.columns:
+            raise ValueError(f"Duplicate series: {series.series_name}")
+        # TODO overload this indexer as well !!!!
+        super().__setitem__(series.series_name, series)
+        self.data_model_data_frame.add_data_model_series(series.data_model_series)
 
     def get_series(self, series_name: str) -> Series:
         if series_name not in self.list_series_name:
@@ -28,13 +35,6 @@ class DataFrame(DataFramePandas):
             self.data_model_data_frame[series_name],
             super().__getitem__(series_name).to_list(),
         )
-
-    def add_series(self, series: Series):
-        if series.series_name in self.columns:
-            raise ValueError(f"Duplicate series: {series.series_name}")
-        # TODO overload this indexer as well !!!!
-        super().__setitem__(series.series_name, series)
-        self.data_model_data_frame.add_data_model_series(series.data_model_series)
 
     # index section start
     def __delitem__(self, key) -> None:
@@ -56,28 +56,39 @@ class DataFrame(DataFramePandas):
 
     # property section end
 
+    @staticmethod
     def from_csv(
         dataset_id: str, data_frame_name: str, data_model_data_frame: DataModelDataFrame, path_file_csv: str
     ) -> "DataFrame":
         with open(path_file_csv, "rb") as file:
             return DataFrame.from_csv_str(dataset_id, data_frame_name, data_model_data_frame, file.read())
 
+    @staticmethod
     def from_csv_str(
         dataset_id: str,
         data_frame_name: str,
         data_model_data_frame: DataModelDataFrame,
         csv_content: str,
     ) -> "DataFrame":
-        set_series_name = set(data_model_data_frame.list_series_name)  # gutted object
         data_frame_pandas = pandas.read_csv(BytesIO(csv_content))
+        return DataFrame.from_pandas(dataset_id, data_frame_name, data_model_data_frame, data_frame_pandas)
+
+    @staticmethod
+    def from_pandas(
+        dataset_id: str,
+        data_frame_name: str,
+        data_model_data_frame: DataModelDataFrame,
+        data_frame_pandas: DataFramePandas,
+    ) -> "DataFrame":
+        list_series_name = data_model_data_frame.list_series_name
         list_series = []
         for series_name in data_model_data_frame.list_series_name:
-            list_data = data_frame_pandas[series_name].to_list()
-            list_series.append(Series(dataset_id, data_model_data_frame[series_name], list_data))
-            set_series_name.remove(series_name)
+            series = Series.from_pandas(dataset_id, data_model_data_frame[series_name], data_frame_pandas[series_name])
+            list_series.append(series)
+            list_series_name.remove(series_name)
 
-        if 0 < len(set_series_name):
-            raise Exception(f"Missing series: {list(set_series_name)}")
+        if 0 < len(list_series_name):
+            raise Exception(f"Missing series: {list(list_series_name)}")
         return DataFrame(dataset_id, data_frame_name, list_series)
 
     # TODO check what feature we use on the Pandas data_frame that return pandas data_frame or series, those will need overloading

@@ -23,9 +23,6 @@ class DataFrameFederated(ABC):
         for reference in list_reference:
             self._add_reference_data_frame(reference)
 
-    def create_new(self) -> "DataFrameFederated":
-        raise NotImplementedError()
-
     def _add_reference_data_frame(self, reference: ReferenceDataFrame):
         if reference.dataset_id in self.dict_reference_data_frame:
             raise Exception(f"Duplicate data_frame for dataset_id: {reference.dataset_id}")
@@ -57,5 +54,9 @@ class DataFrameFederated(ABC):
     @property
     def list_series_name(self) -> List[str]:
         return self.data_model_data_frame.list_series_name
+
+    @property
+    def list_dataset_id(self):
+        return list(self.dict_reference_data_frame.keys())
 
     # property section end
