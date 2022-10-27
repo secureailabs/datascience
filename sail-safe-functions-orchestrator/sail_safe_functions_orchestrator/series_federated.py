@@ -25,13 +25,6 @@ class SeriesFederated(ABC):
         self.dict_reference_series[reference.dataset_id] = reference
 
     @property
-    def size(self):
-        size = 0
-        for series in self.dict_series.values():
-            size += series.size
-        return size
-
-    @property
     def list_dataset_id(self):
         return list(self.dict_reference_series.keys())
 

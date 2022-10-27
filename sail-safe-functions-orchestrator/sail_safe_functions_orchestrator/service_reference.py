@@ -8,6 +8,7 @@ from sail_safe_functions_orchestrator.reference_dataset_longitudinal import Refe
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
 class ServiceReference:
@@ -37,6 +38,7 @@ class ServiceReference:
     def dataset_longitudinal_to_reference(
         self, dataset_longitudinal: DatasetLongitudinal
     ) -> ReferenceDatasetLongitudinal:
+        check_instance(dataset_longitudinal, DatasetTabular)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = dataset_longitudinal
         return ReferenceDatasetTabular(dataset_longitudinal.dataset_id, reference_id, dataset_longitudinal.data_model)
@@ -45,12 +47,14 @@ class ServiceReference:
         self,
         reference: ReferenceDatasetLongitudinal,
     ) -> DatasetLongitudinal:
+        check_instance(reference, ReferenceDatasetLongitudinal)
         if not reference.dataset_id in self.dict_reference:
             raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
         return self.dict_reference[reference.reference_id]
 
     ###
     def dataset_tabular_to_reference(self, dataset_tabular: DatasetTabular) -> ReferenceDatasetTabular:
+        check_instance(dataset_tabular, DatasetTabular)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = dataset_tabular
         return ReferenceDatasetTabular(dataset_tabular.dataset_id, reference_id, dataset_tabular.data_model)
@@ -59,6 +63,7 @@ class ServiceReference:
         self,
         reference: ReferenceDatasetLongitudinal,
     ) -> DatasetTabular:
+        check_instance(reference, ReferenceDatasetLongitudinal)
         if not reference.dataset_id in self.dict_reference:
             raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
         return self.dict_reference[reference.reference_id]
@@ -66,6 +71,7 @@ class ServiceReference:
     ###
 
     def data_frame_to_reference(self, data_frame: DataFrame) -> ReferenceDatasetTabular:
+        check_instance(data_frame, DataFrame)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_frame
         return ReferenceDataFrame(data_frame.dataset_id, reference_id, data_frame.data_model_data_frame)
@@ -74,12 +80,14 @@ class ServiceReference:
         self,
         reference: ReferenceDataFrame,
     ) -> DataFrame:
+        check_instance(reference, ReferenceDataFrame)
         if not reference.reference_id in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
 
     ###
     def series_to_reference(self, series: Series) -> ReferenceSeries:
+        check_instance(series, Series)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = series
         return ReferenceSeries(series.dataset_id, reference_id, series.data_model_series)
@@ -88,6 +96,7 @@ class ServiceReference:
         self,
         reference: ReferenceSeries,
     ) -> Series:
+        check_instance(reference, ReferenceSeries)
         if not reference.reference_id in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
