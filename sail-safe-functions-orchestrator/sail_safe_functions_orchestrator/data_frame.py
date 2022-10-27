@@ -36,6 +36,14 @@ class DataFrame(DataFramePandas):
             super().__getitem__(series_name).to_list(),
         )
 
+    def select_series(self, list_series_name: str) -> Series:
+        list_series = []
+        for series_name in list_series_name:
+            if series_name not in self.list_series_name:
+                raise Exception(f"No such series: {series_name}")
+            list_series.append(self.get_series(series_name))
+        return DataFrame(self.dataset_id, self.data_frame_name, list_series)
+
     # index section start
     def __delitem__(self, key) -> None:
         raise NotImplementedError()

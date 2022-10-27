@@ -33,7 +33,7 @@ class ImputeConstant:
 
     def run(
         data_frame_source: DataFrameFederated,
-        list_name_column: List[str],
+        list_series_name: List[str],
         missing_value: Union[str, int, float],
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
@@ -42,7 +42,7 @@ class ImputeConstant:
             client = data_frame_source.service_client.get_client(dataset_id)
             reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
             list_reference.append(
-                client.call(ImputeConstantPrecompute, reference_data_frame, list_name_column, missing_value)
+                client.call(ImputeConstantPrecompute, reference_data_frame, list_series_name, missing_value)
             )
         return DataFrameFederated(
             data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
