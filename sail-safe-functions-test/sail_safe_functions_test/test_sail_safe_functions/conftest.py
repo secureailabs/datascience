@@ -16,27 +16,7 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
 
 
 @pytest.fixture
-def tuple_kidney_schema_dataframe() -> Tuple[dict, DataFrameFederatedLocal]:
-    """
-    Fixture for loading a dataframe without missing values and a matching schema
-
-    :return: tuple_kidney_schema_dataframe: A tuple iwth a dataframe and a matching schema
-    :rtype: class : Tuple[dict, DataFrameFederatedLocal]
-    """
-
-    path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
-    path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", "kidney_disease_clean.csv")
-
-    with open(path_file_json, "r") as file:
-        schema = json.load(file)
-
-    dataframe = DataFrameFederatedLocal()
-    dataframe.add_csv(path_file_csv)
-    return (schema, dataframe)
-
-
-@pytest.fixture
-def data_frame_federated_kidney() -> DataFrameFederatedLocal:
+def data_frame_federated_kidney() -> DataFrameFederated:
     """
     Fixture for loading a dataframe with missing values
     :return: data_frame_federated_kidney: a federated dataframe
@@ -54,7 +34,7 @@ def data_frame_federated_kidney() -> DataFrameFederatedLocal:
 
 
 @pytest.fixture
-def data_frame_federated_kidney_hasnan() -> DataFrameFederatedLocal:
+def data_frame_federated_kidney_hasnan() -> DataFrameFederated:
     """
     Fixture for loading a dataframe with missing values
     :return: data_frame_federated_kidney: a federated dataframe

@@ -23,6 +23,9 @@ class Series(SeriesPandas):
         data_model_series: DataModelSeries,
         series_pandas: SeriesPandas,
     ) -> "Series":
+        if series_pandas.dtype == int:
+            # dtype is aways float no ints allowed at this point
+            series_pandas = series_pandas.astype(float)
         series = Series(dataset_id, data_model_series, series_pandas.to_list())
         series.index = series_pandas.index
         return series

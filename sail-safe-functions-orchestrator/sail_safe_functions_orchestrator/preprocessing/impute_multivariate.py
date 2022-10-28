@@ -42,6 +42,7 @@ class ImputeMultivariate:
         max_iter: int = 10,
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
+
         list_reference = []
         for dataset_id in data_frame_source.list_dataset_id:
             client = data_frame_source.service_client.get_client(dataset_id)

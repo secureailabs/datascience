@@ -140,8 +140,11 @@ class DataModelSeries:
             raise exception
         raise Exception(f"cannot return default")
 
-    def create_unique(series_name: str) -> "DataModelSeries":
-        return DataModelSeries(series_name, DataModelSeries.DataLevelUnique, None, None, None, None)
+    def create_unique(
+        series_name: str,
+        type_agregator: str = None,
+    ) -> "DataModelSeries":
+        return DataModelSeries(series_name, DataModelSeries.DataLevelUnique, type_agregator=type_agregator)
 
     def create_numerical(
         series_name: str,
@@ -163,7 +166,11 @@ class DataModelSeries:
         series_name: str, list_value: List[str], measurement_source_name: str = None, type_agregator: str = None
     ) -> "DataModelSeries":
         return DataModelSeries(
-            series_name, DataModelSeries.DataLevelCategorical, None, list_value, measurement_source_name, type_agregator
+            series_name,
+            DataModelSeries.DataLevelCategorical,
+            list_value=list_value,
+            measurement_source_name=measurement_source_name,
+            type_agregator=type_agregator,
         )
 
     def to_json(self) -> Dict:

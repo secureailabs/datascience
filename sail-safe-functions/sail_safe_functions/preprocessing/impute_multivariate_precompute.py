@@ -30,7 +30,7 @@ class ImputeMultivariatePrecompute:
         """Imputes one or more columns with a multivariate strategy
 
         :param data_frame: Input dataframe
-        :type data_frame: pd.DataFrame
+        :type data_frame: ReferenceDataFrame
         :param list_name_column: a list of column names to impute, set to None to do all columns
         :type list_name_column: list[str]
         :param imputation_order: imputation_order, must be {`ascending`, `descending`}
@@ -41,7 +41,7 @@ class ImputeMultivariatePrecompute:
             The stopping criterion is met once max(abs(X_t - X_{t-1}))/max(abs(X[known_vals])) < tol, where X_t is X at iteration t.
         :type max_iter: int
         :return: Output dataframe
-        :rtype: pd.DataFrame
+        :rtype: ReferenceDataFrame
         """
 
         # if strategy not in {"mean", "median", "most_frequent"}:

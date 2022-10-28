@@ -5,13 +5,18 @@ from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFeder
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
-def drop_series_with_missing(
-    data_frame_source: DataFrameFederated, how: str, thresh: int, subset: Any
+def drop_missing(
+    data_frame_source: DataFrameFederated, axis: int, how: str, thresh: int, subset: Any
 ) -> DataFrameFederated:
     """
     Remove missing values.
     Parameters
     ----------
+    axis : {0 or 'index', 1 or 'columns'}, default 0
+        Determine if rows or columns which contain missing values are
+        removed.
+        * 0, or 'index' : Drop rows which contain missing values.
+        * 1, or 'columns' : Drop columns which contain missing value.
     how : {'any', 'all'}, default 'any'
         Determine if row or column is removed from DataFrame, when we have
         at least one NA or all NA.
@@ -28,24 +33,30 @@ def drop_series_with_missing(
     DataFrame
         DataFrame with NA entries dropped.
     """
-    return DropSeriesWithMissing.run(data_frame_source, how, thresh, subset)
+    return DropMissing.run(data_frame_source, axis, how, thresh, subset)
 
 
-class DropSeriesWithMissing:
+class DropMissing:
     """
     Drop rows or columns with missing data
     """
 
     def run(
         data_frame_source: DataFrameFederated,
+        axis: int,
         how: str,
         thresh: int,
         subset: Any,
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
-        data_frame_target = data_frame_source.create_new()
-        for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.run(
-                data_frame_source.dict_dataframe[dataset_id], 1, how, thresh, subset
-            )
-        return data_frame_target
+        list_reference = []
+
+        list_reference = []
+        for dataset_id in data_frame_source.list_dataset_id:
+            client = data_frame_source.service_client.get_client(dataset_id)
+            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
+            list_reference.append(client.call(DropMissingPrecompute, reference_data_frame, axis, how, thresh, subset))
+
+        return DataFrameFederated(
+            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
+        )

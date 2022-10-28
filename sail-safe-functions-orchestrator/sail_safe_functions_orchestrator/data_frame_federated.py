@@ -11,6 +11,7 @@ from sail_safe_functions_orchestrator.service_client import ServiceClient
 
 
 class DataFrameFederated(ABC):
+    # TODO reverse data_model_data_frame and list reference
     def __init__(
         self,
         service_client: ServiceClient,
