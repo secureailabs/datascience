@@ -23,6 +23,12 @@ def dataset_longitudinal_r4sep2019_20_1() -> DatasetLongitudinalFederated:
 
 
 @pytest.fixture
+def dataset_longitudinal_r4sep2019_1k_3() -> DatasetLongitudinalFederated:
+    path_file_data_federation = os.path.join(DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_1k_3.zip")
+    return DatasetLongitudinalFederated.read_for_path_file(path_file_data_federation)
+
+
+@pytest.fixture
 def data_frame_federated_kidney() -> DataFrameFederated:
     """
     Fixture for loading a dataframe with missing values
