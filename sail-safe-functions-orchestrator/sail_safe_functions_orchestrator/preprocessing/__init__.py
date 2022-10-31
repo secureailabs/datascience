@@ -1,4 +1,4 @@
-from sail_safe_functions_orchestrator.preprocessing.cdf import cdf
+from sail_safe_functions_orchestrator.preprocessing.cdf import CumulativeDistributionFunction
 from sail_safe_functions_orchestrator.preprocessing.concatenate import concatenate
 from sail_safe_functions_orchestrator.preprocessing.drop import drop
 from sail_safe_functions_orchestrator.preprocessing.drop_missing import drop_missing
