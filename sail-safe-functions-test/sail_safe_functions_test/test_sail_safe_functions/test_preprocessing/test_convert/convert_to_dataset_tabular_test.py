@@ -137,7 +137,7 @@ def test_convert_to_dataset_tabular_t_test(dataset_longitudinal_r4sep2019_20_1: 
 
 
 @pytest.mark.slow
-def test_convert_to_dataset_tabular(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
+def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
     """
     This test our ability to convert a longitudinal dataset to a tabular one
     """
