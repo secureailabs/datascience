@@ -30,11 +30,11 @@ class KdeAggregate:
             final = Counter(final)
             L1 = precompute[0]
             L2 = precompute[1]
-            ini_dictionary2 = {L1[i]: L2[i] for i in range(len(L1))}
-            ini_dictionary2 = Counter(ini_dictionary2)
+            dict_values = {L1[i]: L2[i] for i in range(len(L1))}
+            dict_values = Counter(dict_values)
             # combining dictionaries
             # using Counter
-            final = final + ini_dictionary2
+            final = final + dict_values
 
         final_list = []
         for key in final:
