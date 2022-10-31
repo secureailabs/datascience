@@ -10,9 +10,16 @@ import pandas as pd
 import pytest
 from config import DATA_PATH
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+
+@pytest.fixture
+def dataset_longitudinal_r4sep2019_20_1() -> DatasetLongitudinalFederated:
+    path_file_data_federation = os.path.join(DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_20_1.zip")
+    return DatasetLongitudinalFederated.read_for_path_file(path_file_data_federation)
 
 
 @pytest.fixture

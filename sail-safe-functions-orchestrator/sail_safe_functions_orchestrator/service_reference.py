@@ -38,18 +38,20 @@ class ServiceReference:
     def dataset_longitudinal_to_reference(
         self, dataset_longitudinal: DatasetLongitudinal
     ) -> ReferenceDatasetLongitudinal:
-        check_instance(dataset_longitudinal, DatasetTabular)
+        check_instance(dataset_longitudinal, DatasetLongitudinal)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = dataset_longitudinal
-        return ReferenceDatasetTabular(dataset_longitudinal.dataset_id, reference_id, dataset_longitudinal.data_model)
+        return ReferenceDatasetLongitudinal(
+            dataset_longitudinal.dataset_id, reference_id, dataset_longitudinal.data_model
+        )
 
     def reference_to_dataset_longitudinal(
         self,
         reference: ReferenceDatasetLongitudinal,
     ) -> DatasetLongitudinal:
         check_instance(reference, ReferenceDatasetLongitudinal)
-        if not reference.dataset_id in self.dict_reference:
-            raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
+        if reference.reference_id not in self.dict_reference:
+            raise ValueError(f"Dataset not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
 
     ###
@@ -61,11 +63,11 @@ class ServiceReference:
 
     def reference_to_dataset_tabular(
         self,
-        reference: ReferenceDatasetLongitudinal,
+        reference: ReferenceDatasetTabular,
     ) -> DatasetTabular:
-        check_instance(reference, ReferenceDatasetLongitudinal)
-        if not reference.dataset_id in self.dict_reference:
-            raise ValueError(f"Dataset not loaded: {reference.dataset_id}")
+        check_instance(reference, ReferenceDatasetTabular)
+        if reference.reference_id not in self.dict_reference:
+            raise ValueError(f"Dataset not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
 
     ###
@@ -81,7 +83,7 @@ class ServiceReference:
         reference: ReferenceDataFrame,
     ) -> DataFrame:
         check_instance(reference, ReferenceDataFrame)
-        if not reference.reference_id in self.dict_reference:
+        if reference.reference_id not in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
 
@@ -97,6 +99,6 @@ class ServiceReference:
         reference: ReferenceSeries,
     ) -> Series:
         check_instance(reference, ReferenceSeries)
-        if not reference.reference_id in self.dict_reference:
+        if reference.reference_id not in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]

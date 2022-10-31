@@ -127,9 +127,7 @@ class PackagerDataFederation:
         os.remove(path_file_data_content_zip)
         os.remove(path_file_data_model_zip)
 
-    ###
-    ### prepare section
-    ###
+    # prepare section
     def prepare_data_federation(self, path_file_data_federation_source):
         self.prepare_data_federation_for_path(path_file_data_federation_source, self.path_dir_dataset_store)
 
@@ -168,9 +166,7 @@ class PackagerDataFederation:
         shutil.rmtree(path_dir_data_federation_temp)
         return dict_dataset_name_to_dataset_id
 
-    ###
-    ### validation section
-    ###
+    # validation section
 
     def validate_data_federation_header(self, data_federation_header: Dict) -> bool:
         if "data_federation_id" not in data_federation_header:

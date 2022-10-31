@@ -25,9 +25,10 @@ class ConvertToDatasetTabular:
         data_model_tabular: DataModelTabular,
     ) -> DataFrameFederated:
         check_instance(dataset_source, DatasetLongitudinalFederated)
+        check_instance(dataset_federation_id, str)
+        check_instance(dataset_federation_name, str)
         check_instance(data_model_tabular, DataModelTabular)
-        print("len(dataset_source.dict_dataset")
-        print(len(dataset_source.dict_reference_dataset_longitudinal))
+
         list_reference = []
         for dataset_id, dataset_refrence in dataset_source.dict_reference_dataset_longitudinal.items():
             dataset_name = dataset_id  # TODO fix this

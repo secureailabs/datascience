@@ -2,7 +2,6 @@ from typing import Dict, List
 
 import numpy as np
 import pandas
-from pandas import DataFrame as DataFramePandas
 from pandas.api.types import is_numeric_dtype, is_string_dtype
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
@@ -16,6 +15,48 @@ from sail_safe_functions_test.helper_sail_safe_functions.service_client_local im
 
 class DataFrameFederatedLocal:
     """This should be a multyline docstring"""
+
+    def query(self, querystring: str) -> "DataFrameFederatedLocal":
+        dataframe_new = DataFrameFederatedLocal()
+        for key, dataframe in self.dict_dataframe.items():
+            dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
+
+    def to_list_numpy(self) -> List[np.ndarray]:
+        list_array_numpy = []
+        for dataframe in self.dict_dataframe.values():
+            dataframe.to_numpy()
+        return list_array_numpy
+
+    # index section
+
+    def __delitem__(self, key) -> None:
+        for dataframe in self.dict_dataframe.values():
+            dataframe.self.__delitem__(key)
+
+    def __getitem__(self, key) -> "SeriesFederated":
+        series = SeriesFederatedLocal()
+        for dataframe_key, dataframe in self.dict_dataframe.items():
+            series.add_series(dataframe_key, dataframe.__getitem__(key))
+        return series
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError()
+
+    def to_numpy(self) -> np.ndarray:
+        list_array_numpy = []
+        for data_frame in self.dict_dataframe.values():
+            list_array_numpy.append(data_frame.to_numpy())
+        return np.concatenate(list_array_numpy)
+
+    @staticmethod
+    def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
+        data_frame = pandas.DataFrame(array)
+        if list_name_column is not None:
+            for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
+                data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
+        data_frame_federated = DataFrameFederatedLocal()
+        data_frame_federated.dict_dataframe[dataset_id] = data_frame
+        return data_frame_federated
 
     @staticmethod
     def from_csv(dict_csv: Dict[str, str]) -> DataFrameFederated:
@@ -58,46 +99,3 @@ class DataFrameFederatedLocal:
 
         service_client = ServiceClientLocal()
         return DataFrameFederated(service_client, list_reference, data_model_data_frame)
-
-    def query(self, querystring: str) -> "DataFrameFederatedLocal":
-        dataframe_new = DataFrameFederatedLocal()
-        for key, dataframe in self.dict_dataframe.items():
-            dataframe_new.dict_dataframe[key] = dataframe.query(querystring)
-
-    def to_list_numpy(self) -> List[np.ndarray]:
-        list_array_numpy = []
-        for dataframe in self.dict_dataframe.values():
-            dataframe.to_numpy()
-        return list_array_numpy
-
-    # index section
-
-    def __delitem__(self, key) -> None:
-        for dataframe in self.dict_dataframe.values():
-            dataframe.self.__delitem__(key)
-
-    def __getitem__(self, key) -> "SeriesFederated":
-        series = SeriesFederatedLocal()
-        for dataframe_key, dataframe in self.dict_dataframe.items():
-            series.add_series(dataframe_key, dataframe.__getitem__(key))
-        return series
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError()
-
-    def to_numpy(self) -> np.ndarray:
-
-        list_array_numpy = []
-        for data_frame in self.dict_dataframe.values():
-            list_array_numpy.append(data_frame.to_numpy())
-        return np.concatenate(list_array_numpy)
-
-    @staticmethod
-    def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
-        data_frame = pd.DataFrame(array)
-        if list_name_column is not None:
-            for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
-                data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
-        data_frame_federated = DataFrameFederatedLocal()
-        data_frame_federated.dict_dataframe[dataset_id] = data_frame
-        return data_frame_federated
