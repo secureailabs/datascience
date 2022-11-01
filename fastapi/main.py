@@ -1,62 +1,90 @@
 from fastapi import FastAPI
+from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
+    KolmogorovSmirnovTest,
+)
+from sail_safe_functions_orchestrator.statistics.kurtosis import Kurtosis
 from sail_safe_functions_orchestrator.statistics.mean import Mean
+from sail_safe_functions_orchestrator.statistics.chisquare import Chisquare
+
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
 )
-import os
+
+from fastapi.responses import RedirectResponse
+from SecureUtility import validate, get_series
+
 
 app = FastAPI()
 
 
-def get_data():
-    DATA_PATH = (
-        "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
-    )
-
-    list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
-
-    dataframe = DataFrameFederatedLocal()
-    for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
-        dataframe.add_csv(path_file_csv)
-    return dataframe
-
-
-def query_limit_n(data, n=10):
-    return data.global_row_count() > n
-
-
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return RedirectResponse("/docs")
 
 
 @app.get("/mean")
-async def mean(dataframe_uuid: str, column_id: str):
+async def mean(series_uuid: str):
+    # Arrange
+    series = get_series()
 
-    # CHECK DATAFRAME EXISTS
-    # TODO: Link this into checking the store for accessible data.
-    #       This functionality is not available right now but should be after the system comes together.
-    if dataframe_uuid == "UUID":
-        dataframe = get_data()
-    else:
-        return {"payload": "Error: Federation UUID not found"}
+    # Validate
+    validate(series)
 
-    # CHECK DATAFRAME IS LONG ENOUGH
-    if not query_limit_n(dataframe):
-        return {"payload": "Error: Federation Length Too Small"}
-
-    # Return Mean Result
-    federated_series = dataframe[column_id]
+    # Execute
     estimator = Mean()
-    mean_sail = estimator.run(federated_series)
-    return {"payload": mean_sail}
+    payload = estimator.run(series)
 
-    # CHECKS
-    # TODO:
-    #       1. Check for pandas query injection in column_id string
-    # CLOSE CHECKS
+    # Return
+    return {"payload": payload}
 
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+@app.get("/chisquare")
+async def chisquare(series_uuid_1: str, series_uuid_2: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = Chisquare()
+    payload = estimator.run(series_1, series_2)
+
+    # Return
+    return {"payload": payload}
+
+
+@app.get("/kolmogorovSmirnovTest")
+async def chisquare(series_uuid: str, type_distribution: str, type_ranking: str):
+    # Arrange
+    series = get_series()
+
+    # Validate
+    validate(series)
+
+    # Execute
+    estimator = KolmogorovSmirnovTest(
+        type_distribution=type_distribution, type_ranking=type_ranking
+    )
+    k_statistic_sail, p_value_sail = estimator.run(series)
+
+    # Return
+    return {"k_statistic_sail": k_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/kurtosis")
+async def kurtosis(series_uuid: str):
+    # Arrange
+    series = get_series()
+
+    # Validate
+    validate(series)
+
+    # Execute
+    estimator = Kurtosis()
+    kurtosis_sail = estimator.run(series)
+
+    # Return
+    return {"kurtosis_sail": kurtosis_sail}
