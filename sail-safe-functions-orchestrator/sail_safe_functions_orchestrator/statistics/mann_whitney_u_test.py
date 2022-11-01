@@ -43,12 +43,13 @@ class MannWhitneyUTest(Estimator):
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
         """
-        It takes two federated series, and returns the p-value and test statistic of the mann whitney u test
+        Runs Federated MannWhitneyUTest
 
-        :param sample_0: First sample series
+        :param sample_0: _description_
         :type sample_0: SeriesFederated
-        :param sample_1: Two sample series
+        :param sample_1: _description_
         :type sample_1: SeriesFederated
+        :raises Exception: _description_
         :return: _description_
         :rtype: Tuple[float, float]
         """
