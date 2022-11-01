@@ -61,11 +61,11 @@ class HistogramFederate:
         """
         Runs federated histogram function
 
-        :param sample_0: _description_
-        :type sample_0: SeriesFederated
-        :param bin_count: _description_
-        :type bin_count: int
-        :return: _description_
-        :rtype: _type_
+            :param sample_0: The first sample of data
+            :type sample_0: SeriesFederated
+            :param bin_count: The second sample of data
+            :type bin_count: int
+            :return: pyplot figure valuie
+            :rtype: pyplot object
         """
         return HistogramFederate.hist(sample_0, bin_count)

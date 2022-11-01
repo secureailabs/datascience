@@ -12,10 +12,10 @@ def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
     Perform federated kurtosis.
     It takes one federated series, and returns the kurtosis value of the series
 
-    :param sample_0: sample series
-    :type sample_0: SeriesFederated
-    :return: Kurtosis value
-    :rtype: Tuple[float]
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: Kurtosis value
+        :rtype: Tuple[float]
     """
     estimator = Kurtosis()
     return estimator.run(sample_0)
@@ -33,10 +33,12 @@ class Kurtosis(Estimator):
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         """
-        Runs the federated Levens test
+        Runs the federated Kurtosis
 
-        :return: kurtosis value
-        :rtype: Floar
+            :param sample_0: sample series
+            :type sample_0: SeriesFederated
+            :return: Kurtosis value
+            :rtype: Tuple[float]
         """
         # Calculating precompute
         for series in sample_0.dict_series.values():

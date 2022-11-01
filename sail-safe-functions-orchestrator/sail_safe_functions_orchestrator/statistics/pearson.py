@@ -86,13 +86,12 @@ class Pearson(Estimator):
         """
         Run federated pearson function
 
-        :param sample_0: _description_
-        :type sample_0: SeriesFederated
-        :param sample_1: _description_
-        :type sample_1: SeriesFederated
-        :raises ValueError: _description_
-        :return: _description_
-        :rtype: Tuple[float, float]
+            :param sample_0: The first sample of data
+            :type sample_0: SeriesFederated
+            :param sample_1: The Second sample of data
+            :type sample_1: SeriesFederated
+            :return: two values pearson and p value
+            :rtype: Tuple[float, float]
         """
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
