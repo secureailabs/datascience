@@ -23,12 +23,12 @@ def mann_whitney_u_test(
 ):
     """
     It Runs the federated mann whitney u test
-    
+
         :param sample_0: First sample series
         :type sample_0: SeriesFederated
         :param sample_1: Second sample series
         :type sample_1: SeriesFederated
-        :return: U0-value, p-value 
+        :return: U0-value, p-value
         :rtype: Tuple[float, float]
     """
     estimator = MannWhitneyUTest(alternative, type_ranking)
@@ -59,7 +59,7 @@ class MannWhitneyUTest(Estimator):
             :type sample_0: SeriesFederated
             :param sample_1: Second sample series
             :type sample_1: SeriesFederated
-            :return: U0-value, p-value 
+            :return: U0-value, p-value
             :rtype: Tuple[float, float]
         """
         check_instance(sample_0, SeriesFederated)
