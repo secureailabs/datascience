@@ -40,13 +40,14 @@ from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 
 
 def cdf(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
-    &#34;&#34;&#34;Computes a CDF by aproximation with at least the square root of the sample
+    &#34;&#34;&#34;
+    Computes a CDF by aproximation with at least the square root of the sample
     size equally spaced between a estimate of the min and the max
 
-    :param sample_0: The federated series over which the cdf should be computed
-    :type sample_0: SeriesFederated
-    :return: returns two lists of floating point values representing the domain and the values of the cdf
-    :rtype: Tuple[List[float], List[float]]
+        :param sample_0: The federated series over which the cdf should be computed
+        :type sample_0: SeriesFederated
+        :return: returns two lists of floating point values representing the domain and the values of the cdf
+        :rtype: Tuple[List[float], List[float]]
     &#34;&#34;&#34;
     return CumulativeDistributionFunction.run(sample_0)
 
@@ -56,28 +57,28 @@ class CumulativeDistributionFunction:
 
     @staticmethod
     def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+        &#34;&#34;&#34;
+        Main function run for Estimator for non-disclosive CDF
+
+            :param sample_0: Input sample
+            :type sample_0: SeriesFederated
+            :return: Federated CDF final value
+            :rtype: Tuple[List[float], List[float]]
+        &#34;&#34;&#34;
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
-            list_precompute.append(
-                CumulativeDistributionFunctionPrecompute.run(
-                    series, domain_min, domain_max
-                )
-            )
-        return CumulativeDistributionFunctionAggregate.run(
-            list_precompute, domain_min, domain_max
-        )
+            list_precompute.append(CumulativeDistributionFunctionPrecompute.run(series, domain_min, domain_max))
+        return CumulativeDistributionFunctionAggregate.run(list_precompute, domain_min, domain_max)
 
     def run_reference(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()
         array_domain = numpy.sort(array_sample_0)
         array_domain = numpy.insert(array_domain, 0, array_domain[0])
 
-        array_value = numpy.arange(1, len(array_sample_0) + 1) / float(
-            len(array_sample_0)
-        )
+        array_value = numpy.arange(1, len(array_sample_0) + 1) / float(len(array_sample_0))
         array_value = numpy.insert(array_value, 0, 0)
         return array_domain.tolist(), array_value.tolist()</code></pre>
 </details>
@@ -95,22 +96,24 @@ class CumulativeDistributionFunction:
 <dd>
 <div class="desc"><p>Computes a CDF by aproximation with at least the square root of the sample
 size equally spaced between a estimate of the min and the max</p>
-<p>:param sample_0: The federated series over which the cdf should be computed
+<pre><code>:param sample_0: The federated series over which the cdf should be computed
 :type sample_0: SeriesFederated
 :return: returns two lists of floating point values representing the domain and the values of the cdf
-:rtype: Tuple[List[float], List[float]]</p></div>
+:rtype: Tuple[List[float], List[float]]
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def cdf(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
-    &#34;&#34;&#34;Computes a CDF by aproximation with at least the square root of the sample
+    &#34;&#34;&#34;
+    Computes a CDF by aproximation with at least the square root of the sample
     size equally spaced between a estimate of the min and the max
 
-    :param sample_0: The federated series over which the cdf should be computed
-    :type sample_0: SeriesFederated
-    :return: returns two lists of floating point values representing the domain and the values of the cdf
-    :rtype: Tuple[List[float], List[float]]
+        :param sample_0: The federated series over which the cdf should be computed
+        :type sample_0: SeriesFederated
+        :return: returns two lists of floating point values representing the domain and the values of the cdf
+        :rtype: Tuple[List[float], List[float]]
     &#34;&#34;&#34;
     return CumulativeDistributionFunction.run(sample_0)</code></pre>
 </details>
@@ -134,28 +137,28 @@ size equally spaced between a estimate of the min and the max</p>
 
     @staticmethod
     def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+        &#34;&#34;&#34;
+        Main function run for Estimator for non-disclosive CDF
+
+            :param sample_0: Input sample
+            :type sample_0: SeriesFederated
+            :return: Federated CDF final value
+            :rtype: Tuple[List[float], List[float]]
+        &#34;&#34;&#34;
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
         list_precompute = []
         for series in sample_0.dict_series.values():  # TODO rework abcs
-            list_precompute.append(
-                CumulativeDistributionFunctionPrecompute.run(
-                    series, domain_min, domain_max
-                )
-            )
-        return CumulativeDistributionFunctionAggregate.run(
-            list_precompute, domain_min, domain_max
-        )
+            list_precompute.append(CumulativeDistributionFunctionPrecompute.run(series, domain_min, domain_max))
+        return CumulativeDistributionFunctionAggregate.run(list_precompute, domain_min, domain_max)
 
     def run_reference(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()
         array_domain = numpy.sort(array_sample_0)
         array_domain = numpy.insert(array_domain, 0, array_domain[0])
 
-        array_value = numpy.arange(1, len(array_sample_0) + 1) / float(
-            len(array_sample_0)
-        )
+        array_value = numpy.arange(1, len(array_sample_0) + 1) / float(len(array_sample_0))
         array_value = numpy.insert(array_value, 0, 0)
         return array_domain.tolist(), array_value.tolist()</code></pre>
 </details>
@@ -165,26 +168,33 @@ size equally spaced between a estimate of the min and the max</p>
 <span>def <span class="ident">run</span></span>(<span>sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>) ‑> Tuple[List[float], List[float]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Main function run for Estimator for non-disclosive CDF</p>
+<pre><code>:param sample_0: Input sample
+:type sample_0: SeriesFederated
+:return: Federated CDF final value
+:rtype: Tuple[List[float], List[float]]
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
+    &#34;&#34;&#34;
+    Main function run for Estimator for non-disclosive CDF
+
+        :param sample_0: Input sample
+        :type sample_0: SeriesFederated
+        :return: Federated CDF final value
+        :rtype: Tuple[List[float], List[float]]
+    &#34;&#34;&#34;
 
     domain_min, domain_max = MinMax.min_max(sample_0)
 
     list_precompute = []
     for series in sample_0.dict_series.values():  # TODO rework abcs
-        list_precompute.append(
-            CumulativeDistributionFunctionPrecompute.run(
-                series, domain_min, domain_max
-            )
-        )
-    return CumulativeDistributionFunctionAggregate.run(
-        list_precompute, domain_min, domain_max
-    )</code></pre>
+        list_precompute.append(CumulativeDistributionFunctionPrecompute.run(series, domain_min, domain_max))
+    return CumulativeDistributionFunctionAggregate.run(list_precompute, domain_min, domain_max)</code></pre>
 </details>
 </dd>
 </dl>
@@ -204,9 +214,7 @@ def run(sample_0: SeriesFederated) -&gt; Tuple[List[float], List[float]]:
     array_domain = numpy.sort(array_sample_0)
     array_domain = numpy.insert(array_domain, 0, array_domain[0])
 
-    array_value = numpy.arange(1, len(array_sample_0) + 1) / float(
-        len(array_sample_0)
-    )
+    array_value = numpy.arange(1, len(array_sample_0) + 1) / float(len(array_sample_0))
     array_value = numpy.insert(array_value, 0, 0)
     return array_domain.tolist(), array_value.tolist()</code></pre>
 </details>

@@ -26,8 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import math
-from typing import List
+<pre><code class="python">from typing import List
 
 
 class WilcoxonSingedRankTestAggregate:
@@ -36,6 +35,14 @@ class WilcoxonSingedRankTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_precompute: List):
+        &#34;&#34;&#34;
+        Function Aggregates data for WilcoxonSingedRankTest
+
+            :param list_precompute: _description_
+            :type list_precompute: List
+            :return: _description_
+            :rtype: _type_
+        &#34;&#34;&#34;
         rank_minus = 0
         rank_plus = 0
         for precompute in list_precompute:
@@ -68,6 +75,14 @@ class WilcoxonSingedRankTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_precompute: List):
+        &#34;&#34;&#34;
+        Function Aggregates data for WilcoxonSingedRankTest
+
+            :param list_precompute: _description_
+            :type list_precompute: List
+            :return: _description_
+            :rtype: _type_
+        &#34;&#34;&#34;
         rank_minus = 0
         rank_plus = 0
         for precompute in list_precompute:
@@ -81,12 +96,25 @@ class WilcoxonSingedRankTestAggregate:
 <span>def <span class="ident">run</span></span>(<span>list_precompute: List[~T])</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function Aggregates data for WilcoxonSingedRankTest</p>
+<pre><code>:param list_precompute: _description_
+:type list_precompute: List
+:return: _description_
+:rtype: _type_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(list_precompute: List):
+    &#34;&#34;&#34;
+    Function Aggregates data for WilcoxonSingedRankTest
+
+        :param list_precompute: _description_
+        :type list_precompute: List
+        :return: _description_
+        :rtype: _type_
+    &#34;&#34;&#34;
     rank_minus = 0
     rank_plus = 0
     for precompute in list_precompute:

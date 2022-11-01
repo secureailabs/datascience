@@ -36,18 +36,17 @@ class SumWeighted:
     Takes the weighted sum of a list of series
     &#34;&#34;&#34;
 
-    def run(
-        list_series: List[pandas.Series], list_weight: List[float]
-    ) -&gt; pandas.Series:
-        &#34;&#34;&#34;Takes the weighted sum of a list of series
+    def run(list_series: List[pandas.Series], list_weight: List[float]) -&gt; pandas.Series:
+        &#34;&#34;&#34;
+        Takes the weighted sum of a list of series
 
-        :param list_series:list of series to be weighted
-        :type list_series: List[pandas.Series]
-        :param list_weight list of weights
-        :type list_weight: List[float]
-        :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
-        :return: returns a new series that is a weighted sum
-        :rtype: pandas.Series
+            :param list_series:list of series to be weighted
+            :type list_series: List[pandas.Series]
+            :param list_weight list of weights
+            :type list_weight: List[float]
+            :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
+            :return: returns a new series that is a weighted sum
+            :rtype: pandas.Series
         &#34;&#34;&#34;
         if len(list_series) != len(list_weight):
             raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)
@@ -80,18 +79,17 @@ class SumWeighted:
     Takes the weighted sum of a list of series
     &#34;&#34;&#34;
 
-    def run(
-        list_series: List[pandas.Series], list_weight: List[float]
-    ) -&gt; pandas.Series:
-        &#34;&#34;&#34;Takes the weighted sum of a list of series
+    def run(list_series: List[pandas.Series], list_weight: List[float]) -&gt; pandas.Series:
+        &#34;&#34;&#34;
+        Takes the weighted sum of a list of series
 
-        :param list_series:list of series to be weighted
-        :type list_series: List[pandas.Series]
-        :param list_weight list of weights
-        :type list_weight: List[float]
-        :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
-        :return: returns a new series that is a weighted sum
-        :rtype: pandas.Series
+            :param list_series:list of series to be weighted
+            :type list_series: List[pandas.Series]
+            :param list_weight list of weights
+            :type list_weight: List[float]
+            :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
+            :return: returns a new series that is a weighted sum
+            :rtype: pandas.Series
         &#34;&#34;&#34;
         if len(list_series) != len(list_weight):
             raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)
@@ -107,29 +105,29 @@ class SumWeighted:
 </code></dt>
 <dd>
 <div class="desc"><p>Takes the weighted sum of a list of series</p>
-<p>:param list_series:list of series to be weighted
+<pre><code>:param list_series:list of series to be weighted
 :type list_series: List[pandas.Series]
 :param list_weight list of weights
 :type list_weight: List[float]
-:raises ValueError: raises a value exception if <code>list_series</code> and <code>list_weight</code> are not of equal lenght
+:raises ValueError: raises a value exception if &lt;code&gt;list\_series&lt;/code&gt; and &lt;code&gt;list\_weight&lt;/code&gt; are not of equal lenght
 :return: returns a new series that is a weighted sum
-:rtype: pandas.Series</p></div>
+:rtype: pandas.Series
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    list_series: List[pandas.Series], list_weight: List[float]
-) -&gt; pandas.Series:
-    &#34;&#34;&#34;Takes the weighted sum of a list of series
+<pre><code class="python">def run(list_series: List[pandas.Series], list_weight: List[float]) -&gt; pandas.Series:
+    &#34;&#34;&#34;
+    Takes the weighted sum of a list of series
 
-    :param list_series:list of series to be weighted
-    :type list_series: List[pandas.Series]
-    :param list_weight list of weights
-    :type list_weight: List[float]
-    :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
-    :return: returns a new series that is a weighted sum
-    :rtype: pandas.Series
+        :param list_series:list of series to be weighted
+        :type list_series: List[pandas.Series]
+        :param list_weight list of weights
+        :type list_weight: List[float]
+        :raises ValueError: raises a value exception if `list_series` and `list_weight` are not of equal lenght
+        :return: returns a new series that is a weighted sum
+        :rtype: pandas.Series
     &#34;&#34;&#34;
     if len(list_series) != len(list_weight):
         raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)

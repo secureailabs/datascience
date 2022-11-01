@@ -35,13 +35,13 @@ from sail_safe_functions_orchestrator.tools_common import check_instance
 
 def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
     &#34;&#34;&#34;
-    The function convert the float64 value to tabular value
+    Function to convert float64 to tabular
 
-        :param table_schema: The schema
+        :param table_schema: target schema to used for the conversion
         :type table_schema: dict
-        :param data_frame_source: Federated Data frame
+        :param data_frame_source: dataframe containing only float64 columns
         :type data_frame_source: DataFrameFederated
-        :return: tabular data
+        :return: new data frame using the schema
         :rtype: DataFrameFederated
     &#34;&#34;&#34;
     return Float64ToTabular.run(table_schema, data_frame_source)
@@ -52,7 +52,7 @@ class Float64ToTabular:
         check_instance(table_schema, dict)
         check_instance(data_frame_source, DataFrameFederated)
         &#34;&#34;&#34;
-        Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
+        Function used to convert a purely numerical dataframe back to a mixed tabular dataframe.
 
             :param table_schema: target schema to used for the conversion
             :type table_schema: dict
@@ -80,12 +80,12 @@ class Float64ToTabular:
 <span>def <span class="ident">float64_to_tabular</span></span>(<span>table_schema: dict, data_frame_source: <a title="sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated" href="../../data_frame_federated.html#sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated">DataFrameFederated</a>) ‑> <a title="sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated" href="../../data_frame_federated.html#sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated">DataFrameFederated</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>The function convert the float64 value to tabular value</p>
-<pre><code>:param table_schema: The schema
+<div class="desc"><p>Function to convert float64 to tabular</p>
+<pre><code>:param table_schema: target schema to used for the conversion
 :type table_schema: dict
-:param data_frame_source: Federated Data frame
+:param data_frame_source: dataframe containing only float64 columns
 :type data_frame_source: DataFrameFederated
-:return: tabular data
+:return: new data frame using the schema
 :rtype: DataFrameFederated
 </code></pre></div>
 <details class="source">
@@ -94,13 +94,13 @@ class Float64ToTabular:
 </summary>
 <pre><code class="python">def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated) -&gt; DataFrameFederated:
     &#34;&#34;&#34;
-    The function convert the float64 value to tabular value
+    Function to convert float64 to tabular
 
-        :param table_schema: The schema
+        :param table_schema: target schema to used for the conversion
         :type table_schema: dict
-        :param data_frame_source: Federated Data frame
+        :param data_frame_source: dataframe containing only float64 columns
         :type data_frame_source: DataFrameFederated
-        :return: tabular data
+        :return: new data frame using the schema
         :rtype: DataFrameFederated
     &#34;&#34;&#34;
     return Float64ToTabular.run(table_schema, data_frame_source)</code></pre>
@@ -125,7 +125,7 @@ class Float64ToTabular:
         check_instance(table_schema, dict)
         check_instance(data_frame_source, DataFrameFederated)
         &#34;&#34;&#34;
-        Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
+        Function used to convert a purely numerical dataframe back to a mixed tabular dataframe.
 
             :param table_schema: target schema to used for the conversion
             :type table_schema: dict
@@ -156,7 +156,7 @@ class Float64ToTabular:
     check_instance(table_schema, dict)
     check_instance(data_frame_source, DataFrameFederated)
     &#34;&#34;&#34;
-    Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
+    Function used to convert a purely numerical dataframe back to a mixed tabular dataframe.
 
         :param table_schema: target schema to used for the conversion
         :type table_schema: dict

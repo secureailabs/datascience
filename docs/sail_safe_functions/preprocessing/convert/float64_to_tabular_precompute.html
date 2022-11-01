@@ -33,10 +33,16 @@ from sail_safe_functions.preprocessing.convert.onehot_to_categorical import (
 
 
 class Float64ToTabularPrecompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Convert dtype float64 to tabular
 
+            :type table_schema: dict
+            :param data_frame_source: datafrane source
+            :type data_frame_source: pandas.DataFrame
+            :return: return tabular precompute
+            :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         list_data_frame_target = []
         for name_column in table_schema[&#34;list_name_column&#34;]:
             column_schema = table_schema[&#34;dict_column&#34;][name_column]
@@ -44,17 +50,11 @@ class Float64ToTabularPrecompute:
                 pass
 
             if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    OnehotToCategorical.run(column_schema, data_frame_source)
-                )
+                list_data_frame_target.append(OnehotToCategorical.run(column_schema, data_frame_source))
             elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
                 series = data_frame_source[name_column]
                 resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-                list_data_frame_target.append(
-                    (
-                        (series * (1 / resolution)).round().astype(int) * resolution
-                    ).to_frame()
-                )
+                list_data_frame_target.append(((series * (1 / resolution)).round().astype(int) * resolution).to_frame())
 
         return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>
@@ -78,10 +78,16 @@ class Float64ToTabularPrecompute:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Float64ToTabularPrecompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
+    def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+        &#34;&#34;&#34;
+        Convert dtype float64 to tabular
 
+            :type table_schema: dict
+            :param data_frame_source: datafrane source
+            :type data_frame_source: pandas.DataFrame
+            :return: return tabular precompute
+            :rtype: pandas.DataFrame
+        &#34;&#34;&#34;
         list_data_frame_target = []
         for name_column in table_schema[&#34;list_name_column&#34;]:
             column_schema = table_schema[&#34;dict_column&#34;][name_column]
@@ -89,17 +95,11 @@ class Float64ToTabularPrecompute:
                 pass
 
             if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    OnehotToCategorical.run(column_schema, data_frame_source)
-                )
+                list_data_frame_target.append(OnehotToCategorical.run(column_schema, data_frame_source))
             elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
                 series = data_frame_source[name_column]
                 resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-                list_data_frame_target.append(
-                    (
-                        (series * (1 / resolution)).round().astype(int) * resolution
-                    ).to_frame()
-                )
+                list_data_frame_target.append(((series * (1 / resolution)).round().astype(int) * resolution).to_frame())
 
         return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>
@@ -109,15 +109,27 @@ class Float64ToTabularPrecompute:
 <span>def <span class="ident">run</span></span>(<span>table_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Convert dtype float64 to tabular</p>
+<pre><code>:type table_schema: dict
+:param data_frame_source: datafrane source
+:type data_frame_source: pandas.DataFrame
+:return: return tabular precompute
+:rtype: pandas.DataFrame
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    table_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
+<pre><code class="python">def run(table_schema: dict, data_frame_source: pandas.DataFrame) -&gt; pandas.DataFrame:
+    &#34;&#34;&#34;
+    Convert dtype float64 to tabular
 
+        :type table_schema: dict
+        :param data_frame_source: datafrane source
+        :type data_frame_source: pandas.DataFrame
+        :return: return tabular precompute
+        :rtype: pandas.DataFrame
+    &#34;&#34;&#34;
     list_data_frame_target = []
     for name_column in table_schema[&#34;list_name_column&#34;]:
         column_schema = table_schema[&#34;dict_column&#34;][name_column]
@@ -125,17 +137,11 @@ class Float64ToTabularPrecompute:
             pass
 
         if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-            list_data_frame_target.append(
-                OnehotToCategorical.run(column_schema, data_frame_source)
-            )
+            list_data_frame_target.append(OnehotToCategorical.run(column_schema, data_frame_source))
         elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
             series = data_frame_source[name_column]
             resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-            list_data_frame_target.append(
-                (
-                    (series * (1 / resolution)).round().astype(int) * resolution
-                ).to_frame()
-            )
+            list_data_frame_target.append(((series * (1 / resolution)).round().astype(int) * resolution).to_frame())
 
     return pandas.concat(list_data_frame_target, axis=1)</code></pre>
 </details>

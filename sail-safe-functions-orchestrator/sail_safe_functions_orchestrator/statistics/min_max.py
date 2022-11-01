@@ -30,6 +30,14 @@ class MinMax(Estimator):
         :return: min and max value
         :rtype: Tuple[float, float]
         """
+        """
+        Run the federated MinMax function
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: Tuple[float, float]
+        """
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 

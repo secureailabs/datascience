@@ -31,10 +31,18 @@
 
 class VarianceAggregate:
     &#34;&#34;&#34;
-    Aggregates data for computing the mean
+    Aggregates data for computing the Variance
     &#34;&#34;&#34;
 
     def run(list_list_precompute: List[List[float]]):
+        &#34;&#34;&#34;
+        This method to run aggregated variance
+
+            :param list_list_precompute: list of precomputes
+            :type list_list_precompute: List[List[float]]
+            :return: Variance Value
+            :rtype: Float
+        &#34;&#34;&#34;
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -46,13 +54,8 @@ class VarianceAggregate:
 
         sample_mean_0 = sum_x_0 / size_sample_0
 
-        sample_variance_0 = (
-            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
-        ) * (
-            size_sample_0
-            / (
-                size_sample_0 - 1
-            )  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
         )
 
         return sample_variance_0</code></pre>
@@ -71,17 +74,25 @@ class VarianceAggregate:
 <span>class <span class="ident">VarianceAggregate</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Aggregates data for computing the mean</p></div>
+<div class="desc"><p>Aggregates data for computing the Variance</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class VarianceAggregate:
     &#34;&#34;&#34;
-    Aggregates data for computing the mean
+    Aggregates data for computing the Variance
     &#34;&#34;&#34;
 
     def run(list_list_precompute: List[List[float]]):
+        &#34;&#34;&#34;
+        This method to run aggregated variance
+
+            :param list_list_precompute: list of precomputes
+            :type list_list_precompute: List[List[float]]
+            :return: Variance Value
+            :rtype: Float
+        &#34;&#34;&#34;
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -93,13 +104,8 @@ class VarianceAggregate:
 
         sample_mean_0 = sum_x_0 / size_sample_0
 
-        sample_variance_0 = (
-            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
-        ) * (
-            size_sample_0
-            / (
-                size_sample_0 - 1
-            )  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
         )
 
         return sample_variance_0</code></pre>
@@ -110,12 +116,25 @@ class VarianceAggregate:
 <span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]])</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This method to run aggregated variance</p>
+<pre><code>:param list_list_precompute: list of precomputes
+:type list_list_precompute: List[List[float]]
+:return: Variance Value
+:rtype: Float
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(list_list_precompute: List[List[float]]):
+    &#34;&#34;&#34;
+    This method to run aggregated variance
+
+        :param list_list_precompute: list of precomputes
+        :type list_list_precompute: List[List[float]]
+        :return: Variance Value
+        :rtype: Float
+    &#34;&#34;&#34;
     sum_x_0 = 0
     sum_xx_0 = 0
     size_sample_0 = 0
@@ -127,13 +146,8 @@ class VarianceAggregate:
 
     sample_mean_0 = sum_x_0 / size_sample_0
 
-    sample_variance_0 = (
-        (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
-    ) * (
-        size_sample_0
-        / (
-            size_sample_0 - 1
-        )  # unbiased estimator (numpy version is biased by default)
+    sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+        size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
     )
 
     return sample_variance_0</code></pre>

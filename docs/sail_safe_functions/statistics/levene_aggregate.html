@@ -33,13 +33,23 @@ import numpy as np
 
 class LeveneAggregate:
     &#34;&#34;&#34;
-    Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
+    Aggregates data for Levens Test
     &#34;&#34;&#34;
 
     def run(
         list_list_precompute: List[List[float]],
         equal_variances: bool = False,
     ):
+        &#34;&#34;&#34;
+         Aggregates data for Levens Test
+
+            :param list_list_precompute:  list of precompute
+            :type list_list_precompute: List[List[float]]
+            :param equal_variances: Applying for equal varaince or not, defaults to False
+            :type equal_variances: bool, optional
+            :return: _description_
+            :rtype: _type_
+        &#34;&#34;&#34;
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -73,9 +83,7 @@ class LeveneAggregate:
         length1 = size_sample_0
         length2 = size_sample_1
         dof = length1 + length2 - 2
-        final_numerator = dof * (
-            length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__)
-        )
+        final_numerator = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
 
         f_statictic = final_numerator / final_denomenator
 
@@ -95,20 +103,30 @@ class LeveneAggregate:
 <span>class <span class="ident">LeveneAggregate</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)</p></div>
+<div class="desc"><p>Aggregates data for Levens Test</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LeveneAggregate:
     &#34;&#34;&#34;
-    Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
+    Aggregates data for Levens Test
     &#34;&#34;&#34;
 
     def run(
         list_list_precompute: List[List[float]],
         equal_variances: bool = False,
     ):
+        &#34;&#34;&#34;
+         Aggregates data for Levens Test
+
+            :param list_list_precompute:  list of precompute
+            :type list_list_precompute: List[List[float]]
+            :param equal_variances: Applying for equal varaince or not, defaults to False
+            :type equal_variances: bool, optional
+            :return: _description_
+            :rtype: _type_
+        &#34;&#34;&#34;
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -142,9 +160,7 @@ class LeveneAggregate:
         length1 = size_sample_0
         length2 = size_sample_1
         dof = length1 + length2 - 2
-        final_numerator = dof * (
-            length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__)
-        )
+        final_numerator = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
 
         f_statictic = final_numerator / final_denomenator
 
@@ -156,7 +172,14 @@ class LeveneAggregate:
 <span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]], equal_variances: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Aggregates data for Levens Test</p>
+<p>:param list_list_precompute:
+list of precompute
+:type list_list_precompute: List[List[float]]
+:param equal_variances: Applying for equal varaince or not, defaults to False
+:type equal_variances: bool, optional
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -165,6 +188,16 @@ class LeveneAggregate:
     list_list_precompute: List[List[float]],
     equal_variances: bool = False,
 ):
+    &#34;&#34;&#34;
+     Aggregates data for Levens Test
+
+        :param list_list_precompute:  list of precompute
+        :type list_list_precompute: List[List[float]]
+        :param equal_variances: Applying for equal varaince or not, defaults to False
+        :type equal_variances: bool, optional
+        :return: _description_
+        :rtype: _type_
+    &#34;&#34;&#34;
     sum_x_0 = 0
     sum_xx_0 = 0
     size_sample_0 = 0
@@ -198,9 +231,7 @@ class LeveneAggregate:
     length1 = size_sample_0
     length2 = size_sample_1
     dof = length1 + length2 - 2
-    final_numerator = dof * (
-        length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__)
-    )
+    final_numerator = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
 
     f_statictic = final_numerator / final_denomenator
 

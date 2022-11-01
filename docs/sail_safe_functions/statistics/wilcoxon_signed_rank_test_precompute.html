@@ -26,9 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List
-
-import numpy
+<pre><code class="python">import numpy
 import pandas
 
 
@@ -41,14 +39,18 @@ class WilcoxonSingedRankTestPrecompute:
         sample_difference: pandas.Series,
         sample_absolute_difference_ranked: pandas.Series,
     ):
-        rank_minus = numpy.sum(
-            (sample_difference.to_numpy() &lt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
-        rank_plus = numpy.sum(
-            (sample_difference.to_numpy() &gt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
+        &#34;&#34;&#34;
+        Function to Precomputes data for the  WilcoxonSingedRankTest
+
+            :param sample_difference: sample input
+            :type sample_difference: pandas.Series
+            :param sample_absolute_difference_ranked: absolute differences ranked
+            :type sample_absolute_difference_ranked: pandas.Series
+            :return: list rank_minus, rank_plus
+            :rtype: list
+        &#34;&#34;&#34;
+        rank_minus = numpy.sum((sample_difference.to_numpy() &lt; 0) * sample_absolute_difference_ranked.to_numpy())
+        rank_plus = numpy.sum((sample_difference.to_numpy() &gt; 0) * sample_absolute_difference_ranked.to_numpy())
         return [rank_minus, rank_plus]</code></pre>
 </details>
 </section>
@@ -80,14 +82,18 @@ WilcoxonSingedRankTest</p></div>
         sample_difference: pandas.Series,
         sample_absolute_difference_ranked: pandas.Series,
     ):
-        rank_minus = numpy.sum(
-            (sample_difference.to_numpy() &lt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
-        rank_plus = numpy.sum(
-            (sample_difference.to_numpy() &gt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
+        &#34;&#34;&#34;
+        Function to Precomputes data for the  WilcoxonSingedRankTest
+
+            :param sample_difference: sample input
+            :type sample_difference: pandas.Series
+            :param sample_absolute_difference_ranked: absolute differences ranked
+            :type sample_absolute_difference_ranked: pandas.Series
+            :return: list rank_minus, rank_plus
+            :rtype: list
+        &#34;&#34;&#34;
+        rank_minus = numpy.sum((sample_difference.to_numpy() &lt; 0) * sample_absolute_difference_ranked.to_numpy())
+        rank_plus = numpy.sum((sample_difference.to_numpy() &gt; 0) * sample_absolute_difference_ranked.to_numpy())
         return [rank_minus, rank_plus]</code></pre>
 </details>
 <h3>Methods</h3>
@@ -96,7 +102,15 @@ WilcoxonSingedRankTest</p></div>
 <span>def <span class="ident">run</span></span>(<span>sample_difference: pandas.core.series.Series, sample_absolute_difference_ranked: pandas.core.series.Series)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function to Precomputes data for the
+WilcoxonSingedRankTest</p>
+<pre><code>:param sample_difference: sample input
+:type sample_difference: pandas.Series
+:param sample_absolute_difference_ranked: absolute differences ranked
+:type sample_absolute_difference_ranked: pandas.Series
+:return: list rank_minus, rank_plus
+:rtype: list
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -105,14 +119,18 @@ WilcoxonSingedRankTest</p></div>
     sample_difference: pandas.Series,
     sample_absolute_difference_ranked: pandas.Series,
 ):
-    rank_minus = numpy.sum(
-        (sample_difference.to_numpy() &lt; 0)
-        * sample_absolute_difference_ranked.to_numpy()
-    )
-    rank_plus = numpy.sum(
-        (sample_difference.to_numpy() &gt; 0)
-        * sample_absolute_difference_ranked.to_numpy()
-    )
+    &#34;&#34;&#34;
+    Function to Precomputes data for the  WilcoxonSingedRankTest
+
+        :param sample_difference: sample input
+        :type sample_difference: pandas.Series
+        :param sample_absolute_difference_ranked: absolute differences ranked
+        :type sample_absolute_difference_ranked: pandas.Series
+        :return: list rank_minus, rank_plus
+        :rtype: list
+    &#34;&#34;&#34;
+    rank_minus = numpy.sum((sample_difference.to_numpy() &lt; 0) * sample_absolute_difference_ranked.to_numpy())
+    rank_plus = numpy.sum((sample_difference.to_numpy() &gt; 0) * sample_absolute_difference_ranked.to_numpy())
     return [rank_minus, rank_plus]</code></pre>
 </details>
 </dd>

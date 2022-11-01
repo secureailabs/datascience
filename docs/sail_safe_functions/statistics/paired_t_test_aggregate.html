@@ -37,12 +37,13 @@ class PairedTTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
-        &#34;&#34;&#34;collects the parts of a t-test and aggregates them into statisitcs
+        &#34;&#34;&#34;
+        Collects the parts of a t-test and aggregates them into statisitcs.
 
-        :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
-        :type list_list_precompute: List[List[float]]
-        :return: returns a t-statistic and its effect size
-        :rtype: Tuple[float, float]
+            :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
+            :type list_list_precompute: List[List[float]]
+            :return: returns a t-statistic and its effect size
+            :rtype: Tuple[float, float]
         &#34;&#34;&#34;
         sum_d_0 = 0
         sum_dd_0 = 0
@@ -98,12 +99,13 @@ class PairedTTestAggregate:
     &#34;&#34;&#34;
 
     def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
-        &#34;&#34;&#34;collects the parts of a t-test and aggregates them into statisitcs
+        &#34;&#34;&#34;
+        Collects the parts of a t-test and aggregates them into statisitcs.
 
-        :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
-        :type list_list_precompute: List[List[float]]
-        :return: returns a t-statistic and its effect size
-        :rtype: Tuple[float, float]
+            :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
+            :type list_list_precompute: List[List[float]]
+            :return: returns a t-statistic and its effect size
+            :rtype: Tuple[float, float]
         &#34;&#34;&#34;
         sum_d_0 = 0
         sum_dd_0 = 0
@@ -140,22 +142,24 @@ class PairedTTestAggregate:
 <span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]]) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>collects the parts of a t-test and aggregates them into statisitcs</p>
-<p>:param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
+<div class="desc"><p>Collects the parts of a t-test and aggregates them into statisitcs.</p>
+<pre><code>:param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
 :type list_list_precompute: List[List[float]]
 :return: returns a t-statistic and its effect size
-:rtype: Tuple[float, float]</p></div>
+:rtype: Tuple[float, float]
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
-    &#34;&#34;&#34;collects the parts of a t-test and aggregates them into statisitcs
+    &#34;&#34;&#34;
+    Collects the parts of a t-test and aggregates them into statisitcs.
 
-    :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
-    :type list_list_precompute: List[List[float]]
-    :return: returns a t-statistic and its effect size
-    :rtype: Tuple[float, float]
+        :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
+        :type list_list_precompute: List[List[float]]
+        :return: returns a t-statistic and its effect size
+        :rtype: Tuple[float, float]
     &#34;&#34;&#34;
     sum_d_0 = 0
     sum_dd_0 = 0

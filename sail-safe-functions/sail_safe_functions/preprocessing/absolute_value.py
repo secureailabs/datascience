@@ -1,5 +1,3 @@
-from typing import List
-
 import pandas
 
 
@@ -13,10 +11,10 @@ class ValueAbsolute:
         """
         Takes the weighted sum of a list of series and outputs absolute value of the series
 
-        :param series_0: input series
-        :type series_0: pandas.Series
-        :return: returns a new series that is a absolute value
-        :rtype: pandas.Series
+            :param series_0: input series
+            :type series_0: pandas.Series
+            :return: returns a new series that is a absolute value
+            :rtype: pandas.Series
         """
 
         return series_0.abs()
