@@ -3,6 +3,10 @@ from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import 
     KolmogorovSmirnovTest,
 )
 from sail_safe_functions_orchestrator.statistics.kurtosis import Kurtosis
+from sail_safe_functions_orchestrator.statistics.levene_test import LeveneTest
+from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import (
+    MannWhitneyUTest,
+)
 from sail_safe_functions_orchestrator.statistics.mean import Mean
 from sail_safe_functions_orchestrator.statistics.chisquare import Chisquare
 
@@ -88,3 +92,41 @@ async def kurtosis(series_uuid: str):
 
     # Return
     return {"kurtosis_sail": kurtosis_sail}
+
+
+@app.get("/leveneTest")
+async def chisquare(series_uuid_1: str, series_uuid_2: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = LeveneTest()
+    f_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/mannWhitneyUTest")
+async def chisquare(
+    series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
+):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
+    w_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
