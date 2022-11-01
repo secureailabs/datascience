@@ -1,5 +1,3 @@
-from typing import Any
-
 from sail_safe_functions.preprocessing.drop_precompute import DropPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance

@@ -5,13 +5,23 @@ import numpy as np
 
 class LeveneAggregate:
     """
-    Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
+    Aggregates data for Levens Test
     """
 
     def run(
         list_list_precompute: List[List[float]],
         equal_variances: bool = False,
     ):
+        """
+         Aggregates data for Levens Test
+
+            :param list_list_precompute:  list of precompute
+            :type list_list_precompute: List[List[float]]
+            :param equal_variances: Applying for equal varaince or not, defaults to False
+            :type equal_variances: bool, optional
+            :return: _description_
+            :rtype: _type_
+        """
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -45,9 +55,7 @@ class LeveneAggregate:
         length1 = size_sample_0
         length2 = size_sample_1
         dof = length1 + length2 - 2
-        final_numerator = dof * (
-            length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__)
-        )
+        final_numerator = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
 
         f_statictic = final_numerator / final_denomenator
 
