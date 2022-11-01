@@ -9,6 +9,7 @@ from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import (
 )
 from sail_safe_functions_orchestrator.statistics.mean import Mean
 from sail_safe_functions_orchestrator.statistics.chisquare import Chisquare
+from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
@@ -130,3 +131,19 @@ async def chisquare(
 
     # Return
     return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/minMax")
+async def mean(series_uuid: str):
+    # Arrange
+    series = get_series()
+
+    # Validate
+    validate(series)
+
+    # Execute
+    estimator = MinMax()
+    min_sail, max_sail = estimator.run(series)
+
+    # Return
+    return {"min_sail": min_sail, "max_sail": max_sail}
