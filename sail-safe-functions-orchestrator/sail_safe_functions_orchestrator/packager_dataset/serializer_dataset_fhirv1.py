@@ -158,12 +158,5 @@ class SerializerDatasetFhirv1(SerializerDatasetBase):
             print(json.dumps(resource, indent=4, sort_keys=True))
             print(resource_type)
             raise exception
-        # if 0 < len(list_event):
-        #     print(event_type)
-        #     print(event_value)
-        #     print(datetime_object)
 
         return list_event
-
-    #    def event_selector first, last
-    # measurement selector value_of, seconds_between

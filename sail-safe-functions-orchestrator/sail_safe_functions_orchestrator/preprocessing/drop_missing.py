@@ -50,8 +50,6 @@ class DropMissing:
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
         list_reference = []
-
-        list_reference = []
         for dataset_id in data_frame_source.list_dataset_id:
             client = data_frame_source.service_client.get_client(dataset_id)
             reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]

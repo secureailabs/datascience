@@ -9,7 +9,7 @@ from sail_safe_functions_orchestrator.service_client import ServiceClient
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class SeriesFederated(ABC):
+class SeriesFederated:
     def __init__(
         self, service_client: ServiceClient, list_reference: List[ReferenceSeries], data_model_series: DataModelSeries
     ) -> None:

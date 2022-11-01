@@ -10,7 +10,7 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.service_client import ServiceClient
 
 
-class DataFrameFederated(ABC):
+class DataFrameFederated:
     # TODO reverse data_model_data_frame and list reference
     def __init__(
         self,
