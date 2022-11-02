@@ -24,6 +24,12 @@ def get_series():
     return series
 
 
+def get_series_different():
+    dataframe = get_dataframe()
+    series = dataframe["PD-L1 level after treatment"]
+    return series
+
+
 def query_limit_n(data, n=10):
     return data.global_row_count() > n
 

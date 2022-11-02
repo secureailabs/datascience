@@ -26,7 +26,7 @@ from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_lo
 )
 
 from fastapi.responses import RedirectResponse
-from SecureUtility import validate, get_series
+from SecureUtility import validate, get_series, get_series_different
 
 
 app = FastAPI()
@@ -163,7 +163,7 @@ async def minMax(series_uuid: str):
 async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
     # Arrange
     series_1 = get_series()
-    series_2 = get_series()
+    series_2 = get_series_different()
 
     # Validate
     validate(series_1)
@@ -217,7 +217,7 @@ async def spearman(
 ):
     # Arrange
     series_1 = get_series()
-    series_2 = get_series()
+    series_2 = get_series_different()
 
     # Validate
     validate(series_1)
