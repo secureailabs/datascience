@@ -10,6 +10,16 @@ from sail_safe_functions_orchestrator.statistics.mann_whitney_u_test import (
 from sail_safe_functions_orchestrator.statistics.mean import Mean
 from sail_safe_functions_orchestrator.statistics.chisquare import Chisquare
 from sail_safe_functions_orchestrator.statistics.min_max import MinMax
+from sail_safe_functions_orchestrator.statistics.paired_t_test import PairedTTest
+from sail_safe_functions_orchestrator.statistics.pearson import Pearson
+from sail_safe_functions_orchestrator.statistics.skewness import Skewness
+from sail_safe_functions_orchestrator.statistics.spearman import Spearman
+from sail_safe_functions_orchestrator.statistics.student_t_test import StudentTTest
+from sail_safe_functions_orchestrator.statistics.variance import Variance
+from sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test import (
+    WilcoxonSingedRankTest,
+)
+
 
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
@@ -40,7 +50,7 @@ async def mean(series_uuid: str):
     payload = estimator.run(series)
 
     # Return
-    return {"payload": payload}
+    return {"mean_sail": payload}
 
 
 @app.get("/chisquare")
@@ -58,7 +68,7 @@ async def chisquare(series_uuid_1: str, series_uuid_2: str):
     payload = estimator.run(series_1, series_2)
 
     # Return
-    return {"payload": payload}
+    return {"chisquare_sail": payload}
 
 
 @app.get("/kolmogorovSmirnovTest")
@@ -96,7 +106,7 @@ async def kurtosis(series_uuid: str):
 
 
 @app.get("/leveneTest")
-async def chisquare(series_uuid_1: str, series_uuid_2: str):
+async def leveneTest(series_uuid_1: str, series_uuid_2: str):
     # Arrange
     series_1 = get_series()
     series_2 = get_series()
@@ -114,7 +124,7 @@ async def chisquare(series_uuid_1: str, series_uuid_2: str):
 
 
 @app.get("/mannWhitneyUTest")
-async def chisquare(
+async def mannWhitneyUTest(
     series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
 ):
     # Arrange
@@ -134,7 +144,7 @@ async def chisquare(
 
 
 @app.get("/minMax")
-async def mean(series_uuid: str):
+async def minMax(series_uuid: str):
     # Arrange
     series = get_series()
 
@@ -147,3 +157,169 @@ async def mean(series_uuid: str):
 
     # Return
     return {"min_sail": min_sail, "max_sail": max_sail}
+
+
+@app.get("/pairedTTest")
+async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = PairedTTest(alternative=alternative)
+    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/pearson")
+async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = Pearson(alternative=alternative)
+    pearson_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/skewness")
+async def skewness(series_uuid: str):
+    # Arrange
+    series = get_series()
+
+    # Validate
+    validate(series)
+
+    # Execute
+    estimator = Skewness()
+    skewness_sail = estimator.run(series)
+
+    # Return
+    return {"skewness_sail": skewness_sail}
+
+
+@app.get("/spearman")
+async def spearman(
+    series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
+):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/studentTTest")
+async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = StudentTTest(alternative=alternative)
+    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/variance")
+async def variance(series_uuid: str):
+    # Arrange
+    series = get_series()
+
+    # Validate
+    validate(series)
+
+    # Execute
+    estimator = Variance()
+    variance_sail = estimator.run(series)
+
+    # Return
+    return {"variance_sail": variance_sail}
+
+
+@app.get("/welchTTest")
+async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = StudentTTest(alternative=alternative)
+    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/spearman")
+async def spearman(
+    series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
+):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
+
+
+@app.get("/wilcoxonSignedRankTest")
+async def wilcoxonSignedRankTest(
+    series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
+):
+    # Arrange
+    series_1 = get_series()
+    series_2 = get_series()
+
+    # Validate
+    validate(series_1)
+    validate(series_2)
+
+    # Execute
+    estimator = WilcoxonSingedRankTest(
+        alternative=alternative, type_ranking=type_ranking
+    )
+    w_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
+
+    # Return
+    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
