@@ -72,7 +72,9 @@ async def chisquare(series_uuid_1: str, series_uuid_2: str):
 
 
 @app.get("/kolmogorovSmirnovTest")
-async def chisquare(series_uuid: str, type_distribution: str, type_ranking: str):
+async def kolmogorovSmirnovTest(
+    series_uuid: str, type_distribution: str, type_ranking: str
+):
     # Arrange
     series = get_series()
 
@@ -281,26 +283,6 @@ async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
 
     # Return
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/spearman")
-async def spearman(
-    series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
-):
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
 
 
 @app.get("/wilcoxonSignedRankTest")
