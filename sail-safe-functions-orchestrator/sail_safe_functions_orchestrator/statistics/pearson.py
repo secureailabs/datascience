@@ -83,7 +83,16 @@ class Pearson(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        """
+        Run federated pearson function
 
+            :param sample_0: The first sample of data
+            :type sample_0: SeriesFederated
+            :param sample_1: The Second sample of data
+            :type sample_1: SeriesFederated
+            :return: two values pearson and p value
+            :rtype: Tuple[float, float]
+        """
         list_list_precompute = []
         list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames

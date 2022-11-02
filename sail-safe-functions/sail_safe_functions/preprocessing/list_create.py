@@ -7,9 +7,10 @@ class ListCreate:
     """
 
     def run() -> List:
-        """Creates an empty list for aggregation
+        """
+        Creates an empty list for aggregation
 
-        :return: The created list
-        :rtype: List
+            :return: The created list
+            :rtype: List
         """
         return []

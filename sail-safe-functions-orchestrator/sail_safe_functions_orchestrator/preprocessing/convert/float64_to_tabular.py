@@ -7,13 +7,13 @@ from sail_safe_functions_orchestrator.tools_common import check_instance
 
 def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
     """
-    The function convert the float64 value to tabular value
+    Function to convert float64 to tabular
 
-        :param table_schema: The schema
+        :param table_schema: target schema to used for the conversion
         :type table_schema: dict
-        :param data_frame_source: Federated Data frame
+        :param data_frame_source: dataframe containing only float64 columns
         :type data_frame_source: DataFrameFederated
-        :return: tabular data
+        :return: new data frame using the schema
         :rtype: DataFrameFederated
     """
     return Float64ToTabular.run(table_schema, data_frame_source)
@@ -24,7 +24,7 @@ class Float64ToTabular:
         check_instance(table_schema, dict)
         check_instance(data_frame_source, DataFrameFederated)
         """
-        Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
+        Function used to convert a purely numerical dataframe back to a mixed tabular dataframe.
 
             :param table_schema: target schema to used for the conversion
             :type table_schema: dict

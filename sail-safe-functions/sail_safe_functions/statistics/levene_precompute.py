@@ -6,7 +6,7 @@ import pandas as pd
 
 class LevenePrecompute:
     """
-    Precomputes data for computing the variance
+    Precomputes data for Levens Test
     """
 
     def run(
@@ -14,10 +14,9 @@ class LevenePrecompute:
         sample_1_series: pd.Series,
         mean_0: float,
         mean_1: float,
-    ) -> Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         """
+        Precomputes data for Levens Test
         ----------
         sample_0_series : pd.Series
             The series for sample_0

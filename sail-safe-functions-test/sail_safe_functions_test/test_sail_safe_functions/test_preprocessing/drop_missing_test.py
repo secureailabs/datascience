@@ -1,5 +1,3 @@
-import imp
-
 import pandas
 import pytest
 from sail_safe_functions_orchestrator import preprocessing

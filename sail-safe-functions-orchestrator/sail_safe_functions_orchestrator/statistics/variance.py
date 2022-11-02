@@ -14,6 +14,7 @@ class Variance(Estimator):
     """
     Class have run method to perform the federated variance.
     """
+
     def __init__(self) -> None:
         super().__init__(["variance"])
 

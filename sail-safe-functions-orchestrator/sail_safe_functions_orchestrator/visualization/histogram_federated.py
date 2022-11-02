@@ -58,4 +58,14 @@ class HistogramFederate:
 
     @staticmethod
     def run(sample_0: SeriesFederated, bin_count: int):
+        """
+        Runs federated histogram function
+
+            :param sample_0: The first sample of data
+            :type sample_0: SeriesFederated
+            :param bin_count: The second sample of data
+            :type bin_count: int
+            :return: pyplot figure valuie
+            :rtype: pyplot object
+        """
         return HistogramFederate.hist(sample_0, bin_count)
