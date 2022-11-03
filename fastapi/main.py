@@ -1,3 +1,17 @@
+##################################################
+## This file contains the fastapi implementation of the Smart Broker.
+## Currently it only includes the statistics functions
+##################################################
+## Property of Secure AI Labs
+##################################################
+## Author: Adam J. Hall
+## Copyright: Copyright 02/11/2022, MVP Delivery
+## Version: 0.0.0
+## Mmaintainer: Secure AI Labs
+## Email: adam.hall@secureailabs.com
+## Status: Alpha
+##################################################
+
 from fastapi import FastAPI
 from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
     KolmogorovSmirnovTest,
@@ -31,10 +45,24 @@ from SecureUtility import validate, get_series, get_series_different
 
 app = FastAPI()
 
+"""
+Redirects user to docs as hompage
+"""
+
 
 @app.get("/")
 async def root():
     return RedirectResponse("/docs")
+
+
+"""
+Returns the mean of the supplied remote series.
+
+:param: series_uuid: UUID of remote series
+:type: str
+:return: dict containing value of mean
+:type: dict
+"""
 
 
 @app.get("/mean")
@@ -47,10 +75,22 @@ async def mean(series_uuid: str):
 
     # Execute
     estimator = Mean()
-    payload = estimator.run(series)
+    mean_sail = estimator.run(series)
 
     # Return
-    return {"mean_sail": payload}
+    return {"mean_sail": mean_sail}
+
+
+"""
+Returns the mean of the supplied remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:return: dict containing value of chisquare
+:type: dict
+"""
 
 
 @app.get("/chisquare")
@@ -65,10 +105,22 @@ async def chisquare(series_uuid_1: str, series_uuid_2: str):
 
     # Execute
     estimator = Chisquare()
-    payload = estimator.run(series_1, series_2)
+    chisquare_sail = estimator.run(series_1, series_2)
 
     # Return
-    return {"chisquare_sail": payload}
+    return {"chisquare_sail": chisquare_sail}
+
+
+"""
+Returns the Kolmogorov Smirnov Test of the supplied remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:return: dict containing k statistic and p value of Kolmogorov Smirnov Test
+:type: dict
+"""
 
 
 @app.get("/kolmogorovSmirnovTest")
@@ -91,6 +143,16 @@ async def kolmogorovSmirnovTest(
     return {"k_statistic_sail": k_statistic_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the kurtosis of the supplied remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:return: dict containing value of kurtosis
+:type: dict
+"""
+
+
 @app.get("/kurtosis")
 async def kurtosis(series_uuid: str):
     # Arrange
@@ -105,6 +167,18 @@ async def kurtosis(series_uuid: str):
 
     # Return
     return {"kurtosis_sail": kurtosis_sail}
+
+
+"""
+Returns the Levene Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:return: dict containing f statistic and p value of Levene test
+:type: dict
+"""
 
 
 @app.get("/leveneTest")
@@ -123,6 +197,18 @@ async def leveneTest(series_uuid_1: str, series_uuid_2: str):
 
     # Return
     return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
+
+
+"""
+Returns the Mann Whitney U Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:return: dict containing w statistic and p value of the Mann Whitney U Test 
+:type: dict
+"""
 
 
 @app.get("/mannWhitneyUTest")
@@ -145,6 +231,16 @@ async def mannWhitneyUTest(
     return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the Min and Max value of a remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:return: dict containing the min and max value
+:type: dict
+"""
+
+
 @app.get("/minMax")
 async def minMax(series_uuid: str):
     # Arrange
@@ -159,6 +255,20 @@ async def minMax(series_uuid: str):
 
     # Return
     return {"min_sail": min_sail, "max_sail": max_sail}
+
+
+"""
+Returns the Paired T Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for t test can be {"less", "two-sided", "greater"}
+:type: str
+:return: dict containing t statistic and p value
+:type: dict
+"""
 
 
 @app.get("/pairedTTest")
@@ -179,6 +289,20 @@ async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the Pearson statistic of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
+:type: str
+:return: dict containing pearson statistic and p value
+:type: dict
+"""
+
+
 @app.get("/pearson")
 async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str):
     # Arrange
@@ -197,6 +321,16 @@ async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str):
     return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the Skewness value of a remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:return: dict containing the skewness value
+:type: dict
+"""
+
+
 @app.get("/skewness")
 async def skewness(series_uuid: str):
     # Arrange
@@ -211,6 +345,23 @@ async def skewness(series_uuid: str):
 
     # Return
     return {"skewness_sail": skewness_sail}
+
+
+"""
+Returns the Spearman of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
+:type: str
+:param: type_ranking: The mode for which to run the ranking algoritm in must be `unsafe` or `cdf` where `unsafe`
+    is unsafe and must be refactored out before this ends up in production
+:type: str
+:return: dict containing spearman statistic and p value
+:type: dict
+"""
 
 
 @app.get("/spearman")
@@ -233,6 +384,20 @@ async def spearman(
     return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the Student T Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
+:type: str
+:return: dict containing t statistic and p value
+:type: dict
+"""
+
+
 @app.get("/studentTTest")
 async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
     # Arrange
@@ -251,6 +416,16 @@ async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str)
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
 
+"""
+Returns the Variance value of a remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:return: dict containing the variance value
+:type: dict
+"""
+
+
 @app.get("/variance")
 async def variance(series_uuid: str):
     # Arrange
@@ -265,6 +440,20 @@ async def variance(series_uuid: str):
 
     # Return
     return {"variance_sail": variance_sail}
+
+
+"""
+Returns the Welch T Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
+:type: str
+:return: dict containing t statistic and p value
+:type: dict
+"""
 
 
 @app.get("/welchTTest")
@@ -283,6 +472,23 @@ async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
 
     # Return
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+
+
+"""
+Returns the Wilcoxon Signed Rank Test of two remote series.
+
+:param: series_uuid_1: UUID of first remote series
+:type: str
+:param: series_uuid_2: UUID of second remote series
+:type: str
+:param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
+:type: str
+:param: type_ranking: The mode for which to run the ranking algoritm in must be `unsafe` or `cdf` where `unsafe`
+    is unsafe and must be refactored out before this ends up in production
+:type: str
+:return: dict containing w statistic and p value
+:type: dict
+"""
 
 
 @app.get("/wilcoxonSignedRankTest")

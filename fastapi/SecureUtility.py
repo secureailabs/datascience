@@ -1,7 +1,28 @@
+##################################################
+## This file contains the validation code for ensuring data is of appropriate length.
+## Will contain more in time.
+##################################################
+## Property of Secure AI Labs
+##################################################
+## Author: Adam J. Hall
+## Copyright: Copyright 02/11/2022, MVP Delivery
+## Version: 0.0.0
+## Mmaintainer: Secure AI Labs
+## Email: adam.hall@secureailabs.com
+## Status: Alpha
+##################################################
+
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
 )
 import os
+
+"""
+Temporary Function for getting data
+
+:return: sample dataframe
+:type: remote dataframe
+"""
 
 
 def get_dataframe():
@@ -18,10 +39,26 @@ def get_dataframe():
     return dataframe
 
 
+"""
+Temporary Function for getting data
+
+:return: sample series
+:type: sample remote series
+"""
+
+
 def get_series():
     dataframe = get_dataframe()
     series = dataframe["PD-L1 level before treatment"]
     return series
+
+
+"""
+Temporary Function for getting data
+
+:return: sample series
+:type: sample remote series
+"""
 
 
 def get_series_different():
@@ -30,8 +67,27 @@ def get_series_different():
     return series
 
 
+"""
+Checks data or series in question is over a given threshold.
+
+:param: data: the data item being checked
+:type: remote dataframe or remote series
+:return: True or False relating to whether the threshold has been surpassed
+:type: Boolean
+"""
+
+
 def query_limit_n(data, n=10):
     return data.global_row_count() > n
+
+
+"""
+Validation 
+:param: data: the data item being validated
+:type: Remote Dataframe or Remote Series
+:return: sample series
+:type: Error message or True condition depending on whether validation passes
+"""
 
 
 def validate(data):
@@ -39,7 +95,7 @@ def validate(data):
     if not query_limit_n(data):
         return {"payload": "Error: Federation Length Too Small"}
     else:
-        return data
+        return True
 
     # CHECKS
     # TODO:
