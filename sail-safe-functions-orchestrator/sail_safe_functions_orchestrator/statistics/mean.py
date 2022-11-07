@@ -1,4 +1,5 @@
 import numpy
+
 from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -27,10 +28,10 @@ class Mean(Estimator):
         """
         It takes one federated series, and returns the Mean
 
-        :param sample_0: _description_
-        :type sample_0: SeriesFederated
-        :return: _description_
-        :rtype: _type_
+            :param sample_0: sample series
+            :type sample_0: SeriesFederated
+            :return: mean value of federated series
+            :rtype: float
         """
 
         list_list_precompute = []

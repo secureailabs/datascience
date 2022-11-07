@@ -18,17 +18,44 @@ class KolmogorovSmirnovTestPrecompute:
         distribution: str,
         count_total: int,
     ) -> List[float]:
+        """
+        Calculate the preceomputes for KolmogorovSmirnov test
+
+            :param refrence_sample_0: First input sample
+            :type refrence_sample_0: ReferenceSeries
+            :param refrence_sample_0_ranked: Second input sample TODO: I don't think this is accurate.
+            :type refrence_sample_0_ranked: ReferenceSeries
+            :param distribution: Type of distribution ypu want to have TODO: what does this mean?
+            :type distribution: str
+            :param count_total: total count TODO: this needs to be more informative
+            :type count_total: int
+            :return: KS Test precompute
+            :rtype: List[float] TODO: why are some return types of stat functions lists, whereas others are Dicts?
+        """
+
         type_distribution = distribution["type_distribution"]
 
-        array_sample_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0).to_numpy()
-        array_sample_ranked_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0_ranked).to_numpy()
+        array_sample_0 = (
+            ServiceReference.get_instance()
+            .reference_to_series(refrence_sample_0)
+            .to_numpy()
+        )
+        array_sample_ranked_0 = (
+            ServiceReference.get_instance()
+            .reference_to_series(refrence_sample_0_ranked)
+            .to_numpy()
+        )
 
         if type_distribution == "normal":
             sample_mean = numpy.mean(array_sample_0)
             sample_sdev = numpy.std(array_sample_0, ddof=1)
-            array_value_cdf = stats.norm.cdf(array_sample_0, loc=sample_mean, scale=sample_sdev)
+            array_value_cdf = stats.norm.cdf(
+                array_sample_0, loc=sample_mean, scale=sample_sdev
+            )
         elif type_distribution == "normalunit":
             array_value_cdf = stats.norm.cdf(array_sample_0, loc=0, scale=1)
         else:
             raise Exception()
-        return numpy.max(numpy.abs((array_sample_ranked_0 / count_total) - array_value_cdf))
+        return numpy.max(
+            numpy.abs((array_sample_ranked_0 / count_total) - array_value_cdf)
+        )

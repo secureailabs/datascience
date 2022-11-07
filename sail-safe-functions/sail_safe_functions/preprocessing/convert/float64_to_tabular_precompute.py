@@ -1,34 +1,70 @@
 import pandas
-from sail_safe_functions.preprocessing.convert.onehot_to_categorical import OnehotToCategorical
+from sail_safe_functions.preprocessing.convert.onehot_to_categorical import (
+    OnehotToCategorical,
+)
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
+    DataModelDataFrame,
+)
+from sail_safe_functions_orchestrator.data_model.data_model_series import (
+    DataModelSeries,
+)
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class Float64ToTabularPrecompute:
-    def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -> pandas.DataFrame:
-        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+    def run(
+        reference_data_frame_source: ReferenceDataFrame,
+        data_model_target: DataModelDataFrame,
+    ) -> pandas.DataFrame:
+        """
+        Convert dataframe dtype float64 to tabular
+
+            :param data_frame_source: Reference to datafrane to be converted
+            :type reference_data_frame_source: ReferenceDataFrame
+            :param data_model_target: Data model of target dataframe (TODO: more info please)
+            :type: DataModelDataFrame
+            :return: return tabular dataframe
+            :rtype: pandas.DataFrame
+        """
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(
+            reference_data_frame_source
+        )
         list_series = []
         for series_name in data_model_target.list_series_name:
             data_model_series = data_model_target[series_name]
             if data_model_series.type_data_level == DataModelSeries.DataLevelUnique:
                 pass
 
-            if data_model_series.type_data_level == DataModelSeries.DataLevelCategorical:
-                list_series.append(OnehotToCategorical.run(data_frame_source, data_model_series))
+            if (
+                data_model_series.type_data_level
+                == DataModelSeries.DataLevelCategorical
+            ):
+                list_series.append(
+                    OnehotToCategorical.run(data_frame_source, data_model_series)
+                )
 
             elif data_model_series.type_data_level == DataModelSeries.DataLevelInterval:
                 series_pandas = data_frame_source[series_name]
                 resolution = data_model_series.resolution
-                if (resolution is not None) and (resolution != -1):  # TODO oldfassioned maybe avoid magic value
-                    series_pandas = (series_pandas * (1 / resolution)).round().astype(int) * resolution
-                series = Series.from_pandas(data_frame_source.dataset_id, data_model_series, series_pandas)
+                if (resolution is not None) and (
+                    resolution != -1
+                ):  # TODO oldfassioned maybe avoid magic value
+                    series_pandas = (series_pandas * (1 / resolution)).round().astype(
+                        int
+                    ) * resolution
+                series = Series.from_pandas(
+                    data_frame_source.dataset_id, data_model_series, series_pandas
+                )
                 series.index = series_pandas.index
                 list_series.append(series)
 
-        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
-        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        data_frame_target = DataFrame(
+            data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series
+        )
+        reference_data_frame_target = (
+            ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        )
         return reference_data_frame_target

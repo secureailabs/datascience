@@ -11,12 +11,12 @@ class KurtosisAggregate:
 
         """
         A Function to get the fedrated Kurtosis value.
-        same as scipy.skewsnes ()
+        same as scipy.stats.kurtosis()
 
-        :param list_list_precompute: compute from different DF
-        :type list_list_precompute: List[List[float]]
-        :return: Kurtosis Value
-        :rtype: Float
+            :param list_list_precompute: compute from different DF
+            :type list_list_precompute: List[List[float]]
+            :return: Kurtosis Value
+            :rtype: Float
 
         """
 

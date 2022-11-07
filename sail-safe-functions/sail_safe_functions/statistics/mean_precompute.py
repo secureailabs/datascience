@@ -14,7 +14,15 @@ class MeanPrecompute:
 
     def run(
         reference_sample_0: ReferenceSeries,
-    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[List[float], List[bool]]:
+            """
+        Function to calculate the precomputes for mean
+
+            :param reference_sample_0: sample input
+            :type reference_sample_0: ReferenceSeries
+            :return: precomputes of mean TODO: please be more verbose i.e "local mean to be aggregated." The parameter descriptions should add more information.
+            :rtype: Tuple[ List[float], List[bool] ]
+        """  # there seems to be a problem here with this annotation
         check_instance(reference_sample_0, ReferenceSeries)
 
         sample_0 = ServiceReference.get_instance().reference_to_series(reference_sample_0)

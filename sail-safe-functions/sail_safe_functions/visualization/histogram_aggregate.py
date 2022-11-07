@@ -19,10 +19,10 @@ class HistogramAggregate:
         """
         Function get the aggregated list value counts
 
-        :param list_list_precompute: list
-        :type list_list_precompute: List[List[float]]
-        :return: values for histogram
-        :rtype: value
+            :param list_list_precompute: list
+            :type list_list_precompute: List[List[float]]
+            :return: values for histogram
+            :rtype: value
         """
         final = {}
         for precompute in list_list_precompute:
