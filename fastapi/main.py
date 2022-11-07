@@ -55,7 +55,7 @@ async def root():
 
 
 @app.get("/mean")
-async def mean(series_uuid: str):
+async def mean(series_uuid: str) -> dict:
     """
     Returns the mean of the supplied remote series.
 
@@ -79,7 +79,7 @@ async def mean(series_uuid: str):
 
 
 @app.get("/chisquare")
-async def chisquare(series_uuid_1: str, series_uuid_2: str):
+async def chisquare(series_uuid_1: str, series_uuid_2: str) -> dict:
     """
     Returns the chisquare of the supplied remote series.
 
@@ -109,7 +109,7 @@ async def chisquare(series_uuid_1: str, series_uuid_2: str):
 @app.get("/kolmogorovSmirnovTest")
 async def kolmogorovSmirnovTest(
     series_uuid: str, type_distribution: str, type_ranking: str
-):
+) -> dict:
     """
     Returns the Kolmogorov Smirnov Test of the supplied remote series.
 
@@ -137,7 +137,7 @@ async def kolmogorovSmirnovTest(
 
 
 @app.get("/kurtosis")
-async def kurtosis(series_uuid: str):
+async def kurtosis(series_uuid: str) -> dict:
     """
     Returns the kurtosis of the supplied remote series.
 
@@ -161,7 +161,7 @@ async def kurtosis(series_uuid: str):
 
 
 @app.get("/leveneTest")
-async def leveneTest(series_uuid_1: str, series_uuid_2: str):
+async def leveneTest(series_uuid_1: str, series_uuid_2: str) -> dict:
     """
     Returns the Levene Test of two remote series.
 
@@ -191,7 +191,7 @@ async def leveneTest(series_uuid_1: str, series_uuid_2: str):
 @app.get("/mannWhitneyUTest")
 async def mannWhitneyUTest(
     series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
-):
+) -> dict:
     """
     Returns the Mann Whitney U Test of two remote series.
 
@@ -219,7 +219,7 @@ async def mannWhitneyUTest(
 
 
 @app.get("/minMax")
-async def minMax(series_uuid: str):
+async def minMax(series_uuid: str) -> dict:
     """
     Returns the Min and Max value of a remote series.
 
@@ -243,7 +243,7 @@ async def minMax(series_uuid: str):
 
 
 @app.get("/pairedTTest")
-async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
     """
     Returns the Paired T Test of two remote series.
 
@@ -273,7 +273,7 @@ async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
 
 
 @app.get("/pearson")
-async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str):
+async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
     """
     Returns the Pearson statistic of two remote series.
 
@@ -303,7 +303,7 @@ async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str):
 
 
 @app.get("/skewness")
-async def skewness(series_uuid: str):
+async def skewness(series_uuid: str) -> dict:
     """
     Returns the Skewness value of a remote series.
 
@@ -329,7 +329,7 @@ async def skewness(series_uuid: str):
 @app.get("/spearman")
 async def spearman(
     series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
-):
+) -> dict:
     """
     Returns the Spearman of two remote series.
 
@@ -362,7 +362,9 @@ async def spearman(
 
 
 @app.get("/studentTTest")
-async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+async def studentTTest(
+    series_uuid_1: str, series_uuid_2: str, alternative: str
+) -> dict:
     """
     Returns the Student T Test of two remote series.
 
@@ -392,7 +394,7 @@ async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str)
 
 
 @app.get("/variance")
-async def variance(series_uuid: str):
+async def variance(series_uuid: str) -> dict:
     """
     Returns the Variance value of a remote series.
 
@@ -416,7 +418,7 @@ async def variance(series_uuid: str):
 
 
 @app.get("/welchTTest")
-async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
+async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
     """
     Returns the Welch T Test of two remote series.
 
@@ -448,7 +450,7 @@ async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str):
 @app.get("/wilcoxonSignedRankTest")
 async def wilcoxonSignedRankTest(
     series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str
-):
+) -> dict:
     """
     Returns the Wilcoxon Signed Rank Test of two remote series.
 

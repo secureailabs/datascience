@@ -15,10 +15,13 @@
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
     DataFrameFederatedLocal,
 )
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
+    SeriesFederatedLocal,
+)
 import os
 
 
-def get_dataframe():
+def get_dataframe() -> DataFrameFederatedLocal:
     """
     Temporary Function for getting data
 
@@ -38,7 +41,7 @@ def get_dataframe():
     return dataframe
 
 
-def get_series():
+def get_series() -> SeriesFederatedLocal:
     """
     Temporary Function for getting data
 
@@ -50,7 +53,7 @@ def get_series():
     return series
 
 
-def get_series_different():
+def get_series_different() -> SeriesFederatedLocal:
     """
     Temporary Function for getting data
 
@@ -62,7 +65,7 @@ def get_series_different():
     return series
 
 
-def query_limit_n(data, n=10):
+def query_limit_n(data, n=10) -> bool:
     """
     Checks data or series in question is over a given threshold.
 
@@ -74,7 +77,7 @@ def query_limit_n(data, n=10):
     return data.global_row_count() > n
 
 
-def validate(data):
+def validate(data) -> bool:
     """
     Validates execution criteria for data inputs
     :param: data: the data item being validated
