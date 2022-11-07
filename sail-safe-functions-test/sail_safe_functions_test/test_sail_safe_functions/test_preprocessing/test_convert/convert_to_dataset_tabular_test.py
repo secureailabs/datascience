@@ -1,17 +1,29 @@
 import pytest
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.dataset_longitudinal_federated import DatasetLongitudinalFederated
-from sail_safe_functions_orchestrator.dataset_tabular_federated import DatasetTabularFederated
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
+    DataModelDataFrame,
+)
+from sail_safe_functions_orchestrator.data_model.data_model_series import (
+    DataModelSeries,
+)
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import (
+    DataModelTabular,
+)
+from sail_safe_functions_orchestrator.dataset_longitudinal_federated import (
+    DatasetLongitudinalFederated,
+)
+from sail_safe_functions_orchestrator.dataset_tabular_federated import (
+    DatasetTabularFederated,
+)
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 @pytest.mark.active
-def test_convert_to_dataset_tabular(dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated):
+def test_convert_to_dataset_tabular(
+    dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated,
+):
     """
     This test our ability to convert a longitudinal dataset to a tabular one
     """
@@ -53,12 +65,17 @@ def test_convert_to_dataset_tabular(dataset_longitudinal_r4sep2019_20_1: Dataset
 
     # act
     dataset_tabular = convert.convert_to_dataset_tabular(
-        dataset_longitudinal, dataset_federation_id, dataset_federation_name, data_model_tablular
+        dataset_longitudinal,
+        dataset_federation_id,
+        dataset_federation_name,
+        data_model_tablular,
     )
 
     name_series_1 = dataset_tabular[data_frame_name].list_series_name[1]
     name_series_2 = dataset_tabular[data_frame_name].list_series_name[2]
-    data_model_series = dataset_tabular[data_frame_name][name_series_1].data_model_series
+    data_model_series = dataset_tabular[data_frame_name][
+        name_series_1
+    ].data_model_series
     series_1 = dataset_tabular[data_frame_name][name_series_1]
     series_2 = dataset_tabular[data_frame_name][name_series_2]
     mean_1 = statistics.mean(series_1)
@@ -75,7 +92,9 @@ def test_convert_to_dataset_tabular(dataset_longitudinal_r4sep2019_20_1: Dataset
 
 
 @pytest.mark.active
-def test_convert_to_dataset_tabular_t_test(dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated):
+def test_convert_to_dataset_tabular_t_test(
+    dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated,
+):
     """
     This test our ability to convert a longitudinal dataset to a tabular one and do a t-test
     """
@@ -117,11 +136,16 @@ def test_convert_to_dataset_tabular_t_test(dataset_longitudinal_r4sep2019_20_1: 
 
     # act
     dataset_tabular = convert.convert_to_dataset_tabular(
-        dataset_longitudinal, dataset_federation_id, dataset_federation_name, data_model_tablular
+        dataset_longitudinal,
+        dataset_federation_id,
+        dataset_federation_name,
+        data_model_tablular,
     )
     name_series_1 = dataset_tabular[data_frame_name].list_series_name[1]
     name_series_2 = dataset_tabular[data_frame_name].list_series_name[2]
-    data_model_series = dataset_tabular[data_frame_name][name_series_1].data_model_series
+    data_model_series = dataset_tabular[data_frame_name][
+        name_series_1
+    ].data_model_series
     series_1 = dataset_tabular[data_frame_name][name_series_1]
     series_2 = dataset_tabular[data_frame_name][name_series_2]
     t_statistic, p_value = statistics.student_t_test(series_1, series_2, "less")
@@ -137,7 +161,9 @@ def test_convert_to_dataset_tabular_t_test(dataset_longitudinal_r4sep2019_20_1: 
 
 
 @pytest.mark.slow
-def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
+def test_convert_to_dataset_tabular_big(
+    dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated,
+):
     """
     This test our ability to convert a longitudinal dataset to a tabular one
     """
@@ -179,7 +205,10 @@ def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: Dat
 
     # act
     dataset_tabular = convert.convert_to_dataset_tabular(
-        dataset_longitudinal, dataset_federation_id, dataset_federation_name, data_model_tablular
+        dataset_longitudinal,
+        dataset_federation_id,
+        dataset_federation_name,
+        data_model_tablular,
     )
 
     data_frame_nonan = preprocessing.drop_missing(
@@ -200,7 +229,7 @@ def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: Dat
     assert isinstance(data_frame_nonan[name_series_1], SeriesFederated)
     assert data_model_series.type_data_level == DataModelSeries.DataLevelInterval
     assert data_model_series.unit == "kg/m2"
-    assert 24.97839070020774 == mean_1
+    assert 24.82709128734769 == mean_1
     assert 26.14043993190191 == mean_2
 
     assert -2.5605551123530965 == t_statistic
