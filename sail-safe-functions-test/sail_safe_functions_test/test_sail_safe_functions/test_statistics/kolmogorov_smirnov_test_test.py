@@ -1,20 +1,16 @@
+from typing import Tuple
+
 import numpy
 import pytest
-from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
-    KolmogorovSmirnovTest,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy import stats
 from sklearn.utils import estimator_html_repr
 
 
 @pytest.mark.active
 def test_kolmogorov_smirnov_normalunit():
-    """
-    Preform a kolmogorov_smirnov test for normality
-    """
+    """Preform a kolmogorov_smirnov test for normality"""
     # Arrange
     numpy.random.seed(42)
     array_sample_0 = numpy.random.normal(0, 1, 17)  # works from size 17 onwards

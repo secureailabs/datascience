@@ -24,21 +24,6 @@ class KolmogorovSmirnovTestPrecompute:
         distribution: str,
         count_total: int,
     ) -> List[float]:
-        """
-        Calculate the preceomputes for KolmogorovSmirnov test
-
-            :param refrence_sample_0: First input sample
-            :type refrence_sample_0: ReferenceSeries
-            :param refrence_sample_0_ranked: Second input sample TODO: I don't think this is accurate.
-            :type refrence_sample_0_ranked: ReferenceSeries
-            :param distribution: Type of distribution ypu want to have TODO: what does this mean?
-            :type distribution: str
-            :param count_total: total count TODO: this needs to be more informative
-            :type count_total: int
-            :return: KS Test precompute
-            :rtype: List[float] TODO: why are some return types of stat functions lists, whereas others are Dicts?
-        """
-
         type_distribution = distribution["type_distribution"]
 
         array_sample_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0).to_numpy()

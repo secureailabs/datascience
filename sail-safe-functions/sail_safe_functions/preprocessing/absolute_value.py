@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
@@ -15,10 +17,10 @@ class ValueAbsolute:
         """
         Takes the weighted sum of a list of series and outputs absolute value of the series
 
-            :param series_0: input series
-            :type series_0: pandas.Series
-            :return: returns a new series that is a absolute value
-            :rtype: pandas.Series
+        :param series_0: input series
+        :type series_0: pandas.Series
+        :return: returns a new series that is a absolute value
+        :rtype: pandas.Series
         """
         series_0 = ServiceReference.get_instance().reference_to_series(reference_series_0)
 
