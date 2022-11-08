@@ -13,21 +13,8 @@ class VariancePrecompute:
 
     def run(
         sample_0_series: ReferenceSeries,
-    ) -> Tuple[List[float], List[bool]]:
-        """
-        Function collects the precomptues requireds for calculating variance
-
-            :param sample_0_series: input series
-            :type sample_0: ReferenceSeries
-            :return: value of varaince
-            :rtype: Tuple[ List[float], List[bool] ]
-        """
-        # there seems to be a problem here with this annotation -- Who wrote this??
-        sample_0 = (
-            ServiceReference.get_instance()
-            .reference_to_series(sample_0_series)
-            .to_numpy()
-        )
+    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
         sample_0_dof = len(sample_0)

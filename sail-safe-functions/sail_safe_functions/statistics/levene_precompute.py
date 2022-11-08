@@ -8,7 +8,7 @@ from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 class LevenePrecompute:
     """
-    Precomputes data for Levens Test
+    Precomputes data for computing the variance
     """
 
     def run(
@@ -18,7 +18,6 @@ class LevenePrecompute:
         mean_1: float,
     ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         """
-        Precomputes data for Levens Test
         ----------
         sample_0_series : ReferenceSeries
             The series for sample_0

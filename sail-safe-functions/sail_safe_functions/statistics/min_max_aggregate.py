@@ -7,13 +7,12 @@ class MinMaxAggregate:
     """
 
     def run(list_tuple_min_max: List[Tuple[float, float]]) -> Tuple[float, float]:
-        """
-        Aggregates the results of multiple precompute functions into a global min and max
+        """Aggregates the results of multiple precompute functions into a global min and max
 
-            :param list_tuple_min_max: A list of tuples from various precompute functions
-            :type list_tuple_min_max: List[Tuple[float, float]]
-            :return: return the federated estimated sample min max
-            :rtype: Tuple[float, float]
+        :param list_tuple_min_max: A list of tuples from various precompute functions
+        :type list_tuple_min_max: List[Tuple[float, float]]
+        :return: return the federated estimated sample min max
+        :rtype: Tuple[float, float]
         """
         list_min = []
         list_max = []

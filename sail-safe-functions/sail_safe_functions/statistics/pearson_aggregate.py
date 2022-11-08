@@ -15,12 +15,13 @@ class PearsonAggregate(object):
 
     def run(list_list_precompute: List[List[float]]):
         """
-        This function run to calculate the final precompute and calculate the federated pearson value.
+        This function run to calculate the final precompute
+        and calculate the federated pearson value.
 
-            :param list_list_precompute: list of precomputes
-            :type list_list_precompute: List[List[float]]
-            :return: Pearson value r
-            :rtype: float
+        :param list_list_precompute:
+        :type list_list_precompute: List[List[float]]
+        :return: Pearson value r
+        :rtype: float
         """
         sum_x_0 = 0
         sum_x_1 = 0

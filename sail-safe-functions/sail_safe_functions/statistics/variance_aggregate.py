@@ -3,18 +3,10 @@ from typing import List
 
 class VarianceAggregate:
     """
-    Aggregates data for computing the Variance
+    Aggregates data for computing the mean
     """
 
     def run(list_list_precompute: List[List[float]]):
-        """
-        This method to run aggregated variance
-
-            :param list_list_precompute: list of precomputes
-            :type list_list_precompute: List[List[float]]
-            :return: Variance Value
-            :rtype: Float
-        """
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0
@@ -26,8 +18,13 @@ class VarianceAggregate:
 
         sample_mean_0 = sum_x_0 / size_sample_0
 
-        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
-            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = (
+            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        ) * (
+            size_sample_0
+            / (
+                size_sample_0 - 1
+            )  # unbiased estimator (numpy version is biased by default)
         )
 
         return sample_variance_0
