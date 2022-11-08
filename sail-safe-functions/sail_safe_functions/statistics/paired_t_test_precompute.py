@@ -4,6 +4,12 @@ import numpy as np
 import pandas as pd
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_instance,
+    check_series_nan,
+    check_empty_series,
+    check_series_one_value,
+)
 
 
 class PairedTTestPrecompute:
@@ -11,9 +17,7 @@ class PairedTTestPrecompute:
     Precomputes data for performing a paired t-test
     """
 
-    def run(
-        sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries
-    ) -> List[float]:
+    def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -> List[float]:
         """Generates the geometric moments for use in a T-Test
 
         :param sample_0_series:  The series for sample_0
@@ -24,16 +28,10 @@ class PairedTTestPrecompute:
         :rtype: List[float]
         """
 
-        sample_0 = (
-            ServiceReference.get_instance()
-            .reference_to_series(sample_0_series)
-            .to_numpy()
-        )
-        sample_1 = (
-            ServiceReference.get_instance()
-            .reference_to_series(sample_1_series)
-            .to_numpy()
-        )
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(sample_1_series).to_numpy()
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
         sample_d = sample_0 - sample_1
         sum_d_0 = np.sum(sample_d)
         sum_dd_0 = np.sum(sample_d * sample_d)

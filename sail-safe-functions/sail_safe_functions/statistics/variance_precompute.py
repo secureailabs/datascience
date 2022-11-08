@@ -4,6 +4,12 @@ import numpy as np
 import pandas as pd
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_instance,
+    check_series_nan,
+    check_empty_series,
+    check_series_one_value,
+)
 
 
 class VariancePrecompute:
@@ -23,11 +29,8 @@ class VariancePrecompute:
             :rtype: Tuple[ List[float], List[bool] ]
         """
         # there seems to be a problem here with this annotation -- Who wrote this??
-        sample_0 = (
-            ServiceReference.get_instance()
-            .reference_to_series(sample_0_series)
-            .to_numpy()
-        )
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        check_empty_series(sample_0)
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
         sample_0_dof = len(sample_0)

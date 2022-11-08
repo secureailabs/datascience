@@ -4,6 +4,12 @@ import numpy
 import pandas
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_instance,
+    check_series_nan,
+    check_empty_series,
+    check_series_one_value,
+)
 
 
 class WilcoxonSingedRankTestPrecompute:
@@ -25,21 +31,13 @@ class WilcoxonSingedRankTestPrecompute:
         :return: Tuple rank_minus, rank_plus TODO: What does this mean?
         :rtype: Tuple[float, float]
         """
-        sample_difference = (
-            ServiceReference.get_instance()
-            .reference_to_series(reference_sample_difference)
-            .to_numpy()
-        )
+        sample_difference = ServiceReference.get_instance().reference_to_series(reference_sample_difference).to_numpy()
         sample_absolute_difference_ranked = (
-            ServiceReference.get_instance()
-            .reference_to_series(reference_sample_absolute_difference_ranked)
-            .to_numpy()
+            ServiceReference.get_instance().reference_to_series(reference_sample_absolute_difference_ranked).to_numpy()
         )
+        check_empty_series(sample_difference)
+        check_empty_series(sample_absolute_difference_ranked)
 
-        rank_minus = numpy.sum(
-            (sample_difference < 0) * sample_absolute_difference_ranked
-        )
-        rank_plus = numpy.sum(
-            (sample_difference > 0) * sample_absolute_difference_ranked
-        )
+        rank_minus = numpy.sum((sample_difference < 0) * sample_absolute_difference_ranked)
+        rank_plus = numpy.sum((sample_difference > 0) * sample_absolute_difference_ranked)
         return [rank_minus, rank_plus]

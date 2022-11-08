@@ -1,6 +1,12 @@
 import pandas
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_instance,
+    check_series_nan,
+    check_empty_series,
+    check_series_one_value,
+)
 
 
 class MannWhitneyUTestPrecompute:
@@ -22,14 +28,10 @@ class MannWhitneyUTestPrecompute:
             :return: _description_ TODO: what does this mean?
             :rtype: float
         """
-        series_0 = (
-            ServiceReference.get_instance()
-            .reference_to_series(reference_series_0)
-            .to_numpy()
-        )
+        series_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
         series_concatenated_ranked = (
-            ServiceReference.get_instance()
-            .reference_to_series(reference_series_concatenated_ranked)
-            .to_numpy()
+            ServiceReference.get_instance().reference_to_series(reference_series_concatenated_ranked).to_numpy()
         )
+        check_empty_series(series_0)
+        check_empty_series(series_concatenated_ranked)
         return series_concatenated_ranked[: series_0.size].sum()
