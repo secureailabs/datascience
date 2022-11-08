@@ -232,5 +232,5 @@ def test_convert_to_dataset_tabular_big(
     assert 24.82709128734769 == mean_1
     assert 26.01509991689016 == mean_2
 
-    assert -2.5605551123530965 == t_statistic
+    assert -2.967139949623014 == t_statistic
     assert 0.00536218929892478 == p_value
