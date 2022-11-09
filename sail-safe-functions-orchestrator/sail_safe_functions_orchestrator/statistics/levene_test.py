@@ -102,13 +102,14 @@ class LeveneTest(Estimator):
         mean_sample_1 = statistics.mean(sample_1)
 
         list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        for key_dataframe in list_key_dataframe:
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
             list_list_precompute.append(
-                LevenePrecompute.run(
-                    sample_0.dict_series[key_dataframe],
-                    sample_1.dict_series[key_dataframe],
+                client.call(
+                    LevenePrecompute,
+                    sample_0.dict_reference_series[dataset_id],
+                    sample_1.dict_reference_series[dataset_id],
                     mean_sample_0,
                     mean_sample_1,
                 )

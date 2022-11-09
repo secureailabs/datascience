@@ -1,12 +1,8 @@
 import numpy
 import scipy
-from sail_safe_functions.statistics.wilcoxon_signed_rank_test_aggregate import (
-    WilcoxonSingedRankTestAggregate,
-)
-from sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute import (
-    WilcoxonSingedRankTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
+from sail_safe_functions.statistics.wilcoxon_signed_rank_test_aggregate import WilcoxonSingedRankTestAggregate
+from sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute import WilcoxonSingedRankTestPrecompute
+from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 
@@ -49,10 +45,13 @@ class WilcoxonSingedRankTest(Estimator):
         :rtype: float, float
         """
 
-        if sample_0.size != sample_1.size:
+        size_0 = statistics.count(sample_0)
+        size_1 = statistics.count(sample_1)
+        if size_0 != size_1:
+            # TODO check the indexes for matching
             raise ValueError("`sample_0` and `sample_1` must have the same length.")
 
-        size_sample = sample_0.size
+        size_sample = size_0
         (
             sample_difference,
             sample_difference_absolute,
@@ -61,12 +60,18 @@ class WilcoxonSingedRankTest(Estimator):
 
         # Calculating precompute
         list_precompute = []
-        for series_difference, series_difference_absolute_ranked in zip(
-            sample_difference.dict_series.values(),
-            sample_difference_absolute_ranked.dict_series.values(),
-        ):
+        for dataset_id in sample_difference.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_difference = sample_difference.dict_reference_series[dataset_id]
+            reference_series_difference_absolute_ranked = sample_difference_absolute_ranked.dict_reference_series[
+                dataset_id
+            ]
             list_precompute.append(
-                WilcoxonSingedRankTestPrecompute.run(series_difference, series_difference_absolute_ranked)
+                client.call(
+                    WilcoxonSingedRankTestPrecompute,
+                    reference_series_difference,
+                    reference_series_difference_absolute_ranked,
+                )
             )
 
         # rank_minus rank_plus

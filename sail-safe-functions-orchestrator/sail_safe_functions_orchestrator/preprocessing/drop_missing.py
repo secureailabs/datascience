@@ -1,8 +1,6 @@
 from typing import Any
 
-from sail_safe_functions.preprocessing.drop_missing_precompute import (
-    DropMissingPrecompute,
-)
+from sail_safe_functions.preprocessing.drop_missing_precompute import DropMissingPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
@@ -51,9 +49,12 @@ class DropMissing:
         subset: Any,
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
-        data_frame_target = data_frame_source.create_new()
-        for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = DropMissingPrecompute.run(
-                data_frame_source.dict_dataframe[dataset_id], axis, how, thresh, subset
-            )
-        return data_frame_target
+        list_reference = []
+        for dataset_id in data_frame_source.list_dataset_id:
+            client = data_frame_source.service_client.get_client(dataset_id)
+            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
+            list_reference.append(client.call(DropMissingPrecompute, reference_data_frame, axis, how, thresh, subset))
+
+        return DataFrameFederated(
+            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
+        )

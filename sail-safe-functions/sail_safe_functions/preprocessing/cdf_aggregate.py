@@ -14,19 +14,6 @@ class CumulativeDistributionFunctionAggregate:
         domain_min,
         domain_max,
     ) -> Tuple[List[float], List[float]]:
-        """
-        Aggregate the cdf precompute
-
-            :param list_precompute: list of list of precomputes
-            :type list_precompute: List[Tuple[List[float], List[float], int]]
-            :param domain_min: The starting value of the sequence.
-            :type domain_min: array_like
-            :param domain_max: The end value of the sequence
-            :type domain_max: array_like
-            :return: cdf aggregate value
-            :rtype: Tuple[List[float], List[float]]
-        """
-
         list_array_value_resampled = []
         count_total = 0
         for precompute in list_precompute:
@@ -38,10 +25,14 @@ class CumulativeDistributionFunctionAggregate:
         for precompute in list_precompute:
             list_weight.append(precompute[2] / count_total)
             list_array_value_resampled.append(
-                interpolate.interp1d(precompute[0], precompute[1])(array_domain_resampled)
+                interpolate.interp1d(precompute[0], precompute[1])(
+                    array_domain_resampled
+                )
             )
 
         array_weight = numpy.array(list_weight)
-        array_value_resampled = numpy.matmul(numpy.vstack(list_array_value_resampled).T, array_weight)
+        array_value_resampled = numpy.matmul(
+            numpy.vstack(list_array_value_resampled).T, array_weight
+        )
 
         return array_domain_resampled.tolist(), array_value_resampled.tolist()
