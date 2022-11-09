@@ -37,6 +37,8 @@ class MinMaxPrecompute:
             raise ValueError("Sample contains `na` values")
         sample_0 = np.sort(sample_0)
         check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
 
         subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
         subsample_min = sample_0[:subsample_size]

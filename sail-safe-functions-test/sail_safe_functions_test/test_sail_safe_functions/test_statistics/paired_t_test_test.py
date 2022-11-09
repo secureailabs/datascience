@@ -61,11 +61,37 @@ def test_paired_t_test_empty():
     sample_size = 0
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    estimator = PairedTTest()
+    alternative = "less"
+
+    # Act
+    estimator = PairedTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
         #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
-    assert "series cannot be empty" == exc_info
+    assert "series cannot be empty" in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_paired_t_test_one_value():
+    """
+    This is our test to raise exception for series containing only one value
+    """
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    alternative = "less"
+
+    # Act
+    estimator = PairedTTest(alternative=alternative)
+
+    with pytest.raises(Exception) as exc_info:
+        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert "series cannot containt only one value" in str(exc_info.value)

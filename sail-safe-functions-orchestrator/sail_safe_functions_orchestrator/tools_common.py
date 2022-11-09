@@ -1,4 +1,5 @@
 from sail_safe_functions_orchestrator.series import Series
+import pandas as pd
 
 
 def check_instance(instance, class_check) -> None:
@@ -7,8 +8,9 @@ def check_instance(instance, class_check) -> None:
 
 
 def check_series_nan(series: Series) -> None:
+    series = pd.Series(series)
     if 0 < series.isna().sum():
-        raise Exception(f"series {series.series_name} cannot containt nan or None values")
+        raise Exception("series cannot containt nan or None values")
 
 
 def check_empty_series(series: Series) -> None:
@@ -17,5 +19,5 @@ def check_empty_series(series: Series) -> None:
 
 
 def check_series_one_value(series: Series) -> None:
-    if series.size == 2:
-        raise Exception(f"series {series.series_name} cannot containt only one value")
+    if series.size == 1:
+        raise Exception("series cannot containt only one value")

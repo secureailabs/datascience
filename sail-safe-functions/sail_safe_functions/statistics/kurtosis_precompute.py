@@ -31,6 +31,8 @@ class KurtosisPrecompute:
 
         sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
         # First
         sum_x_0 = np.sum(sample_0)
         # second

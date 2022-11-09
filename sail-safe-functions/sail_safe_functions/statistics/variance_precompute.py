@@ -31,6 +31,8 @@ class VariancePrecompute:
         # there seems to be a problem here with this annotation -- Who wrote this??
         sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
         sample_0_dof = len(sample_0)

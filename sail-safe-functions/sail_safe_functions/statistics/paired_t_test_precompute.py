@@ -32,6 +32,10 @@ class PairedTTestPrecompute:
         sample_1 = ServiceReference.get_instance().reference_to_series(sample_1_series).to_numpy()
         check_empty_series(sample_0)
         check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
         sample_d = sample_0 - sample_1
         sum_d_0 = np.sum(sample_d)
         sum_dd_0 = np.sum(sample_d * sample_d)

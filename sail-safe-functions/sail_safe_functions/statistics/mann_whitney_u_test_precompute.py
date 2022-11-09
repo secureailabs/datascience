@@ -34,4 +34,8 @@ class MannWhitneyUTestPrecompute:
         )
         check_empty_series(series_0)
         check_empty_series(series_concatenated_ranked)
+        check_series_nan(series_0)
+        check_series_one_value(series_0)
+        check_series_nan(series_concatenated_ranked)
+        check_series_one_value(series_concatenated_ranked)
         return series_concatenated_ranked[: series_0.size].sum()

@@ -30,6 +30,10 @@ class KolmogorovSmirnovTestPrecompute:
         array_sample_ranked_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0_ranked).to_numpy()
         check_empty_series(array_sample_0)
         check_empty_series(array_sample_ranked_0)
+        check_series_one_value(array_sample_0)
+        check_series_one_value(array_sample_ranked_0)
+        check_series_nan(array_sample_0)
+        check_series_nan(array_sample_ranked_0)
 
         if type_distribution == "normal":
             sample_mean = numpy.mean(array_sample_0)

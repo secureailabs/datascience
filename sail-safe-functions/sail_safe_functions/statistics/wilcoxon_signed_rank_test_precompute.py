@@ -37,7 +37,10 @@ class WilcoxonSingedRankTestPrecompute:
         )
         check_empty_series(sample_difference)
         check_empty_series(sample_absolute_difference_ranked)
-
+        check_series_nan(sample_difference)
+        check_series_one_value(sample_difference)
+        check_series_nan(sample_absolute_difference_ranked)
+        check_series_one_value(sample_absolute_difference_ranked)
         rank_minus = numpy.sum((sample_difference < 0) * sample_absolute_difference_ranked)
         rank_plus = numpy.sum((sample_difference > 0) * sample_absolute_difference_ranked)
         return [rank_minus, rank_plus]
