@@ -63,3 +63,22 @@ def test_kurtosis_one_value():
 
     # Assert
     assert "series cannot containt only one value" in str(exc_info.value)
+
+
+def test_kurtosis_nan_value():
+    """
+    This is our test to raise exception if series containing nan values
+    """
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+    # Act
+    estimator = Kurtosis()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert "series cannot containt nan or None values" in str(exc_info.value)

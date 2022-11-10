@@ -73,3 +73,28 @@ def test_student_t_test_one_value():
 
     # Assert
     assert "series cannot containt only one value" in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_student_t_test_nan_value():
+    """
+    This is our test to raise exception for series containing nan value.
+    """
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    alternative = "less"
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert "series cannot containt nan or None values" in str(exc_info.value)

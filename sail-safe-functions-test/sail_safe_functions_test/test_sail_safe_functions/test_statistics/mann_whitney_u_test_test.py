@@ -104,7 +104,7 @@ def testmann_whitney_u_test_empty():
 
 
 @pytest.mark.active
-def testmann_whitney_u_test_pne_value():
+def testmann_whitney_u_test_one_value():
     """
     This is our test to raise exception for series containing only one value
 
@@ -124,3 +124,28 @@ def testmann_whitney_u_test_pne_value():
 
     # Assert
     assert "series cannot containt only one value" in str(exc_info.value)
+
+
+@pytest.mark.active
+def testmann_whitney_u_test_nan_value():
+    """
+    This is our test to raise exception if series containing nan values
+
+    """
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    alternative = "greater"
+    type_ranking = "unsafe"
+    # Act
+    estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert "series cannot containt nan or None values" in str(exc_info.value)
