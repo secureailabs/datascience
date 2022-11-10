@@ -1,5 +1,6 @@
 FROM ubuntu:20.04
 ENV TZ=America/Toronto
+ENV PATH_DIR_DATASET=/data
 LABEL authors="jaap@secureailabs.com"
 USER root
 

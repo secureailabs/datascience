@@ -32,10 +32,12 @@ class Mean(Estimator):
         :return: _description_
         :rtype: _type_
         """
+
         list_list_precompute = []
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(MeanPrecompute.run(series))
-        mean_statistic = MeanAggregate.run(list_list_precompute)
+        for reference in sample_0.dict_reference_series.values():
+            client = sample_0.service_client.get_client(reference.dataset_id)
+            list_list_precompute.append(client.call(MeanPrecompute, reference))
+        mean_statistic = MeanAggregate.run(list_list_precompute)  # TODO this does not need to get merged
         return mean_statistic
 
     def run_reference(self, sample_0: SeriesFederated):

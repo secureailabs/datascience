@@ -1,19 +1,16 @@
-import pytest
-from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-
-from sail_safe_functions_orchestrator.machine_learning.federated_averaging import (
-    federated_averaging,
-)
-from helper_libs.shared.models.LogisticRegression import LogisticRegression
-
-import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.datasets import load_iris
-from sklearn.metrics import precision_score, recall_score, f1_score
-import torch
-import numpy as np
-
 import random
+
+import numpy as np
+import pandas as pd
+import pytest
+import torch
+from helper_libs.shared.models.LogisticRegression import LogisticRegression
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.machine_learning.federated_averaging import federated_averaging
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sklearn.datasets import load_iris
+from sklearn.metrics import f1_score, precision_score, recall_score
+from sklearn.preprocessing import OneHotEncoder
 
 
 def get_iris_dataframe():
@@ -201,8 +198,8 @@ def predict_kidney(epochs, federal_epochs, data_federation, test):
     return precision, recall, f1
 
 
-@pytest.mark.active
-def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+@pytest.mark.slow
+def test_kidney_data_acceptable(data_frame_federated_kidney: DataFrameFederated):
     """
     This tests whether the model is learning on the real kidney data. The precision, recall and f1 score is evaluated
     to see whether it meets a a threshold in order to pass this test.
@@ -211,6 +208,9 @@ def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
     :type: dataframe_kidney_clean:: pd.DataFrame
     """
     # Arrange
+    reference_data_frame_source = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    data_frame = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+
     random_seed = 1
     torch.manual_seed(random_seed)
     torch.cuda.manual_seed(random_seed)
@@ -218,7 +218,7 @@ def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
     torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
 
-    dataframe = pd.get_dummies(data=dataframe_kidney_clean)
+    dataframe = pd.get_dummies(data=data_frame.copy())
     data_federation, test = get_test_federation_split(dataframe)
 
     # Action
@@ -246,7 +246,7 @@ def test_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
     # assert f1_1000_4 >= f1_1000_1
 
 
-@pytest.mark.active
+@pytest.mark.slow
 def test_iris_data_acceptable():
     """
     This tests whether the model is learning on the sample iris data. The precision, recall and f1 score is evaluated
