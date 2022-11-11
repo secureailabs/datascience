@@ -1,45 +1,43 @@
 import numpy
-from pandas import Series
-from sail_safe_functions.preprocessing.rank_cdf import (
-    RankCumulativeDistributionFunction,
-)
+from sail_safe_functions.preprocessing.rank_cdf import RankCumulativeDistributionFunction
 from sail_safe_functions_orchestrator import preprocessing
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import check_instance
 from scipy.stats import rankdata
 
 
 def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
-    """
-    :param sample_0: Input sample series
-    :type sample_0: SeriesFederated
-    :return: ranked sample
-    :rtype: SeriesFederated
-    """
     check_instance(sample_0, SeriesFederated)
     list_size = []
     list_array = []
-    for series in sample_0.dict_series.values():
+    for reference in sample_0.dict_reference_series.values():
+        series = ServiceReference.get_instance().reference_to_series(reference)
         list_size.append(series.size)
         list_array.append(series.to_numpy())
     array_sample = numpy.concatenate(list_array)
     array_rank = rankdata(array_sample)
 
-    sample_ranked_0 = sample_0.create_new()
+    series_name = sample_0.series_name + "_ranked"
+    data_model_series = DataModelSeries.create_numerical(series_name, -1, None, DataModelSeries.AgregatorComputed)
+
     index_start = 0
-    for i, dataset_id in enumerate(sample_0.dict_series):
+    list_reference = []
+    for i, dataset_id in enumerate(sample_0.dict_reference_series):
         index_end = index_start + list_size[i]
-        sample_ranked_0.add_array(
-            dataset_id,
-            Series(array_rank[index_start:index_end], name=f"{sample_0.name}_ranked"),
-        )
+        series = Series(dataset_id, data_model_series, array_rank[index_start:index_end].tolist())
+        reference = ServiceReference.get_instance().series_to_reference(series)
+        list_reference.append(reference)
         index_start = index_end
-    return sample_ranked_0
+
+    return SeriesFederated(sample_0.service_client, list_reference, data_model_series)
 
 
 def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     check_instance(sample_0, SeriesFederated)
-    list_domain_cdf, list_value_cdf = preprocessing.cdf(sample_0)
+    list_domain_cdf, list_value_cdf = preprocessing.CumulativeDistributionFunction(sample_0)
     sample_ranked_0 = sample_0.create_new()
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(

@@ -2,6 +2,8 @@ from typing import List
 
 import numpy
 from pandas import Series
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from scipy import stats
 
 
@@ -10,25 +12,16 @@ class KolmogorovSmirnovTestPrecompute:
     Precomputes data for the KolmogorovSmirnov test
     """
 
-    def run(sample_0: Series, sample_ranked_0: Series, distribution: str, count_total: int) -> List[float]:
-        """
-        Calculate the preceomputes for KolmogorovSmirnov test
-
-            :param sample_0: First input sample
-            :type sample_0: Series
-            :param sample_ranked_0: Second input sample
-            :type sample_ranked_0: Series
-            :param distribution: Type of distribution ypu want to have
-            :type distribution: str
-            :param count_total: total count
-            :type count_total: int
-            :return: KS Test precompute
-            :rtype: List[float]
-        """
+    def run(
+        refrence_sample_0: ReferenceSeries,
+        refrence_sample_0_ranked: ReferenceSeries,
+        distribution: str,
+        count_total: int,
+    ) -> List[float]:
         type_distribution = distribution["type_distribution"]
 
-        array_sample_0 = sample_0.to_numpy()
-        array_sample_ranked_0 = sample_ranked_0.to_numpy()
+        array_sample_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0).to_numpy()
+        array_sample_ranked_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0_ranked).to_numpy()
 
         if type_distribution == "normal":
             sample_mean = numpy.mean(array_sample_0)

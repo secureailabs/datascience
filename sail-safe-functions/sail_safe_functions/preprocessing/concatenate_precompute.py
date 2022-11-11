@@ -1,20 +1,20 @@
 import pandas
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class ConcatenatePrecompute:
-    """
-    Wrapper safe function for the pandas concatenate
-    """
+    """Wrapper safe function for the pandas concatenate"""
 
-    def run(series_0: pandas.Series, series_1: pandas.Series) -> pandas.Series:
-        """
-        Wrapper function to conncatenate two pandas series.
+    def run(
+        series_0_reference: ReferenceSeries, series_1_reference: ReferenceSeries, data_model_series: DataModelSeries
+    ) -> ReferenceSeries:
 
-            :param series_0: first input series
-            :type series_0: pandas.Series
-            :param series_1: Second input series
-            :type series_1: pandas.Series
-            :return:concatenating all Series along the index (axis=0), a series is returned.
-            :rtype: pandas.Series
-        """
-        return pandas.concat([series_0, series_1])
+        series_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+        series_1 = ServiceReference.get_instance().reference_to_series(series_1_reference)
+        series_concatinated = Series(
+            series_0.dataset_id, data_model_series, pandas.concat([series_0, series_1]).to_list()
+        )
+        return ServiceReference.get_instance().series_to_reference(series_concatinated)

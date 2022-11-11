@@ -1,5 +1,4 @@
 import numpy
-
 from sail_safe_functions.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.statistics.mean_precompute import MeanPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -28,15 +27,17 @@ class Mean(Estimator):
         """
         It takes one federated series, and returns the Mean
 
-            :param sample_0: sample series
-            :type sample_0: SeriesFederated
-            :return: mean value of federated series
-            :rtype: float
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
         """
+
         list_list_precompute = []
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(MeanPrecompute.run(series))
-        mean_statistic = MeanAggregate.run(list_list_precompute)
+        for reference in sample_0.dict_reference_series.values():
+            client = sample_0.service_client.get_client(reference.dataset_id)
+            list_list_precompute.append(client.call(MeanPrecompute, reference))
+        mean_statistic = MeanAggregate.run(list_list_precompute)  # TODO this does not need to get merged
         return mean_statistic
 
     def run_reference(self, sample_0: SeriesFederated):

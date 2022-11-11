@@ -11,32 +11,23 @@ from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 
 
-def cdf(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
-    """
-    Computes a CDF by aproximation with at least the square root of the sample
+def CumulativeDistributionFunction(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
+    """Computes a CDF by aproximation with at least the square root of the sample
     size equally spaced between a estimate of the min and the max
 
-        :param sample_0: The federated series over which the cdf should be computed
-        :type sample_0: SeriesFederated
-        :return: returns two lists of floating point values representing the domain and the values of the cdf
-        :rtype: Tuple[List[float], List[float]]
+    :param sample_0: The federated series over which the cdf should be computed
+    :type sample_0: SeriesFederated
+    :return: returns two lists of floating point values representing the domain and the values of the cdf
+    :rtype: Tuple[List[float], List[float]]
     """
-    return CumulativeDistributionFunction.run(sample_0)
+    return CumulativeDistributionFunction_class.run(sample_0)
 
 
-class CumulativeDistributionFunction:
+class CumulativeDistributionFunction_class:
     "Estimator for non-disclosive CDF"
 
     @staticmethod
     def run(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
-        """
-        Main function run for Estimator for non-disclosive CDF
-
-            :param sample_0: Input sample
-            :type sample_0: SeriesFederated
-            :return: Federated CDF final value
-            :rtype: Tuple[List[float], List[float]]
-        """
 
         domain_min, domain_max = MinMax.min_max(sample_0)
 
