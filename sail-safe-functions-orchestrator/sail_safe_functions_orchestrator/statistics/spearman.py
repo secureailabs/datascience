@@ -57,10 +57,8 @@ class Spearman(Estimator):
         count_1 = statistics.count(sample_1)
         if count_0 != count_1:
             raise ValueError("samples must be of equal size")
-        print(sample_1)
-        print(sample_1)
-        check_series_constant(sample_0)
-        check_series_constant(sample_1)
+        # check_series_constant(sample_0)
+        # check_series_constant(sample_1)
         rank_0 = preprocessing.rank(sample_0, self.type_ranking)
         rank_1 = preprocessing.rank(sample_1, self.type_ranking)
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)

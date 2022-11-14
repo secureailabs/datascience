@@ -57,7 +57,7 @@ def test_pearson_empty():
 @pytest.mark.active
 def test_pearson_one_value():
     """
-    This is our test to raise exception for series containing only one value
+    This is our test to raise exception for series containing one value
     """
     # Arrange
     numpy.random.seed(42)
@@ -144,3 +144,25 @@ def test_pearson_same_sample_negative():
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
     # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_pearson_zero_variance():
+    """
+    This is our test to raise exception for zero variance
+    """
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    alternative = "two-sided"
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert "Variance is zero raises sys.float_info.max " in str(exc_info.value)

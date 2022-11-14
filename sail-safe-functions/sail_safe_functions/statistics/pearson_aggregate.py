@@ -1,6 +1,8 @@
 import math
 from typing import List
 
+from sail_safe_functions_orchestrator.tools_common import check_variance_zero
+
 
 class PearsonAggregate(object):
     """
@@ -44,6 +46,7 @@ class PearsonAggregate(object):
         sample_mean_0 = sum_x_0 / size_sample_0
         # Calculating sample variance
         sample_variance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        check_variance_zero(sample_variance_0)
         # Calculating Sample
         sample_standard_deviation_0 = math.sqrt(sample_variance_0)
         # Calculating for the second column
@@ -51,6 +54,7 @@ class PearsonAggregate(object):
         sample_mean_1 = sum_x_1 / size_sample_1
         # Calculating sample variance
         sample_variance_1 = (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
+        check_variance_zero(sample_variance_1)
         # Calculating Sample
         sample_standard_deviation_1 = math.sqrt(sample_variance_1)
 
