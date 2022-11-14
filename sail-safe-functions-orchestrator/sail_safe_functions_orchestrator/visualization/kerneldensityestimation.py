@@ -1,17 +1,17 @@
 import plotly.figure_factory as ff
-from sail_safe_functions.visualization.KernelDensityEstimation_aggregate import KernelDensityEstimationAggregate
-from sail_safe_functions.visualization.KernelDensityEstimation_precompute import KernelDensityEstimationPrecompute
+from sail_safe_functions.visualization.kerneldensityestimation_aggregate import KernelDensityEstimationAggregate
+from sail_safe_functions.visualization.kerneldensityestimation_precompute import KernelDensityEstimationPrecompute
 from sail_safe_functions_orchestrator.series import Series
 
 
-class KernelDensityEstimation_class:
+class KernelDensityEstimation:
     """
     Performs the federated kernel density estimation.
 
     """
 
     @staticmethod
-    def KernelDensityEstimation(sample_0: Series, group_labels: str, bin_size: float):
+    def kerneldensityestimation(sample_0: Series, group_labels: str, bin_size: float):
         """
         Performs the federated kernel density estimation.
         It take on federated series and bin count. Returns the kde plot.
@@ -40,4 +40,4 @@ class KernelDensityEstimation_class:
 
     @staticmethod
     def run(sample_0: Series, group_labels: str, bin_size: float):
-        return KernelDensityEstimation_class.KernelDensityEstimation(sample_0, group_labels, bin_size)
+        return KernelDensityEstimation.kerneldensityestimation(sample_0, group_labels, bin_size)
