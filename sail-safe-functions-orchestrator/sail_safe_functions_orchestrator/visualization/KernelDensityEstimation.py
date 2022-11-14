@@ -1,6 +1,6 @@
 import plotly.figure_factory as ff
-from sail_safe_functions.visualization.kde_aggregate import KdeAggregate
-from sail_safe_functions.visualization.kde_precompute import KdePrecompute
+from sail_safe_functions.visualization.KernelDensityEstimation_aggregate import KernelDensityEstimationAggregate
+from sail_safe_functions.visualization.KernelDensityEstimation_precompute import KernelDensityEstimationPrecompute
 from sail_safe_functions_orchestrator.series import Series
 
 
@@ -29,12 +29,12 @@ class KernelDensityEstimation_class:
             client = sample_0.service_client.get_client(dataset_id)
             list_list_precompute.append(
                 client.call(
-                    KdePrecompute,
+                    KernelDensityEstimationPrecompute,
                     sample_0.dict_reference_series[dataset_id],
                 )
             )
 
-        kde_value = KdeAggregate.run(list_list_precompute)
+        kde_value = KernelDensityEstimationAggregate.run(list_list_precompute)
         fig = ff.create_distplot(kde_value, group_labels, bin_size)
         return fig
 
