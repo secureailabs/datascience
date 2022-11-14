@@ -21,3 +21,14 @@ def check_empty_series(series: Series) -> None:
 def check_series_one_value(series: Series) -> None:
     if series.size == 1:
         raise Exception("series cannot containt only one value")
+
+
+def check_series_constant(series: Series) -> None:
+    series = pd.Series(series)
+    if 1 == series.nunique():
+        raise Exception("input array is constant")
+
+
+def check_variance_zero(value) -> None:
+    if value == 0:
+        raise Exception("Variance is zero raises sys.float_info.max ")

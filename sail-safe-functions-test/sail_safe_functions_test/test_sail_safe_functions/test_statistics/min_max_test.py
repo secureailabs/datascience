@@ -85,4 +85,4 @@ def test_min_max_nan_value():
         estimator.run(sample_0)
 
     # Assert
-    assert "series cannot containt nan or None values" in str(exc_info.value)
+    assert "Sample contains `na` values" in str(exc_info.value)

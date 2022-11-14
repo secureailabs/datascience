@@ -9,6 +9,7 @@ from sail_safe_functions_orchestrator.tools_common import (
     check_series_nan,
     check_empty_series,
     check_series_one_value,
+    check_series_constant,
 )
 
 
@@ -41,6 +42,9 @@ class WilcoxonSingedRankTestPrecompute:
         check_series_one_value(sample_difference)
         check_series_nan(sample_absolute_difference_ranked)
         check_series_one_value(sample_absolute_difference_ranked)
+        check_series_constant(sample_difference)
+        check_series_constant(sample_absolute_difference_ranked)
+
         rank_minus = numpy.sum((sample_difference < 0) * sample_absolute_difference_ranked)
         rank_plus = numpy.sum((sample_difference > 0) * sample_absolute_difference_ranked)
         return [rank_minus, rank_plus]
