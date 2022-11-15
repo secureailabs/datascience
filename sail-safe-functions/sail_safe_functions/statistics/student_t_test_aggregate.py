@@ -27,32 +27,20 @@ class StudentTTestAggregate:
             size_sample_1 += list_precompute[5]
 
         sample_mean_0 = sum_x_0 / size_sample_0
-        sample_variance_0 = (
-            (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
-        ) * (
-            size_sample_0
-            / (
-                size_sample_0 - 1
-            )  # unbiased estimator (numpy version is biased by default)
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
         )
 
         sample_mean_1 = sum_x_1 / size_sample_1
-        sample_variance_1 = (
-            (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
-        ) * (
-            size_sample_1
-            / (
-                size_sample_1 - 1
-            )  # unbiased estimator (np version is biased by default)
+        sample_variance_1 = ((sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)) * (
+            size_sample_1 / (size_sample_1 - 1)  # unbiased estimator (np version is biased by default)
         )
 
         sample_variance_pooled = (
-            ((size_sample_0 - 1) * sample_variance_0)
-            + ((size_sample_1 - 1) * sample_variance_1)
+            ((size_sample_0 - 1) * sample_variance_0) + ((size_sample_1 - 1) * sample_variance_1)
         ) / (size_sample_0 + size_sample_1 - 2)
         t_statistic = (sample_mean_0 - sample_mean_1) / (
-            np.sqrt(sample_variance_pooled)
-            * np.sqrt((1 / size_sample_0 + 1 / size_sample_1))
+            np.sqrt(sample_variance_pooled) * np.sqrt((1 / size_sample_0 + 1 / size_sample_1))
         )
         degrees_of_freedom = size_sample_0 + size_sample_1 - 2
 

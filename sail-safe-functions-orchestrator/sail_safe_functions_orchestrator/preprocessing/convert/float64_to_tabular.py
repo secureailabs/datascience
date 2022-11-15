@@ -1,41 +1,36 @@
-from sail_safe_functions.preprocessing.convert.float64_to_tabular_precompute import (
-    Float64ToTabularPrecompute,
-)
+from sail_safe_functions.preprocessing.convert.float64_to_tabular_precompute import Float64ToTabularPrecompute
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
-def float64_to_tabular(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
+def float64_to_tabular(
+    data_frame_source: DataFrameFederated, data_model_target: DataModelDataFrame
+) -> DataFrameFederated:
     """
     The function convert the float64 value to tabular value
 
-        :param table_schema: The schema
-        :type table_schema: dict
         :param data_frame_source: Federated Data frame
         :type data_frame_source: DataFrameFederated
+        :param data_model_target: The targeted data model
+        :type data_model_target: DataModelDataFrame
         :return: tabular data
         :rtype: DataFrameFederated
     """
-    return Float64ToTabular.run(table_schema, data_frame_source)
+    return Float64ToTabular.run(data_frame_source, data_model_target)
 
 
 class Float64ToTabular:
-    def run(table_schema: dict, data_frame_source: DataFrameFederated) -> DataFrameFederated:
-        check_instance(table_schema, dict)
+    def run(data_frame_source: DataFrameFederated, data_model_target: DataModelDataFrame) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
-        """
-        Function used to conver a purely numerical dataframe back to a mixed tabular dataframe.
+        check_instance(data_model_target, DataModelDataFrame)
 
-            :param table_schema: target schema to used for the conversion
-            :type table_schema: dict
-            :param data_frame_source: dataframe containing only float64 columns
-            :type data_frame_source: DataFrameFederated
-            :return: new data frame using the schema
-            :rtype: DataFrameFederated
-        """
-        data_frame_target = data_frame_source.create_new()
-        for dataset_id in data_frame_source.dict_dataframe:
-            data_frame_target.dict_dataframe[dataset_id] = Float64ToTabularPrecompute.run(
-                table_schema, data_frame_source.dict_dataframe[dataset_id]
-            )
-        return data_frame_target
+        list_reference = []
+        for dataset_id in data_frame_source.list_dataset_id:
+            client = data_frame_source.service_client.get_client(dataset_id)
+            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
+            list_reference.append(client.call(Float64ToTabularPrecompute, reference_data_frame, data_model_target))
+
+        return DataFrameFederated(
+            data_frame_source.service_client, list_reference, list_reference[0].data_model_data_frame
+        )

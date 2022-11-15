@@ -2,6 +2,8 @@ from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class LevenePrecompute:
@@ -10,19 +12,17 @@ class LevenePrecompute:
     """
 
     def run(
-        sample_0_series: pd.Series,
-        sample_1_series: pd.Series,
+        reference_series_0: ReferenceSeries,
+        reference_series_1: ReferenceSeries,
         mean_0: float,
         mean_1: float,
-    ) -> Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         """
         ----------
-        sample_0_series : pd.Series
+        sample_0_series : ReferenceSeries
             The series for sample_0
 
-        sample_1_series : pd.Series
+        sample_1_series : ReferenceSeries
             The series for sample_1
 
         Returns
@@ -31,8 +31,8 @@ class LevenePrecompute:
 
         """
 
-        sample_0 = sample_0_series.to_numpy()
-        sample_1 = sample_1_series.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)

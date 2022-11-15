@@ -1,3 +1,4 @@
+from itertools import count
 from typing import Tuple
 
 from sail_safe_functions_orchestrator import preprocessing, statistics
@@ -50,10 +51,10 @@ class Spearman(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
-        if sample_0.size != sample_1.size:
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        count_0 = statistics.count(sample_0)
+        count_1 = statistics.count(sample_1)
+        if count_0 != count_1:
             raise ValueError("samples must be of equal size")
 
         rank_0 = preprocessing.rank(sample_0, self.type_ranking)
@@ -61,9 +62,5 @@ class Spearman(Estimator):
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
 
-    def run_reference(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
-        return stats.spearmanr(
-            sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative
-        )
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        return stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

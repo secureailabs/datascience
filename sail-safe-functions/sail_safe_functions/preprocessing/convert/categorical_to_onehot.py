@@ -1,35 +1,33 @@
+from typing import List
+
 import numpy
 import pandas
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.series import Series
 
 
 class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -> pandas.DataFrame:
-        name_column = column_schema["name_column"]
-        type_missing_policy = column_schema["type_missing_policy"]
-        if type_missing_policy not in ["propagate_add_column", "raise_exception"]:
-            raise ValueError(type_missing_policy)
+    def run(series: Series) -> List[Series]:
+        if series.data_model_series.type_data_level != DataModelSeries.DataLevelCategorical:
+            raise ValueError()
 
-        if type_missing_policy == "propagate_add_column":
-            dummy_na = True
-        else:
-            dummy_na = False
-
-        if type_missing_policy == "raise_exception":
-            if 0 < data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f"Column {name_column} contains expeption while not should be present"
-                )
-
-        data_frame_target = pandas.get_dummies(
-            data_frame_source[name_column],
-            prefix=name_column,
+        data_frame_pandas = pandas.get_dummies(
+            series,
+            prefix=series.series_name,
             prefix_sep="_",
-            dummy_na=dummy_na,
-            columns=column_schema["list_value"],
+            dummy_na=True,
+            columns=series.data_model_series.list_value,
             sparse=False,
             drop_first=False,
             dtype=numpy.float64,
         )
-        return data_frame_target
+        list_series = []
+        for series_name in data_frame_pandas.columns:
+            series_pandas = data_frame_pandas[series_name]
+            data_model_series = DataModelSeries.create_numerical(
+                series_name, -1, type_agregator=DataModelSeries.AgregatorComputed
+            )
+            series_created = Series.from_pandas(series_name, data_model_series, series_pandas)
+            series_created.index = series_pandas.index
+            list_series.append(series_created)
+        return list_series

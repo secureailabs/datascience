@@ -28,6 +28,10 @@ The repository contains 3 python packages
 - Run `python build/install.py` \
 *`Dependency Requirements are listed in config/requirements/*.txt`*
 
+## Set the required environment variables:
+None that depending on where you are this need a different formatting below is the setting from the test docker
+- Run `export PATH_DIR_DATASET=/data`
+
 ## Run Test package
 - Run `python run_tests.py`
 
@@ -36,3 +40,5 @@ The repository contains 3 python packages
 
 ## Deactivate your Virtual Env (venv)
 - Exit from your Virtual Env `deactivate`
+
+
