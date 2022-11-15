@@ -1,1 +1,1 @@
-from sail_safe_functions_orchestrator.visualization.kerneldensityestimation import KernelDensityEstimation
+from sail_safe_functions_orchestrator.visualization.kernel_density_estimation import kernel_density_estimation
