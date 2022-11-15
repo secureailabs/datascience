@@ -39,7 +39,6 @@ def test_mean_empty():
     estimator = Variance()
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert
@@ -59,7 +58,6 @@ def test_mean_one_value():
     estimator = Variance()
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert
@@ -79,7 +77,6 @@ def test_mean_nan_value():
     estimator = Variance()
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert

@@ -36,11 +36,10 @@ def test_min_max_empty():
     numpy.random.seed(42)
     sample_size = 0
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+
     # Act
     estimator = MinMax()
-
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert
@@ -56,11 +55,10 @@ def test_min_max_one_value():
     numpy.random.seed(42)
     sample_size = 1
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+
     # Act
     estimator = MinMax()
-
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert
@@ -77,11 +75,11 @@ def test_min_max_nan_value():
     a = numpy.empty((20))
     a[12:] = numpy.nan
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+
     # Act
     estimator = MinMax()
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0)
 
     # Assert

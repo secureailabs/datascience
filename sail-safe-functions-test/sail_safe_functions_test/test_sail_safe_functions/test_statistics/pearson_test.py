@@ -47,7 +47,6 @@ def test_pearson_empty():
     # Act
     estimator = Pearson(alternative=alternative)
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -69,7 +68,6 @@ def test_pearson_one_value():
     # Act
     estimator = Pearson(alternative=alternative)
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -93,7 +91,6 @@ def test_pearson_nan_value():
     # Act
     estimator = Pearson(alternative=alternative)
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -161,7 +158,6 @@ def test_pearson_zero_variance():
     # Act
     estimator = Pearson(alternative=alternative)
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert

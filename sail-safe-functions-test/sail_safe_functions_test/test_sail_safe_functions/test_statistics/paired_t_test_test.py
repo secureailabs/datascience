@@ -67,7 +67,6 @@ def test_paired_t_test_empty():
     estimator = PairedTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -90,7 +89,6 @@ def test_paired_t_test_one_value():
     estimator = PairedTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -115,7 +113,6 @@ def test_paired_t_test_nan_value():
     estimator = PairedTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
@@ -138,7 +135,6 @@ def test_paired_t_test_zero_variance():
     estimator = PairedTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert
