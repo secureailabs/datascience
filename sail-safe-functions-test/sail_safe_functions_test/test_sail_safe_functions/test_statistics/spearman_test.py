@@ -237,7 +237,7 @@ def test_spearman_nan_value():
     assert "series cannot containt nan or None values" in str(exc_info.value)
 
 
-# @pytest.mark.active
+@pytest.mark.broken
 def test_spearman_constant_value():
     """
     This is our test to raise exception for series containing constant value.
