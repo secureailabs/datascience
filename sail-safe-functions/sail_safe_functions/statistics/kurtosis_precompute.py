@@ -12,7 +12,6 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-
 class KurtosisPrecompute:
     """
     Precomputes data for Kurtosis

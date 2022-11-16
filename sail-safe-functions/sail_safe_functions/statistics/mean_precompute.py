@@ -12,7 +12,6 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-
 class MeanPrecompute:
     """
     Precomputes data for computing the mean

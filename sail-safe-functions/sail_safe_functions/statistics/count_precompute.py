@@ -11,6 +11,7 @@ from sail_safe_functions_orchestrator.tools_common import (
     check_series_one_value,
 )
 
+
 class CountPrecompute:
     """
     Precomputes data for computing the count

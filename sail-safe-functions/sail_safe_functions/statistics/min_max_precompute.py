@@ -12,14 +12,14 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-
 class MinMaxPrecompute:
     """
     Precomputes min and max for a given sample
     """
 
     def run(sample_0_series: ReferenceSeries) -> Tuple[float, float]:
-        """This function is designed to counteract disclosure of the min and max while giving them estimates that
+        """
+        This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min <= sample_min and sample_max <= max
         For uniform distributions this follows the UMVU-estimator altough with bigger variance
         For normal distribution this creates a min and a max that are far outside the sample

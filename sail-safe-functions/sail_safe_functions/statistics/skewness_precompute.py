@@ -12,7 +12,6 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-
 class SkewnessPrecompute:
     """
     Precomputes data for computing skewness

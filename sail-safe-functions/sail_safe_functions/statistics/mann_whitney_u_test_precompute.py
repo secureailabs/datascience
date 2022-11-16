@@ -9,11 +9,11 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-
 class MannWhitneyUTestPrecompute:
     """
     The precompute function of the mann withnet u test
     """
+
     def run(reference_series_0: ReferenceSeries, reference_series_concatenated_ranked: ReferenceSeries) -> float:
         """
         precompute function of the mann withnet u test
