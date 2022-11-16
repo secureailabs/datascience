@@ -224,7 +224,7 @@ def test_wilcoxon_singed_rank_test_nan_value():
     assert "series cannot containt nan or None values" in str(exc_info.value)
 
 
-@pytest.mark.broken
+# @pytest.mark.broken
 def test_wilcoxon_singed_rank_test_constant_value():
     """
     This is our test to raise exception for series containing constant.
