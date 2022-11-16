@@ -40,6 +40,7 @@ def test_wilcoxon_singed_rank_test_two_sided_2():
     sample_size = 200
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
     sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+
     alternative = "two-sided"
     type_ranking = "unsafe"
 
@@ -63,6 +64,7 @@ def test_wilcoxon_singed_rank_test_less():
     sample_size = 200
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+
     alternative = "less"
     type_ranking = "unsafe"
 
@@ -86,6 +88,7 @@ def test_wilcoxon_singed_rank_test_less_2():
     sample_size = 200
     sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
     sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+
     alternative = "less"
     type_ranking = "unsafe"
 

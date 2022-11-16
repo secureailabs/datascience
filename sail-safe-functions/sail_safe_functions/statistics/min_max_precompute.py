@@ -12,6 +12,7 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
+
 class MinMaxPrecompute:
     """
     Precomputes min and max for a given sample

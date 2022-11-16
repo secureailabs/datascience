@@ -11,7 +11,6 @@ from sail_safe_functions_orchestrator.tools_common import (
     check_series_one_value,
 )
 
-
 class CountPrecompute:
     """
     Precomputes data for computing the count
@@ -21,6 +20,7 @@ class CountPrecompute:
         sample_0_series: ReferenceSeries,
     ) -> float:
         sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+
         check_empty_series(sample_0)
         check_series_nan(sample_0)
         check_series_one_value(sample_0)

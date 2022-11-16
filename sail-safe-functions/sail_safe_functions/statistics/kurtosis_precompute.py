@@ -12,6 +12,7 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
+
 class KurtosisPrecompute:
     """
     Precomputes data for Kurtosis
@@ -33,6 +34,7 @@ class KurtosisPrecompute:
         check_empty_series(sample_0)
         check_series_nan(sample_0)
         check_series_one_value(sample_0)
+
         # First
         sum_x_0 = np.sum(sample_0)
         # second

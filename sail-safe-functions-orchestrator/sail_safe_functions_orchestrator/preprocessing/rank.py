@@ -37,7 +37,7 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
 
 def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     check_instance(sample_0, SeriesFederated)
-    list_domain_cdf, list_value_cdf = preprocessing.cdf(sample_0)
+    list_domain_cdf, list_value_cdf = preprocessing.CumulativeDistributionFunction(sample_0)
     sample_ranked_0 = sample_0.create_new()
     for dataset_id, series in sample_0.dict_series.items():  # TODO rework abcs
         sample_ranked_0.add_series(

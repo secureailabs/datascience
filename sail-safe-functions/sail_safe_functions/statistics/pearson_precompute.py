@@ -42,6 +42,7 @@ class PearsonPrecompute(object):
         check_series_one_value(sample_0)
         check_series_nan(sample_1)
         check_series_one_value(sample_1)
+
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
         sample_0_degrees_of_freedom = len(sample_0)
