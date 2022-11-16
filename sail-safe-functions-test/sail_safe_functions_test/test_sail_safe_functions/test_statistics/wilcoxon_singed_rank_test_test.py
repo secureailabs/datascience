@@ -225,26 +225,26 @@ def test_wilcoxon_singed_rank_test_nan_value():
 
 
 # @pytest.mark.broken
-def test_wilcoxon_singed_rank_test_constant_value():
-    """
-    This is our test to raise exception for series containing constant.
-    """
-    # Arrange
-    numpy.random.seed(42)
-    sample_size = 8
-    a = [1, 1, 1, 1, 1, 1, 1, 1]
-    a = numpy.array(a)
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    alternative = "greater"
-    type_ranking = "unsafe"
+# def test_wilcoxon_singed_rank_test_constant_value():
+#    """
+#    This is our test to raise exception for series containing constant.
+#    """
+#    # Arrange
+#    numpy.random.seed(42)
+#    sample_size = 8
+#    a = [1, 1, 1, 1, 1, 1, 1, 1]
+#    a = numpy.array(a)
+#    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+#    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+#    alternative = "greater"
+#    type_ranking = "unsafe"
 
-    # Act
-    estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
+# Act
+#    estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
 
-    with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
-        estimator.run(sample_0, sample_1)
+#    with pytest.raises(Exception) as exc_info:
+#   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+#        estimator.run(sample_0, sample_1)
 
-    # Assert
-    assert "input array is constant" in str(exc_info.value)
+# Assert
+#    assert "input array is constant" in str(exc_info.value)
