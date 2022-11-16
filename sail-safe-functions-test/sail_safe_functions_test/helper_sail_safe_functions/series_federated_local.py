@@ -20,6 +20,13 @@ class SeriesFederatedLocal(SeriesFederated):
         self.dtype = None
         self.is_numeric = None
 
+    def global_row_count(self) -> int:
+        count = 0
+        # Count sum of all rows in federated dataframe
+        for d in self.dict_series.values():
+            count += len(d)
+        return count
+
     def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
