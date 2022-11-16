@@ -34,11 +34,6 @@ from sail_safe_functions_orchestrator.statistics.wilcoxon_signed_rank_test impor
     WilcoxonSingedRankTest,
 )
 
-
-from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
-    DataFrameFederatedLocal,
-)
-
 from fastapi.responses import RedirectResponse
 from SecureUtility import validate, get_series, get_series_different
 
