@@ -2,6 +2,7 @@ import math
 from typing import List
 
 import numpy as np
+from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
 class StudentTTestAggregate:
@@ -30,15 +31,16 @@ class StudentTTestAggregate:
         sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
             size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
         )
-
+        check_variance_zero(sample_variance_0)
         sample_mean_1 = sum_x_1 / size_sample_1
         sample_variance_1 = ((sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)) * (
             size_sample_1 / (size_sample_1 - 1)  # unbiased estimator (np version is biased by default)
         )
-
+        check_variance_zero(sample_variance_1)
         sample_variance_pooled = (
             ((size_sample_0 - 1) * sample_variance_0) + ((size_sample_1 - 1) * sample_variance_1)
         ) / (size_sample_0 + size_sample_1 - 2)
+        check_variance_zero(sample_variance_pooled)
         t_statistic = (sample_mean_0 - sample_mean_1) / (
             np.sqrt(sample_variance_pooled) * np.sqrt((1 / size_sample_0 + 1 / size_sample_1))
         )

@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
 import numpy as np
+from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
 class PairedTTestAggregate:
@@ -30,7 +31,7 @@ class PairedTTestAggregate:
         sample_variance_d = ((sum_dd_0 / size_sample_d) - (sample_mean_d * sample_mean_d)) * (
             size_sample_d / (size_sample_d - 1)  # unbiased estimator (numpy version is biased by default)
         )
-
+        check_variance_zero(sample_variance_d)
         t_statistic = sample_mean_d / (np.sqrt(sample_variance_d) / np.sqrt(size_sample_d))
         degrees_of_freedom = size_sample_d - 1
 
