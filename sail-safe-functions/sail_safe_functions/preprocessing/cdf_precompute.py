@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
 import numpy
-import pandas
-from scipy import interpolate
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from scipy import interpolate
+
 
 class CumulativeDistributionFunctionPrecompute(SafeFunctionBase):
     """
@@ -33,7 +33,5 @@ class CumulativeDistributionFunctionPrecompute(SafeFunctionBase):
             array_value = numpy.insert(array_value, -1, 1)
 
             array_domain_safe = numpy.linspace(domain_min, domain_max, count_value)
-            array_value_safe = interpolate.interp1d(array_domain, array_value)(
-                array_domain_safe
-            )
+            array_value_safe = interpolate.interp1d(array_domain, array_value)(array_domain_safe)
         return array_domain_safe.tolist(), array_value_safe.tolist(), size_sample_0

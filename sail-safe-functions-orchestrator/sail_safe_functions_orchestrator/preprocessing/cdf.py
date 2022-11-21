@@ -1,14 +1,10 @@
 from typing import List, Tuple
 
 import numpy
-from sail_safe_functions.preprocessing.cdf_aggregate import (
-    CumulativeDistributionFunctionAggregate,
-)
-from sail_safe_functions.preprocessing.cdf_precompute import (
-    CumulativeDistributionFunctionPrecompute,
-)
-from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions.preprocessing.cdf_aggregate import CumulativeDistributionFunctionAggregate
+from sail_safe_functions.preprocessing.cdf_precompute import CumulativeDistributionFunctionPrecompute
 from sail_safe_functions_orchestrator import statistics
+from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 
 
 def cumulative_distribution_function(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
@@ -34,14 +30,10 @@ class CumulativeDistributionFunction:
         for dataset_id in sample_0.list_dataset_id:  # TODO rework abcs
             client = sample_0.service_client.get_client(dataset_id)
             reference_series = sample_0.get_reference_series(dataset_id)
-            list_precompute.append(client.call(
-                CumulativeDistributionFunctionPrecompute,
-                    reference_series, domain_min, domain_max
-                )
+            list_precompute.append(
+                client.call(CumulativeDistributionFunctionPrecompute, reference_series, domain_min, domain_max)
             )
-        return CumulativeDistributionFunctionAggregate.run(
-            list_precompute, domain_min, domain_max
-        )
+        return CumulativeDistributionFunctionAggregate.run(list_precompute, domain_min, domain_max)
 
     def run_reference(sample_0: SeriesFederated) -> Tuple[List[float], List[float]]:
         array_sample_0 = sample_0.to_numpy()

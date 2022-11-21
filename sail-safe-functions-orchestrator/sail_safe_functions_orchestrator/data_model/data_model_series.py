@@ -140,12 +140,14 @@ class DataModelSeries:
             raise exception
         raise Exception(f"cannot return default")
 
+    @staticmethod
     def create_unique(
         series_name: str,
         type_agregator: str = None,
     ) -> "DataModelSeries":
         return DataModelSeries(series_name, DataModelSeries.DataLevelUnique, type_agregator=type_agregator)
 
+    @staticmethod
     def create_numerical(
         series_name: str,
         resolution: float = None,
@@ -162,6 +164,7 @@ class DataModelSeries:
             type_agregator=type_agregator,
         )
 
+    @staticmethod
     def create_categorical(
         series_name: str, list_value: List[str], measurement_source_name: str = None, type_agregator: str = None
     ) -> "DataModelSeries":
