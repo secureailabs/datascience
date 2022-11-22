@@ -1,8 +1,9 @@
-from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
-from torch.autograd import Variable
-from pandas import DataFrame
 import torch
+from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
+from pandas import DataFrame
 from sail_safe_functions.safe_function_base import SafeFunctionBase
+from torch.autograd import Variable
+
 
 class ModelTrain(SafeFunctionBase):
     """
@@ -85,7 +86,5 @@ class ModelTrain(SafeFunctionBase):
 
     # TODO: fancy ref filtering
     @staticmethod
-    def get_optimizer(
-        model: torch.nn.Module, learn_rate: float, optimizer: str
-    ) -> torch.optim.Optimizer:
+    def get_optimizer(model: torch.nn.Module, learn_rate: float, optimizer: str) -> torch.optim.Optimizer:
         return torch.optim.SGD(model.parameters(), lr=learn_rate)

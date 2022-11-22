@@ -1,16 +1,18 @@
 from typing import List
 
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class SumWeighted(SafeFunctionBase):
     """
     Takes the weighted sum of a list of series
     """
 
+    @staticmethod
     def run(list_reference_series: List[ReferenceSeries], list_weight: List[float]) -> ReferenceSeries:
         """Takes the weighted sum of a list of series
 
