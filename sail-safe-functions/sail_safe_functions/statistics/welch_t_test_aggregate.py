@@ -3,6 +3,7 @@ from typing import List, Tuple
 
 import numpy as np
 from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
 class WelchTTestAggregate(SafeFunctionBase):
@@ -36,6 +37,7 @@ class WelchTTestAggregate(SafeFunctionBase):
                 size_sample_0 - 1
             )  # unbiased estimator (numpy version is biased by default)
         )
+        check_variance_zero(sample_variance_0)
 
         sample_mean_1 = sum_x_1 / size_sample_1
         sample_variance_1 = (
@@ -46,7 +48,7 @@ class WelchTTestAggregate(SafeFunctionBase):
                 size_sample_1 - 1
             )  # unbiased estimator (np version is biased by default)
         )
-
+        check_variance_zero(sample_variance_1)
         t_statistic = (sample_mean_0 - sample_mean_1) / (
             np.sqrt(
                 (sample_variance_0 / size_sample_0)
