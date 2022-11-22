@@ -174,6 +174,20 @@ async def count(dataset_id: str, data_frame_name: str, series_name: str) -> dict
     return {"count": statistics.count(data_frame[series_name])}
 
 
+@app.post("/statistics/count/{dataframe_id}/{series_name}")
+async def count_dataframe_id(dataframe_id: str, series_name: str) -> dict:
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataframe_id)
+
+    return {"count": statistics.count(data_frame[series_name])}
+
+
+@app.post("/statistics/mean/{dataframe_id}/{series_name}")
+async def mean_dataframe_id(dataframe_id: str, series_name: str) -> dict:
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataframe_id)
+
+    return {"mean": statistics.mean(data_frame[series_name])}
+
+
 @app.post("/preprocessing/drop_missing/{dataset_id}/{data_frame_name}")
 async def drop_missing(dataset_id: str, data_frame_name: str) -> dict:
     dataset_tabular = service_reference.get_instance().reference_to_data_set_tabular(dataset_id)
@@ -181,6 +195,17 @@ async def drop_missing(dataset_id: str, data_frame_name: str) -> dict:
     orig_data_frame = dataset_tabular[data_frame_name]
 
     new_data_frame = preprocessing.drop_missing(orig_data_frame, axis=0, how="any", thresh=None, subset=None)
+
+    new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
+@app.post("/preprocessing/query/{dataframe_id}/{query}")
+async def query_dataframe(dataframe_id: str, query: str) -> dict:
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataframe_id)
+
+    new_data_frame = preprocessing.query(data_frame, query)
 
     new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
 

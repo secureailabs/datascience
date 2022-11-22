@@ -57,7 +57,7 @@ class TestServiceReference:
         check_instance(reference, str)
         if reference not in self.dict_reference:
             raise ValueError(f"Federated Series not loaded: {reference}")
-        return self.dict_reference[reference.reference_id]
+        return self.dict_reference[reference]
 
     def data_model_data_frame_to_reference(self, data_model_data_frame: DataModelDataFrame) -> str:
         check_instance(data_model_data_frame, DataModelDataFrame)
