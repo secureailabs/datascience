@@ -2,29 +2,26 @@ from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
-from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
-from sail_safe_functions_orchestrator.service_reference import ServiceReference
-
-from sail_safe_functions_orchestrator.tools_common import check_instance, check_series_nan
-from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
-from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions_orchestrator.tools_common import check_instance, check_series_nan
 from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
     check_instance,
     check_series_nan,
-    check_empty_series,
     check_series_one_value,
 )
+
 
 class MeanPrecompute(SafeFunctionBase):
     """
     Precomputes data for computing the mean
     """
 
+    @staticmethod
     def run(
         reference_sample_0: ReferenceSeries,
-    ) -> Tuple[List[float], List[bool]]:
+    ) -> List:
         """
         Function to calculate the precomputes for mean
 
@@ -36,7 +33,6 @@ class MeanPrecompute(SafeFunctionBase):
         # there seems to be a problem here with this annotation
         check_instance(reference_sample_0, ReferenceSeries)
 
-   
         sample_0 = ServiceReference.get_instance().reference_to_series(reference_sample_0)
 
         check_series_nan(sample_0)

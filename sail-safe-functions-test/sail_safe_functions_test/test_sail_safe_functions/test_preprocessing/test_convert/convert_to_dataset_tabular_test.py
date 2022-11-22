@@ -195,7 +195,6 @@ def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep201
     # statistics.levene_test(series_1, series_2) #TODO broken
     statistics.pearson(series_1, series_2, "less")
     statistics.spearman(series_1, series_2, "less", "cdf")
-
     statistics.student_t_test(series_1, series_2, "less")
     statistics.welch_t_test(series_1, series_2, "less")
     statistics.paired_t_test(series_1, series_2, "less")
