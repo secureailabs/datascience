@@ -3,6 +3,7 @@ from typing import Dict
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
+
 class ReferenceSeries:
     def __init__(self, dataset_id: str, reference_id: str, data_model_series: DataModelSeries) -> None:
         check_instance(dataset_id, str)
@@ -21,7 +22,7 @@ class ReferenceSeries:
         return dict
 
     @staticmethod
-    def from_dict(dict: Dict):
+    def from_dict(dict: Dict) -> "ReferenceSeries":
         if dict["__type__"] != "ReferenceSeries":
             raise ValueError(f"Incorrect __type__ in dict {dict}")
 

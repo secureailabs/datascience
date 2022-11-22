@@ -1,8 +1,9 @@
 from typing import List, Tuple
 
 import numpy
-from scipy import interpolate
 from sail_safe_functions.safe_function_base import SafeFunctionBase
+from scipy import interpolate
+
 
 class CumulativeDistributionFunctionAggregate(SafeFunctionBase):
     """
@@ -25,14 +26,10 @@ class CumulativeDistributionFunctionAggregate(SafeFunctionBase):
         for precompute in list_precompute:
             list_weight.append(precompute[2] / count_total)
             list_array_value_resampled.append(
-                interpolate.interp1d(precompute[0], precompute[1])(
-                    array_domain_resampled
-                )
+                interpolate.interp1d(precompute[0], precompute[1])(array_domain_resampled)
             )
 
         array_weight = numpy.array(list_weight)
-        array_value_resampled = numpy.matmul(
-            numpy.vstack(list_array_value_resampled).T, array_weight
-        )
+        array_value_resampled = numpy.matmul(numpy.vstack(list_array_value_resampled).T, array_weight)
 
         return array_domain_resampled.tolist(), array_value_resampled.tolist()

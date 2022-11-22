@@ -1,8 +1,9 @@
 import numpy
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.series import Series
-from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class OnehotToCategorical(SafeFunctionBase):
     def run(data_frame_source: DataFrame, data_model_series: DataModelSeries) -> Series:

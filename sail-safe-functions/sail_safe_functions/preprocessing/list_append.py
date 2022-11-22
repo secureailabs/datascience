@@ -1,5 +1,7 @@
 from typing import Any, List
+
 from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class ListAppend:
     """
@@ -7,7 +9,7 @@ class ListAppend:
     """
 
     def run(list: List, element: Any) -> List:
-        #TODO dont think we still use this
+        # TODO dont think we still use this
         """Appends an element to a list for aggregation
 
         :param list: The list to append an element to

@@ -2,7 +2,6 @@ from abc import ABC
 from typing import List
 
 import numpy
-
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_client_base import ServiceClientBase
@@ -11,7 +10,10 @@ from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 class SeriesFederated:
     def __init__(
-        self, service_client: ServiceClientBase, list_reference: List[ReferenceSeries], data_model_series: DataModelSeries
+        self,
+        service_client: ServiceClientBase,
+        list_reference: List[ReferenceSeries],
+        data_model_series: DataModelSeries,
     ) -> None:
         self._service_client = service_client
         self._data_model_series = data_model_series
@@ -51,14 +53,6 @@ class SeriesFederated:
         return self._dict_reference_series.copy()  # TODO place holder remove this in the next refactor
 
     # property section end
-
-    # TODO move to local client
-    def to_numpy(self) -> numpy.ndarray:
-        list_array_numpy = []
-        for reference_series in self.dict_reference_series.values():
-            series = ServiceReference.get_instance().reference_to_series(reference_series)
-            list_array_numpy.append(series.to_numpy())
-        return numpy.concatenate(list_array_numpy)
 
     # TODO move to local client
     def to_numpy(self) -> numpy.ndarray:

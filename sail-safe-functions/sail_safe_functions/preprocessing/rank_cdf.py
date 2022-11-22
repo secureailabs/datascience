@@ -1,12 +1,13 @@
 from typing import List
 
 import numpy
-from scipy import interpolate
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from scipy import interpolate
+
 
 class RankCumulativeDistributionFunction(SafeFunctionBase):
     """
@@ -21,12 +22,9 @@ class RankCumulativeDistributionFunction(SafeFunctionBase):
     ) -> ReferenceSeries:
         sample_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
         array_sample_0 = sample_0.to_numpy()
-        function_cdf = interpolate.interp1d(
-            numpy.array(list_domain_cdf), numpy.array(list_value_cdf)
-        )
+        function_cdf = interpolate.interp1d(numpy.array(list_domain_cdf), numpy.array(list_value_cdf))
         array_rank = numpy.round(function_cdf(array_sample_0) * size_sample_total)
         data_model_series = DataModelSeries.create_numerical(f"{sample_0.name}_ranked")
         series_ranked = Series(sample_0.dataset_id, data_model_series, array_rank.tolist())
         series_ranked_reference = ServiceReference.get_instance().series_to_reference(series_ranked)
-        print(type(series_ranked_reference))
         return series_ranked_reference

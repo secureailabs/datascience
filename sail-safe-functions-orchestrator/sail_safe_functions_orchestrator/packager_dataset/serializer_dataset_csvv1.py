@@ -6,11 +6,9 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
-    DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
-from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import \
-    SerializerDatasetBase
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
 
 
 class SerializerDatasetCsvv1(SerializerDatasetBase):
@@ -47,8 +45,6 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
                 if not name_file.endswith(".csv"):
                     raise Exception()
                 data_frame_name = name_file.split(".csv")[0]
-                print(name_file)
-                print(data_frame_name)
                 data_model_data_frame = data_model_tabular[data_frame_name]
                 list_data_frame.append(
                     DataFrame.from_csv_str(
