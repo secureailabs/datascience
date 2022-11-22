@@ -7,6 +7,7 @@ from sail_safe_functions_orchestrator.data_model.data_model_series import DataMo
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 if __name__ == "__main__":
 
@@ -28,6 +29,7 @@ if __name__ == "__main__":
     service_client = ServiceClientDict()
     for dataset_id, scn_name in zip(list_dataset_id, scn_names):
         service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5001))
+        print(f"Connected to SCN serving dataset {scn_name}")
 
     # Arrange
     dataset_federation_id = "a892f738-4f6f-11ed-bdc3-0242ac120002"
@@ -70,9 +72,17 @@ if __name__ == "__main__":
     )
     data_frame_nan = dataset_tabular[data_frame_name]
     name_series_1 = data_frame_nan.list_series_name[1]
-    print(statistics.count(data_frame_nan[name_series_1]))
+    print(f"Number of entires including NaN: {statistics.count(data_frame_nan[name_series_1])}")
+
     data_frame_nonan = preprocessing.drop_missing(data_frame_nan, axis=0, how="any", thresh=None, subset=None)
-    print(statistics.count(data_frame_nonan[name_series_1]))
+    print(f"Number of entires excluding NaN: {statistics.count(data_frame_nonan[name_series_1])}")
     series_1 = data_frame_nonan[name_series_1]
     mean_1 = statistics.mean(series_1)
-    print(mean_1)
+
+    print(f"Mean of {name_series_1}: {mean_1}")
+
+    print(f"Data frame {data_frame_nonan}")
+    print(f"Series {series_1}")
+    print(f"Series datasets {series_1.list_dataset_id}")
+    print(f"Tabular dataset {dataset_tabular}")
+    print(f"Model dataset {data_model_tablular.list_data_frame_name}")
