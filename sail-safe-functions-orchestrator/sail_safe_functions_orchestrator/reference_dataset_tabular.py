@@ -1,7 +1,6 @@
 from typing import Dict
 
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
-    DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 
 
 class ReferenceDatasetTabular:
@@ -22,7 +21,7 @@ class ReferenceDatasetTabular:
     def from_dict(dict: Dict):
         if dict["__type__"] != "ReferenceDatasetTabular":
             raise ValueError(f"Incorrect __type__ in dict {dict}")
-            
+
         return ReferenceDatasetTabular(
             dict["dataset_id"], dict["reference_id"], DataModelTabular.from_dict(dict["data_model_tabular"])
         )

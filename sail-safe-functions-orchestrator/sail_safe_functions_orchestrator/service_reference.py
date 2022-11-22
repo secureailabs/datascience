@@ -23,6 +23,7 @@ class ServiceReference:
     def __call__(self):
         raise TypeError("Singletons must be accessed through `get_instance()`.")
 
+    @staticmethod
     def get_instance() -> "ServiceReference":
         try:
             return ServiceReference._instance
@@ -72,7 +73,7 @@ class ServiceReference:
 
     ###
 
-    def data_frame_to_reference(self, data_frame: DataFrame) -> ReferenceDatasetTabular:
+    def data_frame_to_reference(self, data_frame: DataFrame) -> ReferenceDataFrame:
         check_instance(data_frame, DataFrame)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_frame
@@ -102,4 +103,3 @@ class ServiceReference:
         if reference.reference_id not in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
-
