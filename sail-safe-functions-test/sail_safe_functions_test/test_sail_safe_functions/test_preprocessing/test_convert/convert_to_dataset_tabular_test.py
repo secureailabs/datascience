@@ -200,7 +200,7 @@ def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep201
     statistics.paired_t_test(series_1, series_2, "less")
 
 
-@pytest.mark.slow
+@pytest.mark.broken
 def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
     """
     This test our ability to convert a longitudinal dataset to a tabular one
