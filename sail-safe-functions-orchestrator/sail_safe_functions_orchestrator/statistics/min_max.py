@@ -21,12 +21,22 @@ class MinMax(Estimator):
         super().__init__(["min", "max"])
 
     def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+        """
+        Perform federated min max.
+        It takes one federated series, and returns min and max value for it.
+
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: min and max value
+        :rtype: Tuple[float, float]
+        """
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
         # Calculating precompute
-        for series in sample_0.dict_series.values():  # TODO replace these
-            list_list_precompute.append(MinMaxPrecompute.run(series))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            list_list_precompute.append(client.call(MinMaxPrecompute, sample_0.dict_reference_series[dataset_id]))
 
         # Final min max values
         min, max = MinMaxAggregate.run(list_list_precompute)

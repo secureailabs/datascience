@@ -1,8 +1,6 @@
 from typing import Tuple
 
-from sail_safe_functions.statistics.unpaired_t_test_precompute import (
-    UnpairedTTestPrecompute,
-)
+from sail_safe_functions.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from sail_safe_functions.statistics.welch_t_test_aggregate import WelchTTestAggregate
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
@@ -20,6 +18,10 @@ def welch_t_test(
 
 
 class WelchTTest(Estimator):
+    """
+    This class contains method for federated Welch T test
+    """
+
     def __init__(self, alternative) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
@@ -27,14 +29,27 @@ class WelchTTest(Estimator):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+        """
+        Perform federated Welch T test.
+        It takes two federated series, and returns the p-value and test statistic of the Levene test
+
+        :param sample_0: First series sample
+        :type sample_0: SeriesFederated
+        :param sample_1: Second series sample
+        :type sample_1: SeriesFederated
+        :return: t_statistic, p_value
+        :rtype: Float, Float
+        """
         list_list_precompute = []
-        list_key_dataframe = list(sample_0.dict_series.keys())
+        list_dataset_id = list(sample_0.dict_reference_series.keys())
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
-        for key_dataframe in list_key_dataframe:
+        for dataset_id in list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
             list_list_precompute.append(
-                UnpairedTTestPrecompute.run(
-                    sample_0.dict_series[key_dataframe],
-                    sample_1.dict_series[key_dataframe],
+                client.call(
+                    UnpairedTTestPrecompute,
+                    sample_0.dict_reference_series[dataset_id],
+                    sample_1.dict_reference_series[dataset_id],
                 )
             )
 

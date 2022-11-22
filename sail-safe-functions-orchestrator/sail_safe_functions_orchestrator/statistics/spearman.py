@@ -1,9 +1,11 @@
+from itertools import count
 from typing import Tuple
 
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from scipy import stats
+from sail_safe_functions_orchestrator.tools_common import check_series_constant
 
 
 def spearman(
@@ -12,8 +14,8 @@ def spearman(
     alternative: str,
     type_ranking: str,
 ) -> Tuple[float, float]:
-    """spearman
-    Computes the spearman coeffcient by ranking both sample and
+    """
+    It takes two federated series, and returns the rho and the p-value
 
     :param sample_0: sample 0
     :type sample_0: SeriesFederated
@@ -50,20 +52,20 @@ class Spearman(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
-        if sample_0.size != sample_1.size:
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        count_0 = statistics.count(sample_0)
+        count_1 = statistics.count(sample_1)
+        if count_0 != count_1:
             raise ValueError("samples must be of equal size")
-
+        # TODO Here we should check the series is constant but it should be work on the federated ranking
+        # it should be included in a different ticket.
+        # https://secureailabs.atlassian.net/browse/BOARD-2068
+        # check_series_constant(sample_0)
+        # check_series_constant(sample_1)
         rank_0 = preprocessing.rank(sample_0, self.type_ranking)
         rank_1 = preprocessing.rank(sample_1, self.type_ranking)
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
 
-    def run_reference(
-        self, sample_0: SeriesFederated, sample_1: SeriesFederated
-    ) -> Tuple[float, float]:
-        return stats.spearmanr(
-            sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative
-        )
+    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+        return stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

@@ -25,14 +25,23 @@ class Skewness(Estimator):
         super().__init__(["skewness"])
 
     def run(self, sample_0: SeriesFederated):
+        """
+        It takes one federated series, and returns the skewness value of the series.
+
+        :param sample_0: sample series
+        :type sample_0: SeriesFederated
+        :return: skewness value of series
+        :rtype: float
+        """
         list_list_precompute = []
 
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
 
         # Calculating precompute
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(SkewnessPrecompute.run(series))
-
+        list_list_precompute = []
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            list_list_precompute.append(client.call(SkewnessPrecompute, sample_0.dict_reference_series[dataset_id]))
         # Final Skew Value
         skewness = SkewnessAggregate.run(list_list_precompute)
         return skewness

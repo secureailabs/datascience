@@ -29,7 +29,7 @@ jobs:
           # Module imported but unused (F401)
           # Line too long (82 &gt; 79 characters) (E501)
           # Line break occurred before a binary operator (W503)
-          ignore: "E402,E265,F841,F541,E702,F401,E501,W503"
+          ignore: "E203,E402,E265,F841,F541,E702,F401,E501,W503"
           max-line-length: 120
 
   build_test:

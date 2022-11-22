@@ -27,7 +27,6 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import numpy
-import pandas
 from sail_safe_functions.statistics.variance_aggregate import VarianceAggregate
 from sail_safe_functions.statistics.variance_precompute import VariancePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -40,10 +39,21 @@ def variance(sample_0: SeriesFederated):
 
 
 class Variance(Estimator):
+    &#34;&#34;&#34;
+    Class have run method to perform the federated variance.
+    &#34;&#34;&#34;
     def __init__(self) -&gt; None:
         super().__init__([&#34;variance&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes one federated series, and returns the variance of the series
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(VariancePrecompute.run(series))
@@ -84,16 +94,27 @@ class Variance(Estimator):
 <span>class <span class="ident">Variance</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class have run method to perform the federated variance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Variance(Estimator):
+    &#34;&#34;&#34;
+    Class have run method to perform the federated variance.
+    &#34;&#34;&#34;
     def __init__(self) -&gt; None:
         super().__init__([&#34;variance&#34;])
 
     def run(self, sample_0: SeriesFederated):
+        &#34;&#34;&#34;
+        It takes one federated series, and returns the variance of the series
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        &#34;&#34;&#34;
         list_list_precompute = []
         for series in sample_0.dict_series.values():
             list_list_precompute.append(VariancePrecompute.run(series))
@@ -113,12 +134,24 @@ class Variance(Estimator):
 <span>def <span class="ident">run</span></span>(<span>self, sample_0: <a title="sail_safe_functions_orchestrator.series_federated.SeriesFederated" href="../series_federated.html#sail_safe_functions_orchestrator.series_federated.SeriesFederated">SeriesFederated</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>It takes one federated series, and returns the variance of the series</p>
+<p>:param sample_0: <em>description</em>
+:type sample_0: SeriesFederated
+:return: <em>description</em>
+:rtype: <em>type</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(self, sample_0: SeriesFederated):
+    &#34;&#34;&#34;
+    It takes one federated series, and returns the variance of the series
+
+    :param sample_0: _description_
+    :type sample_0: SeriesFederated
+    :return: _description_
+    :rtype: _type_
+    &#34;&#34;&#34;
     list_list_precompute = []
     for series in sample_0.dict_series.values():
         list_list_precompute.append(VariancePrecompute.run(series))

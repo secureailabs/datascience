@@ -1,6 +1,9 @@
 from typing import Any
 
-import pandas as pd
+from sail_safe_functions_orchestrator.data_frame import DataFrame
+from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class DropMissingPrecompute:
@@ -9,8 +12,8 @@ class DropMissingPrecompute:
     """
 
     def run(
-        data_frame: pd.DataFrame, axis: int, how: str, thresh: int, subset: Any
-    ) -> pd.DataFrame:
+        reference_data_frame_source: ReferenceDataFrame, axis: int, how: str, thresh: int, subset: Any
+    ) -> ReferenceDataFrame:
         """
         Remove missing values.
         See the :ref:`User Guide <missing_data>` for more on which values are
@@ -36,8 +39,20 @@ class DropMissingPrecompute:
         Returns
         -------
         DataFrame
-            DataFrame with NA entries dropped.
+            DataFrame without the rows dropped NA entries dropped.
         """
-        return data_frame.dropna(
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+        data_frame_target_pandas = data_frame_source.dropna(
             axis=axis, how=how, thresh=thresh, subset=subset, inplace=False
         )
+        list_series = []
+        for series_name in data_frame_target_pandas.columns:
+            series_pandas = data_frame_target_pandas[series_name]
+            series = Series.from_pandas(
+                data_frame_source.dataset_id, data_frame_source.data_model_data_frame[series_name], series_pandas
+            )
+            series.index = series_pandas.index
+            list_series.append(series)
+        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        return reference_data_frame_target

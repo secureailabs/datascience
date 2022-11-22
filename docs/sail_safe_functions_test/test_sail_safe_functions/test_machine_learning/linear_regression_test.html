@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import pytest
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+
+from sail_safe_functions_orchestrator.machine_learning.federated_averaging import (
+    federated_averaging,
+)
+from helper_libs.shared.models.LinearRegression import LinearRegression
+
+import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.datasets import load_iris
+from sklearn.metrics import r2_score
+import torch
+import numpy as np
+
+
+import random
+
+
+def get_basic_linear_dataframe():
+    &#34;&#34;&#34;
+    To be used by test function. This generates a dataframe containing two linear functions to be learned
+
+    :return: A Dataframe containing points belonging to two linear functions
+    :type: pd.DataFrame
+    &#34;&#34;&#34;
+
+    x_values = [i for i in range(100)]
+    x_train = np.array(x_values, dtype=np.float32)
+    x_train = x_train.reshape(-1, 1)
+
+    y_values_1 = [2 * i + 1 for i in x_values]
+    y_train_1 = np.array(y_values_1, dtype=np.float32)
+    y_train_1 = y_train_1.reshape(-1, 1)
+
+    df_X = pd.DataFrame(x_train, columns=[&#34;X&#34;])
+    df_Y1 = pd.DataFrame(y_train_1, columns=[&#34;Y&#34;])
+
+    df = pd.concat([df_X, df_Y1], axis=1)
+
+    return df
+
+
+def get_test_federation_split(df):
+    &#34;&#34;&#34;
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+
+    :param: df: dataframe to be split into federated participants
+    :type df: pd.DataFrame
+    :return result: A list of dataframes containing a representation of the data federation
+    :type result: List[pd.DataFrame]
+    :return test: A sample from the original Dataframe which will be used for testing
+    :type test: pd.DataFrame
+    &#34;&#34;&#34;
+
+    NUMBER_PARTICIPANTS = 5
+    TEST_SAMPLE = 0.8
+
+    train = df.sample(frac=TEST_SAMPLE, random_state=0)
+    test = df.drop(train.index)
+
+    shuffled = train.sample(frac=1)
+    result = np.array_split(shuffled, NUMBER_PARTICIPANTS)
+
+    return result, test
+
+
+def predict_basic_linear(epochs, federal_epochs, data_federation, test):
+    &#34;&#34;&#34;
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[pd.DataFrame]
+    :param: test: Test data to be used to validate the model
+    :type: pd.DataFrame
+    :return: The R2 score of the model that was trained
+    :type: Float
+    &#34;&#34;&#34;
+    X_col = [&#34;X&#34;]
+    Y_col = [&#34;Y&#34;]
+    in_layer = len(X_col)
+    out_layer = len(Y_col)
+    optimizer = &#34;SGD&#34;
+    criterion = &#34;MSELoss&#34;
+    starting_model = LinearRegression(in_layer, out_layer)
+    learn_rate = 0.0001
+
+    model = federated_averaging(
+        epochs,
+        federal_epochs,
+        data_federation,
+        X_col,
+        Y_col,
+        learn_rate,
+        starting_model,
+        criterion,
+        optimizer,
+    )
+
+    predicted = model(torch.Tensor(test[X_col].values).float()).detach()
+    Y_test = torch.Tensor(test[Y_col].values).float()
+
+    return r2_score(predicted, Y_test)
+
+
+def predict_basic_kidney(epochs, federal_epochs, data_federation, test):
+    &#34;&#34;&#34;
+    To be used by test function. This runs federated averaging on kidney and returns the r2 score of the trained model.
+        TODO: This is currently using X and Y as the same column as nothing suitable was found in kidney data for learning for now.
+
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[pd.DataFrame]
+    :param: test: Test data to be used to validate the model
+    :type: pd.DataFrame
+    :return: The R2 score of the model that was trained
+    :type: Float
+    &#34;&#34;&#34;
+    X_col = [&#34;age&#34;]
+    Y_col = [&#34;age&#34;]
+    in_layer = len(X_col)
+    out_layer = len(Y_col)
+    optimizer = &#34;SGD&#34;
+    criterion = &#34;MSELoss&#34;
+    starting_model = LinearRegression(in_layer, out_layer)
+    learn_rate = 0.0001
+
+    model = federated_averaging(
+        epochs,
+        federal_epochs,
+        data_federation,
+        X_col,
+        Y_col,
+        learn_rate,
+        starting_model,
+        criterion,
+        optimizer,
+    )
+
+    predicted = model(torch.Tensor(test[X_col].values).float()).detach()
+    Y_test = torch.Tensor(test[Y_col].values).float()
+
+    return r2_score(predicted, Y_test)
+
+
+@pytest.mark.active
+def test_basic_linear_data_acceptable():
+    &#34;&#34;&#34;
+    This tests whether the model is learning basic linear functions. The R2 score is evaluated
+    to see whether it meets a a threshold of 0.95 in order to pass this test.
+    &#34;&#34;&#34;
+
+    # Arrange
+    random_seed = 1
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(random_seed)
+
+    dataframe = get_basic_linear_dataframe()
+    data_federation, test = get_test_federation_split(dataframe)
+
+    # Action
+    R2 = predict_basic_linear(
+        epochs=100,
+        federal_epochs=5,
+        data_federation=data_federation,
+        test=test,
+    )
+
+    # Assert scores are acceptable
+    assert R2 &gt;= 0.95
+
+    # TODO: Produce plot of accuracy improvement over federal epochs
+
+
+@pytest.mark.active
+def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+    &#34;&#34;&#34;
+    This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
+    to see whether it meets a a threshold of 0.95 in order to pass this test.
+    TODO: currently a suitable set of inputs was not found to predict the kidny data well. For now X and Y are clones of each other
+    &#34;&#34;&#34;
+    # Arrange
+    random_seed = 1
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(random_seed)
+
+    dataframe = pd.get_dummies(data=dataframe_kidney_clean)
+    data_federation, test = get_test_federation_split(dataframe)
+
+    # Action
+    R2 = predict_basic_kidney(
+        epochs=15,
+        federal_epochs=5,
+        data_federation=data_federation,
+        test=test,
+    )
+
+    # Assert scores are acceptable
+    assert R2 &gt;= 0.95
+
+    # TODO: Produce plot of accuracy improvement over federal epochs</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_basic_linear_dataframe"><code class="name flex">
+<span>def <span class="ident">get_basic_linear_dataframe</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>To be used by test function. This generates a dataframe containing two linear functions to be learned</p>
+<p>:return: A Dataframe containing points belonging to two linear functions
+:type: pd.DataFrame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_basic_linear_dataframe():
+    &#34;&#34;&#34;
+    To be used by test function. This generates a dataframe containing two linear functions to be learned
+
+    :return: A Dataframe containing points belonging to two linear functions
+    :type: pd.DataFrame
+    &#34;&#34;&#34;
+
+    x_values = [i for i in range(100)]
+    x_train = np.array(x_values, dtype=np.float32)
+    x_train = x_train.reshape(-1, 1)
+
+    y_values_1 = [2 * i + 1 for i in x_values]
+    y_train_1 = np.array(y_values_1, dtype=np.float32)
+    y_train_1 = y_train_1.reshape(-1, 1)
+
+    df_X = pd.DataFrame(x_train, columns=[&#34;X&#34;])
+    df_Y1 = pd.DataFrame(y_train_1, columns=[&#34;Y&#34;])
+
+    df = pd.concat([df_X, df_Y1], axis=1)
+
+    return df</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_test_federation_split"><code class="name flex">
+<span>def <span class="ident">get_test_federation_split</span></span>(<span>df)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.</p>
+<p>:param: df: dataframe to be split into federated participants
+:type df: pd.DataFrame
+:return result: A list of dataframes containing a representation of the data federation
+:type result: List[pd.DataFrame]
+:return test: A sample from the original Dataframe which will be used for testing
+:type test: pd.DataFrame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_test_federation_split(df):
+    &#34;&#34;&#34;
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+
+    :param: df: dataframe to be split into federated participants
+    :type df: pd.DataFrame
+    :return result: A list of dataframes containing a representation of the data federation
+    :type result: List[pd.DataFrame]
+    :return test: A sample from the original Dataframe which will be used for testing
+    :type test: pd.DataFrame
+    &#34;&#34;&#34;
+
+    NUMBER_PARTICIPANTS = 5
+    TEST_SAMPLE = 0.8
+
+    train = df.sample(frac=TEST_SAMPLE, random_state=0)
+    test = df.drop(train.index)
+
+    shuffled = train.sample(frac=1)
+    result = np.array_split(shuffled, NUMBER_PARTICIPANTS)
+
+    return result, test</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_kidney"><code class="name flex">
+<span>def <span class="ident">predict_basic_kidney</span></span>(<span>epochs, federal_epochs, data_federation, test)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>To be used by test function. This runs federated averaging on kidney and returns the r2 score of the trained model.
+TODO: This is currently using X and Y as the same column as nothing suitable was found in kidney data for learning for now.</p>
+<p>:param epochs: The number of epochs each federated member will run for
+:type: epochs: Integer
+:param federal_epochs: The number of model averaging rounds the test will run for
+:type: federal_epochs: Integer
+:param: data_federation: A list of dataframes containing the data of each participant
+:type: data_federation: List[pd.DataFrame]
+:param: test: Test data to be used to validate the model
+:type: pd.DataFrame
+:return: The R2 score of the model that was trained
+:type: Float</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def predict_basic_kidney(epochs, federal_epochs, data_federation, test):
+    &#34;&#34;&#34;
+    To be used by test function. This runs federated averaging on kidney and returns the r2 score of the trained model.
+        TODO: This is currently using X and Y as the same column as nothing suitable was found in kidney data for learning for now.
+
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[pd.DataFrame]
+    :param: test: Test data to be used to validate the model
+    :type: pd.DataFrame
+    :return: The R2 score of the model that was trained
+    :type: Float
+    &#34;&#34;&#34;
+    X_col = [&#34;age&#34;]
+    Y_col = [&#34;age&#34;]
+    in_layer = len(X_col)
+    out_layer = len(Y_col)
+    optimizer = &#34;SGD&#34;
+    criterion = &#34;MSELoss&#34;
+    starting_model = LinearRegression(in_layer, out_layer)
+    learn_rate = 0.0001
+
+    model = federated_averaging(
+        epochs,
+        federal_epochs,
+        data_federation,
+        X_col,
+        Y_col,
+        learn_rate,
+        starting_model,
+        criterion,
+        optimizer,
+    )
+
+    predicted = model(torch.Tensor(test[X_col].values).float()).detach()
+    Y_test = torch.Tensor(test[Y_col].values).float()
+
+    return r2_score(predicted, Y_test)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_linear"><code class="name flex">
+<span>def <span class="ident">predict_basic_linear</span></span>(<span>epochs, federal_epochs, data_federation, test)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.</p>
+<p>:param epochs: The number of epochs each federated member will run for
+:type: epochs: Integer
+:param federal_epochs: The number of model averaging rounds the test will run for
+:type: federal_epochs: Integer
+:param: data_federation: A list of dataframes containing the data of each participant
+:type: data_federation: List[pd.DataFrame]
+:param: test: Test data to be used to validate the model
+:type: pd.DataFrame
+:return: The R2 score of the model that was trained
+:type: Float</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def predict_basic_linear(epochs, federal_epochs, data_federation, test):
+    &#34;&#34;&#34;
+    To be used by test function. This runs the federated averaging on a basic linear function and returns the r2 score of the trained model.
+
+    :param epochs: The number of epochs each federated member will run for
+    :type: epochs: Integer
+    :param federal_epochs: The number of model averaging rounds the test will run for
+    :type: federal_epochs: Integer
+    :param: data_federation: A list of dataframes containing the data of each participant
+    :type: data_federation: List[pd.DataFrame]
+    :param: test: Test data to be used to validate the model
+    :type: pd.DataFrame
+    :return: The R2 score of the model that was trained
+    :type: Float
+    &#34;&#34;&#34;
+    X_col = [&#34;X&#34;]
+    Y_col = [&#34;Y&#34;]
+    in_layer = len(X_col)
+    out_layer = len(Y_col)
+    optimizer = &#34;SGD&#34;
+    criterion = &#34;MSELoss&#34;
+    starting_model = LinearRegression(in_layer, out_layer)
+    learn_rate = 0.0001
+
+    model = federated_averaging(
+        epochs,
+        federal_epochs,
+        data_federation,
+        X_col,
+        Y_col,
+        learn_rate,
+        starting_model,
+        criterion,
+        optimizer,
+    )
+
+    predicted = model(torch.Tensor(test[X_col].values).float()).detach()
+    Y_test = torch.Tensor(test[Y_col].values).float()
+
+    return r2_score(predicted, Y_test)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_basic_linear_data_acceptable"><code class="name flex">
+<span>def <span class="ident">test_basic_linear_data_acceptable</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This tests whether the model is learning basic linear functions. The R2 score is evaluated
+to see whether it meets a a threshold of 0.95 in order to pass this test.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_basic_linear_data_acceptable():
+    &#34;&#34;&#34;
+    This tests whether the model is learning basic linear functions. The R2 score is evaluated
+    to see whether it meets a a threshold of 0.95 in order to pass this test.
+    &#34;&#34;&#34;
+
+    # Arrange
+    random_seed = 1
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(random_seed)
+
+    dataframe = get_basic_linear_dataframe()
+    data_federation, test = get_test_federation_split(dataframe)
+
+    # Action
+    R2 = predict_basic_linear(
+        epochs=100,
+        federal_epochs=5,
+        data_federation=data_federation,
+        test=test,
+    )
+
+    # Assert scores are acceptable
+    assert R2 &gt;= 0.95
+
+    # TODO: Produce plot of accuracy improvement over federal epochs</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_linear_kidney_data_acceptable"><code class="name flex">
+<span>def <span class="ident">test_linear_kidney_data_acceptable</span></span>(<span>dataframe_kidney_clean: pandas.core.frame.DataFrame)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
+to see whether it meets a a threshold of 0.95 in order to pass this test.
+TODO: currently a suitable set of inputs was not found to predict the kidny data well. For now X and Y are clones of each other</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_linear_kidney_data_acceptable(dataframe_kidney_clean: pd.DataFrame):
+    &#34;&#34;&#34;
+    This tests whether the model is learning some sample data from the kidney dataset. The R2 score is evaluated
+    to see whether it meets a a threshold of 0.95 in order to pass this test.
+    TODO: currently a suitable set of inputs was not found to predict the kidny data well. For now X and Y are clones of each other
+    &#34;&#34;&#34;
+    # Arrange
+    random_seed = 1
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(random_seed)
+
+    dataframe = pd.get_dummies(data=dataframe_kidney_clean)
+    data_federation, test = get_test_federation_split(dataframe)
+
+    # Action
+    R2 = predict_basic_kidney(
+        epochs=15,
+        federal_epochs=5,
+        data_federation=data_federation,
+        test=test,
+    )
+
+    # Assert scores are acceptable
+    assert R2 &gt;= 0.95
+
+    # TODO: Produce plot of accuracy improvement over federal epochs</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning" href="index.html">sail_safe_functions_test.test_sail_safe_functions.test_machine_learning</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_basic_linear_dataframe" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_basic_linear_dataframe">get_basic_linear_dataframe</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_test_federation_split" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.get_test_federation_split">get_test_federation_split</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_kidney" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_kidney">predict_basic_kidney</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_linear" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.predict_basic_linear">predict_basic_linear</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_basic_linear_data_acceptable" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_basic_linear_data_acceptable">test_basic_linear_data_acceptable</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_linear_kidney_data_acceptable" href="#sail_safe_functions_test.test_sail_safe_functions.test_machine_learning.linear_regression_test.test_linear_kidney_data_acceptable">test_linear_kidney_data_acceptable</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,5 +1,4 @@
 import numpy
-import pandas
 from sail_safe_functions.statistics.variance_aggregate import VarianceAggregate
 from sail_safe_functions.statistics.variance_precompute import VariancePrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
@@ -12,13 +11,26 @@ def variance(sample_0: SeriesFederated):
 
 
 class Variance(Estimator):
+    """
+    Class have run method to perform the federated variance.
+    """
+
     def __init__(self) -> None:
         super().__init__(["variance"])
 
     def run(self, sample_0: SeriesFederated):
+        """
+        It takes one federated series, and returns the variance of the series
+
+        :param sample_0: _description_
+        :type sample_0: SeriesFederated
+        :return: _description_
+        :rtype: _type_
+        """
         list_list_precompute = []
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(VariancePrecompute.run(series))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            list_list_precompute.append(client.call(VariancePrecompute, sample_0.dict_reference_series[dataset_id]))
         variance = VarianceAggregate.run(list_list_precompute)
         return variance
 

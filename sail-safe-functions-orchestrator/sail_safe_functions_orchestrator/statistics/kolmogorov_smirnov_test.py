@@ -1,13 +1,9 @@
 from typing import Tuple
 
 import numpy
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_aggregate import (
-    KolmogorovSmirnovTestAggregate,
-)
-from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import (
-    KolmogorovSmirnovTestPrecompute,
-)
-from sail_safe_functions_orchestrator import preprocessing
+from sail_safe_functions.statistics.kolmogorov_smirnov_test_aggregate import KolmogorovSmirnovTestAggregate
+from sail_safe_functions.statistics.kolmogorov_smirnov_test_precompute import KolmogorovSmirnovTestPrecompute
+from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.statistics.estimator import Estimator
 from sail_safe_functions_orchestrator.statistics.mean import Mean
@@ -20,7 +16,8 @@ def kolmogorov_smirnov_test(
     sample_0: SeriesFederated, type_distribution: str, type_ranking: str
 ) -> Tuple[float, float]:
     """
-    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution
+    Perform federated kolmogorov_smirnov test.
+    Executes a kolmogorov_smirnov test checking if sample 0 follows the given distribution.
 
     :param sample_0: sample to be tested
     :type sample_0: SeriesFederated
@@ -67,21 +64,25 @@ class KolmogorovSmirnovTest(Estimator):
             distribution = {"type_distribution": self.type_distribution}
         else:
             raise Exception()
-        size_sample = sample_0.size
+        size_sample = statistics.count(sample_0)
 
-        series_sample_ranked_0 = preprocessing.rank(
-            sample_0, type_ranking=self.type_ranking
-        )
-        list_list_precompute = []
-        for series, series_ranked in zip(
-            sample_0.dict_series.values(), series_sample_ranked_0.dict_series.values()
-        ):
-            list_list_precompute.append(
-                KolmogorovSmirnovTestPrecompute.run(
-                    series, series_ranked, distribution, size_sample
+        sample_0_ranked = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
+        list_precompute = []
+
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series_0 = sample_0.dict_reference_series[dataset_id]
+            reference_series_0_ranked = sample_0_ranked.dict_reference_series[dataset_id]
+            list_precompute.append(
+                client.call(
+                    KolmogorovSmirnovTestPrecompute,
+                    reference_series_0,
+                    reference_series_0_ranked,
+                    distribution,
+                    size_sample,
                 )
             )
-        k_statistic = KolmogorovSmirnovTestAggregate.run(list_list_precompute)
+        k_statistic = KolmogorovSmirnovTestAggregate.run(list_precompute)
 
         p_value = kstwo.sf(k_statistic, size_sample)
 
