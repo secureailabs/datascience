@@ -17,7 +17,7 @@ from sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.test_c
 if __name__ == "__main__":
     # Specific aguments
     hostname = "127.0.0.1"
-    port = 5001
+    port = 5010
     #TODO dataset_longitudinal_r4sep2019_20_1
     dataset_id_longitudinal = "a892ef90-4f6f-11ed-bdc3-0242ac120002"
 
@@ -37,3 +37,4 @@ if __name__ == "__main__":
     test_convert_to_dataset_tabular(dataset_longitudinal)
     test_convert_to_dataset_tabular_t_test(dataset_longitudinal)
     test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal)
+    print("echo")

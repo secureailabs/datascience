@@ -1,9 +1,15 @@
 import uuid
 
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.dataset_tabular_federated import DatasetTabularFederated
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
+    DataModelDataFrame,
+)
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import (
+    DataModelTabular,
+)
+from sail_safe_functions_orchestrator.dataset_tabular_federated import (
+    DatasetTabularFederated,
+)
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
@@ -45,9 +51,11 @@ class TestServiceReference:
         check_instance(reference, str)
         if reference not in self.dict_reference:
             raise ValueError(f"Federated Series not loaded: {reference.reference_id}")
-        return self.dict_reference[reference.reference_id]
+        return self.dict_reference[reference]
 
-    def federated_dataframe_to_reference(self, federated_series: DataFrameFederated) -> str:
+    def federated_dataframe_to_reference(
+        self, federated_series: DataFrameFederated
+    ) -> str:
         check_instance(federated_series, DataFrameFederated)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = federated_series
@@ -59,7 +67,9 @@ class TestServiceReference:
             raise ValueError(f"Federated Series not loaded: {reference}")
         return self.dict_reference[reference]
 
-    def data_model_data_frame_to_reference(self, data_model_data_frame: DataModelDataFrame) -> str:
+    def data_model_data_frame_to_reference(
+        self, data_model_data_frame: DataModelDataFrame
+    ) -> str:
         check_instance(data_model_data_frame, DataModelDataFrame)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_model_data_frame
@@ -71,7 +81,9 @@ class TestServiceReference:
             raise ValueError(f"Data model data frame not loaded: {reference}")
         return self.dict_reference[reference]
 
-    def data_model_tabular_to_reference(self, data_model_data_frame: DataModelTabular) -> str:
+    def data_model_tabular_to_reference(
+        self, data_model_data_frame: DataModelTabular
+    ) -> str:
         check_instance(data_model_data_frame, DataModelTabular)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_model_data_frame
@@ -83,7 +95,9 @@ class TestServiceReference:
             raise ValueError(f"Data model tabular not loaded: {reference}")
         return self.dict_reference[reference]
 
-    def data_set_tabular_to_reference(self, data_model_data_frame: DatasetTabularFederated) -> str:
+    def data_set_tabular_to_reference(
+        self, data_model_data_frame: DatasetTabularFederated
+    ) -> str:
         check_instance(data_model_data_frame, DatasetTabularFederated)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_model_data_frame
