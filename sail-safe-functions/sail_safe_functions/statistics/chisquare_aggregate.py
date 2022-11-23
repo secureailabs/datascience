@@ -2,9 +2,10 @@ from typing import Dict
 
 import numpy
 from scipy.stats import distributions
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class ChisquareAggregate:
+class ChisquareAggregate(SafeFunctionBase):
     """
     Aggregates data for Chisquare test
     """

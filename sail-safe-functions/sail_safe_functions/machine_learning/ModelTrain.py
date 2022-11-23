@@ -1,12 +1,11 @@
-from tokenize import String
-from typing import List, Tuple
-from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
-from torch.autograd import Variable
-from pandas import DataFrame
 import torch
+from helper_libs.scn_side.machine_learning.ModelUtility import ModelUtility
+from pandas import DataFrame
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from torch.autograd import Variable
 
 
-class ModelTrain:
+class ModelTrain(SafeFunctionBase):
     """
     Trains a model on local data
     """
@@ -17,8 +16,8 @@ class ModelTrain:
         Y: DataFrame,
         learn_rate: float,
         model: torch.nn.Module,
-        criterion: String,
-        optimizer: String,
+        criterion: str,
+        optimizer: str,
     ) -> torch.nn.Module:
         """
         Runs the ModelTrain function
@@ -34,9 +33,9 @@ class ModelTrain:
         :param: model: the model to be trained
         :type: torch.nn.Module
         :param: criterion: the evaluation metric of the model
-        :type: criterion: String
+        :type: criterion: str
         :param: optimizer: the optimisation method of the model
-        :type: criterion: String
+        :type: criterion: str
         :return: The trained model
         :type: torch.nn.Module
         """
@@ -77,7 +76,7 @@ class ModelTrain:
 
     # TODO: fancy ref filtering
     @staticmethod
-    def get_criterion(criterion: String) -> torch.nn.Module:
+    def get_criterion(criterion: str) -> torch.nn.Module:
         if criterion == "MSELoss":
             return torch.nn.MSELoss()
         elif criterion == "BCELoss":
@@ -87,7 +86,5 @@ class ModelTrain:
 
     # TODO: fancy ref filtering
     @staticmethod
-    def get_optimizer(
-        model: torch.nn.Module, learn_rate: float, optimizer: String
-    ) -> torch.optim.Optimizer:
+    def get_optimizer(model: torch.nn.Module, learn_rate: float, optimizer: str) -> torch.optim.Optimizer:
         return torch.optim.SGD(model.parameters(), lr=learn_rate)

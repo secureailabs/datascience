@@ -1,6 +1,6 @@
-import pandas
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.tools_common import (
     check_instance,
     check_series_nan,
@@ -9,7 +9,8 @@ from sail_safe_functions_orchestrator.tools_common import (
 )
 
 
-class MannWhitneyUTestPrecompute:
+class MannWhitneyUTestPrecompute(SafeFunctionBase):
+
     """
     The precompute function of the mann withnet u test
     """

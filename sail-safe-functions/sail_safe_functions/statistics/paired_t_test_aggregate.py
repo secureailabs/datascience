@@ -1,14 +1,16 @@
 from typing import List, Tuple
 
 import numpy as np
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
-class PairedTTestAggregate:
+class PairedTTestAggregate(SafeFunctionBase):
     """
     Aggregates data for doing a paired t-test
     """
 
+    @staticmethod
     def run(list_list_precompute: List[List[float]]) -> Tuple[float, float]:
         """collects the parts of a t-test and aggregates them into statisitcs
 

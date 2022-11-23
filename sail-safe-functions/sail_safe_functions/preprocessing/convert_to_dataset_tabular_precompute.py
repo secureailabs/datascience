@@ -1,5 +1,4 @@
-import json
-
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
@@ -7,7 +6,8 @@ from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
-class ConvertToDatasetTabularPrecompute:
+class ConvertToDatasetTabularPrecompute(SafeFunctionBase):
+    # TODO this might be in the wrong spot, is this a convert function?
     def run(
         reference_dataset_logitudinal: ReferenceDatasetLongitudinal,
         dataset_federation_id: str,

@@ -1,10 +1,11 @@
 import math
-from typing import List
+from typing import List, Tuple
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
-class PearsonAggregate(object):
+class PearsonAggregate(SafeFunctionBase):
     """
     Computing the pearson Aggregate
 
@@ -15,7 +16,7 @@ class PearsonAggregate(object):
     def __init__(self) -> None:
         super().__init__()
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -> Tuple[float, float]:
         """
         This function run to calculate the final precompute
         and calculate the federated pearson value.

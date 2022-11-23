@@ -2,22 +2,24 @@ from typing import Tuple
 
 import numpy
 import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import (
-    check_instance,
-    check_series_nan,
     check_empty_series,
-    check_series_one_value,
+    check_instance,
     check_series_constant,
+    check_series_nan,
+    check_series_one_value,
 )
 
 
-class WilcoxonSingedRankTestPrecompute:
+class WilcoxonSingedRankTestPrecompute(SafeFunctionBase):
     """
     Precomputes data for the  WilcoxonSingedRankTest
     """
 
+    @staticmethod
     def run(
         reference_sample_difference: ReferenceSeries,
         reference_sample_absolute_difference_ranked: ReferenceSeries,
