@@ -40,7 +40,7 @@ echo "Running $imageName in $mode mode"
 if [ "$mode" == "dev" ]
 then
     echo "Running in dev mode"
-    mountOption=$(pwd)/../../:/app/SmartBroker
+    mountOption=$(pwd)/../../:/app/datascience
     detach=it
 else
     echo "Running in prod mode"

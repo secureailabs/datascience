@@ -14,7 +14,7 @@ if [ "$MODE" == "dev" ]; then
     echo "Running in dev mode"
     # Move the InitializerVector to the Binary folder
     reload=--reload
-    cp SmartBroker/Docker/smartbroker/InitializationVector.json SmartBroker/
+    cp datascience/Docker/smartbroker/InitializationVector.json datascience/
 else
     python3 vm_initializer.py || true
     retVal=$?
@@ -26,12 +26,13 @@ else
     tar -xf package.tar.gz
 
     # Move the InitializerVector to the Binary folder
-    mv InitializationVector.json SmartBroker/
+    mv InitializationVector.json datascience/
 fi
 
 # Start the Public API Server
-cd SmartBroker
-python3 build/install.py
+cd datascience
+pip install -e sail-safe-functions
+pip install -e sail-safe-functions-orchestrator
 
 cd fastapi
 uvicorn main:app --host 0.0.0.0 --port 8000 $reload
