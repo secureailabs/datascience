@@ -28,8 +28,6 @@ dataframe_name_lookup = {}
 scn_names = ["127.0.0.1"]
 list_dataset_id = []
 list_dataset_id.append("a892ef90-4f6f-11ed-bdc3-0242ac120002")
-# list_dataset_id.append("a89301b0-4f6f-11ed-bdc3-0242ac120002")
-# list_dataset_id.append("a89302dc-4f6f-11ed-bdc3-0242ac120002")
 
 service_client = ServiceClientDict()
 for dataset_id, scn_name in zip(list_dataset_id, scn_names):
@@ -202,6 +200,9 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+    validate(series_1)
+    validate(series_2)
+
     return {"chisquare": statistics.chisquare(series_1, series_2)}
 
 
@@ -209,6 +210,7 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
 async def count(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
+    validate(series)
     return {"count": statistics.count(series)}
 
 
@@ -217,6 +219,8 @@ async def chisquare(
     series_1_id: str, type_distribution: str, type_ranking: str
 ) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
+
+    validate(series)
 
     return {
         "kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(
@@ -228,6 +232,7 @@ async def chisquare(
 @app.post("/statistics/kurtosis/{series_id}")
 async def kurtosis(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
+    validate(series)
 
     return {"kurtosis": statistics.kurtosis(series)}
 
@@ -240,6 +245,8 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+    validate(series_1)
+    validate(series_2)
     f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
     return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
 
@@ -255,6 +262,9 @@ async def mann_whitney_u_test(
         series_2_id
     )
 
+    validate(series_1)
+    validate(series_2)
+
     w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(
         series_1, series_2, alternative, type_ranking
     )
@@ -266,12 +276,16 @@ async def mann_whitney_u_test(
 async def mean(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
+    validate(series)
+
     return {"mean": statistics.mean(series)}
 
 
 @app.post("/statistics/min_max/{series_id}")
 async def min_max(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
+
+    validate(series)
 
     min, max = statistics.min_max(series)
 
@@ -286,6 +300,9 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+
+    validate(series_1)
+    validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.paired_t_test(
         series_1, series_2, alternative
@@ -303,6 +320,9 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
         series_2_id
     )
 
+    validate(series_1)
+    validate(series_2)
+
     pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
 
     return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
@@ -311,7 +331,7 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
 @app.post("/statistics/skewness/{series_id}")
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-
+    validate(series)
     return {"skewness_sail": statistics.skewness(series)}
 
 
@@ -325,6 +345,9 @@ async def spearman(
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+
+    validate(series_1)
+    validate(series_2)
 
     spearman_sail, p_value_sail = statistics.spearman(
         series_1, series_2, alternative, type_ranking
@@ -342,6 +365,9 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
         series_2_id
     )
 
+    validate(series_1)
+    validate(series_2)
+
     t_statistic_sail, p_value_sail = statistics.student_t_test(
         series_1, series_2, alternative
     )
@@ -352,7 +378,7 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
 @app.post("/statistics/variance/{series_id}")
 async def variance(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-
+    validate(series)
     return {"variance_sail": statistics.variance(series)}
 
 
@@ -364,6 +390,9 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+
+    validate(series_1)
+    validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.welch_t_test(
         series_1, series_2, alternative
@@ -382,6 +411,9 @@ async def spearman(
     series_2 = service_reference.get_instance().reference_to_federated_series(
         series_2_id
     )
+
+    validate(series_1)
+    validate(series_2)
 
     w_statistic_sail, p_value_sail = statistics.spearman(
         series_1, series_2, alternative, type_ranking
