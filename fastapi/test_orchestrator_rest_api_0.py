@@ -349,6 +349,47 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
 
+@app.post("/statistics/variance/{series_id}")
+async def variance(series_id: str) -> dict:
+    series = service_reference.get_instance().reference_to_federated_series(series_id)
+
+    return {"variance_sail": statistics.variance(series)}
+
+
+@app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
+async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(
+        series_1_id
+    )
+    series_2 = service_reference.get_instance().reference_to_federated_series(
+        series_2_id
+    )
+
+    t_statistic_sail, p_value_sail = statistics.welch_t_test(
+        series_1, series_2, alternative
+    )
+
+    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+
+
+@app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
+async def spearman(
+    series_1_id: str, series_2_id: str, alternative: str, type_ranking: str
+) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(
+        series_1_id
+    )
+    series_2 = service_reference.get_instance().reference_to_federated_series(
+        series_2_id
+    )
+
+    w_statistic_sail, p_value_sail = statistics.spearman(
+        series_1, series_2, alternative, type_ranking
+    )
+
+    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+
+
 ## END STATS
 ## DATAFRAME MANIPULATION
 
