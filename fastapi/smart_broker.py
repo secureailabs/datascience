@@ -189,6 +189,36 @@ async def dataset_tabular_fhirv1(
 
 
 ## DATA INGESTION END
+## DATAFRAME MANIPULATION
+
+
+@app.post("/data_frame_tabular/select_dataframe/{data_frame_tabular_id}")
+async def data_frame_tabular_select_dataframe(
+    data_frame_tabular_id: str, data_frame_name: str
+) -> dict:
+    data_frame_tabular = service_reference.get_instance().reference_to_data_set_tabular(
+        data_frame_tabular_id
+    )
+    data_frame = data_frame_tabular[data_frame_name]
+
+    data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(
+        data_frame
+    )
+    return {"data_frame_id": data_frame_id}
+
+
+@app.post("/data_frame/select_series/{data_frame_id}")
+async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict:
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(
+        data_frame_id
+    )
+    series = data_frame[series_name]
+
+    series_id = service_reference.get_instance().federated_series_to_reference(series)
+    return {"series_id": series_id}
+
+
+## DATAFRAME_MANIPULATION END
 ## STATS
 
 
@@ -423,36 +453,6 @@ async def spearman(
 
 
 ## END STATS
-## DATAFRAME MANIPULATION
-
-
-@app.post("/data_frame_tabular/select_dataframe/{data_frame_tabular_id}")
-async def data_frame_tabular_select_dataframe(
-    data_frame_tabular_id: str, data_frame_name: str
-) -> dict:
-    data_frame_tabular = service_reference.get_instance().reference_to_data_set_tabular(
-        data_frame_tabular_id
-    )
-    data_frame = data_frame_tabular[data_frame_name]
-
-    data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(
-        data_frame
-    )
-    return {"data_frame_id": data_frame_id}
-
-
-@app.post("/data_frame/select_series/{data_frame_id}")
-async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict:
-    data_frame = service_reference.get_instance().reference_to_federated_dataframe(
-        data_frame_id
-    )
-    series = data_frame[series_name]
-
-    series_id = service_reference.get_instance().federated_series_to_reference(series)
-    return {"series_id": series_id}
-
-
-## DATAFRAME_MANIPULATION
 ## PREPROCESSING
 
 

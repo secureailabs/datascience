@@ -1,0 +1,37 @@
+import requests
+
+
+def parse_dataset_tabular_from_fhirv1(
+    dataset_federation_id, dataset_federation_name, data_model_tabular_id
+):
+    payload = {
+        "dataset_federation_id": dataset_federation_id,
+        "dataset_federation_name": dataset_federation_name,
+        "data_model_tabular_id": data_model_tabular_id,
+    }
+    result = requests.post(
+        "http://127.0.0.1:8000/ingestion/dataset_tabular/fhirv1", params=payload
+    )
+    return result.json()["dataset_id"]
+
+
+def data_frame_tabular_select_data_frame(data_frame_tabular_id, data_frame_name):
+    payload = {
+        "data_frame_tabular_id": data_frame_tabular_id,
+        "data_frame_name": data_frame_name,
+    }
+    result = requests.post(
+        "http://127.0.0.1:8000/data_frame_tabular/select_dataframe/"
+        + data_frame_tabular_id,
+        params=payload,
+    )
+    return result.json()["data_frame_id"]
+
+
+def data_frame_select_series(data_frame_id, series_name):
+    payload = {"data_frame_id": data_frame_id, "series_name": series_name}
+    result = requests.post(
+        "http://127.0.0.1:8000/data_frame/select_series/" + data_frame_id,
+        params=payload,
+    )
+    return result.json()["series_id"]
