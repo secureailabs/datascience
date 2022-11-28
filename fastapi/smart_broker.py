@@ -161,6 +161,54 @@ async def data_model_add_series_model(
 
 ## DATA MODEL END
 ## DATA INGESTION
+@app.post("/ingestion/read_longitudinal/fhirv1")
+async def read_longitudinal_fhirv1() -> dict:
+    dataset_longitudinal = preprocessing.read_dataset_fhirv1(
+        service_client, list_dataset_id
+    )
+
+    longitudinal_id = (
+        service_reference.get_instance().federated_longitudinal_data_to_reference(
+            dataset_longitudinal
+        )
+    )
+
+    return {"longitudinal_id": longitudinal_id}
+
+
+@app.post("/ingestion/read_dataset_tabular_from_longitudinal")
+async def read_dataset_tabular_from_longitudinal(
+    longitudinal_id: str,
+    dataset_federation_id: str,
+    dataset_federation_name: str,
+    data_model_tabular_id: str,
+) -> dict:
+    dataset_longitudinal = (
+        service_reference.get_instance().reference_to_federated_longitudinal_data(
+            longitudinal_id
+        )
+    )
+
+    data_model_tablular = (
+        service_reference.get_instance().reference_to_data_model_tabular(
+            data_model_tabular_id
+        )
+    )
+
+    dataset_tabular = convert.convert_to_dataset_tabular(
+        dataset_longitudinal,
+        dataset_federation_id,
+        dataset_federation_name,
+        data_model_tablular,
+    )
+
+    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(
+        dataset_tabular
+    )
+
+    return {"dataset_id": dataset_id}
+
+
 @app.post("/ingestion/dataset_tabular/fhirv1")
 async def dataset_tabular_fhirv1(
     dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str

@@ -12,6 +12,9 @@ from sail_safe_functions_orchestrator.dataset_tabular_federated import (
 )
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
+from sail_safe_functions_orchestrator.dataset_longitudinal_federated import (
+    DatasetLongitudinalFederated,
+)
 
 
 class TestServiceReference:
@@ -40,6 +43,22 @@ class TestServiceReference:
 
     def generate_reference_id(self) -> str:
         return str(uuid.uuid4())
+
+    def federated_longitudinal_data_to_reference(
+        self, federated_longitudinal: DatasetLongitudinalFederated
+    ) -> str:
+        check_instance(federated_longitudinal, DatasetLongitudinalFederated)
+        reference_id = self.generate_reference_id()
+        self.dict_reference[reference_id] = federated_longitudinal
+        return reference_id
+
+    def reference_to_federated_longitudinal_data(
+        self, reference: str
+    ) -> DatasetLongitudinalFederated:
+        check_instance(reference, str)
+        if reference not in self.dict_reference:
+            raise ValueError(f"Federated Longitudinal Data not loaded: {reference}")
+        return self.dict_reference[reference]
 
     def federated_series_to_reference(self, federated_series: SeriesFederated) -> str:
         check_instance(federated_series, SeriesFederated)
