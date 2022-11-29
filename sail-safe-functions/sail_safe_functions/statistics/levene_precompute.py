@@ -17,7 +17,9 @@ class LevenePrecompute(SafeFunctionBase):
         reference_series_1: ReferenceSeries,
         mean_0: float,
         mean_1: float,
-    ) -> Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
+    ) -> Tuple[
+        List[float], List[bool]
+    ]:  # there seems to be a problem here with this annotation
         """
         ----------
         sample_0_series : ReferenceSeries
@@ -32,8 +34,16 @@ class LevenePrecompute(SafeFunctionBase):
 
         """
 
-        sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
-        sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
+        sample_0 = (
+            ServiceReference.get_instance()
+            .reference_to_series(reference_series_0)
+            .to_numpy()
+        )
+        sample_1 = (
+            ServiceReference.get_instance()
+            .reference_to_series(reference_series_1)
+            .to_numpy()
+        )
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -43,8 +53,16 @@ class LevenePrecompute(SafeFunctionBase):
         sum_xx_1 = np.sum(sample_1 * sample_1)
         count_1 = len(sample_1)
 
-        z1j = abs(sample_0 - mean_0)
-        z2j = abs(sample_1 - mean_1)
+        z1j = list(abs(sample_0 - mean_0))
+        z2j = list(abs(sample_1 - mean_1))
+
+        # print(type(sum_x_0))
+        # print(type(sum_xx_0))
+        # print(type(sum_x_1))
+        # print(type(sum_xx_1))
+        # print(type(z1j))
+        # print(type(z2j))
+        # print()
 
         list_precompute = [
             sum_x_0,
