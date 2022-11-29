@@ -26,4 +26,4 @@ def drop_na_series(session, series_id):
         + series_id,
         params=payload,
     )
-    return result.json()["result_series_id"]
+    return result.json()["series_id"]

@@ -297,13 +297,11 @@ async def series_drop_missing(series_id: str) -> dict:
         orig_series, axis=0, how="any", thresh=None, subset=None
     )
 
-    new_data_frame_id = (
-        service_reference.get_instance().federated_dataframe_to_reference(
-            new_data_frame
-        )
+    new_series_id = service_reference.get_instance().federated_series_to_reference(
+        new_series
     )
 
-    return {"result_data_frame_id": new_data_frame_id}
+    return {"series_id": new_series_id}
 
 
 @app.post("/preprocessing/data_frame/drop_missing/{dataset_id}")
