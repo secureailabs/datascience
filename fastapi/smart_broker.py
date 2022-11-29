@@ -107,15 +107,12 @@ async def series_numerical(
     series_name: str, measurement_source_name: str, type_agregator: str, unit: str
 ) -> dict:
 
-    print("WORKS")
     series = DataModelSeries.create_numerical(
         series_name=series_name,
         measurement_source_name=measurement_source_name,
         type_agregator=DataModelSeries.AgregatorIntervalMean,
         unit=unit,
     )
-    print("WORKS_2")
-
     series_ref = service_reference.get_instance().federated_series_to_reference(series)
 
     return {"series": series_ref}
@@ -158,7 +155,10 @@ async def create_data_model_data_frame(data_frame_name: str) -> dict:
 
 @app.post("/data_model/data_frame/{data_model_id}/add_new_series_model")
 async def data_model_add_series_model(
-    data_model_id: str, series_name: str, measurement_source_name: str
+    data_model_id: str,
+    series_name: str,
+    measurement_source_name: str,
+    type_agregator: str,
 ) -> dict:
     data_model_data_frame = (
         service_reference.get_instance().reference_to_data_model_data_frame(
@@ -170,7 +170,7 @@ async def data_model_add_series_model(
             DataModelSeries.create_numerical(
                 series_name=series_name,
                 measurement_source_name=measurement_source_name,
-                type_agregator=DataModelSeries.AgregatorIntervalMean,
+                type_agregator=type_agregator,
                 unit="kg/m2",
             )
         )
@@ -288,20 +288,21 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 ## DATAFRAME_MANIPULATION END
 
 ## PREPROCESSING
-@app.post("/preprocessing/series/drop_missing/{series_id}")
-async def series_drop_missing(series_id: str) -> dict:
-    orig_series = service_reference.get_instance().reference_to_federated_series(
-        series_id
-    )
-    new_series = preprocessing.drop_missing(
-        orig_series, axis=0, how="any", thresh=None, subset=None
-    )
+## Doesn't work but we should allow it
+# @app.post("/preprocessing/series/drop_missing/{series_id}")
+# async def series_drop_missing(series_id: str) -> dict:
+#     orig_series = service_reference.get_instance().reference_to_federated_series(
+#         series_id
+#     )
+#     new_series = preprocessing.drop_missing(
+#         orig_series, axis=0, how="any", thresh=None, subset=None
+#     )
 
-    new_series_id = service_reference.get_instance().federated_series_to_reference(
-        new_series
-    )
+#     new_series_id = service_reference.get_instance().federated_series_to_reference(
+#         new_series
+#     )
 
-    return {"series_id": new_series_id}
+#     return {"series_id": new_series_id}
 
 
 @app.post("/preprocessing/data_frame/drop_missing/{dataset_id}")

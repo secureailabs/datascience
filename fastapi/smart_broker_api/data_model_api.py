@@ -40,11 +40,14 @@ def create_series(session, series_name, measurement_source_name, type_aggregator
     return result.json()["series"]
 
 
-def data_frame_add_series(session, data_model_id, series_name, measurement_source_name):
+def data_frame_add_series(
+    session, data_model_id, series_name, measurement_source_name, type_agregator
+):
     payload = {
         "data_model_id": data_model_id,
         "series_name": series_name,
         "measurement_source_name": measurement_source_name,
+        "type_agregator": type_agregator,
     }
     result = requests.post(
         "http://"

@@ -4,8 +4,12 @@ from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.dataset_longitudinal import DatasetLongitudinal
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
-from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
-from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
+from sail_safe_functions_orchestrator.reference_dataset_longitudinal import (
+    ReferenceDatasetLongitudinal,
+)
+from sail_safe_functions_orchestrator.reference_dataset_tabular import (
+    ReferenceDatasetTabular,
+)
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.tools_common import check_instance
@@ -42,7 +46,9 @@ class ServiceReference:
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = dataset_longitudinal
         return ReferenceDatasetLongitudinal(
-            dataset_longitudinal.dataset_id, reference_id, dataset_longitudinal.data_model
+            dataset_longitudinal.dataset_id,
+            reference_id,
+            dataset_longitudinal.data_model,
         )
 
     def reference_to_dataset_longitudinal(
@@ -55,11 +61,15 @@ class ServiceReference:
         return self.dict_reference[reference.reference_id]
 
     ###
-    def dataset_tabular_to_reference(self, dataset_tabular: DatasetTabular) -> ReferenceDatasetTabular:
+    def dataset_tabular_to_reference(
+        self, dataset_tabular: DatasetTabular
+    ) -> ReferenceDatasetTabular:
         check_instance(dataset_tabular, DatasetTabular)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = dataset_tabular
-        return ReferenceDatasetTabular(dataset_tabular.dataset_id, reference_id, dataset_tabular.data_model)
+        return ReferenceDatasetTabular(
+            dataset_tabular.dataset_id, reference_id, dataset_tabular.data_model
+        )
 
     def reference_to_dataset_tabular(
         self,
@@ -76,7 +86,9 @@ class ServiceReference:
         check_instance(data_frame, DataFrame)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = data_frame
-        return ReferenceDataFrame(data_frame.dataset_id, reference_id, data_frame.data_model_data_frame)
+        return ReferenceDataFrame(
+            data_frame.dataset_id, reference_id, data_frame.data_model_data_frame
+        )
 
     def reference_to_data_frame(
         self,
@@ -92,7 +104,9 @@ class ServiceReference:
         check_instance(series, Series)
         reference_id = self.generate_reference_id()
         self.dict_reference[reference_id] = series
-        return ReferenceSeries(series.dataset_id, reference_id, series.data_model_series)
+        return ReferenceSeries(
+            series.dataset_id, reference_id, series.data_model_series
+        )
 
     def reference_to_series(
         self,
@@ -102,4 +116,3 @@ class ServiceReference:
         if reference.reference_id not in self.dict_reference:
             raise ValueError(f"DataFrame not loaded: {reference.reference_id}")
         return self.dict_reference[reference.reference_id]
-
