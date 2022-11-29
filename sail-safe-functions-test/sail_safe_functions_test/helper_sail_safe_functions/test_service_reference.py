@@ -4,6 +4,9 @@ from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFeder
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
     DataModelDataFrame,
 )
+from sail_safe_functions_orchestrator.data_model.data_model_series import (
+    DataModelSeries,
+)
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import (
     DataModelTabular,
 )
@@ -58,6 +61,18 @@ class TestServiceReference:
         check_instance(reference, str)
         if reference not in self.dict_reference:
             raise ValueError(f"Federated Longitudinal Data not loaded: {reference}")
+        return self.dict_reference[reference]
+
+    def data_model_series_to_reference(self, series_model: DataModelSeries) -> str:
+        check_instance(series_model, DataModelSeries)
+        reference_id = self.generate_reference_id()
+        self.dict_reference[reference_id] = series_model
+        return reference_id
+
+    def reference_to_data_model_series(self, reference: str) -> str:
+        check_instance(reference, str)
+        if reference not in self.dict_reference:
+            raise ValueError(f"Series Model not loaded: {reference}")
         return self.dict_reference[reference]
 
     def federated_series_to_reference(self, federated_series: SeriesFederated) -> str:

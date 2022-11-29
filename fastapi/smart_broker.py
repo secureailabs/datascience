@@ -103,17 +103,17 @@ async def data_frame_tabular() -> dict:
 
 
 @app.post("/data_model/new_series_model_numerical")
-async def series_numerical(
+async def new_series_numerical(
     series_name: str, measurement_source_name: str, type_agregator: str, unit: str
 ) -> dict:
 
     series = DataModelSeries.create_numerical(
         series_name=series_name,
         measurement_source_name=measurement_source_name,
-        type_agregator=DataModelSeries.AgregatorIntervalMean,
+        type_agregator=type_agregator,
         unit=unit,
     )
-    series_ref = service_reference.get_instance().federated_series_to_reference(series)
+    series_ref = service_reference.get_instance().data_model_series_to_reference(series)
 
     return {"series": series_ref}
 
