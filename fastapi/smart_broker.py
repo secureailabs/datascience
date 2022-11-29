@@ -102,6 +102,25 @@ async def data_frame_tabular() -> dict:
     return {"data_frame_tabular_id": data_frame_id}
 
 
+@app.post("/data_model/new_series_model_numerical")
+async def series_numerical(
+    series_name: str, measurement_source_name: str, type_agregator: str, unit: str
+) -> dict:
+
+    print("WORKS")
+    series = DataModelSeries.create_numerical(
+        series_name=series_name,
+        measurement_source_name=measurement_source_name,
+        type_agregator=DataModelSeries.AgregatorIntervalMean,
+        unit=unit,
+    )
+    print("WORKS_2")
+
+    series_ref = service_reference.get_instance().federated_series_to_reference(series)
+
+    return {"series": series_ref}
+
+
 @app.post("/data_model/tabular/{data_model_tabular_id}/add_dataframe")
 async def tabular_model_add_dataframe_model(
     data_model_tabular_id: str, data_model_dataframe_id: str
@@ -267,6 +286,46 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 
 
 ## DATAFRAME_MANIPULATION END
+
+## PREPROCESSING
+@app.post("/preprocessing/series/drop_missing/{series_id}")
+async def series_drop_missing(series_id: str) -> dict:
+    orig_series = service_reference.get_instance().reference_to_federated_series(
+        series_id
+    )
+    new_series = preprocessing.drop_missing(
+        orig_series, axis=0, how="any", thresh=None, subset=None
+    )
+
+    new_data_frame_id = (
+        service_reference.get_instance().federated_dataframe_to_reference(
+            new_data_frame
+        )
+    )
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
+@app.post("/preprocessing/data_frame/drop_missing/{dataset_id}")
+async def series_drop_missing(dataset_id: str) -> dict:
+    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(
+        dataset_id
+    )
+    new_data_frame = preprocessing.drop_missing(
+        orig_data_frame, axis=0, how="any", thresh=None, subset=None
+    )
+
+    new_data_frame_id = (
+        service_reference.get_instance().federated_dataframe_to_reference(
+            new_data_frame
+        )
+    )
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
+## END PREPROCESSING
+
 ## STATS
 
 
@@ -501,104 +560,7 @@ async def spearman(
 
 
 ## END STATS
-## PREPROCESSING
-
-
-@app.post("/preprocessing/data_frame/drop_missing/{dataset_id}/{data_frame_name}")
-async def drop_missing(dataset_id: str, data_frame_name: str) -> dict:
-    dataset_tabular = service_reference.get_instance().reference_to_data_set_tabular(
-        dataset_id
-    )
-
-    orig_data_frame = dataset_tabular[data_frame_name]
-
-    new_data_frame = preprocessing.drop_missing(
-        orig_data_frame, axis=0, how="any", thresh=None, subset=None
-    )
-
-    new_data_frame_id = (
-        service_reference.get_instance().federated_dataframe_to_reference(
-            new_data_frame
-        )
-    )
-
-    return {"result_data_frame_id": new_data_frame_id}
-
+import uvicorn
 
 if __name__ == "__main__":
-
-    # Specific aguments
-    # 20_1
-    # a892ef90-4f6f-11ed-bdc3-0242ac120002
-
-    # 60_1
-    # a892ffd0-4f6f-11ed-bdc3-0242ac120002
-    # a89301b0-4f6f-11ed-bdc3-0242ac120002
-    # a89302dc-4f6f-11ed-bdc3-0242ac120002
-
-    # Arrange
-    dataset_federation_id = "a892f738-4f6f-11ed-bdc3-0242ac120002"
-    dataset_federation_name = "r4sep2019_csvv1_20_1"
-    data_frame_name = "data_frame_0"
-
-    data_model_data_frame = DataModelDataFrame(data_frame_name)
-    data_model_data_frame.add_data_model_series(
-        DataModelSeries.create_numerical(
-            series_name="bmi_mean",
-            measurement_source_name="Observation:Body Mass Index",
-            type_agregator=DataModelSeries.AgregatorIntervalMean,
-            unit="kg/m2",
-        )
-    )
-    data_model_data_frame.add_data_model_series(
-        DataModelSeries.create_numerical(
-            series_name="bmi_first",
-            measurement_source_name="Observation:Body Mass Index",
-            type_agregator=DataModelSeries.AgregatorIntervalFirstOccurance,
-            unit="kg/m2",
-        )
-    )
-
-    data_model_data_frame.add_data_model_series(
-        DataModelSeries.create_numerical(
-            series_name="bmi_last",
-            measurement_source_name="Observation:Body Mass Index",
-            type_agregator=DataModelSeries.AgregatorIntervalLastOccurance,
-            unit="kg/m2",
-        )
-    )
-    data_model_tablular = DataModelTabular()
-    data_model_tablular.add_data_model_data_frame(data_model_data_frame)
-
-    # act
-    dataset_longitudinal = preprocessing.read_dataset_fhirv1(
-        service_client, list_dataset_id
-    )
-    dataset_tabular = convert.convert_to_dataset_tabular(
-        dataset_longitudinal,
-        dataset_federation_id,
-        dataset_federation_name,
-        data_model_tablular,
-    )
-    data_frame_nan = dataset_tabular[data_frame_name]
-    name_series_1 = data_frame_nan.list_series_name[1]
-    print(
-        f"Number of entires including NaN: {statistics.count(data_frame_nan[name_series_1])}"
-    )
-
-    data_frame_nonan = preprocessing.drop_missing(
-        data_frame_nan, axis=0, how="any", thresh=None, subset=None
-    )
-    print(
-        f"Number of entires excluding NaN: {statistics.count(data_frame_nonan[name_series_1])}"
-    )
-    series_1 = data_frame_nonan[name_series_1]
-    mean_1 = statistics.mean(series_1)
-
-    print(f"Mean of {name_series_1}: {mean_1}")
-
-    print(f"Data frame {data_frame_nonan}")
-    print(f"Series {series_1}")
-    print(f"Series datasets {series_1.list_dataset_id}")
-    print(f"Tabular dataset {dataset_tabular}")
-    print(f"Model dataset {data_model_tablular.list_data_frame_name}")
+    uvicorn.run(app, host="0.0.0.0", port=8000)

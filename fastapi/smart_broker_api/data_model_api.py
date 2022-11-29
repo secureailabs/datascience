@@ -22,6 +22,24 @@ def create_tabular_data(session):
     return result.json()["data_frame_tabular_id"]
 
 
+def create_series(session, series_name, measurement_source_name, type_aggregator, unit):
+    payload = {
+        "series_name": series_name,
+        "measurement_source_name": measurement_source_name,
+        "type_aggregator": type_aggregator,
+        "unit": unit,
+    }
+    result = requests.post(
+        "http://"
+        + session.ip
+        + ":"
+        + session.port
+        + "/data_model/new_series_model_numerical",
+        params=payload,
+    )
+    return result.json()["series"]
+
+
 def data_frame_add_series(session, data_model_id, series_name, measurement_source_name):
     payload = {
         "data_model_id": data_model_id,
