@@ -21,7 +21,7 @@ RUN ls
 RUN python3 build/install.py
 WORKDIR /datascience/sail-safe-functions-test/
 
-CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-sv"]
+CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-m", "active or slow", "-sv"]
 
 # Usage
 # docker build --build-arg git_personal_token={git_personal_token} --build-arg branch={branch_name} -t sail/datascience-test .

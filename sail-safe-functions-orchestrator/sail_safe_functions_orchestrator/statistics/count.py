@@ -29,7 +29,8 @@ class Count(Estimator):
         count = 0
         for dataset_id in sample_0.list_dataset_id:
             client = sample_0.service_client.get_client(dataset_id)
-            count += client.call(CountPrecompute, sample_0.dict_reference_series[dataset_id])
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            count += client.call(CountPrecompute, reference_series_0)
         return count
 
     def run_reference(self, sample_0: SeriesFederated):

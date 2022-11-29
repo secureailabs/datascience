@@ -38,15 +38,13 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
         dataset_name = header_dataset["dataset_name"]
         # TODO check header
         with ZipFile(path_file_data_model) as archive_data_model:
-            data_model_tabular = DataModelTabular.from_json(json.loads(archive_data_model.read("data_model.json")))
+            data_model_tabular = DataModelTabular.from_dict(json.loads(archive_data_model.read("data_model.json")))
         list_data_frame = []
         with ZipFile(path_file_data_content) as archive_data_content:
             for name_file in archive_data_content.namelist():
                 if not name_file.endswith(".csv"):
                     raise Exception()
                 data_frame_name = name_file.split(".csv")[0]
-                print(name_file)
-                print(data_frame_name)
                 data_model_data_frame = data_model_tabular[data_frame_name]
                 list_data_frame.append(
                     DataFrame.from_csv_str(
@@ -84,7 +82,7 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
         # write data model
         with ZipFile(path_file_data_model, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_model:
             name_file = "data_model.json"
-            zip_file_data_model.writestr(name_file, json.dumps(dataset_tabular.data_model.to_json()))
+            zip_file_data_model.writestr(name_file, json.dumps(dataset_tabular.data_model.to_dict()))
 
         # write data content
         with ZipFile(path_file_data_content, "w", ZIP_DEFLATED, compresslevel=9) as zip_file_data_content:

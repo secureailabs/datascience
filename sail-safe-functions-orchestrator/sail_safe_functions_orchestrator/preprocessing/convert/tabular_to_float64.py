@@ -1,4 +1,5 @@
 from sail_safe_functions.preprocessing.convert.tabular_to_float64_precompute import TabularToFloat64Precompute
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
@@ -29,7 +30,8 @@ def tabular_to_float64(data_frame_source: DataFrameFederated) -> DataFrameFedera
     return TabularToFloat64.run(data_frame_source)
 
 
-class TabularToFloat64:
+class TabularToFloat64(SafeFunctionBase):
+    @staticmethod
     def run(data_frame_source: DataFrameFederated) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
         """
