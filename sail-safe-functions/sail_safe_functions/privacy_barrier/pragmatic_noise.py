@@ -2,11 +2,12 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 
 
-class PragmaticNoise:
+class PragmaticNoise(SafeFunctionBase):
     """
     Adds noise to categorical, boolean, numeric and continous columns in a pandas dataframe
     """

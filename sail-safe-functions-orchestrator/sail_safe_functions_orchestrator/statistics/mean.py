@@ -34,9 +34,10 @@ class Mean(Estimator):
         """
 
         list_list_precompute = []
-        for reference in sample_0.dict_reference_series.values():
-            client = sample_0.service_client.get_client(reference.dataset_id)
-            list_list_precompute.append(client.call(MeanPrecompute, reference))
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            reference_series = sample_0.get_reference_series(dataset_id)
+            list_list_precompute.append(client.call(MeanPrecompute, reference_series))
         mean_statistic = MeanAggregate.run(list_list_precompute)  # TODO this does not need to get merged
         return mean_statistic
 

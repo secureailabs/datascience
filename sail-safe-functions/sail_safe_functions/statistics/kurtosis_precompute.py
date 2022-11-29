@@ -1,22 +1,24 @@
 from typing import List
 
 import numpy as np
-import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
     check_instance,
     check_series_nan,
-    check_empty_series,
     check_series_one_value,
 )
 
 
-class KurtosisPrecompute:
+class KurtosisPrecompute(SafeFunctionBase):
+
     """
     Precomputes data for Kurtosis
     """
 
+    @staticmethod
     def run(sample_0_series: ReferenceSeries) -> List[float]:
         """Generates the geometric moments for use in a Kurtosis
 

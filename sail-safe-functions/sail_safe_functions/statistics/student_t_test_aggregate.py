@@ -1,18 +1,19 @@
 import math
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
-class StudentTTestAggregate:
+class StudentTTestAggregate(SafeFunctionBase):
     """
     Aggregates data for doing a unpaired t-test (either the student t-test or the welch t-test)
     """
 
     def run(
         list_list_precompute: List[List[float]],
-    ):
+    ) -> Tuple[float, float]:
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0

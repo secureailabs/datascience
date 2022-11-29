@@ -37,21 +37,22 @@ class DataModelTabular:
             raise Exception(f"Duplicate data_frame_model: {data_model_data_frame.data_frame_name}")
         self.dict_data_model_data_frame[data_model_data_frame.data_frame_name] = data_model_data_frame
 
-    def to_json(self) -> Dict:
-        dict_json = {}
-        dict_json["dict_data_model_data_frame"] = {}
+    def to_dict(self) -> Dict:
+        dict = {}
+        dict["__type__"] = "DataModelTabular"
+        dict["dict_data_model_data_frame"] = {}
         for table_id, data_model_data_frame in self.dict_data_model_data_frame.items():
-            dict_json["dict_data_model_data_frame"][table_id] = data_model_data_frame.to_json()
+            dict["dict_data_model_data_frame"][table_id] = data_model_data_frame.to_dict()
         import json
 
-        json.dumps(dict_json)
-        return dict_json
+        json.dumps(dict)
+        return dict
 
     @staticmethod
-    def from_json(dict_json: Dict) -> "DataModelTabular":
+    def from_dict(dict: Dict) -> "DataModelTabular":
         data_model_tabular = DataModelTabular()
-        for table_id, data_model_data_frame in dict_json["dict_data_model_data_frame"].items():
-            data_model_tabular.dict_data_model_data_frame[table_id] = DataModelDataFrame.from_json(
+        for table_id, data_model_data_frame in dict["dict_data_model_data_frame"].items():
+            data_model_tabular.dict_data_model_data_frame[table_id] = DataModelDataFrame.from_dict(
                 data_model_data_frame
             )
 

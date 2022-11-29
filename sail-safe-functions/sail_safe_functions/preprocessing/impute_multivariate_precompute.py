@@ -2,6 +2,7 @@ from typing import List
 
 from pandas import DataFrame as DataFramePandas
 from pandas.api.types import is_numeric_dtype, is_string_dtype
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
@@ -10,7 +11,7 @@ from sklearn.experimental import enable_iterative_imputer  # NOTE side effect im
 from sklearn.impute import IterativeImputer, SimpleImputer
 
 
-class ImputeMultivariatePrecompute:
+class ImputeMultivariatePrecompute(SafeFunctionBase):
     """
     Imputes one or more columns with a multivariate strategy
     uses https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html#sklearn.impute.IterativeImputer

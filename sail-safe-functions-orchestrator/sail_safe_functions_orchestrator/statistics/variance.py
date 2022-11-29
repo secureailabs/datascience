@@ -30,7 +30,8 @@ class Variance(Estimator):
         list_list_precompute = []
         for dataset_id in sample_0.list_dataset_id:
             client = sample_0.service_client.get_client(dataset_id)
-            list_list_precompute.append(client.call(VariancePrecompute, sample_0.dict_reference_series[dataset_id]))
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            list_list_precompute.append(client.call(VariancePrecompute, reference_series_0))
         variance = VarianceAggregate.run(list_list_precompute)
         return variance
 

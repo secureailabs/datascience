@@ -37,7 +37,8 @@ class Kurtosis(Estimator):
         list_list_precompute = []
         for dataset_id in sample_0.list_dataset_id:
             client = sample_0.service_client.get_client(dataset_id)
-            list_list_precompute.append(client.call(KurtosisPrecompute, sample_0.dict_reference_series[dataset_id]))
+            reference_series_0 = sample_0.get_reference_series(dataset_id)
+            list_list_precompute.append(client.call(KurtosisPrecompute, reference_series_0))
 
         # Final Kurtosis Value
         kurtosis_value = KurtosisAggregate.run(list_list_precompute)
