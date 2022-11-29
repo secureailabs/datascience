@@ -9,11 +9,11 @@ class TransformBase(ABC):
     def __init__(self) -> None:
         self.list_name_feature = None
 
-    @abstractmethod
+    # @abstractmethod
     def fit(self, data_frame: DataFrameFederated, list_name_feature: List[str]):
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def transform(self, data_frame: DataFrameFederated) -> DataFrameFederated:
         raise NotImplementedError()
 

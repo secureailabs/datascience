@@ -60,14 +60,10 @@ class DataFrameFederatedLocal:
     def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -> np.ndarray:
         data_frame = pandas.DataFrame(array)
         if list_name_column is not None:
-            for name_column_source, name_column_target in zip(
-                data_frame.columns, list_name_column
-            ):
-                data_frame.rename(
-                    columns={name_column_source: name_column_target}, inplace=True
-                )
+            for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
+                data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
         data_frame_federated = DataFrameFederatedLocal()
-        data_frame_federated.dict_dataframe[dataset_id] = data_frame
+        data_frame_federated.list_dataset_id = data_frame
         return data_frame_federated
 
     @staticmethod
@@ -106,12 +102,8 @@ class DataFrameFederatedLocal:
             data_model_data_frame.add_data_model_series(data_model_series)
         list_reference = []
         for dataset_id, path_file_csv in dict_csv.items():
-            data_frame = DataFrame.from_csv(
-                dataset_id, "data_frame_0", data_model_data_frame, path_file_csv
-            )
-            list_reference.append(
-                ServiceReference.get_instance().data_frame_to_reference(data_frame)
-            )
+            data_frame = DataFrame.from_csv(dataset_id, "data_frame_0", data_model_data_frame, path_file_csv)
+            list_reference.append(ServiceReference.get_instance().data_frame_to_reference(data_frame))
 
         service_client = ServiceClientLocal()
         return DataFrameFederated(service_client, list_reference, data_model_data_frame)

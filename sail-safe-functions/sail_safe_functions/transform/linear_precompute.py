@@ -1,4 +1,3 @@
-from array import array
 from typing import List
 
 import numpy
@@ -18,8 +17,8 @@ class LinearPrecompute:
     def run(
         data_frame_source: ReferenceDataFrame,
         array_input: numpy.ndarray,
-        list_name_series_source: List[str],
-        list_name_series_target: List[str],
+        list_name_series_source: List,
+        list_name_series_target: List,
         inverse: bool,
     ):
         """
@@ -51,6 +50,8 @@ class LinearPrecompute:
 
         for series_name in data_frame_source.list_series_name:
             list_series.append(data_frame_source[series_name])
+
+        list_name_series_target = [list_name_series_target]
 
         for i, series_name in enumerate(list_name_series_target):
             data_model_series = DataModelSeries.create_numerical(series_name=series_name)

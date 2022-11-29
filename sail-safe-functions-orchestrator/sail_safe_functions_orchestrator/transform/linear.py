@@ -5,6 +5,7 @@ import numpy
 from sail_safe_functions.transform.linear_precompute import LinearPrecompute
 from sail_safe_functions_orchestrator.transform.transform_base import TransformBase
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 def linear(
@@ -30,7 +31,7 @@ def linear(
     :return: dataframe
     :rtype: dataframe
     """
-    return LinearPrecompute.run(
+    return Linear.run(
         data_frame_source,
         array_input,
         list_name_feature_source,
@@ -65,13 +66,11 @@ class Linear(TransformBase):
                     inverse,
                 )
             )
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
+        data_frame_source_2 = ServiceReference.get_instance().reference_to_data_frame(list_reference[0])
+        df = DataFrameFederated(
+            data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
         )
 
-    #@abstractmethod
-    def fit(self, data_frame: DataFrameFederated):
-        raise NotImplementedError()
-
-    def transform(self, data_frame: DataFrameFederated) -> DataFrameFederated:
-        raise NotImplementedError()
+        return DataFrameFederated(
+            data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
+        )
