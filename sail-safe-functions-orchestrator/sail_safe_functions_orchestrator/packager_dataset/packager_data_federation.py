@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 import tempfile
-from typing import Dict, List
+from typing import Dict
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from genericpath import isdir
@@ -151,6 +151,10 @@ class PackagerDataFederation:
                     shutil.rmtree(path_dir_dataset_target)
                 archive.extractall(path_dir_dataset_target)
         shutil.rmtree(path_dir_data_federation_temp)
+
+    def get_data_federation_packaged_header(self, path_file_data_federation_source):
+        with ZipFile(path_file_data_federation_source, "r") as archive:
+            return json.loads(archive.read("data_federation_header.json"))
 
     def get_dict_dataset_name_to_dataset_id(self, path_file_data_federation_source: str) -> Dict[str, str]:
         path_dir_data_federation_temp = tempfile.mkdtemp()

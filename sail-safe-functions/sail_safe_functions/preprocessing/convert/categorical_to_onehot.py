@@ -2,11 +2,13 @@ from typing import List
 
 import numpy
 import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.series import Series
 
 
-class CategoricalToOnehot:
+class CategoricalToOnehot(SafeFunctionBase):
+    @staticmethod
     def run(series: Series) -> List[Series]:
         if series.data_model_series.type_data_level != DataModelSeries.DataLevelCategorical:
             raise ValueError()

@@ -1,12 +1,19 @@
 from typing import List, Tuple
 
 import numpy as np
-import pandas as pd
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.tools_common import (
+    check_instance,
+    check_series_nan,
+    check_empty_series,
+    check_series_one_value,
+)
 
 
-class LevenePrecompute:
+class LevenePrecompute(SafeFunctionBase):
+
     """
     Precomputes data for computing the variance
     """
@@ -33,6 +40,13 @@ class LevenePrecompute:
 
         sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
         sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
+
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)

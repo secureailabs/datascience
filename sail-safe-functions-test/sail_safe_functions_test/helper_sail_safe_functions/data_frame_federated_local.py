@@ -5,20 +5,12 @@ import pandas
 from pandas.api.types import is_numeric_dtype, is_string_dtype
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
-    DataModelDataFrame,
-)
-from sail_safe_functions_orchestrator.data_model.data_model_series import (
-    DataModelSeries,
-)
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import (
-    ServiceClientLocal,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
 
 
 class DataFrameFederatedLocal:

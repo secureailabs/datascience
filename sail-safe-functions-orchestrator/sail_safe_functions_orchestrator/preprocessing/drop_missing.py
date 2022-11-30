@@ -5,6 +5,7 @@ from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFeder
 from sail_safe_functions_orchestrator.tools_common import check_instance
 
 
+# TODO not arguments are used wrong
 def drop_missing(
     data_frame_source: DataFrameFederated, axis: int, how: str, thresh: int, subset: Any
 ) -> DataFrameFederated:
@@ -52,7 +53,7 @@ class DropMissing:
         list_reference = []
         for dataset_id in data_frame_source.list_dataset_id:
             client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
+            reference_data_frame = data_frame_source.get_reference_data_frame(dataset_id)
             list_reference.append(client.call(DropMissingPrecompute, reference_data_frame, axis, how, thresh, subset))
 
         return DataFrameFederated(

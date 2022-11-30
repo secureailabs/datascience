@@ -40,7 +40,7 @@ class SerializerDatasetFhirv1(SerializerDatasetBase):
         # data model
         with ZipFile(path_file_data_model) as archive_data_model:
             # header_dataset = json.loads(archive_data_model.read("data"))
-            data_model = DataModelLongitudinal.from_json({})
+            data_model = DataModelLongitudinal.from_dict({})
 
         # data content
         with ZipFile(path_file_data_content) as archive_data_content:

@@ -1,4 +1,3 @@
-from re import S
 from typing import List
 
 from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
@@ -7,14 +6,14 @@ from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import 
 from sail_safe_functions_orchestrator.packager_dataset.packager_data_federation import PackagerDataFederation
 from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_fhirv1 import SerializerDatasetFhirv1
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
-from sail_safe_functions_orchestrator.service_client import ServiceClient
+from sail_safe_functions_orchestrator.service_client_base import ServiceClientBase
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 class DatasetLongitudinalFederated:
     def __init__(
         self,
-        service_client: ServiceClient,
+        service_client: ServiceClientBase,
         list_reference: List[ReferenceDatasetLongitudinal],
         data_model_longitudinal: DataModelLongitudinal,
     ) -> None:
@@ -29,7 +28,7 @@ class DatasetLongitudinalFederated:
 
     # TODO move this to testing library
     @staticmethod
-    def read_for_path_file(path_file_data_federation: str):
+    def read_for_path_file(path_file_data_federation: str) -> "DatasetLongitudinalFederated":
         # TODO call safe function via RPC ReadDatasetFhirv1Precompute
         packager = PackagerDataFederation()
         packager.prepare_data_federation(path_file_data_federation)

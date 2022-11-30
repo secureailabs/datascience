@@ -1,12 +1,14 @@
 from typing import List
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class MeanAggregate:
+class MeanAggregate(SafeFunctionBase):
+
     """
     Aggregates data for computing the mean
     """
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -> float:
         sum_x_0 = 0
         degrees_of_freedom_0 = 0
 
