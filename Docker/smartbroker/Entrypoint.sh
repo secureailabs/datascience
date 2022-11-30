@@ -29,13 +29,16 @@ else
     mv InitializationVector.json datascience/
 fi
 
+pip install -e zero
+
 # Start the Public API Server
 cd datascience
 pip install -e sail-safe-functions
 pip install -e sail-safe-functions-orchestrator
+pip install -e sail-safe-functions-test
 
 cd fastapi
-uvicorn main:app --host 0.0.0.0 --port 8000 $reload
+uvicorn smart_broker:app --host 0.0.0.0 --port 8000 $reload
 
 # To keep the container running
 tail -f /dev/null

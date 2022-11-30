@@ -48,8 +48,9 @@ else
     mkdir -p "$imageName"_dir
     # Copy the binaries to the folder
     cp vm_initializer.py "$imageName"_dir/
+    cp InitializationVector.json "$imageName"_dir/
 
-    detach=dit
+    detach=it
     mountOption=$(pwd)/"$imageName"_dir:/app
 fi
 

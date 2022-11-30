@@ -1,3 +1,4 @@
+import json
 import os
 
 from sail_safe_functions_orchestrator import preprocessing, statistics
@@ -18,14 +19,21 @@ service_reference = TestServiceReference.get_instance()
 
 dataframe_name_lookup = {}
 
-scn_names = ["127.0.0.1"]
+scn_names = []
 list_dataset_id = []
-list_dataset_id.append("a892ef90-4f6f-11ed-bdc3-0242ac120002")
+
+with open("/app/datascience/InitializationVector.json") as initial_settings:
+    configuration = json.load(initial_settings)
+    print(configuration["scns"])
+    for entry in configuration["scns"]:
+        print(entry)
+        scn_names.append(entry["ip"])
+        list_dataset_id.append(entry["dataset_id"])
 
 service_client = ServiceClientDict()
 for dataset_id, scn_name in zip(list_dataset_id, scn_names):
-    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5010))
-    print(f"Connected to SCN serving dataset {scn_name}")
+    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5001))
+    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 
 @app.get("/")
