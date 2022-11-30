@@ -38,7 +38,7 @@ pip install -e sail-safe-functions-orchestrator
 pip install -e sail-safe-functions-test
 
 cd fastapi
-uvicorn smart_broker:app --host 0.0.0.0 --port 8000 $reload
+PATH_DIR_PUBLIC_KEY_ZEROMQ=/app/public_keys/ PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT=/app/private_keys/client.key_secret PATH_DIR_DATASET=/data/ uvicorn smart_broker:app --host 0.0.0.0 --port 8000 $reload
 
 # To keep the container running
 tail -f /dev/null

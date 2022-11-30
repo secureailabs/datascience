@@ -59,6 +59,8 @@ docker run \
 -$detach \
 -p 8000:8001 \
 -p 9090:9091 \
+--network sailNetwork \
+--name $imageName \
 --env MODE=$mode \
 -v $mountOption \
 -v $(pwd)/certs:/etc/nginx/certs \
