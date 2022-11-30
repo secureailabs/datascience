@@ -12,28 +12,18 @@
 # Status: Alpha
 ##################################################
 
-from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
-    DataFrameFederatedLocal,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
 import os
 
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
-from sail_safe_functions_orchestrator.dataset_longitudinal_federated import (
-    DatasetLongitudinalFederated,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 
 
 def dataset_longitudinal_r4sep2019_1k_3() -> DatasetLongitudinalFederated:
-    DATA_PATH = (
-        "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
-    )
-    path_file_data_federation = os.path.join(
-        DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_1k_3.zip"
-    )
+    DATA_PATH = "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
+    path_file_data_federation = os.path.join(DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_1k_3.zip")
     return DatasetLongitudinalFederated.read_for_path_file(path_file_data_federation)
 
 
@@ -43,9 +33,7 @@ def data_frame_federated_kidney() -> DataFrameFederated:
     :return: data_frame_federated_kidney: a federated dataframe
     :rtype: class : DataFrameFederatedLocal
     """
-    DATA_PATH = (
-        "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
-    )
+    DATA_PATH = "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
 
     list_name_file_csv = ["kidney_disease_clean.csv"]
     id_column_0 = "PD-L1 level before treatment"
@@ -84,9 +72,7 @@ def two_sample_big() -> SeriesFederatedLocal:
     :return: DataFrameFederatedLocal
     :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
-    DATA_PATH = (
-        "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
-    )
+    DATA_PATH = "../sail-safe-functions-test/sail_safe_functions_test/data_sail_safe_functions"
 
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
@@ -113,7 +99,7 @@ def query_limit_n(data, n=10) -> bool:
     return data.global_row_count() > n
 
 
-def validate(data) -> bool:
+def validate(data) -> dict:
     """
     Validates execution criteria for data inputs
     :param: data: the data item being validated
@@ -126,7 +112,7 @@ def validate(data) -> bool:
     if not query_limit_n(data):
         return {"payload": "Error: Federation Length Too Small"}
     else:
-        return True
+        return {"payload": "ok"}
 
     # CHECKS
     # TODO:

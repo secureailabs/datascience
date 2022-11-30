@@ -1,23 +1,16 @@
 import os
 
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import (
-    DataModelDataFrame,
-)
-from sail_safe_functions_orchestrator.data_model.data_model_series import (
-    DataModelSeries,
-)
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import (
-    DataModelTabular,
-)
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
-from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import (
-    TestServiceReference,
-)
+from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -89,23 +82,19 @@ async def get_dataframe_name_lookup_table() -> dict:
     return {"dataframe_name_lookup": dataframe_name_lookup}
 
 
-## DATA MODEL
+# DATA MODEL
 
 
 @app.post("/data_model/new_tabular_model")
 async def data_frame_tabular() -> dict:
     data_frame_tabular = DataModelTabular()
-    data_frame_id = service_reference.get_instance().data_model_tabular_to_reference(
-        data_frame_tabular
-    )
+    data_frame_id = service_reference.get_instance().data_model_tabular_to_reference(data_frame_tabular)
 
     return {"data_frame_tabular_id": data_frame_id}
 
 
 @app.post("/data_model/new_series_model_numerical")
-async def new_series_numerical(
-    series_name: str, measurement_source_name: str, type_agregator: str, unit: str
-) -> dict:
+async def new_series_numerical(series_name: str, measurement_source_name: str, type_agregator: str, unit: str) -> dict:
 
     series = DataModelSeries.create_numerical(
         series_name=series_name,
@@ -119,17 +108,9 @@ async def new_series_numerical(
 
 
 @app.post("/data_model/tabular/{data_model_tabular_id}/add_dataframe")
-async def tabular_model_add_dataframe_model(
-    data_model_tabular_id: str, data_model_dataframe_id: str
-) -> dict:
-    data_model_tabular = (
-        service_reference.get_instance().reference_to_data_model_tabular(
-            data_model_tabular_id
-        )
-    )
-    data_model = service_reference.get_instance().reference_to_data_model_data_frame(
-        data_model_dataframe_id
-    )
+async def tabular_model_add_dataframe_model(data_model_tabular_id: str, data_model_dataframe_id: str) -> dict:
+    data_model_tabular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
+    data_model = service_reference.get_instance().reference_to_data_model_data_frame(data_model_dataframe_id)
 
     data_model_tabular.add_data_model_data_frame(data_model)
 
@@ -141,11 +122,7 @@ async def create_data_model_data_frame(data_frame_name: str) -> dict:
     dataframe_id = ""
     if data_frame_name not in dataframe_name_lookup:
         new_dataframe = DataModelDataFrame(data_frame_name)
-        dataframe_id = (
-            service_reference.get_instance().data_model_data_frame_to_reference(
-                new_dataframe
-            )
-        )
+        dataframe_id = service_reference.get_instance().data_model_data_frame_to_reference(new_dataframe)
         dataframe_name_lookup[data_frame_name] = dataframe_id
     else:
         dataframe_id = dataframe_name_lookup[data_frame_name]
@@ -160,11 +137,7 @@ async def data_model_add_series_model(
     measurement_source_name: str,
     type_agregator: str,
 ) -> dict:
-    data_model_data_frame = (
-        service_reference.get_instance().reference_to_data_model_data_frame(
-            data_model_id
-        )
-    )
+    data_model_data_frame = service_reference.get_instance().reference_to_data_model_data_frame(data_model_id)
     if data_model_data_frame is not None:
         data_model_data_frame.add_data_model_series(
             DataModelSeries.create_numerical(
@@ -178,19 +151,13 @@ async def data_model_add_series_model(
     return {"data_model_id": data_model_id}
 
 
-## DATA MODEL END
-## DATA INGESTION
+# DATA MODEL END
+# DATA INGESTION
 @app.post("/ingestion/read_longitudinal/fhirv1")
 async def read_longitudinal_fhirv1() -> dict:
-    dataset_longitudinal = preprocessing.read_dataset_fhirv1(
-        service_client, list_dataset_id
-    )
+    dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
 
-    longitudinal_id = (
-        service_reference.get_instance().federated_longitudinal_data_to_reference(
-            dataset_longitudinal
-        )
-    )
+    longitudinal_id = service_reference.get_instance().federated_longitudinal_data_to_reference(dataset_longitudinal)
 
     return {"longitudinal_id": longitudinal_id}
 
@@ -202,17 +169,9 @@ async def read_dataset_tabular_from_longitudinal(
     dataset_federation_name: str,
     data_model_tabular_id: str,
 ) -> dict:
-    dataset_longitudinal = (
-        service_reference.get_instance().reference_to_federated_longitudinal_data(
-            longitudinal_id
-        )
-    )
+    dataset_longitudinal = service_reference.get_instance().reference_to_federated_longitudinal_data(longitudinal_id)
 
-    data_model_tablular = (
-        service_reference.get_instance().reference_to_data_model_tabular(
-            data_model_tabular_id
-        )
-    )
+    data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
 
     dataset_tabular = convert.convert_to_dataset_tabular(
         dataset_longitudinal,
@@ -221,9 +180,7 @@ async def read_dataset_tabular_from_longitudinal(
         data_model_tablular,
     )
 
-    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(
-        dataset_tabular
-    )
+    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
 
     return {"dataset_id": dataset_id}
 
@@ -232,14 +189,8 @@ async def read_dataset_tabular_from_longitudinal(
 async def dataset_tabular_fhirv1(
     dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
 ) -> dict:
-    dataset_longitudinal = preprocessing.read_dataset_fhirv1(
-        service_client, list_dataset_id
-    )
-    data_model_tablular = (
-        service_reference.get_instance().reference_to_data_model_tabular(
-            data_model_tabular_id
-        )
-    )
+    dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
+    data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
 
     dataset_tabular = convert.convert_to_dataset_tabular(
         dataset_longitudinal,
@@ -248,47 +199,37 @@ async def dataset_tabular_fhirv1(
         data_model_tablular,
     )
 
-    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(
-        dataset_tabular
-    )
+    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
 
     return {"dataset_id": dataset_id}
 
 
-## DATA INGESTION END
-## DATAFRAME MANIPULATION
+# DATA INGESTION END
+# DATAFRAME MANIPULATION
 
 
 @app.post("/data_frame_tabular/select_dataframe/{data_frame_tabular_id}")
-async def data_frame_tabular_select_dataframe(
-    data_frame_tabular_id: str, data_frame_name: str
-) -> dict:
-    data_frame_tabular = service_reference.get_instance().reference_to_data_set_tabular(
-        data_frame_tabular_id
-    )
+async def data_frame_tabular_select_dataframe(data_frame_tabular_id: str, data_frame_name: str) -> dict:
+    data_frame_tabular = service_reference.get_instance().reference_to_data_set_tabular(data_frame_tabular_id)
     data_frame = data_frame_tabular[data_frame_name]
 
-    data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(
-        data_frame
-    )
+    data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(data_frame)
     return {"data_frame_id": data_frame_id}
 
 
 @app.post("/data_frame/select_series/{data_frame_id}")
 async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict:
-    data_frame = service_reference.get_instance().reference_to_federated_dataframe(
-        data_frame_id
-    )
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
     series = data_frame[series_name]
 
     series_id = service_reference.get_instance().federated_series_to_reference(series)
     return {"series_id": series_id}
 
 
-## DATAFRAME_MANIPULATION END
+# DATAFRAME_MANIPULATION END
 
-## PREPROCESSING
-## Doesn't work but we should allow it
+# PREPROCESSING
+# Doesn't work but we should allow it
 # @app.post("/preprocessing/series/drop_missing/{series_id}")
 # async def series_drop_missing(series_id: str) -> dict:
 #     orig_series = service_reference.get_instance().reference_to_federated_series(
@@ -307,35 +248,23 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 
 @app.post("/preprocessing/data_frame/drop_missing/{dataset_id}")
 async def series_drop_missing(dataset_id: str) -> dict:
-    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(
-        dataset_id
-    )
-    new_data_frame = preprocessing.drop_missing(
-        orig_data_frame, axis=0, how="any", thresh=None, subset=None
-    )
+    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataset_id)
+    new_data_frame = preprocessing.drop_missing(orig_data_frame, axis=0, how="any", thresh=None, subset=None)
 
-    new_data_frame_id = (
-        service_reference.get_instance().federated_dataframe_to_reference(
-            new_data_frame
-        )
-    )
+    new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
 
     return {"result_data_frame_id": new_data_frame_id}
 
 
-## END PREPROCESSING
+# END PREPROCESSING
 
-## STATS
+# STATS
 
 
 @app.post("/statistics/chisquare/{series_1_id}/{series_2_id}")
 async def chisquare(series_1_id: str, series_2_id: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
     validate(series_1)
     validate(series_2)
 
@@ -351,18 +280,12 @@ async def count(series_id: str) -> dict:
 
 
 @app.post("/statistics/kolmogorovSmirnovTest/{series_1_id}")
-async def chisquare(
-    series_1_id: str, type_distribution: str, type_ranking: str
-) -> dict:
+async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_ranking: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
     validate(series)
 
-    return {
-        "kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(
-            series, type_distribution, type_ranking
-        )
-    }
+    return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
 
 
 @app.post("/statistics/kurtosis/{series_id}")
@@ -375,12 +298,8 @@ async def kurtosis(series_id: str) -> dict:
 
 @app.post("/statistics/levene_test/{series_1_id}/{series_2_id}")
 async def levene_test(series_1_id: str, series_2_id: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
     validate(series_1)
     validate(series_2)
     f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
@@ -388,22 +307,14 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
 
 
 @app.post("/statistics/mann_whitney_u_test/{series_1_id}/{series_2_id}")
-async def mann_whitney_u_test(
-    series_1_id: str, series_2_id: str, alternative: str, type_ranking: str
-) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(
-        series_1, series_2, alternative, type_ranking
-    )
+    w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
 
     return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
 
@@ -430,31 +341,21 @@ async def min_max(series_id: str) -> dict:
 
 @app.post("/statistics/paired_t_test/{series_1_id}/{series_2_id}")
 async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    t_statistic_sail, p_value_sail = statistics.paired_t_test(
-        series_1, series_2, alternative
-    )
+    t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
 
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
 
 @app.post("/statistics/pearson/{series_1_id}/{series_2_id}")
 async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
@@ -472,41 +373,27 @@ async def skewness(series_id: str) -> dict:
 
 
 @app.post("/statistics/spearman/{series_1_id}/{series_2_id}")
-async def spearman(
-    series_1_id: str, series_2_id: str, alternative: str, type_ranking: str
-) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    spearman_sail, p_value_sail = statistics.spearman(
-        series_1, series_2, alternative, type_ranking
-    )
+    spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
 
     return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
 
 
 @app.post("/statistics/student_t_test/{series_1_id}/{series_2_id}")
 async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    t_statistic_sail, p_value_sail = statistics.student_t_test(
-        series_1, series_2, alternative
-    )
+    t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
 
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
@@ -520,45 +407,31 @@ async def variance(series_id: str) -> dict:
 
 @app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
 async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    t_statistic_sail, p_value_sail = statistics.welch_t_test(
-        series_1, series_2, alternative
-    )
+    t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
 
     return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
 
 
 @app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
-async def spearman(
-    series_1_id: str, series_2_id: str, alternative: str, type_ranking: str
-) -> dict:
-    series_1 = service_reference.get_instance().reference_to_federated_series(
-        series_1_id
-    )
-    series_2 = service_reference.get_instance().reference_to_federated_series(
-        series_2_id
-    )
+async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+    series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     validate(series_1)
     validate(series_2)
 
-    w_statistic_sail, p_value_sail = statistics.spearman(
-        series_1, series_2, alternative, type_ranking
-    )
+    w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
 
     return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
 
 
-## END STATS
+# END STATS
 import uvicorn
 
 if __name__ == "__main__":

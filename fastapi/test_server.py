@@ -1,24 +1,25 @@
-import sys
+import importlib
 import inspect
 import os
 import pkgutil
+import sys
 from queue import Queue
+
+import sail_safe_functions
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.data_model.data_model_longitudinal import DataModelLongitudinal
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from zero import ZeroServer
-import sail_safe_functions
-from sail_safe_functions.safe_function_base import SafeFunctionBase
-import importlib
 
 
 def register_safe_functions(server: ZeroServer):
-    # this function walks the safe function library starting from the root, 
+    # this function walks the safe function library starting from the root,
     # it looks for classes that extend the safe function base class
     # in then registers the run function from each of those classes as an rpc
     # this we we can add whatever helper classes and objects we want to the safe function library
@@ -31,13 +32,13 @@ def register_safe_functions(server: ZeroServer):
     queue_module.put((["sail_safe_functions"], root_path))
     dict_import = {}
     while not queue_module.empty():
-        list_name_module, module_path = queue_module.get() 
+        list_name_module, module_path = queue_module.get()
         for module_finder, name, ispkg in pkgutil.iter_modules([module_path]):
             list_name_module_new = list_name_module.copy()
             list_name_module_new.append(name)
             path_dir_module = os.path.join(module_finder.path, name)
             queue_module.put((list_name_module_new, path_dir_module))
-            name_module = ".".join(list_name_module_new) 
+            name_module = ".".join(list_name_module_new)
             moduleipl = importlib.import_module(name_module)
             for name_member, object_member in inspect.getmembers(moduleipl):
                 if inspect.isclass(object_member):
@@ -49,6 +50,7 @@ def register_safe_functions(server: ZeroServer):
     for name_safe_function, safe_function in dict_import.items():
         print(f"adding: {name_safe_function}")
         server.register_rpc(safe_function, name_safe_function)
+
 
 if __name__ == "__main__":
 
