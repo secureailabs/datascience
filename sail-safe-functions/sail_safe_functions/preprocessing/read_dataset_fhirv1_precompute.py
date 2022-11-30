@@ -1,7 +1,8 @@
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_fhirv1 import SerializerDatasetFhirv1
 from sail_safe_functions_orchestrator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class ReadDatasetFhirv1Precompute(SafeFunctionBase):
     def run(dataset_id: str) -> ReferenceDatasetLongitudinal:

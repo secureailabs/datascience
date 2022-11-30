@@ -1,12 +1,10 @@
+from sail_safe_functions_orchestrator import preprocessing, statistics
+from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
-from sail_safe_functions_orchestrator import preprocessing
-
 from sail_safe_functions_orchestrator.preprocessing import convert
-from sail_safe_functions_orchestrator import statistics
+from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
 
 if __name__ == "__main__":
 
@@ -19,15 +17,14 @@ if __name__ == "__main__":
     # a89301b0-4f6f-11ed-bdc3-0242ac120002
     # a89302dc-4f6f-11ed-bdc3-0242ac120002
 
-    
     list_dataset_id = []
     list_dataset_id.append("a892ffd0-4f6f-11ed-bdc3-0242ac120002")
     list_dataset_id.append("a89301b0-4f6f-11ed-bdc3-0242ac120002")
-    #list_dataset_id.append("a89302dc-4f6f-11ed-bdc3-0242ac120002")
+    # list_dataset_id.append("a89302dc-4f6f-11ed-bdc3-0242ac120002")
     list_port = []
     list_port.append(5001)
     list_port.append(5002)
-    #list_port.append(12347)
+    # list_port.append(12347)
     service_client = ServiceClientDict()
     for dataset_id, port in zip(list_dataset_id, list_port):
         service_client.register_client(dataset_id, ClientRPCZero("127.0.0.1", port))
@@ -65,7 +62,7 @@ if __name__ == "__main__":
     )
     data_model_tablular = DataModelTabular()
     data_model_tablular.add_data_model_data_frame(data_model_data_frame)
-    
+
     # act
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
     dataset_tabular = convert.convert_to_dataset_tabular(
@@ -74,9 +71,7 @@ if __name__ == "__main__":
     data_frame_nan = dataset_tabular[data_frame_name]
     name_series_1 = data_frame_nan.list_series_name[1]
     print(statistics.count(data_frame_nan[name_series_1]))
-    data_frame_nonan = preprocessing.drop_missing(
-        data_frame_nan, axis=0, how="any", thresh=None, subset=None
-    )
+    data_frame_nonan = preprocessing.drop_missing(data_frame_nan, axis=0, how="any", thresh=None, subset=None)
     print(statistics.count(data_frame_nonan[name_series_1]))
     series_1 = data_frame_nonan[name_series_1]
     mean_1 = statistics.mean(series_1)

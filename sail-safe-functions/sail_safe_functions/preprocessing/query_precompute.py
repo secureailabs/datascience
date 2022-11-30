@@ -1,26 +1,24 @@
 from typing import List
 
-from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
-from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+
 
 class QueryPrecompute(SafeFunctionBase):
     """
     Query the columns of a DataFrame with a boolean expression.
     """
 
+    @staticmethod
     def run(
         reference_data_frame: ReferenceDataFrame,
         query_expresion: str,
         parser: str,
         local_dict: dict,
         global_dict: dict,
-    ) -> List:
+    ) -> ReferenceDataFrame:
         """
         Query the columns of a DataFrame with a boolean expression.
 

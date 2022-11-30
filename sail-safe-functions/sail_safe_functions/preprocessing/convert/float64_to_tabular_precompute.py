@@ -1,12 +1,13 @@
 import pandas
 from sail_safe_functions.preprocessing.convert.onehot_to_categorical import OnehotToCategorical
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class Float64ToTabularPrecompute(SafeFunctionBase):
     def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -> pandas.DataFrame:

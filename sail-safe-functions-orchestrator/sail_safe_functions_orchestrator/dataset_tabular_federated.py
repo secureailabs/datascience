@@ -1,7 +1,6 @@
 from typing import List
 
 from sail_safe_functions.preprocessing.select_data_frame_precompute import SelectDataFramePrecompute
-
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.reference_dataset_tabular import ReferenceDatasetTabular
@@ -57,8 +56,8 @@ class DatasetTabularFederated:
     def data_model_tabular(self) -> DataModelTabular:
         return self._data_model_tabular
 
-        
     @property
     def service_client(self) -> ServiceClientBase:
         return self._service_client
+
     # property section end

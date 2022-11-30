@@ -1,10 +1,16 @@
 from typing import List
 
 import numpy
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_nan,
+    check_series_one_value,
+)
 from scipy import stats
-from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
 class KolmogorovSmirnovTestPrecompute(SafeFunctionBase):
@@ -23,6 +29,12 @@ class KolmogorovSmirnovTestPrecompute(SafeFunctionBase):
 
         array_sample_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0).to_numpy()
         array_sample_ranked_0 = ServiceReference.get_instance().reference_to_series(refrence_sample_0_ranked).to_numpy()
+        check_empty_series(array_sample_0)
+        check_empty_series(array_sample_ranked_0)
+        check_series_one_value(array_sample_0)
+        check_series_one_value(array_sample_ranked_0)
+        check_series_nan(array_sample_0)
+        check_series_nan(array_sample_ranked_0)
 
         if type_distribution == "normal":
             sample_mean = numpy.mean(array_sample_0)

@@ -6,7 +6,7 @@ class ServiceClientDict(ServiceClientBase):
     def __init__(self) -> None:
         self._dict_dataset_id_to_client = {}
 
-    def register_client(self, dataset_id: str, client:ClientRPCBase) -> None:
+    def register_client(self, dataset_id: str, client: ClientRPCBase) -> None:
         self._dict_dataset_id_to_client[dataset_id] = client
 
     def get_client(self, dataset_id: str) -> ClientRPCBase:

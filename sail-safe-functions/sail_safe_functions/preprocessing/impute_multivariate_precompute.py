@@ -2,13 +2,14 @@ from typing import List
 
 from pandas import DataFrame as DataFramePandas
 from pandas.api.types import is_numeric_dtype, is_string_dtype
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sklearn.experimental import enable_iterative_imputer  # NOTE side effect import!!!
 from sklearn.impute import IterativeImputer, SimpleImputer
-from sail_safe_functions.safe_function_base import SafeFunctionBase
+
 
 class ImputeMultivariatePrecompute(SafeFunctionBase):
     """

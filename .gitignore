@@ -1,5 +1,4 @@
 **/*.egg-info/*
 *.pyc
 **/venv*/*
-settings.json
-**/build/**
+/InitializationVector.json

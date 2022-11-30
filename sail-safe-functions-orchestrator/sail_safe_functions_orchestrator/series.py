@@ -1,8 +1,8 @@
 from typing import List
 
 from pandas import Series as SeriesPandas
-
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+
 
 class Series(SeriesPandas):
     # NOTE Long term this overloading trick is not maintainable and we will need to create a
@@ -14,7 +14,9 @@ class Series(SeriesPandas):
         if not isinstance(dataset_id, str):
             raise Exception(f"{dataset_id} is not instance of class: {str} instead type is {type(dataset_id)}")
         if not isinstance(data_model_series, DataModelSeries):
-            raise Exception(f"{data_model_series} is not instance of class: {DataModelSeries} instead type is {type(data_model_series)}")
+            raise Exception(
+                f"{data_model_series} is not instance of class: {DataModelSeries} instead type is {type(data_model_series)}"
+            )
         self._dataset_id = dataset_id
         self._data_model_series = data_model_series
 

@@ -139,7 +139,7 @@ def test_convert_to_dataset_tabular_t_test(dataset_longitudinal_r4sep2019_20_1: 
 @pytest.mark.active
 def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated):
     """
-    This test our ability to convert a longitudinal dataset to a tabular and do a varriety of procedures, 
+    This test our ability to convert a longitudinal dataset to a tabular and do a varriety of procedures,
     we are not so much intrested in the results but more if they dont raise do raise any exeptions
     """
     dataset_longitudinal = dataset_longitudinal_r4sep2019_20_1
@@ -192,17 +192,15 @@ def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep201
     statistics.skewness(series_1)
     statistics.kurtosis(series_1)
     statistics.min_max(series_1)
-    #statistics.levene_test(series_1, series_2) #TODO broken
+    # statistics.levene_test(series_1, series_2) #TODO broken
     statistics.pearson(series_1, series_2, "less")
     statistics.spearman(series_1, series_2, "less", "cdf")
-
-
     statistics.student_t_test(series_1, series_2, "less")
     statistics.welch_t_test(series_1, series_2, "less")
     statistics.paired_t_test(series_1, series_2, "less")
 
 
-@pytest.mark.slow
+@pytest.mark.broken
 def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
     """
     This test our ability to convert a longitudinal dataset to a tabular one

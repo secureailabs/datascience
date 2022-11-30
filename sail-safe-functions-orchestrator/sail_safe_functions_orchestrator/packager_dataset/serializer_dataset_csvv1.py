@@ -47,8 +47,6 @@ class SerializerDatasetCsvv1(SerializerDatasetBase):
                 if not name_file.endswith(".csv"):
                     raise Exception()
                 data_frame_name = name_file.split(".csv")[0]
-                print(name_file)
-                print(data_frame_name)
                 data_model_data_frame = data_model_tabular[data_frame_name]
                 list_data_frame.append(
                     DataFrame.from_csv_str(
