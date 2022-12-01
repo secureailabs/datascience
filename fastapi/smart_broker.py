@@ -264,6 +264,16 @@ async def series_drop_missing(dataset_id: str) -> dict:
     return {"result_data_frame_id": new_data_frame_id}
 
 
+@app.post("/preprocessing/data_frame/query/{data_frame_id}")
+async def data_frame_query(data_frame_id: str, query_str: str) -> dict:
+    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
+    new_data_frame = preprocessing.query(orig_data_frame, query_str)
+
+    new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
 # END PREPROCESSING
 
 # STATS

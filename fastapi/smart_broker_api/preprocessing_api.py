@@ -11,6 +11,16 @@ def drop_na_data_frame(session, data_frame_id):
     return result.json()["result_data_frame_id"]
 
 
+def query_data_frame(session, data_frame_id, query):
+    payload = {"query_str": query}
+    result = requests.post(
+        "https://" + session.ip + ":" + session.port + "/preprocessing/data_frame/query/" + data_frame_id,
+        params=payload,
+        verify=False,
+    )
+    return result.json()["result_data_frame_id"]
+
+
 # NOTE: Doesn't work but we should allow it
 # def drop_na_series(session, series_id):
 #     payload = {"series_id": series_id}
