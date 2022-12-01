@@ -1,5 +1,4 @@
 import json
-import os
 
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
@@ -24,9 +23,7 @@ list_dataset_id = []
 
 with open("/app/datascience/InitializationVector.json") as initial_settings:
     configuration = json.load(initial_settings)
-    print(configuration["scns"])
     for entry in configuration["scns"]:
-        print(entry)
         scn_names.append(entry["ip"])
         list_dataset_id.append(entry["dataset_id"])
 

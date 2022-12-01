@@ -3,7 +3,9 @@ import requests
 
 def read_longitudinal_fhirv1(session):
     result = requests.post(
-        "https://" + session.ip + ":" + session.port + "/ingestion/read_longitudinal/fhirv1", params=None, verify=False
+        "https://" + session.ip + ":" + session.port + "/ingestion/read_longitudinal/fhirv1",
+        params=None,
+        verify=False,
     )
     return result.json()["longitudinal_id"]
 
@@ -30,6 +32,7 @@ def parse_dataset_tabular_from_longitudinal(
 
 
 def parse_dataset_tabular_from_fhirv1(session, dataset_federation_id, dataset_federation_name, data_model_tabular_id):
+
     payload = {
         "dataset_federation_id": dataset_federation_id,
         "dataset_federation_name": dataset_federation_name,

@@ -25,7 +25,7 @@ def query_data_frame(session, data_frame_id, query):
 # def drop_na_series(session, series_id):
 #     payload = {"series_id": series_id}
 #     result = requests.post(
-#         "https://"
+#         "http://"
 #         + session.ip
 #         + ":"
 #         + session.port
