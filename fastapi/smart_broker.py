@@ -1,5 +1,7 @@
 import json
 
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
@@ -8,9 +10,6 @@ from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataM
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
 from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -23,13 +22,13 @@ list_dataset_id = []
 
 with open("/app/datascience/InitializationVector.json") as initial_settings:
     configuration = json.load(initial_settings)
-    for entry in configuration["scns"]:
-        scn_names.append(entry["ip"])
+    for entry in configuration["secure_computation_nodes"]:
+        scn_names.append(entry["ip_address"])
         list_dataset_id.append(entry["dataset_id"])
 
 service_client = ServiceClientDict()
 for dataset_id, scn_name in zip(list_dataset_id, scn_names):
-    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5001))
+    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5556))
     print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 

@@ -41,6 +41,7 @@ if [ "$mode" == "dev" ]
 then
     echo "Running in dev mode"
     mountOption=$(pwd)/../../:/app/datascience
+    network="--network sailNetwork"
     detach=it
 else
     echo "Running in prod mode"
@@ -48,9 +49,8 @@ else
     mkdir -p "$imageName"_dir
     # Copy the binaries to the folder
     cp vm_initializer.py "$imageName"_dir/
-    cp InitializationVector.json "$imageName"_dir/
 
-    detach=it
+    detach=dit
     mountOption=$(pwd)/"$imageName"_dir:/app
 fi
 
@@ -59,7 +59,7 @@ docker run \
 -$detach \
 -p 8000:8001 \
 -p 9090:9091 \
---network sailNetwork \
+$network \
 --name $imageName \
 --env MODE=$mode \
 -v $mountOption \

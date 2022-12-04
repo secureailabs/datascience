@@ -23,13 +23,15 @@ else
     fi
 
     # Unpack the tar package
-    tar -xf package.tar.gz
+    tar -xvf package.tar.gz
 
     # Move the InitializerVector to the Binary folder
     mv InitializationVector.json datascience/
 fi
 
+pushd RPCLib
 pip install -e zero
+popd
 
 # Start the Public API Server
 cd datascience
