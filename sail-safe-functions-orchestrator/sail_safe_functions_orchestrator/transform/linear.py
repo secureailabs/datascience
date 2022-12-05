@@ -3,9 +3,9 @@ from typing import List
 
 import numpy
 from sail_safe_functions.transform.linear_precompute import LinearPrecompute
-from sail_safe_functions_orchestrator.transform.transform_base import TransformBase
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.transform.transform_base import TransformBase
 
 
 def linear(
@@ -70,7 +70,6 @@ class Linear(TransformBase):
         df = DataFrameFederated(
             data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
         )
-
         return DataFrameFederated(
             data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
         )

@@ -3,8 +3,10 @@ from typing import List
 import numpy
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import \
+    DataModelSeries
+from sail_safe_functions_orchestrator.reference_data_frame import \
+    ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
@@ -14,6 +16,7 @@ class LinearPrecompute:
     Do a linear transform
     """
 
+    @staticmethod
     def run(
         data_frame_source: ReferenceDataFrame,
         array_input: numpy.ndarray,
@@ -37,21 +40,18 @@ class LinearPrecompute:
         :return: dataframe
         :rtype: dataframe
         """
-        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(data_frame_source)
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(data_frame_source)  # type: ignore
 
         if inverse:
             array_input = numpy.linalg.inv(array_input)
 
-        array_source = data_frame_source[list_name_series_source].to_numpy().astype(numpy.float64)
+        array_source = data_frame_source.select_series(list_name_series_source).to_numpy().astype(numpy.float64)  # type: ignore
         array_source = numpy.c_[array_source, numpy.ones(array_source.shape[0])]
         array_target = numpy.dot(array_source, array_input)
-
         list_series = []
 
-        for series_name in data_frame_source.list_series_name:
+        for series_name in data_frame_source.list_series_name:  # type: ignore
             list_series.append(data_frame_source[series_name])
-
-        list_name_series_target = [list_name_series_target]
 
         for i, series_name in enumerate(list_name_series_target):
             data_model_series = DataModelSeries.create_numerical(series_name=series_name)
@@ -62,7 +62,6 @@ class LinearPrecompute:
             )
             series.index = data_frame_source.index
             list_series.append(series)
-
         data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
         reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
         return reference_data_frame_target

@@ -1,13 +1,12 @@
-import pandas
+import os
+
 import numpy
-from sail_safe_functions_orchestrator.transform.linear import Linear
-from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import (
-    DataFrameFederatedLocal,
-)
+import pandas
+import pytest
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-import os
-import pytest
+from sail_safe_functions_orchestrator.transform.linear import Linear
+from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 
 
 @pytest.mark.active
@@ -23,7 +22,7 @@ def test_series_count():
     path = os.path.join(os.getcwd(), "sail_safe_functions_test/data_sail_safe_functions/california_housing_train.csv")
     Datasource = DataFrameFederatedLocal.from_csv({"dataset_0": path})
     transform = Linear()
-    ans = transform.run(Datasource, array_try, "households", "households2", False)
+    ans = transform.run(Datasource, array_try, ["households"], ["households2"], False)
     ans_2 = list(ans.dict_reference_data_frame.values())[0]
 
     new = ServiceReference.get_instance().reference_to_data_frame(ans_2)
@@ -44,7 +43,7 @@ def test_identity_matrix():
     path = os.path.join(os.getcwd(), "sail_safe_functions_test/data_sail_safe_functions/california_housing_train.csv")
     Datasource = DataFrameFederatedLocal.from_csv({"dataset_0": path})
     transform = Linear()
-    ans = transform.run(Datasource, array_try, "households", "households2", False)
+    ans = transform.run(Datasource, array_try, ["households"], ["households2"], False)
     ans_2 = list(ans.dict_reference_data_frame.values())[0]
 
     new = ServiceReference.get_instance().reference_to_data_frame(ans_2)
@@ -70,7 +69,7 @@ def test_twice_matrix():
     path = os.path.join(os.getcwd(), "sail_safe_functions_test/data_sail_safe_functions/california_housing_train.csv")
     Datasource = DataFrameFederatedLocal.from_csv({"dataset_0": path})
     transform = Linear()
-    ans = transform.run(Datasource, array_try, "households", "households2", False)
+    ans = transform.run(Datasource, array_try, ["households"], ["households2"], False)
     ans_2 = list(ans.dict_reference_data_frame.values())[0]
 
     new = ServiceReference.get_instance().reference_to_data_frame(ans_2)
