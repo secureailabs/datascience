@@ -14,7 +14,7 @@ from sail_safe_functions_orchestrator.service_client_dict import \
 from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import \
     TestServiceReference
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 
 app = FastAPI()
@@ -49,7 +49,7 @@ def get_dataframe(dataframe_uuid: str):
     return service_reference.reference_to_federated_dataframe(dataframe_uuid)
 
 
-def query_limit_n(series, n=10) -> bool:
+def query_limit_n(series, n=25) -> bool:
     """
     Checks data or series in question is over a given threshold.
 
@@ -61,22 +61,16 @@ def query_limit_n(series, n=10) -> bool:
     return statistics.count(series) > n
 
 
-class SampleTooSmallError(Exception):
-    pass
-
-
 def validate(series):
     """
     Validates execution criteria for data inputs
     :param: data: the data item being validated
     :type: Remote Dataframe or Remote Series
-    :return: sample series
-    :type: Validation Failure or True condition depending on whether validation passes
+    :return: None
+    :type: None
     """
-
-    # Check query limit N
     if not query_limit_n(series):
-        raise SampleTooSmallError("Query Sample Too Small")
+        raise HTTPException(status_code=500, detail="Sample size too small")
     else:
         return
 
@@ -275,52 +269,33 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            return {"chisquare": statistics.chisquare(series_1, series_2)}
+    validate(series_1)
+    validate(series_2)
+
+    return {"chisquare": statistics.chisquare(series_1, series_2)}
 
 
 @app.post("/statistics/count/{series_id}")
 async def count(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"count": statistics.count(series)}
+    validate(series)
+    return {"count": statistics.count(series)}
 
 
 @app.post("/statistics/kolmogorovSmirnovTest/{series_1_id}")
 async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_ranking: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
+    validate(series)
+    return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
 
 
 @app.post("/statistics/kurtosis/{series_id}")
 async def kurtosis(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"kurtosis": statistics.kurtosis(series)}
+    validate(series)
+    return {"kurtosis": statistics.kurtosis(series)}
 
 
 @app.post("/statistics/levene_test/{series_1_id}/{series_2_id}")
@@ -328,18 +303,12 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
-            return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+
+    validate(series_2)
+    f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
+
+    return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mann_whitney_u_test/{series_1_id}/{series_2_id}")
@@ -347,43 +316,28 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
-            return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+    w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
+    return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mean/{series_id}")
 async def mean(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"mean": statistics.mean(series)}
+    validate(series)
+    return {"mean": statistics.mean(series)}
 
 
 @app.post("/statistics/min_max/{series_id}")
 async def min_max(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        min, max = statistics.min_max(series)
-        return {"min": min, "max": max}
+    validate(series)
+
+    min, max = statistics.min_max(series)
+    return {"min": min, "max": max}
 
 
 @app.post("/statistics/paired_t_test/{series_1_id}/{series_2_id}")
@@ -391,18 +345,11 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
-            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+
+    t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/pearson/{series_1_id}/{series_2_id}")
@@ -410,29 +357,17 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
-            return {"pearson": pearson_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+    pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
+    return {"pearson": pearson_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/skewness/{series_id}")
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"skewness": statistics.skewness(series)}
+    validate(series)
+    return {"skewness": statistics.skewness(series)}
 
 
 @app.post("/statistics/spearman/{series_1_id}/{series_2_id}")
@@ -440,18 +375,10 @@ async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ra
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-            return {"spearman": spearman_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+    spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
+    return {"spearman": spearman_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/student_t_test/{series_1_id}/{series_2_id}")
@@ -459,29 +386,18 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
-            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+
+    t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/variance/{series_id}")
 async def variance(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    try:
-        validate(series)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        return {"variance": statistics.variance(series)}
+    validate(series)
+    return {"variance": statistics.variance(series)}
 
 
 @app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
@@ -489,18 +405,10 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
-            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+    t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
@@ -508,18 +416,10 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    try:
-        validate(series_1)
-    except Exception as e:
-        return {"Validation Failure": str(e)}
-    else:
-        try:
-            validate(series_2)
-        except Exception as e:
-            return {"Validation Failure": str(e)}
-        else:
-            w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-            return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
+    validate(series_1)
+    validate(series_2)
+    w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
+    return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 # END STATS
