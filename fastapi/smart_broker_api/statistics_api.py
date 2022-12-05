@@ -4,14 +4,13 @@ import requests
 
 
 def interpret_result(result):
-    if result.status_code==200:
+    if result.status_code == 200:
         return result.json()
-    elif result.status_code==500:
+    elif result.status_code == 500:
         return literal_eval(result.content.decode('utf-8'))['detail']
     else:
         print("Unknown Response: Returning Full Response Object")
         return result
-
 
 
 def count(session, series_id):
