@@ -7,7 +7,7 @@ def count(session, series_id):
         "http://" + session.ip + ":" + session.port + "/statistics/count/" + series_id,
         params=payload,
     )
-    return result.json()["count"]
+    return result.json()
 
 
 def mean(session, series_id):
@@ -16,7 +16,7 @@ def mean(session, series_id):
         "http://" + session.ip + ":" + session.port + "/statistics/mean/" + series_id,
         params=payload,
     )
-    return result.json()["mean"]
+    return result.json()
 
 
 def chisquare(session, series_1_id, series_2_id):
@@ -32,7 +32,7 @@ def chisquare(session, series_1_id, series_2_id):
         + series_2_id,
         params=payload,
     )
-    return result.json()["chisquare"]
+    return result.json()
 
 
 def kolmogorovSmirnovTest(session, series_1_id, type_distribution, type_ranking):
@@ -50,7 +50,7 @@ def kolmogorovSmirnovTest(session, series_1_id, type_distribution, type_ranking)
         + series_1_id,
         params=payload,
     )
-    return result.json()["kolmogorov_smirnov_test"]
+    return result.json()
 
 
 def kurtosis(session, series_id):
@@ -64,7 +64,7 @@ def kurtosis(session, series_id):
         + series_id,
         params=payload,
     )
-    return result.json()["kurtosis"]
+    return result.json()
 
 
 def levene_test(session, series_1_id, series_2_id):
@@ -80,7 +80,7 @@ def levene_test(session, series_1_id, series_2_id):
         + series_2_id,
         params=payload,
     )
-    return result.json()["f_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def mann_whitney_u_test(session, series_1_id, series_2_id, alternative, type_ranking):
@@ -101,7 +101,7 @@ def mann_whitney_u_test(session, series_1_id, series_2_id, alternative, type_ran
         + series_2_id,
         params=payload,
     )
-    return result.json()["w_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def min_max(session, series_1_id):
@@ -115,7 +115,7 @@ def min_max(session, series_1_id):
         + series_1_id,
         params=payload,
     )
-    return result.json()["min_sail"], result.json()["max_sail"]
+    return result.json()
 
 
 def paired_t_test(session, series_1_id, series_2_id, alternative):
@@ -135,7 +135,7 @@ def paired_t_test(session, series_1_id, series_2_id, alternative):
         + series_2_id,
         params=payload,
     )
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def pearson(session, series_1_id, series_2_id, alternative):
@@ -155,7 +155,7 @@ def pearson(session, series_1_id, series_2_id, alternative):
         + series_2_id,
         params=payload,
     )
-    return result.json()["pearson_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def skewness(session, series_id):
@@ -169,7 +169,7 @@ def skewness(session, series_id):
         + series_id,
         params=payload,
     )
-    return result.json()["skewness_sail"]
+    return result.json()
 
 
 def spearman(session, series_1_id, series_2_id, alternative, type_ranking):
@@ -190,7 +190,7 @@ def spearman(session, series_1_id, series_2_id, alternative, type_ranking):
         + series_2_id,
         params=payload,
     )
-    return result.json()["spearman_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def student_t_test(session, series_1_id, series_2_id, alternative):
@@ -210,7 +210,7 @@ def student_t_test(session, series_1_id, series_2_id, alternative):
         + series_2_id,
         params=payload,
     )
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def variance(session, series_id):
@@ -224,7 +224,7 @@ def variance(session, series_id):
         + series_id,
         params=payload,
     )
-    return result.json()["variance_sail"]
+    return result.json()
 
 
 def welch_t_test(session, series_1_id, series_2_id, alternative):
@@ -244,7 +244,7 @@ def welch_t_test(session, series_1_id, series_2_id, alternative):
         + series_2_id,
         params=payload,
     )
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
 
 
 def wilcoxon_signed_rank_test(
@@ -267,4 +267,4 @@ def wilcoxon_signed_rank_test(
         + series_2_id,
         params=payload,
     )
-    return result.json()["w_statistic_sail"], result.json()["p_value_sail"]
+    return result.json()
