@@ -49,7 +49,7 @@ def get_dataframe(dataframe_uuid: str):
     return service_reference.reference_to_federated_dataframe(dataframe_uuid)
 
 
-def query_limit_n(series, n=21) -> bool:
+def query_limit_n(series, n=10) -> bool:
     """
     Checks data or series in question is over a given threshold.
 
@@ -60,8 +60,10 @@ def query_limit_n(series, n=21) -> bool:
     """
     return statistics.count(series) > n
 
+
 class SampleTooSmallError(Exception):
     pass
+
 
 def validate(series):
     """
@@ -307,7 +309,6 @@ async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_r
     except Exception as e:
         return {"Validation Failure": str(e)}
     else:
-
         return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
 
 
@@ -319,7 +320,6 @@ async def kurtosis(series_id: str) -> dict:
     except Exception as e:
         return {"Validation Failure": str(e)}
     else:
-
         return {"kurtosis": statistics.kurtosis(series)}
 
 
@@ -339,7 +339,7 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
             return {"Validation Failure": str(e)}
         else:
             f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
-            return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
+            return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mann_whitney_u_test/{series_1_id}/{series_2_id}")
@@ -357,10 +357,8 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
-
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+            return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mean/{series_id}")
@@ -385,8 +383,7 @@ async def min_max(series_id: str) -> dict:
         return {"Validation Failure": str(e)}
     else:
         min, max = statistics.min_max(series)
-
-    return {"min_sail": min, "max_sail": max}
+        return {"min": min, "max": max}
 
 
 @app.post("/statistics/paired_t_test/{series_1_id}/{series_2_id}")
@@ -404,10 +401,8 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/pearson/{series_1_id}/{series_2_id}")
@@ -425,10 +420,8 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
-
-    return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
+            return {"pearson": pearson_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/skewness/{series_id}")
@@ -439,7 +432,7 @@ async def skewness(series_id: str) -> dict:
     except Exception as e:
         return {"Validation Failure": str(e)}
     else:
-        return {"skewness_sail": statistics.skewness(series)}
+        return {"skewness": statistics.skewness(series)}
 
 
 @app.post("/statistics/spearman/{series_1_id}/{series_2_id}")
@@ -457,10 +450,8 @@ async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ra
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-
-    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
+            return {"spearman": spearman_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/student_t_test/{series_1_id}/{series_2_id}")
@@ -478,10 +469,8 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/variance/{series_id}")
@@ -492,7 +481,7 @@ async def variance(series_id: str) -> dict:
     except Exception as e:
         return {"Validation Failure": str(e)}
     else:
-            return {"variance_sail": statistics.variance(series)}
+        return {"variance": statistics.variance(series)}
 
 
 @app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
@@ -510,10 +499,8 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+            return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
@@ -531,10 +518,8 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
         except Exception as e:
             return {"Validation Failure": str(e)}
         else:
-
             w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+            return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 # END STATS
