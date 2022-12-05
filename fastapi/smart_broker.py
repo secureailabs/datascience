@@ -70,7 +70,7 @@ def validate(series):
     :type: None
     """
     if not query_limit_n(series):
-        raise HTTPException(status_code=500, detail="Sample size too small")
+        raise HTTPException(status_code=500, detail="Validation Failure: Sample size too small")
     else:
         return
 
