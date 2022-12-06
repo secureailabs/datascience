@@ -9,7 +9,7 @@ def interpret_result(result):
     elif result.status_code == 500:
         return literal_eval(result.content.decode('utf-8'))['detail']
     else:
-        print("Unknown Response '"+result.status_code+"': Returning Full Response Object")
+        print("Unknown Response '" + result.status_code + "': Returning Full Response Object")
         return result
 
 
