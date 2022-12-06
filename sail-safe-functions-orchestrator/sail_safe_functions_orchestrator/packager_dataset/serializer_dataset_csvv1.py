@@ -6,9 +6,11 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
+    DataModelTabular
 from sail_safe_functions_orchestrator.dataset_tabular import DatasetTabular
-from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import SerializerDatasetBase
+from sail_safe_functions_orchestrator.packager_dataset.serializer_dataset_base import \
+    SerializerDatasetBase
 
 
 class SerializerDatasetCsvv1(SerializerDatasetBase):
