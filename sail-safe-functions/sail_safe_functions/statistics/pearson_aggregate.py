@@ -1,7 +1,7 @@
 import math
 from typing import List, Tuple
-from sail_safe_functions.safe_function_base import SafeFunctionBase
 
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 

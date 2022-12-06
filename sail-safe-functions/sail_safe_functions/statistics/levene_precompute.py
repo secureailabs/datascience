@@ -1,13 +1,13 @@
 from typing import List, Tuple
 
 import numpy as np
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
-from sail_safe_functions.safe_function_base import SafeFunctionBase
 from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
     check_instance,
     check_series_nan,
-    check_empty_series,
     check_series_one_value,
 )
 
@@ -56,8 +56,8 @@ class LevenePrecompute(SafeFunctionBase):
         sum_xx_1 = np.sum(sample_1 * sample_1)
         count_1 = len(sample_1)
 
-        z1j = abs(sample_0 - mean_0)
-        z2j = abs(sample_1 - mean_1)
+        z1j = list(abs(sample_0 - mean_0))
+        z2j = list(abs(sample_1 - mean_1))
 
         list_precompute = [
             sum_x_0,
