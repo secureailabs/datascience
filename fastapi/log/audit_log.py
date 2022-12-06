@@ -17,6 +17,7 @@ import logging
 import os
 import sys
 
+import zmq.asyncio
 
 
 class _AsyncLogger:  # pragma: no cover
