@@ -74,7 +74,7 @@ def get_dataframe(dataframe_uuid: str):
     return service_reference.reference_to_federated_dataframe(dataframe_uuid)
 
 
-def query_limit_n(series, n=30) -> bool:
+def query_limit_n(series, n=10) -> bool:
     """
     Checks data or series in question is over a given threshold.
 
