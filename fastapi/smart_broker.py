@@ -2,14 +2,19 @@ import os
 
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import \
+    DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import \
+    DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
+    DataModelTabular
 from sail_safe_functions_orchestrator.preprocessing import convert
-from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
-from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+from sail_safe_functions_orchestrator.service_client_dict import \
+    ServiceClientDict
+from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import \
+    TestServiceReference
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 
 app = FastAPI()
@@ -56,20 +61,18 @@ def query_limit_n(series, n=10) -> bool:
     return statistics.count(series) > n
 
 
-def validate(series) -> bool:
+def validate(series):
     """
     Validates execution criteria for data inputs
     :param: data: the data item being validated
     :type: Remote Dataframe or Remote Series
-    :return: sample series
-    :type: Error message or True condition depending on whether validation passes
+    :return: None
+    :type: None
     """
-
-    # Check query limit N
     if not query_limit_n(series):
-        return {"payload": "Error: Federation Length Too Small"}
+        raise HTTPException(status_code=500, detail="Validation Failure: Sample size too small")
     else:
-        return True
+        return
 
     # CHECKS
     # TODO:
@@ -265,6 +268,7 @@ async def series_drop_missing(dataset_id: str) -> dict:
 async def chisquare(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
+
     validate(series_1)
     validate(series_2)
 
@@ -284,7 +288,6 @@ async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_r
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
     validate(series)
-
     return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
 
 
@@ -292,7 +295,6 @@ async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_r
 async def kurtosis(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     validate(series)
-
     return {"kurtosis": statistics.kurtosis(series)}
 
 
@@ -300,10 +302,13 @@ async def kurtosis(series_id: str) -> dict:
 async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
+
     validate(series_1)
+
     validate(series_2)
     f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
-    return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
+
+    return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mann_whitney_u_test/{series_1_id}/{series_2_id}")
@@ -313,10 +318,8 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
 
     validate(series_1)
     validate(series_2)
-
     w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
-
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+    return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/mean/{series_id}")
@@ -324,7 +327,6 @@ async def mean(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     validate(series)
-
     return {"mean": statistics.mean(series)}
 
 
@@ -335,8 +337,7 @@ async def min_max(series_id: str) -> dict:
     validate(series)
 
     min, max = statistics.min_max(series)
-
-    return {"min_sail": min, "max_sail": max}
+    return {"min": min, "max": max}
 
 
 @app.post("/statistics/paired_t_test/{series_1_id}/{series_2_id}")
@@ -348,8 +349,7 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
     validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/pearson/{series_1_id}/{series_2_id}")
@@ -359,17 +359,15 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
 
     validate(series_1)
     validate(series_2)
-
     pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
-
-    return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
+    return {"pearson": pearson_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/skewness/{series_id}")
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     validate(series)
-    return {"skewness_sail": statistics.skewness(series)}
+    return {"skewness": statistics.skewness(series)}
 
 
 @app.post("/statistics/spearman/{series_1_id}/{series_2_id}")
@@ -379,10 +377,8 @@ async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ra
 
     validate(series_1)
     validate(series_2)
-
     spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-
-    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
+    return {"spearman": spearman_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/student_t_test/{series_1_id}/{series_2_id}")
@@ -394,15 +390,14 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
     validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/variance/{series_id}")
 async def variance(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     validate(series)
-    return {"variance_sail": statistics.variance(series)}
+    return {"variance": statistics.variance(series)}
 
 
 @app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
@@ -412,10 +407,8 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
 
     validate(series_1)
     validate(series_2)
-
     t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
-
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
+    return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
 @app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
@@ -425,10 +418,8 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
 
     validate(series_1)
     validate(series_2)
-
     w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
-
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
+    return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 # END STATS
