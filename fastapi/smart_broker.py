@@ -31,6 +31,33 @@ for dataset_id, scn_name in zip(list_dataset_id, scn_names):
     print(f"Connected to SCN serving dataset {scn_name}")
 
 
+class Audit_log_task(threading.Thread):
+    """
+    Auxillary class for audit log server in isolated thread
+    """
+
+    def run(self):
+        """
+        Start async logger server
+        """
+        _AsyncLogger.start_log_poller(_AsyncLogger.ipc, _AsyncLogger.port)
+
+
+@app.on_event("startup")
+async def start_audit_logger():
+    """
+    Start async audit logger server at start up as a background task
+    """
+    t = Audit_log_task()
+    t.start()
+
+
+async def log_validation_failure(message):
+    logger = logging.getLogger("uvicorn.error")
+    logger.error(message)
+    await log_message(message)
+
+
 @app.get("/")
 async def root():
     """
@@ -57,24 +84,6 @@ def query_limit_n(series, n=30) -> bool:
     :type: Boolean
     """
     return statistics.count(series) > n
-
-
-class Audit_log_task(threading.Thread):
-    """
-    Auxillary class for audit log server in isolated thread
-    """
-
-    def run(self):
-        """
-        Start async logger server
-        """
-        _AsyncLogger.start_log_poller(_AsyncLogger.ipc, _AsyncLogger.port)
-
-
-async def log_validation_failure(message):
-    logger = logging.getLogger("uvicorn.error")
-    logger.error(message)
-    await log_message(message)
 
 
 async def validate(series):
