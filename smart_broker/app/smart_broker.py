@@ -2,7 +2,6 @@ import logging
 import os
 import threading
 
-from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from log.audit_log import _AsyncLogger, log_message
 from sail_safe_functions_orchestrator import preprocessing, statistics
@@ -13,6 +12,8 @@ from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataM
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
 from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -114,7 +115,7 @@ async def get_dataframe_name_lookup_table() -> dict:
 # DATA MODEL
 
 
-@app.post("/data_model/new_tabular_model")
+@app.get("/data_model/new_tabular_model")
 async def data_frame_tabular() -> dict:
     data_frame_tabular = DataModelTabular()
     data_frame_id = service_reference.get_instance().data_model_tabular_to_reference(data_frame_tabular)
@@ -182,7 +183,7 @@ async def data_model_add_series_model(
 
 # DATA MODEL END
 # DATA INGESTION
-@app.post("/ingestion/read_longitudinal/fhirv1")
+@app.get("/ingestion/read_longitudinal/fhirv1")
 async def read_longitudinal_fhirv1() -> dict:
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
 

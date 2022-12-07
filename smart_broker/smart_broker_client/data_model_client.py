@@ -11,7 +11,7 @@ def create_date_frame(session, data_frame_name):
 
 
 def create_tabular_data(session):
-    result = requests.post(
+    result = requests.get(
         session.http_method + "://" + session.ip + ":" + session.port + "/data_model/new_tabular_model",
         params=None,
     )

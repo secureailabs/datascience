@@ -2,7 +2,7 @@ import requests
 
 
 def read_longitudinal_fhirv1(session):
-    result = requests.post(
+    result = requests.get(
         session.http_method + "://" + session.ip + ":" + session.port + "/ingestion/read_longitudinal/fhirv1",
         params=None,
     )
