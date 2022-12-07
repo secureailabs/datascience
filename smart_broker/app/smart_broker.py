@@ -2,6 +2,8 @@ import logging
 import os
 import threading
 
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from log.audit_log import _AsyncLogger, log_message
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
@@ -11,9 +13,6 @@ from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataM
 from sail_safe_functions_orchestrator.preprocessing import convert
 from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
 from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -43,13 +42,13 @@ class Audit_log_task(threading.Thread):
         _AsyncLogger.start_log_poller(_AsyncLogger.ipc, _AsyncLogger.port)
 
 
-@app.on_event("startup")
-async def start_audit_logger():
-    """
-    Start async audit logger server at start up as a background task
-    """
-    t = Audit_log_task()
-    t.start()
+# @app.on_event("startup")
+# async def start_audit_logger():
+#     """
+#     Start async audit logger server at start up as a background task
+#     """
+#     t = Audit_log_task()
+#     t.start()
 
 
 async def log_validation_failure(message):

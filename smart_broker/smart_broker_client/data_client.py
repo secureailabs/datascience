@@ -3,11 +3,7 @@ import requests
 
 def read_longitudinal_fhirv1(session):
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/ingestion/read_longitudinal/fhirv1",
+        session.http_method + "://" + session.ip + ":" + session.port + "/ingestion/read_longitudinal/fhirv1",
         params=None,
     )
     return result.json()["longitudinal_id"]
@@ -27,7 +23,8 @@ def parse_dataset_tabular_from_longitudinal(
         "data_model_tabular_id": data_model_tabular_id,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -37,34 +34,27 @@ def parse_dataset_tabular_from_longitudinal(
     return result.json()["dataset_id"]
 
 
-def parse_dataset_tabular_from_fhirv1(
-    session, dataset_federation_id, dataset_federation_name, data_model_tabular_id
-):
+def parse_dataset_tabular_from_fhirv1(session, dataset_federation_id, dataset_federation_name, data_model_tabular_id):
     payload = {
         "dataset_federation_id": dataset_federation_id,
         "dataset_federation_name": dataset_federation_name,
         "data_model_tabular_id": data_model_tabular_id,
     }
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/ingestion/dataset_tabular/fhirv1",
+        session.http_method + "://" + session.ip + ":" + session.port + "/ingestion/dataset_tabular/fhirv1",
         params=payload,
     )
     return result.json()["dataset_id"]
 
 
-def data_frame_tabular_select_data_frame(
-    session, data_frame_tabular_id, data_frame_name
-):
+def data_frame_tabular_select_data_frame(session, data_frame_tabular_id, data_frame_name):
     payload = {
         "data_frame_tabular_id": data_frame_tabular_id,
         "data_frame_name": data_frame_name,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -78,12 +68,7 @@ def data_frame_tabular_select_data_frame(
 def data_frame_select_series(session, data_frame_id, series_name):
     payload = {"data_frame_id": data_frame_id, "series_name": series_name}
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/data_frame/select_series/"
-        + data_frame_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/data_frame/select_series/" + data_frame_id,
         params=payload,
     )
     return result.json()["series_id"]

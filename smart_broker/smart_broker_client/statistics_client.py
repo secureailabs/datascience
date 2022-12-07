@@ -7,7 +7,7 @@ def interpret_result(result):
     if result.status_code == 200:
         return result.json()
     elif result.status_code == 500:
-        return literal_eval(result.content.decode('utf-8'))['detail']
+        return literal_eval(result.content.decode("utf-8"))["detail"]
     else:
         print("Unknown Response '" + result.status_code + "': Returning Full Response Object")
         return result
@@ -16,7 +16,7 @@ def interpret_result(result):
 def count(session, series_id):
     payload = {"series_id": series_id}
     result = requests.post(
-        "http://" + session.ip + ":" + session.port + "/statistics/count/" + series_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/count/" + series_id,
         params=payload,
     )
     return interpret_result(result)
@@ -25,7 +25,7 @@ def count(session, series_id):
 def mean(session, series_id):
     payload = {"series_id": series_id}
     result = requests.post(
-        "http://" + session.ip + ":" + session.port + "/statistics/mean/" + series_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/mean/" + series_id,
         params=payload,
     )
     return interpret_result(result)
@@ -34,7 +34,8 @@ def mean(session, series_id):
 def chisquare(session, series_1_id, series_2_id):
     payload = {"series_1_id": series_1_id, "series_2_id": series_2_id}
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -54,7 +55,8 @@ def kolmogorovSmirnovTest(session, series_1_id, type_distribution, type_ranking)
         "type_ranking": type_ranking,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -68,12 +70,7 @@ def kolmogorovSmirnovTest(session, series_1_id, type_distribution, type_ranking)
 def kurtosis(session, series_id):
     payload = {"series_id": series_id}
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/statistics/kurtosis/"
-        + series_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/kurtosis/" + series_id,
         params=payload,
     )
     return interpret_result(result)
@@ -82,7 +79,8 @@ def kurtosis(session, series_id):
 def levene_test(session, series_1_id, series_2_id):
     payload = {"series_1_id": series_1_id, "series_2_id": series_2_id}
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -103,7 +101,8 @@ def mann_whitney_u_test(session, series_1_id, series_2_id, alternative, type_ran
         "type_ranking": type_ranking,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -119,12 +118,7 @@ def mann_whitney_u_test(session, series_1_id, series_2_id, alternative, type_ran
 def min_max(session, series_1_id):
     payload = {"series_id": series_1_id}
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/statistics/min_max/"
-        + series_1_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/min_max/" + series_1_id,
         params=payload,
     )
     return interpret_result(result)
@@ -137,7 +131,8 @@ def paired_t_test(session, series_1_id, series_2_id, alternative):
         "alternative": alternative,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -157,7 +152,8 @@ def pearson(session, series_1_id, series_2_id, alternative):
         "alternative": alternative,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -173,12 +169,7 @@ def pearson(session, series_1_id, series_2_id, alternative):
 def skewness(session, series_id):
     payload = {"series_id": series_id}
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/statistics/skewness/"
-        + series_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/skewness/" + series_id,
         params=payload,
     )
     return interpret_result(result)
@@ -192,7 +183,8 @@ def spearman(session, series_1_id, series_2_id, alternative, type_ranking):
         "type_ranking": type_ranking,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -212,7 +204,8 @@ def student_t_test(session, series_1_id, series_2_id, alternative):
         "alternative": alternative,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -228,12 +221,7 @@ def student_t_test(session, series_1_id, series_2_id, alternative):
 def variance(session, series_id):
     payload = {"series_id": series_id}
     result = requests.post(
-        "http://"
-        + session.ip
-        + ":"
-        + session.port
-        + "/statistics/variance/"
-        + series_id,
+        session.http_method + "://" + session.ip + ":" + session.port + "/statistics/variance/" + series_id,
         params=payload,
     )
     return interpret_result(result)
@@ -246,7 +234,8 @@ def welch_t_test(session, series_1_id, series_2_id, alternative):
         "alternative": alternative,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
@@ -259,9 +248,7 @@ def welch_t_test(session, series_1_id, series_2_id, alternative):
     return interpret_result(result)
 
 
-def wilcoxon_signed_rank_test(
-    session, series_1_id, series_2_id, alternative, type_ranking
-):
+def wilcoxon_signed_rank_test(session, series_1_id, series_2_id, alternative, type_ranking):
     payload = {
         "series_1_id": series_1_id,
         "series_2_id": series_2_id,
@@ -269,7 +256,8 @@ def wilcoxon_signed_rank_test(
         "type_ranking": type_ranking,
     }
     result = requests.post(
-        "http://"
+        session.http_method
+        + "://"
         + session.ip
         + ":"
         + session.port
