@@ -5,12 +5,17 @@ import threading
 from log.audit_log import _AsyncLogger, log_message
 from sail_safe_functions_orchestrator import preprocessing, statistics
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import \
+    DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import \
+    DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
+    DataModelTabular
 from sail_safe_functions_orchestrator.preprocessing import convert
-from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
-from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+from sail_safe_functions_orchestrator.service_client_dict import \
+    ServiceClientDict
+from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import \
+    TestServiceReference
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
@@ -331,8 +336,8 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     await validate(series_1)
-
     await validate(series_2)
+
     f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
 
     return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
@@ -345,6 +350,7 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
 
     await validate(series_1)
     await validate(series_2)
+
     w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
@@ -354,6 +360,7 @@ async def mean(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
+
     return {"mean": statistics.mean(series)}
 
 
@@ -386,6 +393,7 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
 
     await validate(series_1)
     await validate(series_2)
+
     pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
     return {"pearson": pearson_sail, "p_value": p_value_sail}
 
@@ -394,6 +402,7 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     await validate(series)
+
     return {"skewness": statistics.skewness(series)}
 
 
@@ -424,6 +433,7 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
 async def variance(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     await validate(series)
+
     return {"variance": statistics.variance(series)}
 
 
@@ -434,6 +444,7 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
 
     await validate(series_1)
     await validate(series_2)
+
     t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
@@ -445,6 +456,7 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
 
     await validate(series_1)
     await validate(series_2)
+
     w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
