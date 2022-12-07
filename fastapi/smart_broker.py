@@ -1,6 +1,6 @@
 import os
 
-from sail_safe_functions_orchestrator import preprocessing, statistics
+from sail_safe_functions_orchestrator import preprocessing, statistics, visualization
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
 from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
@@ -432,6 +432,33 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
 
 
 # END STATS
+
+# START VISUALIZATION
+
+
+@app.post("/visualization/histogram/")
+async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+
+    validate(series_1)
+
+    figure = visualization.histogram_federated(series_1, bin_count)
+
+    return {"figure": figure}
+
+
+@app.post("/visualization/kernel_density_estimation/")
+async def kernel_density_estimation(series_1_id: str, bin_size: float) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+
+    validate(series_1)
+
+    figure = visualization.kernel_density_estimation(series_1, bin_size)
+
+    return {"figure": figure}
+
+
+# END VISUALIZATION
 import uvicorn
 
 if __name__ == "__main__":
