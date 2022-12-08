@@ -1,14 +1,17 @@
 from typing import List
 
-import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class HistogramPrecompute:
+class HistogramPrecompute(SafeFunctionBase):
     """
     Precomputes data for Histogram
     """
 
-    def run(sample_0_series: pd.Series) -> List[float]:
+    @staticmethod
+    def run(sample_0_series: ReferenceSeries) -> List[float]:
         """Generates the precompute count Frequency for use in a histogram
 
         Parameters
@@ -22,7 +25,8 @@ class HistogramPrecompute:
         list_2 : list of frequecy(count of total number of time each vallue came in the seires) of every unique value.
         """
         # series containing unique value in index and frequency.
-        series = sample_0_series.value_counts()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series)
+        series = sample_0.value_counts()
         l1 = list(series.index)
         l2 = list(series)
 
