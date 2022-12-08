@@ -1,4 +1,5 @@
 import json
+import os
 
 from sail_safe_functions_orchestrator import preprocessing, statistics, visualization
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
@@ -21,7 +22,12 @@ dataframe_name_lookup = {}
 scn_names = []
 list_dataset_id = []
 
-with open("/app/datascience/InitializationVector.json") as initial_settings:
+IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
+
+if os.environ.get("IV_FILEPATH") is not None:
+    IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
+
+with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
         scn_names.append(entry["ip_address"])
