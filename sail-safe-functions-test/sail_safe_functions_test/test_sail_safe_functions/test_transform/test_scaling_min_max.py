@@ -10,40 +10,34 @@ from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_lo
 
 
 @pytest.mark.active
-def test_series_count_min_max():
+def test_series_count_min_max(data_frame_federated_house):
     """
     This is test to found the number of columns/series are right
 
     """
-    path = os.path.join(os.getcwd(), "sail_safe_functions_test/data_sail_safe_functions/california_housing_train.csv")
-    Datasource = DataFrameFederatedLocal.from_csv({"dataset_0": path})
+    datasource = data_frame_federated_house
     transform = ScalingMinMax()
-    ans = transform.run(Datasource, ["households"], ["households2"], [0, 1], False)
-    ans_2 = list(ans.dict_reference_data_frame.values())[0]
+    transformed = transform.run(datasource, ["households"], ["households2"], [0, 1], False)
+    reference_transformed = list(transformed.dict_reference_data_frame.values())[0]
 
-    new = ServiceReference.get_instance().reference_to_data_frame(ans_2)
+    final_datasource = ServiceReference.get_instance().reference_to_data_frame(reference_transformed)
 
-    assert len(Datasource.list_series_name) + 1 == len(new.list_series_name)
+    assert 1 == len(final_datasource.list_series_name)
 
 
 @pytest.mark.active
-def test_values():
+def test_values(data_frame_federated_house):
     """
     This is test to verify that after transform values lies between zero and one
 
     """
-
-    path = os.path.join(os.getcwd(), "sail_safe_functions_test/data_sail_safe_functions/california_housing_train.csv")
-    Datasource = DataFrameFederatedLocal.from_csv({"dataset_0": path})
+    datasource = data_frame_federated_house
     transform = ScalingMinMax()
-    ans = transform.run(Datasource, ["households"], ["households2"], [0, 1], False)
-    ans_2 = list(ans.dict_reference_data_frame.values())[0]
+    transformed = transform.run(datasource, ["households"], ["households2"], [0, 1], False)
+    reference_transformed = list(transformed.dict_reference_data_frame.values())[0]
 
-    new = ServiceReference.get_instance().reference_to_data_frame(ans_2)
-    array_source = Datasource["households"].to_numpy().astype(numpy.float64)
-    array_target = new["households2"].to_numpy().astype(numpy.float64)
+    final_datasource = ServiceReference.get_instance().reference_to_data_frame(reference_transformed)
 
-    assert 0 <= array_target[0] <= 1
-    assert 0 <= array_target[5] <= 1
-    assert 0 <= array_target[10] <= 1
-    assert 0 <= array_target[20] <= 1
+    array_target = final_datasource["households2"].to_numpy().astype(numpy.float64)
+    for i in range(len(array_target)):
+        assert 0 <= array_target[i] <= 1

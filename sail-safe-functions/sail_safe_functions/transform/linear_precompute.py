@@ -3,10 +3,8 @@ from typing import List
 import numpy
 import pandas
 from sail_safe_functions_orchestrator.data_frame import DataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import \
-    DataModelSeries
-from sail_safe_functions_orchestrator.reference_data_frame import \
-    ReferenceDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
 from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
@@ -42,16 +40,13 @@ class LinearPrecompute:
         """
         data_frame_source = ServiceReference.get_instance().reference_to_data_frame(data_frame_source)  # type: ignore
 
+        array_source_ini = data_frame_source.select_series(list_name_series_source).to_numpy().astype(numpy.float64)  # type: ignore
+        array_source = numpy.c_[array_source_ini, numpy.ones(array_source_ini.shape[0])]
         if inverse:
             array_input = numpy.linalg.inv(array_input)
 
-        array_source = data_frame_source.select_series(list_name_series_source).to_numpy().astype(numpy.float64)  # type: ignore
-        array_source = numpy.c_[array_source, numpy.ones(array_source.shape[0])]
         array_target = numpy.dot(array_source, array_input)
         list_series = []
-
-        for series_name in data_frame_source.list_series_name:  # type: ignore
-            list_series.append(data_frame_source[series_name])
 
         for i, series_name in enumerate(list_name_series_target):
             data_model_series = DataModelSeries.create_numerical(series_name=series_name)

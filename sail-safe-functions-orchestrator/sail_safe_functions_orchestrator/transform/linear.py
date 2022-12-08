@@ -67,9 +67,6 @@ class Linear(TransformBase):
                 )
             )
         data_frame_source_2 = ServiceReference.get_instance().reference_to_data_frame(list_reference[0])
-        df = DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
-        )
         return DataFrameFederated(
             data_frame_source.service_client, list_reference, data_frame_source_2.data_model_data_frame
         )
