@@ -15,6 +15,7 @@ class KernelDensityEstimationAggregate:
     # L4 -> Frequency of unique value for the 2nd series.
     # And so on and on
 
+    @staticmethod
     def run(list_list_precompute: List[List[float]]):
         """
         Function get the aggregated list value counts
