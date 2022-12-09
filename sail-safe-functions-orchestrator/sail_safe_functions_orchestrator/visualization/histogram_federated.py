@@ -2,11 +2,16 @@ import plotly.express as px
 from sail_safe_functions.visualization.histogram_aggregate import HistogramAggregate
 from sail_safe_functions.visualization.histogram_precompute import HistogramPrecompute
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.tools_common import sanitize_dict_for_json
+
+
+def histogram_federated(sample_0: SeriesFederated, bin_count: int):
+    return HistogramFederate.run(sample_0, bin_count)
 
 
 class HistogramFederate:
     @staticmethod
-    def hist(sample_0: SeriesFederated, bin_count: int):
+    def run(sample_0: SeriesFederated, bin_count: int):
         """
         Performs the federated histogram.
         It take on federated series and bin count. Returns the histogram.
@@ -49,13 +54,17 @@ class HistogramFederate:
 
         """
         list_list_precompute = []
-        for series in sample_0.dict_series.values():
-            list_list_precompute.append(HistogramPrecompute.run(series))
-
+        for dataset_id in sample_0.list_dataset_id:
+            client = sample_0.service_client.get_client(dataset_id)
+            list_list_precompute.append(
+                client.call(
+                    HistogramPrecompute,
+                    sample_0.dict_reference_series[dataset_id],
+                )
+            )
         hist_value = HistogramAggregate.run(list_list_precompute)
-        fig = px.histogram(hist_value, nbins=bin_count)
-        return fig
 
-    @staticmethod
-    def run(sample_0: SeriesFederated, bin_count: int):
-        return HistogramFederate.hist(sample_0, bin_count)
+        fig = px.histogram(hist_value, nbins=bin_count)
+        fig_dict = fig.to_dict()
+        fig_dict = sanitize_dict_for_json(fig_dict)
+        return fig_dict
