@@ -1,10 +1,23 @@
 import uuid
+from typing import Dict
+from uuid import uuid4
 
 import requests
 
-from sail_session import ResearcherSession
-
 PORT = 8000
+
+
+class ResearcherSession:
+    username: str
+    jwt: str
+    ip: str
+    # Dict of federation name to information about the cluster (id, ip)
+    provision_clusters: Dict
+
+    def get_federation_connect_string(self, federation_name: str):
+        if federation_name in self.provision_clusters:
+            return f'http://{self.provision_clusters[federation_name]["cluster_ip"]}:{self.provision_clusters[federation_name]["cluster_port"]}'
+        raise Exception(f"Federation {federation_name} not found")
 
 
 def login(user_name: str, password: str, ip: str) -> ResearcherSession:
@@ -87,11 +100,13 @@ def connect_to_federation(session: ResearcherSession, federation_name: str):
     state = response.json()["state"]
 
     print(f"State is {state}")
-    return_dict = None
+    return_dict = {}
     if state == "WAITING_FOR_DATA":
         # For now we assume we got a valid IP to a smart broker
         return_dict["ip"] = response.json()["ipaddress"]
         return_dict["port"] = 8000
+    else:
+        return_dict = None
 
     return return_dict
 
@@ -141,127 +156,3 @@ def deprovision_federation_by_id(session: ResearcherSession, federation_id: uuid
 
     if response.status_code != 204:
         raise Exception(f"Failed to de-provision, status: {response.status_code}")
-
-
-def federation_mean(session: ResearcherSession, federation_name: str):
-
-    payload = {"series_uuid": "some identifier"}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/mean", params=payload)
-    return result.json()["mean_sail"]
-
-
-def federation_chi_square(session: ResearcherSession, federation_name: str, series_uuid_1: str, series_uuid_2: str):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/chisquare", params=payload)
-    return result.json()["chisquare_sail"]
-
-
-def federation_kolmogorov_smirnov_test(
-    session: ResearcherSession, federation_name: str, series_uuid, type_distribution, type_ranking
-):
-    payload = {"series_uuid": series_uuid, "type_distribution": type_distribution, "type_ranking": type_ranking}
-    result = requests.get(
-        f"{session.get_federation_connect_string(federation_name)}/kolmogorovSmirnovTest", params=payload
-    )
-    return result.json()["k_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_kurtosis(session: ResearcherSession, federation_name: str, series_uuid):
-    payload = {"series_uuid": series_uuid}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/kurtosis", params=payload)
-    return result.json()["kurtosis_sail"]
-
-
-def federation_levene_test(session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/leveneTest", params=payload)
-    return result.json()["f_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_mann_whitney_utest(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative, type_ranking
-):
-    payload = {
-        "series_uuid_1": series_uuid_1,
-        "series_uuid_2": series_uuid_2,
-        "alternative": alternative,
-        "type_ranking": type_ranking,
-    }
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/mannWhitneyUTest", params=payload)
-    return result.json()["w_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_min_max(session: ResearcherSession, federation_name: str, series_uuid):
-    payload = {"series_uuid": series_uuid}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/minMax", params=payload)
-    return result.json()["min_sail"], result.json()["max_sail"]
-
-
-def federation_paired_t_test(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative
-):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2, "alternative": alternative}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/pairedTTest", params=payload)
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_pearson(session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2, "alternative": alternative}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/pearson", params=payload)
-    return result.json()["pearson_sail"], result.json()["p_value_sail"]
-
-
-def federation_skewness(session: ResearcherSession, federation_name: str, series_uuid):
-    payload = {"series_uuid": series_uuid}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/skewness", params=payload)
-    return result.json()["skewness_sail"]
-
-
-def federation_spearman(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative, type_ranking
-):
-    payload = {
-        "series_uuid_1": series_uuid_1,
-        "series_uuid_2": series_uuid_2,
-        "alternative": alternative,
-        "type_ranking": type_ranking,
-    }
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/spearman", params=payload)
-    return result.json()["spearman_sail"], result.json()["p_value_sail"]
-
-
-def federation_student_ttest(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative
-):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2, "alternative": alternative}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/studentTTest", params=payload)
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_variance(session: ResearcherSession, federation_name: str, series_uuid):
-    payload = {"series_uuid": series_uuid}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/variance", params=payload)
-    return result.json()["variance_sail"]
-
-
-def federation_welch_t_test(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative
-):
-    payload = {"series_uuid_1": series_uuid_1, "series_uuid_2": series_uuid_2, "alternative": alternative}
-    result = requests.get(f"{session.get_federation_connect_string(federation_name)}/welchTTest", params=payload)
-    return result.json()["t_statistic_sail"], result.json()["p_value_sail"]
-
-
-def federation_wilcoxon_signed_rank_test(
-    session: ResearcherSession, federation_name: str, series_uuid_1, series_uuid_2, alternative, type_ranking
-):
-    payload = {
-        "series_uuid_1": series_uuid_1,
-        "series_uuid_2": series_uuid_2,
-        "alternative": alternative,
-        "type_ranking": type_ranking,
-    }
-    result = requests.get(
-        f"{session.get_federation_connect_string(federation_name)}/wilcoxonSignedRankTest", params=payload
-    )
-    return result.json()["w_statistic_sail"], result.json()["p_value_sail"]
