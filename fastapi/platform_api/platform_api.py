@@ -90,25 +90,7 @@ def connect_to_federation(session: ResearcherSession, federation_name: str):
     # Reach out to the API to get information about a provision
     broker_id = session.provision_clusters[federation_name]["broker_id"]
 
-    endpoint = f"https://{session.ip}:{PORT}/secure-computation-node/{broker_id}"
-    request_headers = {"Authorization": f"Bearer {session.jwt}"}
-    response = requests.get(endpoint, verify=False, headers=request_headers)
-
-    if response.status_code != 200:
-        raise Exception(f"Failed to get status for federation {federation_name}")
-
-    state = response.json()["state"]
-
-    print(f"State is {state}")
-    return_dict = {}
-    if state == "WAITING_FOR_DATA":
-        # For now we assume we got a valid IP to a smart broker
-        return_dict["ip"] = response.json()["ipaddress"]
-        return_dict["port"] = 8000
-    else:
-        return_dict = None
-
-    return return_dict
+    return connect_to_federation_by_id(session, broker_id)
 
 
 def connect_to_federation_by_id(session: ResearcherSession, broker_id: str):
@@ -122,13 +104,22 @@ def connect_to_federation_by_id(session: ResearcherSession, broker_id: str):
 
     state = response.json()["state"]
 
-    print(f"State is {state}")
     return_dict = {}
     if state == "WAITING_FOR_DATA":
+
         # For now we assume we got a valid IP to a smart broker
         return_dict["ip"] = response.json()["ipaddress"]
-        return_dict["port"] = 8000
+        return_dict["port"] = "8000"
+        # Try to connect to an endpoint
+        test_endpoint = f"https://{return_dict['ip']}:{return_dict['port']}/docs"
+        try:
+            response = requests.get(test_endpoint, verify=False)
+            if response.status_code != 200:
+                return_dict = None
+        except Exception:
+            return_dict = None
     else:
+        print(f"Federation is being provisioned...")
         return_dict = None
 
     return return_dict
@@ -151,7 +142,6 @@ def deprovision_federation_by_id(session: ResearcherSession, federation_id: uuid
     endpoint = f"https://{session.ip}:{PORT}/data-federations-provisions/{federation_id}"
     request_headers = {"Authorization": f"Bearer {session.jwt}"}
 
-    print(f"Endpoint is {endpoint}")
     response = requests.delete(endpoint, verify=False, headers=request_headers)
 
     if response.status_code != 204:
