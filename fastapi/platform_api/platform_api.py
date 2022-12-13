@@ -53,6 +53,20 @@ def get_federations(session: ResearcherSession):
     return federation_request.json()["data_federations"]
 
 
+def get_federation_datasets_by_name(session: ResearcherSession, federation_name: str):
+
+    federations = get_federations(session)
+
+    federation = [federation for federation in federations if federation["name"] == federation_name]
+
+    if len(federation) != 1:
+        raise Exception("Failed to find federation {federation_name}")
+
+    dataset_list = [dataset["id"] for dataset in federation[0]["datasets"]]
+
+    return dataset_list
+
+
 def provision_federation_by_name(session: ResearcherSession, federation_name: str):
 
     federations = get_federations(session)
