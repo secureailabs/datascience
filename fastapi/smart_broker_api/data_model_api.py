@@ -3,7 +3,6 @@ import requests
 
 def create_date_frame(session, data_frame_name):
     payload = {"data_frame_name": data_frame_name}
-    print(session.get_url())
     result = requests.post(session.get_url() + "/data_model/new_data_frame_model", params=payload, verify=False)
     return result.json()["data_model_id"]
 
