@@ -20,15 +20,14 @@ service_reference = TestServiceReference.get_instance()
 
 dataframe_name_lookup = {}
 
-list_dataset_id = []
-list_dataset_id.append("a892ef90-4f6f-11ed-bdc3-0242ac120002")
-list_dataset_id.append("c75f663e-d9ee-4f1c-9458-79e92d1c126a")
 
 client = ClientRPCZero("127.0.0.1", 5010)
 service_client = ServiceClientDict()
-for dataset_id in list_dataset_id:
-    service_client.register_client(dataset_id, client)
-    print(f"Connected to SCN serving dataset {dataset_id}")
+
+service_client.register_client("a892ef90-4f6f-11ed-bdc3-0242ac120002", client)
+print(f"Connected to SCN serving dataset a892ef90-4f6f-11ed-bdc3-0242ac120002")
+service_client.register_client("c75f663e-d9ee-4f1c-9458-79e92d1c126a", client)
+print(f"Connected to SCN serving dataset c75f663e-d9ee-4f1c-9458-79e92d1c126a")
 
 
 @app.get("/")
@@ -156,6 +155,7 @@ async def data_model_add_series_model(
 # DATA INGESTION
 @app.post("/ingestion/read_longitudinal/fhirv1")
 async def read_longitudinal_fhirv1() -> dict:
+    list_dataset_id = ["a892ef90-4f6f-11ed-bdc3-0242ac120002"]  # TODO this is the worst!
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
 
     longitudinal_id = service_reference.get_instance().federated_longitudinal_data_to_reference(dataset_longitudinal)
