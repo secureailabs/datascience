@@ -12,7 +12,7 @@ def kernel_density_estimation(sample_0: SeriesFederated, bin_size: float):
     -----------
         :param sample_0: The first sample of data
         :type sample_0: SeriesFederated
-        :param bin_size: The second sample of data
+        :param bin_size: Defines the width of each bin
         :type bin_size: float
         :return: pyplot figure valuie
         :rtype: pyplot object
