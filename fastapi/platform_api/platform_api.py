@@ -8,11 +8,12 @@ PORT = 8000
 
 
 class ResearcherSession:
-    username: str
-    jwt: str
-    ip: str
-    # Dict of federation name to information about the cluster (id, ip)
-    provision_clusters: Dict
+    def __init__(self, username, jwt, ip):
+        self.username = username
+        self.jwt = jwt
+        self.ip = ip
+        # Dict of federation name to information about the cluster (id, ip)
+        self.provision_clusters = {}
 
     def get_federation_connect_string(self, federation_name: str):
         if federation_name in self.provision_clusters:
@@ -26,13 +27,10 @@ def login(user_name: str, password: str, ip: str) -> ResearcherSession:
     login_body = {"username": user_name, "password": password}
     login_request = requests.post(login_endpoint, login_body, verify=False)
 
-    new_session = ResearcherSession()
+    new_session = None
 
     if login_request.status_code == 200:
-        new_session.jwt = login_request.json()["access_token"]
-        new_session.username = user_name
-        new_session.ip = ip
-        new_session.provision_clusters = dict()
+        new_session = ResearcherSession(user_name, login_request.json()["access_token"], ip)
     else:
         raise Exception("Failed to login")
 
@@ -60,7 +58,7 @@ def get_federation_datasets_by_name(session: ResearcherSession, federation_name:
     federation = [federation for federation in federations if federation["name"] == federation_name]
 
     if len(federation) != 1:
-        raise Exception("Failed to find federation {federation_name}")
+        raise Exception(f"Failed to find federation {federation_name}")
 
     dataset_list = [dataset["id"] for dataset in federation[0]["datasets"]]
 
@@ -74,7 +72,7 @@ def provision_federation_by_name(session: ResearcherSession, federation_name: st
     federation_id = [federation["id"] for federation in federations if federation["name"] == federation_name]
 
     if len(federation_id) != 1:
-        raise Exception("Failed to find federation {federation_name}")
+        raise Exception(f"Failed to find federation {federation_name}")
 
     print(f"Id for federation is {federation_id[0]}")
 
