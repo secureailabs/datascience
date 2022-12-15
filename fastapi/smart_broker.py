@@ -190,6 +190,7 @@ async def read_dataset_tabular_from_longitudinal(
 async def dataset_tabular_fhirv1(
     dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
 ) -> dict:
+    list_dataset_id = ["a892ef90-4f6f-11ed-bdc3-0242ac120002"]  # TODO this is the worst!
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
     data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
 
