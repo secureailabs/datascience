@@ -1,3 +1,5 @@
+from typing import List
+
 import requests
 
 
@@ -38,6 +40,7 @@ def parse_dataset_tabular_from_fhirv1(session, dataset_federation_id, dataset_fe
         "dataset_federation_name": dataset_federation_name,
         "data_model_tabular_id": data_model_tabular_id,
     }
+
     result = requests.post(session.get_url() + "/ingestion/dataset_tabular/fhirv1", params=payload, verify=False)
     return result.json()["dataset_id"]
 
@@ -63,3 +66,15 @@ def data_frame_select_series(session, data_frame_id, series_name):
         verify=False,
     )
     return result.json()["series_id"]
+
+
+def read_dataset_csvv1(session, list_dataset_id: List[str]):
+    payload = {
+        "list_dataset_id": list_dataset_id,
+    }
+    result = requests.post(
+        session.get_url() + "/ingestion/read_dataset_csvv1",
+        json=payload,
+        verify=False,
+    )
+    return result.json()["dataset_id"]
