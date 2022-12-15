@@ -25,12 +25,11 @@ dataframe_name_lookup = {}
 scn_names = []
 list_dataset_id = []
 
-IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
 
 if os.environ.get("IV_FILEPATH") is not None:
     IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
-with open(IV_SETTINGS_FILE) as initial_settings:
+with open(IV_SETTINGS_FILE, "r") as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
         scn_names.append(entry["ip_address"])
