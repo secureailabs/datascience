@@ -12,7 +12,6 @@ def read_dataset_fhirv1(service_client: ServiceClientBase, list_dataset_id: List
 class ReadDatasetFhirv1:
     """Federate wrapper safe function for the pandas concatenate"""
 
-    @staticmethod
     def run(service_client: ServiceClientBase, list_dataset_id: List[str]) -> DatasetLongitudinalFederated:
         list_reference = []
         for dataset_id in list_dataset_id:
