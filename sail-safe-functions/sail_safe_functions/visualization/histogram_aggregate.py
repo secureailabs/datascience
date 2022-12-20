@@ -15,7 +15,8 @@ class HistogramAggregate:
     # L4 -> Frequency of unique value for the 2nd series.
     # And so on and on
 
-    def run(list_list_precompute: List[List[float]]):
+    @staticmethod
+    def run(list_list_precompute: List[List[List[float]]]):
         """
         Function get the aggregated list value counts
 
@@ -24,12 +25,13 @@ class HistogramAggregate:
         :return: values for histogram
         :rtype: value
         """
+        print(list_list_precompute)
         final = {}
-        for precompute in list_list_precompute:
+        for list_precompute in list_list_precompute:
             # initialising dictionaries
             final = Counter(final)
-            L1 = precompute[0]
-            L2 = precompute[1]
+            L1 = list_precompute[0]
+            L2 = list_precompute[1]
             ini_dictionary2 = {L1[i]: L2[i] for i in range(len(L1))}
             ini_dictionary2 = Counter(ini_dictionary2)
             # combining dictionaries

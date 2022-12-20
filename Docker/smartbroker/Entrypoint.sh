@@ -23,19 +23,24 @@ else
     fi
 
     # Unpack the tar package
-    tar -xf package.tar.gz
+    tar -xvf package.tar.gz
 
     # Move the InitializerVector to the Binary folder
     mv InitializationVector.json datascience/
 fi
 
+pushd RPCLib
+pip install -e zero
+popd
+
 # Start the Public API Server
 cd datascience
 pip install -e sail-safe-functions
 pip install -e sail-safe-functions-orchestrator
+pip install -e sail-safe-functions-test
 
 cd fastapi
-uvicorn main:app --host 0.0.0.0 --port 8000 $reload
+PATH_DIR_PUBLIC_KEY_ZEROMQ=/app/RPCLib/public_keys/ PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT=/app/RPCLib/private_keys/client.key_secret PATH_DIR_DATASET=/data/ uvicorn smart_broker:app --host 0.0.0.0 --port 8000 $reload
 
 # To keep the container running
 tail -f /dev/null

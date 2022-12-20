@@ -1,21 +1,19 @@
 import logging
 import os
 import threading
-
+import json
 from log.audit_log import _AsyncLogger, log_message
-from sail_safe_functions_orchestrator import preprocessing, statistics
+from typing import List
+
+from pydantic import BaseModel
+from sail_safe_functions_orchestrator import preprocessing, statistics, visualization
 from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import \
-    DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import \
-    DataModelSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import \
-    DataModelTabular
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions_orchestrator.preprocessing import convert
-from sail_safe_functions_orchestrator.service_client_dict import \
-    ServiceClientDict
-from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import \
-    TestServiceReference
+from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
+from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
@@ -26,14 +24,27 @@ service_reference = TestServiceReference.get_instance()
 
 dataframe_name_lookup = {}
 
-scn_names = ["127.0.0.1"]
+scn_names = []
 list_dataset_id = []
-list_dataset_id.append("a892ef90-4f6f-11ed-bdc3-0242ac120002")
 
+IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
+
+if os.environ.get("IV_FILEPATH") is not None:
+    IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
+
+with open(IV_SETTINGS_FILE) as initial_settings:
+    configuration = json.load(initial_settings)
+    for entry in configuration["secure_computation_nodes"]:
+        scn_names.append(entry["ip_address"])
+        list_dataset_id.append(entry["dataset_id"])
+
+
+client = ClientRPCZero("127.0.0.1", 5010)
 service_client = ServiceClientDict()
+
 for dataset_id, scn_name in zip(list_dataset_id, scn_names):
-    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5010))
-    print(f"Connected to SCN serving dataset {scn_name}")
+    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5556))
+    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 
 class Audit_log_task(threading.Thread):
@@ -239,6 +250,18 @@ async def dataset_tabular_fhirv1(
     return {"dataset_id": dataset_id}
 
 
+class DataFederation(BaseModel):
+    list_dataset_id: List[str]
+
+
+@app.post("/ingestion/read_dataset_csvv1")
+async def read_dataset_csvv1(data_federation: DataFederation) -> dict:
+    list_dataset_id = data_federation.list_dataset_id
+    dataset_tabular = preprocessing.read_dataset_csvv1(service_client, list_dataset_id)
+    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
+    return {"dataset_id": dataset_id}
+
+
 # DATA INGESTION END
 # DATAFRAME MANIPULATION
 
@@ -285,6 +308,16 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 async def series_drop_missing(dataset_id: str) -> dict:
     orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataset_id)
     new_data_frame = preprocessing.drop_missing(orig_data_frame, axis=0, how="any", thresh=None, subset=None)
+
+    new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
+@app.post("/preprocessing/data_frame/query/{data_frame_id}")
+async def data_frame_query(data_frame_id: str, query_str: str) -> dict:
+    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
+    new_data_frame = preprocessing.query(orig_data_frame, query_str)
 
     new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
 
@@ -462,6 +495,33 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
 
 
 # END STATS
+
+# START VISUALIZATION
+
+
+@app.post("/visualization/histogram/")
+async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+
+    validate(series_1)
+
+    figure = visualization.histogram_federated(series_1, bin_count)
+
+    return {"figure": figure}
+
+
+@app.post("/visualization/kernel_density_estimation/")
+async def kernel_density_estimation(series_1_id: str, bin_size: float) -> dict:
+    series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
+
+    validate(series_1)
+
+    figure = visualization.kernel_density_estimation(series_1, bin_size)
+
+    return {"figure": figure}
+
+
+# END VISUALIZATION
 import uvicorn
 
 if __name__ == "__main__":
