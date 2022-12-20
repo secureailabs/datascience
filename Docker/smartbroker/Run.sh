@@ -41,6 +41,7 @@ if [ "$mode" == "dev" ]
 then
     echo "Running in dev mode"
     mountOption=$(pwd)/../../:/app/datascience
+    network="--network sailNetwork"
     detach=it
 else
     echo "Running in prod mode"
@@ -58,6 +59,8 @@ docker run \
 -$detach \
 -p 8000:8001 \
 -p 9090:9091 \
+$network \
+--name $imageName \
 --env MODE=$mode \
 -v $mountOption \
 -v $(pwd)/certs:/etc/nginx/certs \

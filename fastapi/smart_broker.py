@@ -1,3 +1,4 @@
+import json
 import os
 from typing import List
 
@@ -21,13 +22,28 @@ service_reference = TestServiceReference.get_instance()
 dataframe_name_lookup = {}
 
 
+scn_names = []
+list_dataset_id = []
+
+IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
+
+if os.environ.get("IV_FILEPATH") is not None:
+    IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
+
+with open(IV_SETTINGS_FILE) as initial_settings:
+    configuration = json.load(initial_settings)
+    for entry in configuration["secure_computation_nodes"]:
+        scn_names.append(entry["ip_address"])
+        list_dataset_id.append(entry["dataset_id"])
+
+
 client = ClientRPCZero("127.0.0.1", 5010)
 service_client = ServiceClientDict()
 
-service_client.register_client("a892ef90-4f6f-11ed-bdc3-0242ac120002", client)
-print(f"Connected to SCN serving dataset a892ef90-4f6f-11ed-bdc3-0242ac120002")
-service_client.register_client("c75f663e-d9ee-4f1c-9458-79e92d1c126a", client)
-print(f"Connected to SCN serving dataset c75f663e-d9ee-4f1c-9458-79e92d1c126a")
+
+for dataset_id, scn_name in zip(list_dataset_id, scn_names):
+    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5556))
+    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 
 @app.get("/")
@@ -264,6 +280,16 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 async def series_drop_missing(dataset_id: str) -> dict:
     orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataset_id)
     new_data_frame = preprocessing.drop_missing(orig_data_frame, axis=0, how="any", thresh=None, subset=None)
+
+    new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
+
+    return {"result_data_frame_id": new_data_frame_id}
+
+
+@app.post("/preprocessing/data_frame/query/{data_frame_id}")
+async def data_frame_query(data_frame_id: str, query_str: str) -> dict:
+    orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
+    new_data_frame = preprocessing.query(orig_data_frame, query_str)
 
     new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
 

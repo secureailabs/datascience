@@ -15,7 +15,8 @@ RUN apt-get update && \
   curl \
   sudo \
   build-essential \
-  python3-pip
+  python3-pip \
+  iputils-ping
 
 RUN rm -rf /var/lib/apt/lists/*
 
