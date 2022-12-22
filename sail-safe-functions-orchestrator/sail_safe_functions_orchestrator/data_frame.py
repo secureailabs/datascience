@@ -3,8 +3,8 @@ from typing import List
 
 import pandas
 from pandas import DataFrame as DataFramePandas
-
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import \
+    DataModelDataFrame
 from sail_safe_functions_orchestrator.series import Series
 
 
@@ -36,7 +36,7 @@ class DataFrame(DataFramePandas):
             super().__getitem__(series_name).to_list(),
         )
 
-    def select_series(self, list_series_name: str) -> Series:
+    def select_series(self, list_series_name: List[str]) -> Series:
         list_series = []
         for series_name in list_series_name:
             if series_name not in self.list_series_name:
