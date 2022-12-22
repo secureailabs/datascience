@@ -8,13 +8,13 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 import pytest
-
-from config import DATA_PATH
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
 from sail_safe_functions_orchestrator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
 from sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+
+from config import DATA_PATH
 
 
 @pytest.fixture
@@ -211,3 +211,20 @@ def two_sample_small_paired() -> Tuple[SeriesFederated, SeriesFederated]:
     sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
 
     return (sample_0, sample_1)
+
+
+@pytest.fixture
+def data_frame_federated_house() -> DataFrameFederated:
+    """
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    """
+
+    list_name_file_csv = ["california_housing_train.csv"]
+
+    dict_csv = {}
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(DATA_PATH, "data_csv_house", name_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    return DataFrameFederatedLocal.from_csv(dict_csv)
