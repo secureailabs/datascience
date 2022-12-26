@@ -33,6 +33,7 @@ from sail_safe_functions_orchestrator.statistics.mean import Mean
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
     SeriesFederatedLocal,
 )
+import numpy
 
 
 @pytest.mark.active
@@ -56,7 +57,65 @@ def test_mean(one_sample_big: SeriesFederatedLocal):
     mean_numpy = estimator.run_reference(sample_0)
 
     # Assert
-    assert mean_sail == pytest.approx(mean_numpy, 0.0001)</code></pre>
+    assert mean_sail == pytest.approx(mean_numpy, 0.0001)
+
+
+@pytest.mark.active
+def test_mean_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_mean_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_mean_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -113,6 +172,91 @@ def test_mean_direct(one_sample_big: SeriesFederatedLocal):
     statistics.mean(one_sample_big)</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_empty"><code class="name flex">
+<span>def <span class="ident">test_mean_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_mean_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_nan_value"><code class="name flex">
+<span>def <span class="ident">test_mean_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception if series containing nan values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_mean_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_one_value"><code class="name flex">
+<span>def <span class="ident">test_mean_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_mean_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Mean()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -133,6 +277,9 @@ def test_mean_direct(one_sample_big: SeriesFederatedLocal):
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean">test_mean</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_direct" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_direct">test_mean_direct</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_empty">test_mean_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_nan_value">test_mean_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.mean_test.test_mean_one_value">test_mean_one_value</a></code></li>
 </ul>
 </li>
 </ul>

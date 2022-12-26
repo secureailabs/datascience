@@ -27,36 +27,40 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import pandas
-from sail_safe_functions.preprocessing.convert.onehot_to_categorical import (
-    OnehotToCategorical,
-)
+from sail_safe_functions.preprocessing.convert.onehot_to_categorical import OnehotToCategorical
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_frame import DataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_data_frame import ReferenceDataFrame
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class Float64ToTabularPrecompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
-
-        list_data_frame_target = []
-        for name_column in table_schema[&#34;list_name_column&#34;]:
-            column_schema = table_schema[&#34;dict_column&#34;][name_column]
-            if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
+class Float64ToTabularPrecompute(SafeFunctionBase):
+    def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -&gt; pandas.DataFrame:
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+        list_series = []
+        for series_name in data_model_target.list_series_name:
+            data_model_series = data_model_target[series_name]
+            if data_model_series.type_data_level == DataModelSeries.DataLevelUnique:
                 pass
 
-            if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    OnehotToCategorical.run(column_schema, data_frame_source)
-                )
-            elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-                series = data_frame_source[name_column]
-                resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-                list_data_frame_target.append(
-                    (
-                        (series * (1 / resolution)).round().astype(int) * resolution
-                    ).to_frame()
-                )
+            if data_model_series.type_data_level == DataModelSeries.DataLevelCategorical:
+                list_series.append(OnehotToCategorical.run(data_frame_source, data_model_series))
 
-        return pandas.concat(list_data_frame_target, axis=1)</code></pre>
+            elif data_model_series.type_data_level == DataModelSeries.DataLevelInterval:
+                series_pandas = data_frame_source[series_name]
+                resolution = data_model_series.resolution
+                if (resolution is not None) and (resolution != -1):  # TODO oldfassioned maybe avoid magic value
+                    series_pandas = (series_pandas * (1 / resolution)).round().astype(int) * resolution
+                series = Series.from_pandas(data_frame_source.dataset_id, data_model_series, series_pandas)
+                series.index = series_pandas.index
+                list_series.append(series)
+
+        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        return reference_data_frame_target</code></pre>
 </details>
 </section>
 <section>
@@ -77,36 +81,39 @@ class Float64ToTabularPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Float64ToTabularPrecompute:
-    def run(
-        table_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
-
-        list_data_frame_target = []
-        for name_column in table_schema[&#34;list_name_column&#34;]:
-            column_schema = table_schema[&#34;dict_column&#34;][name_column]
-            if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
+<pre><code class="python">class Float64ToTabularPrecompute(SafeFunctionBase):
+    def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -&gt; pandas.DataFrame:
+        data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+        list_series = []
+        for series_name in data_model_target.list_series_name:
+            data_model_series = data_model_target[series_name]
+            if data_model_series.type_data_level == DataModelSeries.DataLevelUnique:
                 pass
 
-            if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-                list_data_frame_target.append(
-                    OnehotToCategorical.run(column_schema, data_frame_source)
-                )
-            elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-                series = data_frame_source[name_column]
-                resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-                list_data_frame_target.append(
-                    (
-                        (series * (1 / resolution)).round().astype(int) * resolution
-                    ).to_frame()
-                )
+            if data_model_series.type_data_level == DataModelSeries.DataLevelCategorical:
+                list_series.append(OnehotToCategorical.run(data_frame_source, data_model_series))
 
-        return pandas.concat(list_data_frame_target, axis=1)</code></pre>
+            elif data_model_series.type_data_level == DataModelSeries.DataLevelInterval:
+                series_pandas = data_frame_source[series_name]
+                resolution = data_model_series.resolution
+                if (resolution is not None) and (resolution != -1):  # TODO oldfassioned maybe avoid magic value
+                    series_pandas = (series_pandas * (1 / resolution)).round().astype(int) * resolution
+                series = Series.from_pandas(data_frame_source.dataset_id, data_model_series, series_pandas)
+                series.index = series_pandas.index
+                list_series.append(series)
+
+        data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+        reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+        return reference_data_frame_target</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.convert.float64_to_tabular_precompute.Float64ToTabularPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>table_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
+<span>def <span class="ident">run</span></span>(<span>reference_data_frame_source: sail_safe_functions_orchestrator.reference_data_frame.ReferenceDataFrame, data_model_target: sail_safe_functions_orchestrator.data_model.data_model_data_frame.DataModelDataFrame) ‑> pandas.core.frame.DataFrame</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -114,30 +121,29 @@ class Float64ToTabularPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    table_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
-
-    list_data_frame_target = []
-    for name_column in table_schema[&#34;list_name_column&#34;]:
-        column_schema = table_schema[&#34;dict_column&#34;][name_column]
-        if column_schema[&#34;type_data_level&#34;] == &#34;unique&#34;:
+<pre><code class="python">def run(reference_data_frame_source: ReferenceDataFrame, data_model_target: DataModelDataFrame) -&gt; pandas.DataFrame:
+    data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+    list_series = []
+    for series_name in data_model_target.list_series_name:
+        data_model_series = data_model_target[series_name]
+        if data_model_series.type_data_level == DataModelSeries.DataLevelUnique:
             pass
 
-        if column_schema[&#34;type_data_level&#34;] == &#34;categorical&#34;:
-            list_data_frame_target.append(
-                OnehotToCategorical.run(column_schema, data_frame_source)
-            )
-        elif column_schema[&#34;type_data_level&#34;] == &#34;interval&#34;:
-            series = data_frame_source[name_column]
-            resolution = table_schema[&#34;dict_column&#34;][name_column][&#34;resolution&#34;]
-            list_data_frame_target.append(
-                (
-                    (series * (1 / resolution)).round().astype(int) * resolution
-                ).to_frame()
-            )
+        if data_model_series.type_data_level == DataModelSeries.DataLevelCategorical:
+            list_series.append(OnehotToCategorical.run(data_frame_source, data_model_series))
 
-    return pandas.concat(list_data_frame_target, axis=1)</code></pre>
+        elif data_model_series.type_data_level == DataModelSeries.DataLevelInterval:
+            series_pandas = data_frame_source[series_name]
+            resolution = data_model_series.resolution
+            if (resolution is not None) and (resolution != -1):  # TODO oldfassioned maybe avoid magic value
+                series_pandas = (series_pandas * (1 / resolution)).round().astype(int) * resolution
+            series = Series.from_pandas(data_frame_source.dataset_id, data_model_series, series_pandas)
+            series.index = series_pandas.index
+            list_series.append(series)
+
+    data_frame_target = DataFrame(data_frame_source.dataset_id, data_frame_source.data_frame_name, list_series)
+    reference_data_frame_target = ServiceReference.get_instance().data_frame_to_reference(data_frame_target)
+    return reference_data_frame_target</code></pre>
 </details>
 </dd>
 </dl>

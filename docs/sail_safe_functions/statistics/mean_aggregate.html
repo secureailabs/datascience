@@ -27,14 +27,16 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from typing import List
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class MeanAggregate:
+class MeanAggregate(SafeFunctionBase):
+
     &#34;&#34;&#34;
     Aggregates data for computing the mean
     &#34;&#34;&#34;
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -&gt; float:
         sum_x_0 = 0
         degrees_of_freedom_0 = 0
 
@@ -67,12 +69,13 @@ class MeanAggregate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MeanAggregate:
+<pre><code class="python">class MeanAggregate(SafeFunctionBase):
+
     &#34;&#34;&#34;
     Aggregates data for computing the mean
     &#34;&#34;&#34;
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -&gt; float:
         sum_x_0 = 0
         degrees_of_freedom_0 = 0
 
@@ -86,10 +89,14 @@ class MeanAggregate:
         #     raise Exception()
         return sample_mean_0</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.mean_aggregate.MeanAggregate.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]])</span>
+<span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]]) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -97,7 +104,7 @@ class MeanAggregate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(list_list_precompute: List[List[float]]):
+<pre><code class="python">def run(list_list_precompute: List[List[float]]) -&gt; float:
     sum_x_0 = 0
     degrees_of_freedom_0 = 0
 

@@ -30,9 +30,18 @@
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_nan,
+    check_series_one_value,
+)
 
 
-class PearsonPrecompute(object):
+class PearsonPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     This class it get the precomputes required for the pearson
 
@@ -40,24 +49,28 @@ class PearsonPrecompute(object):
     :type object:
     &#34;&#34;&#34;
 
-    def run(
-        sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame
-    ) -&gt; List[float]:
+    def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -&gt; List[float]:
         &#34;&#34;&#34;
         Parameters
         ----------
-        sample_0_dataframe : pd.DataFrame
+        sample_0_reference : ReferenceSeries
             The dataframe for sample_0
 
-        sample_1_dataframe : pd.DataFrame
+        sample_1_reference : ReferenceSeries
             The dataframe for sample_1
 
         Returns
         -------
         a list of 6 floats
         &#34;&#34;&#34;
-        sample_0 = sample_0_dataframe.to_numpy()
-        sample_1 = sample_1_dataframe.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(sample_1_series).to_numpy()
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -103,7 +116,7 @@ class PearsonPrecompute(object):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class PearsonPrecompute(object):
+<pre><code class="python">class PearsonPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     This class it get the precomputes required for the pearson
 
@@ -111,24 +124,28 @@ class PearsonPrecompute(object):
     :type object:
     &#34;&#34;&#34;
 
-    def run(
-        sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame
-    ) -&gt; List[float]:
+    def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -&gt; List[float]:
         &#34;&#34;&#34;
         Parameters
         ----------
-        sample_0_dataframe : pd.DataFrame
+        sample_0_reference : ReferenceSeries
             The dataframe for sample_0
 
-        sample_1_dataframe : pd.DataFrame
+        sample_1_reference : ReferenceSeries
             The dataframe for sample_1
 
         Returns
         -------
         a list of 6 floats
         &#34;&#34;&#34;
-        sample_0 = sample_0_dataframe.to_numpy()
-        sample_1 = sample_1_dataframe.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(sample_1_series).to_numpy()
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -153,17 +170,21 @@ class PearsonPrecompute(object):
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.pearson_precompute.PearsonPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_0_dataframe: pandas.core.frame.DataFrame, sample_1_dataframe: pandas.core.frame.DataFrame) ‑> List[float]</span>
+<span>def <span class="ident">run</span></span>(<span>sample_0_series: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, sample_1_series: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> List[float]</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>sample_0_dataframe</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dt><strong><code>sample_0_reference</code></strong> :&ensp;<code>ReferenceSeries</code></dt>
 <dd>The dataframe for sample_0</dd>
-<dt><strong><code>sample_1_dataframe</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dt><strong><code>sample_1_reference</code></strong> :&ensp;<code>ReferenceSeries</code></dt>
 <dd>The dataframe for sample_1</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -175,24 +196,28 @@ class PearsonPrecompute(object):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    sample_0_dataframe: pd.DataFrame, sample_1_dataframe: pd.DataFrame
-) -&gt; List[float]:
+<pre><code class="python">def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -&gt; List[float]:
     &#34;&#34;&#34;
     Parameters
     ----------
-    sample_0_dataframe : pd.DataFrame
+    sample_0_reference : ReferenceSeries
         The dataframe for sample_0
 
-    sample_1_dataframe : pd.DataFrame
+    sample_1_reference : ReferenceSeries
         The dataframe for sample_1
 
     Returns
     -------
     a list of 6 floats
     &#34;&#34;&#34;
-    sample_0 = sample_0_dataframe.to_numpy()
-    sample_1 = sample_1_dataframe.to_numpy()
+    sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+    sample_1 = ServiceReference.get_instance().reference_to_series(sample_1_series).to_numpy()
+    check_empty_series(sample_0)
+    check_empty_series(sample_1)
+    check_series_nan(sample_0)
+    check_series_one_value(sample_0)
+    check_series_nan(sample_1)
+    check_series_one_value(sample_1)
 
     sum_x_0 = np.sum(sample_0)
     sum_xx_0 = np.sum(sample_0 * sample_0)

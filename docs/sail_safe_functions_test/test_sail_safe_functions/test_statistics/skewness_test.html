@@ -32,6 +32,7 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
     SeriesFederatedLocal,
 )
 from scipy import stats
+import numpy
 
 
 @pytest.mark.active
@@ -51,7 +52,66 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
     skewness_scipy = estimator.run_reference(sample_0)
 
     # Assert
-    assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)</code></pre>
+    assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_skewness_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_skewness_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_skewness_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -92,6 +152,92 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_empty"><code class="name flex">
+<span>def <span class="ident">test_skewness_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_skewness_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_nan_value"><code class="name flex">
+<span>def <span class="ident">test_skewness_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing nan value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_skewness_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_one_value"><code class="name flex">
+<span>def <span class="ident">test_skewness_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_skewness_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = Skewness()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -111,6 +257,9 @@ def test_skewness(one_sample_big: SeriesFederatedLocal):
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness">test_skewness</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_empty">test_skewness_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_nan_value">test_skewness_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.skewness_test.test_skewness_one_value">test_skewness_one_value</a></code></li>
 </ul>
 </li>
 </ul>

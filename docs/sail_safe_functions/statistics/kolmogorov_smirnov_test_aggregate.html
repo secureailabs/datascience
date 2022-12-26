@@ -26,16 +26,16 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import math
-from typing import List
+<pre><code class="python">from typing import List
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class KolmogorovSmirnovTestAggregate:
+class KolmogorovSmirnovTestAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Aggregates data for the KolmogorovSmirnov test
     &#34;&#34;&#34;
 
-    def run(list_precompute: List[float]):
+    def run(list_precompute: List[float]) -&gt; float:
         list_max = []
         for precompute in list_precompute:
             list_max.append(precompute)
@@ -61,22 +61,26 @@ class KolmogorovSmirnovTestAggregate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class KolmogorovSmirnovTestAggregate:
+<pre><code class="python">class KolmogorovSmirnovTestAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Aggregates data for the KolmogorovSmirnov test
     &#34;&#34;&#34;
 
-    def run(list_precompute: List[float]):
+    def run(list_precompute: List[float]) -&gt; float:
         list_max = []
         for precompute in list_precompute:
             list_max.append(precompute)
 
         return max(list_max)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.kolmogorov_smirnov_test_aggregate.KolmogorovSmirnovTestAggregate.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>list_precompute: List[float])</span>
+<span>def <span class="ident">run</span></span>(<span>list_precompute: List[float]) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -84,7 +88,7 @@ class KolmogorovSmirnovTestAggregate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(list_precompute: List[float]):
+<pre><code class="python">def run(list_precompute: List[float]) -&gt; float:
     list_max = []
     for precompute in list_precompute:
         list_max.append(precompute)

@@ -26,14 +26,15 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import pytest
-import pandas as pd
-
+<pre><code class="python">import pandas as pd
+import pytest
 from sail_safe_functions.privacy_barrier.pragmatic_noise import PragmaticNoise
+from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 @pytest.mark.active
-def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: dict):
+def test_pragmatic_noise(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     This tests the pragmatic privacy barrier safe function
 
@@ -43,14 +44,13 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 
     &#34;&#34;&#34;
 
-    # Arrange
-
-    scheme = scheme_kidney
-    dataset = dataframe_kidney_clean
-
+    # Arrang
+    reference_data_frame_source = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+    data_model_data_frame = data_frame_federated_kidney.data_model_data_frame
     # Act
     pragmatic_noise = PragmaticNoise()
-    noised_data = pragmatic_noise.run(dataset, scheme, 0.5, 0.5)
+    noised_data = pragmatic_noise.run(data_frame_source, data_model_data_frame, 0.5, 0.5)
 
     # Assert
     assert type(noised_data) is pd.DataFrame
@@ -66,7 +66,7 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_privacy_barrier.test_pragmatic_noise.test_pragmatic_noise"><code class="name flex">
-<span>def <span class="ident">test_pragmatic_noise</span></span>(<span>dataframe_kidney_clean: pandas.core.frame.DataFrame, scheme_kidney: dict)</span>
+<span>def <span class="ident">test_pragmatic_noise</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This tests the pragmatic privacy barrier safe function</p>
@@ -82,7 +82,7 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: dict):
+def test_pragmatic_noise(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     This tests the pragmatic privacy barrier safe function
 
@@ -92,14 +92,13 @@ def test_pragmatic_noise(dataframe_kidney_clean: pd.DataFrame, scheme_kidney: di
 
     &#34;&#34;&#34;
 
-    # Arrange
-
-    scheme = scheme_kidney
-    dataset = dataframe_kidney_clean
-
+    # Arrang
+    reference_data_frame_source = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    data_frame_source = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_source)
+    data_model_data_frame = data_frame_federated_kidney.data_model_data_frame
     # Act
     pragmatic_noise = PragmaticNoise()
-    noised_data = pragmatic_noise.run(dataset, scheme, 0.5, 0.5)
+    noised_data = pragmatic_noise.run(data_frame_source, data_model_data_frame, 0.5, 0.5)
 
     # Assert
     assert type(noised_data) is pd.DataFrame

@@ -31,7 +31,11 @@
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.series import Series
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
 
 
 class SeriesFederatedLocal(SeriesFederated):
@@ -43,6 +47,13 @@ class SeriesFederatedLocal(SeriesFederated):
         super().__init__(name)
         self.dtype = None
         self.is_numeric = None
+
+    def global_row_count(self) -&gt; int:
+        count = 0
+        # Count sum of all rows in federated dataframe
+        for d in self.dict_series.values():
+            count += len(d)
+        return count
 
     def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
@@ -101,10 +112,20 @@ class SeriesFederatedLocal(SeriesFederated):
         return dict_discribe
 
     @staticmethod
-    def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
-        series = SeriesFederatedLocal(name)
-        series.add_array(&#34;dataset_0&#34;, array, name)
-        return series</code></pre>
+    def from_array(dataset_id, series_name: str, array: np.ndarray) -&gt; pd.Series:
+        data_model_series = DataModelSeries.create_numerical(
+            series_name,
+            resolution=None,
+            measurement_source_name=&#34;&#34;,
+            type_agregator=DataModelSeries.AgregatorCsv,
+            unit=&#34;unitless&#34;,
+        )
+
+        series = Series(dataset_id, data_model_series, array.tolist())
+        list_reference = [ServiceReference.get_instance().series_to_reference(series)]
+
+        service_client = ServiceClientLocal()
+        return SeriesFederated(service_client, list_reference, data_model_series)</code></pre>
 </details>
 </section>
 <section>
@@ -136,6 +157,13 @@ class SeriesFederatedLocal(SeriesFederated):
         self.dtype = None
         self.is_numeric = None
 
+    def global_row_count(self) -&gt; int:
+        count = 0
+        # Count sum of all rows in federated dataframe
+        for d in self.dict_series.values():
+            count += len(d)
+        return count
+
     def add_series(self, dataset_id: str, series: pd.Series):
         if self.name is None:
             self.name = series.name
@@ -193,20 +221,29 @@ class SeriesFederatedLocal(SeriesFederated):
         return dict_discribe
 
     @staticmethod
-    def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
-        series = SeriesFederatedLocal(name)
-        series.add_array(&#34;dataset_0&#34;, array, name)
-        return series</code></pre>
+    def from_array(dataset_id, series_name: str, array: np.ndarray) -&gt; pd.Series:
+        data_model_series = DataModelSeries.create_numerical(
+            series_name,
+            resolution=None,
+            measurement_source_name=&#34;&#34;,
+            type_agregator=DataModelSeries.AgregatorCsv,
+            unit=&#34;unitless&#34;,
+        )
+
+        series = Series(dataset_id, data_model_series, array.tolist())
+        list_reference = [ServiceReference.get_instance().series_to_reference(series)]
+
+        service_client = ServiceClientLocal()
+        return SeriesFederated(service_client, list_reference, data_model_series)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>sail_safe_functions_orchestrator.series_federated.SeriesFederated</li>
-<li>abc.ABC</li>
 </ul>
 <h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array"><code class="name flex">
-<span>def <span class="ident">from_array</span></span>(<span>name: str, array: numpy.ndarray) ‑> pandas.core.series.Series</span>
+<span>def <span class="ident">from_array</span></span>(<span>dataset_id, series_name: str, array: numpy.ndarray) ‑> pandas.core.series.Series</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -215,10 +252,20 @@ class SeriesFederatedLocal(SeriesFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
-    series = SeriesFederatedLocal(name)
-    series.add_array(&#34;dataset_0&#34;, array, name)
-    return series</code></pre>
+def from_array(dataset_id, series_name: str, array: np.ndarray) -&gt; pd.Series:
+    data_model_series = DataModelSeries.create_numerical(
+        series_name,
+        resolution=None,
+        measurement_source_name=&#34;&#34;,
+        type_agregator=DataModelSeries.AgregatorCsv,
+        unit=&#34;unitless&#34;,
+    )
+
+    series = Series(dataset_id, data_model_series, array.tolist())
+    list_reference = [ServiceReference.get_instance().series_to_reference(series)]
+
+    service_client = ServiceClientLocal()
+    return SeriesFederated(service_client, list_reference, data_model_series)</code></pre>
 </details>
 </dd>
 </dl>
@@ -321,6 +368,23 @@ def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
     return series_federated_new</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.global_row_count"><code class="name flex">
+<span>def <span class="ident">global_row_count</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def global_row_count(self) -&gt; int:
+    count = 0
+    # Count sum of all rows in federated dataframe
+    for d in self.dict_series.values():
+        count += len(d)
+    return count</code></pre>
+</details>
+</dd>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy"><code class="name flex">
 <span>def <span class="ident">to_numpy</span></span>(<span>self) ‑> numpy.ndarray</span>
 </code></dt>
@@ -377,6 +441,7 @@ def from_array(name: str, array: np.ndarray) -&gt; pd.Series:
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.describe" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.describe">describe</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.drop_by_index" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.drop_by_index">drop_by_index</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.from_array">from_array</a></code></li>
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.global_row_count" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.global_row_count">global_row_count</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_numpy">to_numpy</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_series" href="#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal.to_series">to_series</a></code></li>
 </ul>

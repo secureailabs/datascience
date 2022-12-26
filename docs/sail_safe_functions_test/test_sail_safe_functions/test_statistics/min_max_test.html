@@ -31,6 +31,7 @@ from sail_safe_functions_orchestrator.statistics.min_max import MinMax
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
     SeriesFederatedLocal,
 )
+import numpy
 
 
 @pytest.mark.active
@@ -51,7 +52,66 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
 
     # Assert
     assert max_numpy &lt;= max_sail
-    assert min_numpy &gt;= min_sail</code></pre>
+    assert min_numpy &gt;= min_sail
+
+
+@pytest.mark.active
+def test_min_max_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+
+    # Act
+    estimator = MinMax()
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_min_max_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+
+    # Act
+    estimator = MinMax()
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_min_max_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values.
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+
+    # Act
+    estimator = MinMax()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;Sample contains `na` values&#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -93,6 +153,92 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
     assert min_numpy &gt;= min_sail</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_empty"><code class="name flex">
+<span>def <span class="ident">test_min_max_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_min_max_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+
+    # Act
+    estimator = MinMax()
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_nan_value"><code class="name flex">
+<span>def <span class="ident">test_min_max_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception if series containing nan values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_min_max_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values.
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+
+    # Act
+    estimator = MinMax()
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;Sample contains `na` values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_one_value"><code class="name flex">
+<span>def <span class="ident">test_min_max_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_min_max_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+
+    # Act
+    estimator = MinMax()
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -112,6 +258,9 @@ def test_min_max(one_sample_big: SeriesFederatedLocal):
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max">test_min_max</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_empty">test_min_max_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_nan_value">test_min_max_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.min_max_test.test_min_max_one_value">test_min_max_one_value</a></code></li>
 </ul>
 </li>
 </ul>

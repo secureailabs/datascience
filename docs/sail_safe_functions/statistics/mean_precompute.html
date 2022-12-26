@@ -30,19 +30,44 @@
 
 import numpy as np
 import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_nan,
+    check_series_one_value,
+)
 
 
-class MeanPrecompute:
+class MeanPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for computing the mean
     &#34;&#34;&#34;
 
+    @staticmethod
     def run(
-        sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
-        sample_0 = sample_0_dataframe.to_numpy()
+        reference_sample_0: ReferenceSeries,
+    ) -&gt; List:
+        &#34;&#34;&#34;
+        Function to calculate the precomputes for mean
+
+            :param reference_sample_0: sample input
+            :type reference_sample_0: ReferenceSeries
+            :return: precomputes of mean TODO: please be more verbose i.e &#34;local mean to be aggregated.&#34; The parameter descriptions should add more information.
+            :rtype: Tuple[ List[float], List[bool] ]
+        &#34;&#34;&#34;
+        # there seems to be a problem here with this annotation
+        check_instance(reference_sample_0, ReferenceSeries)
+
+        sample_0 = ServiceReference.get_instance().reference_to_series(reference_sample_0)
+
+        check_series_nan(sample_0)
+        check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        sample_0 = sample_0.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
         sample_0_degrees_of_freedom = len(sample_0)
@@ -70,17 +95,33 @@ class MeanPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MeanPrecompute:
+<pre><code class="python">class MeanPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for computing the mean
     &#34;&#34;&#34;
 
+    @staticmethod
     def run(
-        sample_0_dataframe: pd.Series,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
-        sample_0 = sample_0_dataframe.to_numpy()
+        reference_sample_0: ReferenceSeries,
+    ) -&gt; List:
+        &#34;&#34;&#34;
+        Function to calculate the precomputes for mean
+
+            :param reference_sample_0: sample input
+            :type reference_sample_0: ReferenceSeries
+            :return: precomputes of mean TODO: please be more verbose i.e &#34;local mean to be aggregated.&#34; The parameter descriptions should add more information.
+            :rtype: Tuple[ List[float], List[bool] ]
+        &#34;&#34;&#34;
+        # there seems to be a problem here with this annotation
+        check_instance(reference_sample_0, ReferenceSeries)
+
+        sample_0 = ServiceReference.get_instance().reference_to_series(reference_sample_0)
+
+        check_series_nan(sample_0)
+        check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        sample_0 = sample_0.to_numpy()
 
         sum_x_0 = np.sum(sample_0)
         sample_0_degrees_of_freedom = len(sample_0)
@@ -89,23 +130,48 @@ class MeanPrecompute:
         # list_safe = [False, False, False, False, False, False ]
         return list_precompute  # , list_safe</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.mean_precompute.MeanPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_0_dataframe: pandas.core.series.Series) ‑> Tuple[List[float], List[bool]]</span>
+<span>def <span class="ident">run</span></span>(<span>reference_sample_0: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> List[~T]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function to calculate the precomputes for mean</p>
+<pre><code>:param reference_sample_0: sample input
+:type reference_sample_0: ReferenceSeries
+:return: precomputes of mean TODO: please be more verbose i.e "local mean to be aggregated." The parameter descriptions should add more information.
+:rtype: Tuple[ List[float], List[bool] ]
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    sample_0_dataframe: pd.Series,
-) -&gt; Tuple[
-    List[float], List[bool]
-]:  # there seems to be a problem here with this annotation
-    sample_0 = sample_0_dataframe.to_numpy()
+<pre><code class="python">@staticmethod
+def run(
+    reference_sample_0: ReferenceSeries,
+) -&gt; List:
+    &#34;&#34;&#34;
+    Function to calculate the precomputes for mean
+
+        :param reference_sample_0: sample input
+        :type reference_sample_0: ReferenceSeries
+        :return: precomputes of mean TODO: please be more verbose i.e &#34;local mean to be aggregated.&#34; The parameter descriptions should add more information.
+        :rtype: Tuple[ List[float], List[bool] ]
+    &#34;&#34;&#34;
+    # there seems to be a problem here with this annotation
+    check_instance(reference_sample_0, ReferenceSeries)
+
+    sample_0 = ServiceReference.get_instance().reference_to_series(reference_sample_0)
+
+    check_series_nan(sample_0)
+    check_empty_series(sample_0)
+    check_series_nan(sample_0)
+    check_series_one_value(sample_0)
+    sample_0 = sample_0.to_numpy()
 
     sum_x_0 = np.sum(sample_0)
     sample_0_degrees_of_freedom = len(sample_0)

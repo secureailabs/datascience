@@ -26,28 +26,36 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List
-
-import pandas
+<pre><code class="python">from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 # TODO this function is dangerous
-class ValueAbsolute:
+class ValueAbsolute(SafeFunctionBase):
     &#34;&#34;&#34;
     Takes the absolute value sum of a series
     &#34;&#34;&#34;
 
-    def run(series_0: pandas.Series) -&gt; pandas.Series:
+    @staticmethod
+    def run(reference_series_0: ReferenceSeries) -&gt; ReferenceSeries:
         &#34;&#34;&#34;
         Takes the weighted sum of a list of series and outputs absolute value of the series
 
         :param series_0: input series
-        :type series_0: pandas.Series
+        :type series_0: ReferenceSeries
         :return: returns a new series that is a absolute value
-        :rtype: pandas.Series
+        :rtype: ReferenceSeries
         &#34;&#34;&#34;
+        series_0 = ServiceReference.get_instance().reference_to_series(reference_series_0)
 
-        return series_0.abs()</code></pre>
+        data_model_series = DataModelSeries.create_numerical(
+            &#34;absolute&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+        )
+        series_sum = Series(reference_series_0.dataset_id, data_model_series, series_0.abs().tolist())
+        return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
 </section>
 <section>
@@ -68,49 +76,65 @@ class ValueAbsolute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ValueAbsolute:
+<pre><code class="python">class ValueAbsolute(SafeFunctionBase):
     &#34;&#34;&#34;
     Takes the absolute value sum of a series
     &#34;&#34;&#34;
 
-    def run(series_0: pandas.Series) -&gt; pandas.Series:
+    @staticmethod
+    def run(reference_series_0: ReferenceSeries) -&gt; ReferenceSeries:
         &#34;&#34;&#34;
         Takes the weighted sum of a list of series and outputs absolute value of the series
 
         :param series_0: input series
-        :type series_0: pandas.Series
+        :type series_0: ReferenceSeries
         :return: returns a new series that is a absolute value
-        :rtype: pandas.Series
+        :rtype: ReferenceSeries
         &#34;&#34;&#34;
+        series_0 = ServiceReference.get_instance().reference_to_series(reference_series_0)
 
-        return series_0.abs()</code></pre>
+        data_model_series = DataModelSeries.create_numerical(
+            &#34;absolute&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+        )
+        series_sum = Series(reference_series_0.dataset_id, data_model_series, series_0.abs().tolist())
+        return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.absolute_value.ValueAbsolute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>series_0: pandas.core.series.Series) ‑> pandas.core.series.Series</span>
+<span>def <span class="ident">run</span></span>(<span>reference_series_0: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> sail_safe_functions_orchestrator.reference_series.ReferenceSeries</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Takes the weighted sum of a list of series and outputs absolute value of the series</p>
 <p>:param series_0: input series
-:type series_0: pandas.Series
+:type series_0: ReferenceSeries
 :return: returns a new series that is a absolute value
-:rtype: pandas.Series</p></div>
+:rtype: ReferenceSeries</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(series_0: pandas.Series) -&gt; pandas.Series:
+<pre><code class="python">@staticmethod
+def run(reference_series_0: ReferenceSeries) -&gt; ReferenceSeries:
     &#34;&#34;&#34;
     Takes the weighted sum of a list of series and outputs absolute value of the series
 
     :param series_0: input series
-    :type series_0: pandas.Series
+    :type series_0: ReferenceSeries
     :return: returns a new series that is a absolute value
-    :rtype: pandas.Series
+    :rtype: ReferenceSeries
     &#34;&#34;&#34;
+    series_0 = ServiceReference.get_instance().reference_to_series(reference_series_0)
 
-    return series_0.abs()</code></pre>
+    data_model_series = DataModelSeries.create_numerical(
+        &#34;absolute&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+    )
+    series_sum = Series(reference_series_0.dataset_id, data_model_series, series_0.abs().tolist())
+    return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
 </dd>
 </dl>

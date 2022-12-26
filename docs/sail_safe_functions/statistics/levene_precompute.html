@@ -29,28 +29,35 @@
 <pre><code class="python">from typing import List, Tuple
 
 import numpy as np
-import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_nan,
+    check_series_one_value,
+)
 
 
-class LevenePrecompute:
+class LevenePrecompute(SafeFunctionBase):
+
     &#34;&#34;&#34;
     Precomputes data for computing the variance
     &#34;&#34;&#34;
 
     def run(
-        sample_0_series: pd.Series,
-        sample_1_series: pd.Series,
+        reference_series_0: ReferenceSeries,
+        reference_series_1: ReferenceSeries,
         mean_0: float,
         mean_1: float,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         &#34;&#34;&#34;
         ----------
-        sample_0_series : pd.Series
+        sample_0_series : ReferenceSeries
             The series for sample_0
 
-        sample_1_series : pd.Series
+        sample_1_series : ReferenceSeries
             The series for sample_1
 
         Returns
@@ -59,8 +66,15 @@ class LevenePrecompute:
 
         &#34;&#34;&#34;
 
-        sample_0 = sample_0_series.to_numpy()
-        sample_1 = sample_1_series.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
+
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -70,8 +84,8 @@ class LevenePrecompute:
         sum_xx_1 = np.sum(sample_1 * sample_1)
         count_1 = len(sample_1)
 
-        z1j = abs(sample_0 - mean_0)
-        z2j = abs(sample_1 - mean_1)
+        z1j = list(abs(sample_0 - mean_0))
+        z2j = list(abs(sample_1 - mean_1))
 
         list_precompute = [
             sum_x_0,
@@ -105,25 +119,24 @@ class LevenePrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LevenePrecompute:
+<pre><code class="python">class LevenePrecompute(SafeFunctionBase):
+
     &#34;&#34;&#34;
     Precomputes data for computing the variance
     &#34;&#34;&#34;
 
     def run(
-        sample_0_series: pd.Series,
-        sample_1_series: pd.Series,
+        reference_series_0: ReferenceSeries,
+        reference_series_1: ReferenceSeries,
         mean_0: float,
         mean_1: float,
-    ) -&gt; Tuple[
-        List[float], List[bool]
-    ]:  # there seems to be a problem here with this annotation
+    ) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
         &#34;&#34;&#34;
         ----------
-        sample_0_series : pd.Series
+        sample_0_series : ReferenceSeries
             The series for sample_0
 
-        sample_1_series : pd.Series
+        sample_1_series : ReferenceSeries
             The series for sample_1
 
         Returns
@@ -132,8 +145,15 @@ class LevenePrecompute:
 
         &#34;&#34;&#34;
 
-        sample_0 = sample_0_series.to_numpy()
-        sample_1 = sample_1_series.to_numpy()
+        sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
+        sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
+
+        check_empty_series(sample_0)
+        check_empty_series(sample_1)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+        check_series_nan(sample_1)
+        check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -143,8 +163,8 @@ class LevenePrecompute:
         sum_xx_1 = np.sum(sample_1 * sample_1)
         count_1 = len(sample_1)
 
-        z1j = abs(sample_0 - mean_0)
-        z2j = abs(sample_1 - mean_1)
+        z1j = list(abs(sample_0 - mean_0))
+        z2j = list(abs(sample_1 - mean_1))
 
         list_precompute = [
             sum_x_0,
@@ -159,16 +179,20 @@ class LevenePrecompute:
 
         return list_precompute</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.levene_precompute.LevenePrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_0_series: pandas.core.series.Series, sample_1_series: pandas.core.series.Series, mean_0: float, mean_1: float) ‑> Tuple[List[float], List[bool]]</span>
+<span>def <span class="ident">run</span></span>(<span>reference_series_0: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, reference_series_1: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, mean_0: float, mean_1: float) ‑> Tuple[List[float], List[bool]]</span>
 </code></dt>
 <dd>
 <div class="desc"><hr>
-<p>sample_0_series : pd.Series
+<p>sample_0_series : ReferenceSeries
 The series for sample_0</p>
-<p>sample_1_series : pd.Series
+<p>sample_1_series : ReferenceSeries
 The series for sample_1</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -180,19 +204,17 @@ The series for sample_1</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(
-    sample_0_series: pd.Series,
-    sample_1_series: pd.Series,
+    reference_series_0: ReferenceSeries,
+    reference_series_1: ReferenceSeries,
     mean_0: float,
     mean_1: float,
-) -&gt; Tuple[
-    List[float], List[bool]
-]:  # there seems to be a problem here with this annotation
+) -&gt; Tuple[List[float], List[bool]]:  # there seems to be a problem here with this annotation
     &#34;&#34;&#34;
     ----------
-    sample_0_series : pd.Series
+    sample_0_series : ReferenceSeries
         The series for sample_0
 
-    sample_1_series : pd.Series
+    sample_1_series : ReferenceSeries
         The series for sample_1
 
     Returns
@@ -201,8 +223,15 @@ The series for sample_1</p>
 
     &#34;&#34;&#34;
 
-    sample_0 = sample_0_series.to_numpy()
-    sample_1 = sample_1_series.to_numpy()
+    sample_0 = ServiceReference.get_instance().reference_to_series(reference_series_0).to_numpy()
+    sample_1 = ServiceReference.get_instance().reference_to_series(reference_series_1).to_numpy()
+
+    check_empty_series(sample_0)
+    check_empty_series(sample_1)
+    check_series_nan(sample_0)
+    check_series_one_value(sample_0)
+    check_series_nan(sample_1)
+    check_series_one_value(sample_1)
 
     sum_x_0 = np.sum(sample_0)
     sum_xx_0 = np.sum(sample_0 * sample_0)
@@ -212,8 +241,8 @@ The series for sample_1</p>
     sum_xx_1 = np.sum(sample_1 * sample_1)
     count_1 = len(sample_1)
 
-    z1j = abs(sample_0 - mean_0)
-    z2j = abs(sample_1 - mean_1)
+    z1j = list(abs(sample_0 - mean_0))
+    z2j = list(abs(sample_1 - mean_1))
 
     list_precompute = [
         sum_x_0,

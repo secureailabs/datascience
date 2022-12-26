@@ -30,12 +30,8 @@
 
 import numpy
 import pytest
-from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import (
-    KolmogorovSmirnovTest,
-)
-from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import (
-    SeriesFederatedLocal,
-)
+from sail_safe_functions_orchestrator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
+from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
 from scipy import stats
 from sklearn.utils import estimator_html_repr
 
@@ -46,18 +42,74 @@ def test_kolmogorov_smirnov_normalunit():
     # Arrange
     numpy.random.seed(42)
     array_sample_0 = numpy.random.normal(0, 1, 17)  # works from size 17 onwards
-    sample_0 = SeriesFederatedLocal.from_array(&#34;sample_0&#34;, array_sample_0)
-
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, array_sample_0)
     # Act
-    estimator = KolmogorovSmirnovTest(
-        type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;
-    )
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
     k_statistic_sail, p_value_sail = estimator.run(sample_0)
     k_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0)
 
     # Assert
     assert k_statistic_sail == pytest.approx(k_statistic_scipy, 0.0001)
-    assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
+    assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)
+
+
+@pytest.mark.active
+def test_ks_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_ks_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_ks_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -82,18 +134,101 @@ def test_kolmogorov_smirnov_normalunit():
     # Arrange
     numpy.random.seed(42)
     array_sample_0 = numpy.random.normal(0, 1, 17)  # works from size 17 onwards
-    sample_0 = SeriesFederatedLocal.from_array(&#34;sample_0&#34;, array_sample_0)
-
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, array_sample_0)
     # Act
-    estimator = KolmogorovSmirnovTest(
-        type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;
-    )
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
     k_statistic_sail, p_value_sail = estimator.run(sample_0)
     k_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0)
 
     # Assert
     assert k_statistic_sail == pytest.approx(k_statistic_scipy, 0.0001)
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_empty"><code class="name flex">
+<span>def <span class="ident">test_ks_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_ks_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_nan_value"><code class="name flex">
+<span>def <span class="ident">test_ks_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception if series containing nan values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_ks_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_one_value"><code class="name flex">
+<span>def <span class="ident">test_ks_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_ks_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    # Act
+    estimator = KolmogorovSmirnovTest(type_distribution=&#34;normalunit&#34;, type_ranking=&#34;unsafe&#34;)
+
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
 </details>
 </dd>
 </dl>
@@ -115,6 +250,9 @@ def test_kolmogorov_smirnov_normalunit():
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_kolmogorov_smirnov_normalunit" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_kolmogorov_smirnov_normalunit">test_kolmogorov_smirnov_normalunit</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_empty">test_ks_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_nan_value">test_ks_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.kolmogorov_smirnov_test_test.test_ks_one_value">test_ks_one_value</a></code></li>
 </ul>
 </li>
 </ul>

@@ -34,12 +34,11 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
     SeriesFederatedLocal,
 )
 from scipy import stats
+import numpy
 
 
 @pytest.mark.active
-def test_student_t_test_big(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_student_t_test_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;Preform a unpaired t-test asuming equal variance
 
     Args:
@@ -57,7 +56,94 @@ def test_student_t_test_big(
 
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
-    assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
+    assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)
+
+
+@pytest.mark.active
+def test_student_t_test_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_student_t_test_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_student_t_test_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value.
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_student_t_test_zero_variance():
+    &#34;&#34;&#34;
+    This is our test to raise exceptio for zero variance
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;Variance is zero raises sys.float_info.max &#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -82,9 +168,7 @@ def test_student_t_test_big(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_student_t_test_big(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_student_t_test_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;Preform a unpaired t-test asuming equal variance
 
     Args:
@@ -103,6 +187,129 @@ def test_student_t_test_big(
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_empty"><code class="name flex">
+<span>def <span class="ident">test_student_t_test_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_student_t_test_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_nan_value"><code class="name flex">
+<span>def <span class="ident">test_student_t_test_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing nan value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_student_t_test_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value.
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_one_value"><code class="name flex">
+<span>def <span class="ident">test_student_t_test_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_student_t_test_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_zero_variance"><code class="name flex">
+<span>def <span class="ident">test_student_t_test_zero_variance</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exceptio for zero variance</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_student_t_test_zero_variance():
+    &#34;&#34;&#34;
+    This is our test to raise exceptio for zero variance
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    alternative = &#34;less&#34;
+
+    # Act
+    estimator = StudentTTest(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;Variance is zero raises sys.float_info.max &#34; in str(exc_info.value)</code></pre>
 </details>
 </dd>
 </dl>
@@ -124,6 +331,10 @@ def test_student_t_test_big(
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_big" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_big">test_student_t_test_big</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_empty">test_student_t_test_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_nan_value">test_student_t_test_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_one_value">test_student_t_test_one_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_zero_variance" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.student_t_test_test.test_student_t_test_zero_variance">test_student_t_test_zero_variance</a></code></li>
 </ul>
 </li>
 </ul>

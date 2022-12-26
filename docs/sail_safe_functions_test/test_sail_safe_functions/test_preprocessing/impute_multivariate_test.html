@@ -29,6 +29,7 @@
 <pre><code class="python">import pytest
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 @pytest.mark.active
@@ -53,24 +54,28 @@ def test_exception(data_frame_federated_kidney: DataFrameFederated):
 
 
 @pytest.mark.active
-def test_age(data_frame_federated_kidney: DataFrameFederated):
+def test_age(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 9 nan in the age column get repaced by multivariate estimation
 
-    :param data_frame_federated_kidney: a dataframe with nans
+    :param data_frame_federated_kidney_hasnan: a dataframe with nans
     :type dataframe_kidney: DataFrameFederated
     &#34;&#34;&#34;
     # Arrange
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=[&#34;age&#34;],
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 9 == data_frame_kidney[&#34;age&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;age&#34;].isna().sum()
@@ -79,24 +84,26 @@ def test_age(data_frame_federated_kidney: DataFrameFederated):
 
 
 @pytest.mark.active
-def test_rbc(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 152 nan in the `rbc` column get repaced by &#34;most_frequent&#34;
 
-    :param data_frame_federated_kidney: a dataframe with nans
+    :param data_frame_federated_kidney_hasnan: a dataframe with nans
     :type dataframe_kidney: DataFrameFederated
     &#34;&#34;&#34;
     # Arrange
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=[&#34;rbc&#34;],
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
@@ -104,7 +111,7 @@ def test_rbc(data_frame_federated_kidney: DataFrameFederated):
 
 
 @pytest.mark.active
-def test_all(data_frame_federated_kidney: DataFrameFederated):
+def test_all(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if all the nan in the dataframe get repaced
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -114,14 +121,16 @@ def test_all(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=None,
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
@@ -143,35 +152,39 @@ def test_all(data_frame_federated_kidney: DataFrameFederated):
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_multivariate_test.test_age"><code class="name flex">
-<span>def <span class="ident">test_age</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_age</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the 9 nan in the age column get repaced by multivariate estimation</p>
-<p>:param data_frame_federated_kidney: a dataframe with nans
+<p>:param data_frame_federated_kidney_hasnan: a dataframe with nans
 :type dataframe_kidney: DataFrameFederated</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_age(data_frame_federated_kidney: DataFrameFederated):
+def test_age(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 9 nan in the age column get repaced by multivariate estimation
 
-    :param data_frame_federated_kidney: a dataframe with nans
+    :param data_frame_federated_kidney_hasnan: a dataframe with nans
     :type dataframe_kidney: DataFrameFederated
     &#34;&#34;&#34;
     # Arrange
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=[&#34;age&#34;],
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 9 == data_frame_kidney[&#34;age&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;age&#34;].isna().sum()
@@ -180,7 +193,7 @@ def test_age(data_frame_federated_kidney: DataFrameFederated):
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_multivariate_test.test_all"><code class="name flex">
-<span>def <span class="ident">test_all</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_all</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if all the nan in the dataframe get repaced</p>
@@ -191,7 +204,7 @@ def test_age(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_all(data_frame_federated_kidney: DataFrameFederated):
+def test_all(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if all the nan in the dataframe get repaced
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -201,14 +214,16 @@ def test_all(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=None,
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
@@ -255,35 +270,37 @@ def test_exception(data_frame_federated_kidney: DataFrameFederated):
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_multivariate_test.test_rbc"><code class="name flex">
-<span>def <span class="ident">test_rbc</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_rbc</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the 152 nan in the <code>rbc</code> column get repaced by "most_frequent"</p>
-<p>:param data_frame_federated_kidney: a dataframe with nans
+<p>:param data_frame_federated_kidney_hasnan: a dataframe with nans
 :type dataframe_kidney: DataFrameFederated</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_rbc(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 152 nan in the `rbc` column get repaced by &#34;most_frequent&#34;
 
-    :param data_frame_federated_kidney: a dataframe with nans
+    :param data_frame_federated_kidney_hasnan: a dataframe with nans
     :type dataframe_kidney: DataFrameFederated
     &#34;&#34;&#34;
     # Arrange
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_multivariate(
-        data_frame_federated_kidney,
+        data_frame_federated_kidney_hasnan,
         list_name_column=[&#34;rbc&#34;],
         imputation_order=&#34;ascending&#34;,
         max_iter=20,
     )
 
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()

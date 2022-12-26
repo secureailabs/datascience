@@ -27,13 +27,26 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class ConcatenatePrecompute:
+class ConcatenatePrecompute(SafeFunctionBase):
     &#34;&#34;&#34;Wrapper safe function for the pandas concatenate&#34;&#34;&#34;
 
-    def run(series_0: pandas.Series, series_1: pandas.Series) -&gt; pandas.Series:
-        return pandas.concat([series_0, series_1])</code></pre>
+    def run(
+        series_0_reference: ReferenceSeries, series_1_reference: ReferenceSeries, data_model_series: DataModelSeries
+    ) -&gt; ReferenceSeries:
+
+        series_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+        series_1 = ServiceReference.get_instance().reference_to_series(series_1_reference)
+        series_concatinated = Series(
+            series_0.dataset_id, data_model_series, pandas.concat([series_0, series_1]).to_list()
+        )
+        return ServiceReference.get_instance().series_to_reference(series_concatinated)</code></pre>
 </details>
 </section>
 <section>
@@ -54,16 +67,28 @@ class ConcatenatePrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ConcatenatePrecompute:
+<pre><code class="python">class ConcatenatePrecompute(SafeFunctionBase):
     &#34;&#34;&#34;Wrapper safe function for the pandas concatenate&#34;&#34;&#34;
 
-    def run(series_0: pandas.Series, series_1: pandas.Series) -&gt; pandas.Series:
-        return pandas.concat([series_0, series_1])</code></pre>
+    def run(
+        series_0_reference: ReferenceSeries, series_1_reference: ReferenceSeries, data_model_series: DataModelSeries
+    ) -&gt; ReferenceSeries:
+
+        series_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+        series_1 = ServiceReference.get_instance().reference_to_series(series_1_reference)
+        series_concatinated = Series(
+            series_0.dataset_id, data_model_series, pandas.concat([series_0, series_1]).to_list()
+        )
+        return ServiceReference.get_instance().series_to_reference(series_concatinated)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.concatenate_precompute.ConcatenatePrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>series_0: pandas.core.series.Series, series_1: pandas.core.series.Series) ‑> pandas.core.series.Series</span>
+<span>def <span class="ident">run</span></span>(<span>series_0_reference: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, series_1_reference: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, data_model_series: sail_safe_functions_orchestrator.data_model.data_model_series.DataModelSeries) ‑> sail_safe_functions_orchestrator.reference_series.ReferenceSeries</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -71,8 +96,16 @@ class ConcatenatePrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(series_0: pandas.Series, series_1: pandas.Series) -&gt; pandas.Series:
-    return pandas.concat([series_0, series_1])</code></pre>
+<pre><code class="python">def run(
+    series_0_reference: ReferenceSeries, series_1_reference: ReferenceSeries, data_model_series: DataModelSeries
+) -&gt; ReferenceSeries:
+
+    series_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+    series_1 = ServiceReference.get_instance().reference_to_series(series_1_reference)
+    series_concatinated = Series(
+        series_0.dataset_id, data_model_series, pandas.concat([series_0, series_1]).to_list()
+    )
+    return ServiceReference.get_instance().series_to_reference(series_concatinated)</code></pre>
 </details>
 </dd>
 </dl>

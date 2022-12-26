@@ -29,27 +29,33 @@
 <pre><code class="python">from typing import List
 
 import numpy
-from pandas import Series
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from scipy import interpolate
 
 
-class RankCumulativeDistributionFunction:
+class RankCumulativeDistributionFunction(SafeFunctionBase):
     &#34;&#34;&#34;
-    Aggregates data for a federated cdf
+    Ranks the series using a given CDF of the full distribution
     &#34;&#34;&#34;
 
     def run(
-        sample_0: Series,
+        series_0_reference: ReferenceSeries,
         size_sample_total: int,
         list_domain_cdf: List[float],
         list_value_cdf: List[float],
-    ) -&gt; Series:
-        array_sample_0 = sample_0
-        function_cdf = interpolate.interp1d(
-            numpy.array(list_domain_cdf), numpy.array(list_value_cdf)
-        )
+    ) -&gt; ReferenceSeries:
+        sample_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+        array_sample_0 = sample_0.to_numpy()
+        function_cdf = interpolate.interp1d(numpy.array(list_domain_cdf), numpy.array(list_value_cdf))
         array_rank = numpy.round(function_cdf(array_sample_0) * size_sample_total)
-        return Series(array_rank, name=f&#34;{sample_0.name}_ranked&#34;)</code></pre>
+        data_model_series = DataModelSeries.create_numerical(f&#34;{sample_0.name}_ranked&#34;)
+        series_ranked = Series(sample_0.dataset_id, data_model_series, array_rank.tolist())
+        series_ranked_reference = ServiceReference.get_instance().series_to_reference(series_ranked)
+        return series_ranked_reference</code></pre>
 </details>
 </section>
 <section>
@@ -65,33 +71,39 @@ class RankCumulativeDistributionFunction:
 <span>class <span class="ident">RankCumulativeDistributionFunction</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Aggregates data for a federated cdf</p></div>
+<div class="desc"><p>Ranks the series using a given CDF of the full distribution</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class RankCumulativeDistributionFunction:
+<pre><code class="python">class RankCumulativeDistributionFunction(SafeFunctionBase):
     &#34;&#34;&#34;
-    Aggregates data for a federated cdf
+    Ranks the series using a given CDF of the full distribution
     &#34;&#34;&#34;
 
     def run(
-        sample_0: Series,
+        series_0_reference: ReferenceSeries,
         size_sample_total: int,
         list_domain_cdf: List[float],
         list_value_cdf: List[float],
-    ) -&gt; Series:
-        array_sample_0 = sample_0
-        function_cdf = interpolate.interp1d(
-            numpy.array(list_domain_cdf), numpy.array(list_value_cdf)
-        )
+    ) -&gt; ReferenceSeries:
+        sample_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+        array_sample_0 = sample_0.to_numpy()
+        function_cdf = interpolate.interp1d(numpy.array(list_domain_cdf), numpy.array(list_value_cdf))
         array_rank = numpy.round(function_cdf(array_sample_0) * size_sample_total)
-        return Series(array_rank, name=f&#34;{sample_0.name}_ranked&#34;)</code></pre>
+        data_model_series = DataModelSeries.create_numerical(f&#34;{sample_0.name}_ranked&#34;)
+        series_ranked = Series(sample_0.dataset_id, data_model_series, array_rank.tolist())
+        series_ranked_reference = ServiceReference.get_instance().series_to_reference(series_ranked)
+        return series_ranked_reference</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.rank_cdf.RankCumulativeDistributionFunction.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_0: pandas.core.series.Series, size_sample_total: int, list_domain_cdf: List[float], list_value_cdf: List[float]) ‑> pandas.core.series.Series</span>
+<span>def <span class="ident">run</span></span>(<span>series_0_reference: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, size_sample_total: int, list_domain_cdf: List[float], list_value_cdf: List[float]) ‑> sail_safe_functions_orchestrator.reference_series.ReferenceSeries</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -100,17 +112,19 @@ class RankCumulativeDistributionFunction:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run(
-    sample_0: Series,
+    series_0_reference: ReferenceSeries,
     size_sample_total: int,
     list_domain_cdf: List[float],
     list_value_cdf: List[float],
-) -&gt; Series:
-    array_sample_0 = sample_0
-    function_cdf = interpolate.interp1d(
-        numpy.array(list_domain_cdf), numpy.array(list_value_cdf)
-    )
+) -&gt; ReferenceSeries:
+    sample_0 = ServiceReference.get_instance().reference_to_series(series_0_reference)
+    array_sample_0 = sample_0.to_numpy()
+    function_cdf = interpolate.interp1d(numpy.array(list_domain_cdf), numpy.array(list_value_cdf))
     array_rank = numpy.round(function_cdf(array_sample_0) * size_sample_total)
-    return Series(array_rank, name=f&#34;{sample_0.name}_ranked&#34;)</code></pre>
+    data_model_series = DataModelSeries.create_numerical(f&#34;{sample_0.name}_ranked&#34;)
+    series_ranked = Series(sample_0.dataset_id, data_model_series, array_rank.tolist())
+    series_ranked_reference = ServiceReference.get_instance().series_to_reference(series_ranked)
+    return series_ranked_reference</code></pre>
 </details>
 </dd>
 </dl>

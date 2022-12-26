@@ -34,6 +34,7 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
     SeriesFederatedLocal,
 )
 from scipy import stats
+import numpy
 
 
 @pytest.mark.active
@@ -56,7 +57,139 @@ def test_pearson(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLoca
 
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
-    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_pearson_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_pearson_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_pearson_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_pearson_same_sample():
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)
+
+    &#34;&#34;&#34;
+    # Arrange
+
+    alternative = &#34;two-sided&#34;
+    sample_size = 100
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    estimator = Pearson(alternative=alternative)
+    pearson_sail, p_value_sail = estimator.run(sample_0, sample_0)
+    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_0)
+    print(pearson_sail)
+    print(pearson_scipy)
+    # Assert
+    assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_pearson_same_sample_negative():
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)
+    &#34;&#34;&#34;
+    numpy.random.seed(42)
+
+    a = [1, 2, 3, 4, 5]
+    b = [-1, -2, -3, -4, -5]
+    a = numpy.array(a)
+    b = numpy.array(b)
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, b)
+
+    alternative = &#34;two-sided&#34;
+    estimator = Pearson(alternative=alternative)
+    pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
+    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_pearson_zero_variance():
+    &#34;&#34;&#34;
+    This is our test to raise exception for zero variance
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;Variance is zero raises sys.float_info.max &#34; in str(exc_info.value)</code></pre>
 </details>
 </section>
 <section>
@@ -100,6 +233,192 @@ def test_pearson(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLoca
     assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_empty"><code class="name flex">
+<span>def <span class="ident">test_pearson_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_nan_value"><code class="name flex">
+<span>def <span class="ident">test_pearson_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception if series containing nan values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception if series containing nan values
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_one_value"><code class="name flex">
+<span>def <span class="ident">test_pearson_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample"><code class="name flex">
+<span>def <span class="ident">test_pearson_same_sample</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_same_sample():
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)
+
+    &#34;&#34;&#34;
+    # Arrange
+
+    alternative = &#34;two-sided&#34;
+    sample_size = 100
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    estimator = Pearson(alternative=alternative)
+    pearson_sail, p_value_sail = estimator.run(sample_0, sample_0)
+    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_0)
+    print(pearson_sail)
+    print(pearson_scipy)
+    # Assert
+    assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample_negative"><code class="name flex">
+<span>def <span class="ident">test_pearson_same_sample_negative</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_same_sample_negative():
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Pearson. Test where arg0 = arg1 (should return correlation of 1)
+    &#34;&#34;&#34;
+    numpy.random.seed(42)
+
+    a = [1, 2, 3, 4, 5]
+    b = [-1, -2, -3, -4, -5]
+    a = numpy.array(a)
+    b = numpy.array(b)
+
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, b)
+
+    alternative = &#34;two-sided&#34;
+    estimator = Pearson(alternative=alternative)
+    pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
+    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_zero_variance"><code class="name flex">
+<span>def <span class="ident">test_pearson_zero_variance</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for zero variance</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_pearson_zero_variance():
+    &#34;&#34;&#34;
+    This is our test to raise exception for zero variance
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 0, sample_size))
+    alternative = &#34;two-sided&#34;
+
+    # Act
+    estimator = Pearson(alternative=alternative)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;Variance is zero raises sys.float_info.max &#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -119,6 +438,12 @@ def test_pearson(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLoca
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson">test_pearson</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_empty">test_pearson_empty</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_nan_value">test_pearson_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_one_value">test_pearson_one_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample">test_pearson_same_sample</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample_negative" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_same_sample_negative">test_pearson_same_sample_negative</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_zero_variance" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.pearson_test.test_pearson_zero_variance">test_pearson_zero_variance</a></code></li>
 </ul>
 </li>
 </ul>

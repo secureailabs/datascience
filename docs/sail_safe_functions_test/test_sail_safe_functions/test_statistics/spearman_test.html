@@ -34,12 +34,11 @@ from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local 
     SeriesFederatedLocal,
 )
 from scipy import stats
+import numpy
 
 
 @pytest.mark.active
-def test_spearman_two_sided(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
     This is our test for the Sails federated Spearman
 
@@ -49,6 +48,9 @@ def test_spearman_two_sided(
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
     alternative = &#34;two-sided&#34;
     type_ranking = &#34;unsafe&#34;
 
@@ -63,9 +65,35 @@ def test_spearman_two_sided(
 
 
 @pytest.mark.active
-def test_spearman_less(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    # TODO
+    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
     This is our test for the Sails federated Spearman
 
@@ -89,11 +117,228 @@ def test_spearman_less(
 
 
 @pytest.mark.active
-def test_spearman_greater(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_less_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
-    This is our test for the Sails federated Spearman
+    This is our test for the Sails federated Spearman with different mean and standard deviation.
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_spearman_greater_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+
+
+@pytest.mark.active
+def test_spearman_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_spearman_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)
+
+
+@pytest.mark.active
+def test_spearman_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)
+
+
+# @pytest.mark.broken
+# def test_spearman_constant_value():
+#    &#34;&#34;&#34;
+#    This is our test to raise exception for series containing constant value.
+#    &#34;&#34;&#34;
+#    # Arrange
+#    numpy.random.seed(42)
+#    sample_size = 8
+#    a = [1, 1, 1, 1, 1, 1, 1, 1]
+#    a = numpy.array(a)
+#    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+#    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+#    alternative = &#34;greater&#34;
+#    type_ranking = &#34;unsafe&#34;
+
+#    # Act
+#    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+#    with pytest.raises(Exception) as exc_info:
+#        estimator.run(sample_0, sample_1)
+
+# Assert
+#    assert &#34;input array is constant&#34; in str(exc_info.value)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_empty"><code class="name flex">
+<span>def <span class="ident">test_spearman_empty</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_empty():
+    &#34;&#34;&#34;
+    This is our test to raise exception for empty
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 0
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot be empty&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater"><code class="name flex">
+<span>def <span class="ident">test_spearman_greater</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test for the Sails federated Spearman with different mean and standard deviation</p>
+<p>:param two_sample_big:
+:type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation
 
     :param two_sample_big:
     :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
@@ -113,19 +358,12 @@ def test_spearman_greater(
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
     assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
 </details>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater"><code class="name flex">
-<span>def <span class="ident">test_spearman_greater</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater_2"><code class="name flex">
+<span>def <span class="ident">test_spearman_greater_2</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is our test for the Sails federated Spearman</p>
+<div class="desc"><p>This is our test for the Sails federated Spearman with different mean and standard deviation</p>
 <p>:param two_sample_big:
 :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</p></div>
 <details class="source">
@@ -133,11 +371,9 @@ def test_spearman_greater(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_spearman_greater(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_greater_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
-    This is our test for the Sails federated Spearman
+    This is our test for the Sails federated Spearman with different mean and standard deviation
 
     :param two_sample_big:
     :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
@@ -145,6 +381,9 @@ def test_spearman_greater(
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
     alternative = &#34;greater&#34;
     type_ranking = &#34;unsafe&#34;
 
@@ -170,9 +409,7 @@ def test_spearman_greater(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_spearman_less(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
     This is our test for the Sails federated Spearman
 
@@ -195,6 +432,108 @@ def test_spearman_less(
     assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
 </details>
 </dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_less_2"><code class="name flex">
+<span>def <span class="ident">test_spearman_less_2</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test for the Sails federated Spearman with different mean and standard deviation.</p>
+<p>:param two_sample_big:
+:type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_less_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation.
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;less&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_nan_value"><code class="name flex">
+<span>def <span class="ident">test_spearman_nan_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing nan value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_nan_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing nan value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 20
+    a = numpy.empty((20))
+    a[12:] = numpy.nan
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, a)
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt nan or None values&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_one_value"><code class="name flex">
+<span>def <span class="ident">test_spearman_one_value</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test to raise exception for series containing only one value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_one_value():
+    &#34;&#34;&#34;
+    This is our test to raise exception for series containing only one value
+    &#34;&#34;&#34;
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 1
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;greater&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
+
+    # Assert
+    assert &#34;series cannot containt only one value&#34; in str(exc_info.value)</code></pre>
+</details>
+</dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided"><code class="name flex">
 <span>def <span class="ident">test_spearman_two_sided</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
 </code></dt>
@@ -207,9 +546,7 @@ def test_spearman_less(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_spearman_two_sided(
-    two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
-):
+def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
     &#34;&#34;&#34;
     This is our test for the Sails federated Spearman
 
@@ -219,6 +556,9 @@ def test_spearman_two_sided(
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
     alternative = &#34;two-sided&#34;
     type_ranking = &#34;unsafe&#34;
 
@@ -230,6 +570,45 @@ def test_spearman_two_sided(
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
     assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
+</details>
+</dd>
+<dt id="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided_2"><code class="name flex">
+<span>def <span class="ident">test_spearman_two_sided_2</span></span>(<span>two_sample_big: Tuple[<a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>, <a title="sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal" href="../../helper_sail_safe_functions/series_federated_local.html#sail_safe_functions_test.helper_sail_safe_functions.series_federated_local.SeriesFederatedLocal">SeriesFederatedLocal</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is our test for the Sails federated Spearman with different mean and standard deviation</p>
+<p>:param two_sample_big:
+:type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.active
+def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+    &#34;&#34;&#34;
+    This is our test for the Sails federated Spearman with different mean and standard deviation
+
+    :param two_sample_big:
+    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    &#34;&#34;&#34;
+    # Arrange
+    sample_0 = two_sample_big[0]
+    sample_1 = two_sample_big[1]
+    sample_size = 10
+    sample_0 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(2, 5, sample_size))
+    sample_1 = SeriesFederatedLocal.from_array(&#34;dataset_0&#34;, &#34;series_0&#34;, numpy.random.normal(0, 1, sample_size))
+    alternative = &#34;two-sided&#34;
+    type_ranking = &#34;unsafe&#34;
+
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
+    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+
+    # Assert
+    assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
+    # TODO
+    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)</code></pre>
 </details>
 </dd>
 </dl>
@@ -250,9 +629,15 @@ def test_spearman_two_sided(
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_empty" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_empty">test_spearman_empty</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater">test_spearman_greater</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater_2" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_greater_2">test_spearman_greater_2</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_less" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_less">test_spearman_less</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_less_2" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_less_2">test_spearman_less_2</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_nan_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_nan_value">test_spearman_nan_value</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_one_value" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_one_value">test_spearman_one_value</a></code></li>
 <li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided">test_spearman_two_sided</a></code></li>
+<li><code><a title="sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided_2" href="#sail_safe_functions_test.test_sail_safe_functions.test_statistics.spearman_test.test_spearman_two_sided_2">test_spearman_two_sided_2</a></code></li>
 </ul>
 </li>
 </ul>

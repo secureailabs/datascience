@@ -28,13 +28,16 @@
 </summary>
 <pre><code class="python">from typing import List
 
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
-class ListCreate:
+
+class ListCreate(SafeFunctionBase):
     &#34;&#34;&#34;
     Creates an empty list for aggregation
     &#34;&#34;&#34;
 
     def run() -&gt; List:
+        # TODO dont think we still use this
         &#34;&#34;&#34;Creates an empty list for aggregation
 
         :return: The created list
@@ -61,12 +64,13 @@ class ListCreate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ListCreate:
+<pre><code class="python">class ListCreate(SafeFunctionBase):
     &#34;&#34;&#34;
     Creates an empty list for aggregation
     &#34;&#34;&#34;
 
     def run() -&gt; List:
+        # TODO dont think we still use this
         &#34;&#34;&#34;Creates an empty list for aggregation
 
         :return: The created list
@@ -74,6 +78,10 @@ class ListCreate:
         &#34;&#34;&#34;
         return []</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.list_create.ListCreate.run"><code class="name flex">
@@ -88,6 +96,7 @@ class ListCreate:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run() -&gt; List:
+    # TODO dont think we still use this
     &#34;&#34;&#34;Creates an empty list for aggregation
 
     :return: The created list

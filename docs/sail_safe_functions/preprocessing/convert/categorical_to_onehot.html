@@ -26,41 +26,41 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import numpy
+<pre><code class="python">from typing import List
+
+import numpy
 import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.series import Series
 
 
-class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
-        name_column = column_schema[&#34;name_column&#34;]
-        type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
-        if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
-            raise ValueError(type_missing_policy)
+class CategoricalToOnehot(SafeFunctionBase):
+    @staticmethod
+    def run(series: Series) -&gt; List[Series]:
+        if series.data_model_series.type_data_level != DataModelSeries.DataLevelCategorical:
+            raise ValueError()
 
-        if type_missing_policy == &#34;propagate_add_column&#34;:
-            dummy_na = True
-        else:
-            dummy_na = False
-
-        if type_missing_policy == &#34;raise_exception&#34;:
-            if 0 &lt; data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f&#34;Column {name_column} contains expeption while not should be present&#34;
-                )
-
-        data_frame_target = pandas.get_dummies(
-            data_frame_source[name_column],
-            prefix=name_column,
+        data_frame_pandas = pandas.get_dummies(
+            series,
+            prefix=series.series_name,
             prefix_sep=&#34;_&#34;,
-            dummy_na=dummy_na,
-            columns=column_schema[&#34;list_value&#34;],
+            dummy_na=True,
+            columns=series.data_model_series.list_value,
             sparse=False,
             drop_first=False,
             dtype=numpy.float64,
         )
-        return data_frame_target</code></pre>
+        list_series = []
+        for series_name in data_frame_pandas.columns:
+            series_pandas = data_frame_pandas[series_name]
+            data_model_series = DataModelSeries.create_numerical(
+                series_name, -1, type_agregator=DataModelSeries.AgregatorComputed
+            )
+            series_created = Series.from_pandas(series_name, data_model_series, series_pandas)
+            series_created.index = series_pandas.index
+            list_series.append(series_created)
+        return list_series</code></pre>
 </details>
 </section>
 <section>
@@ -81,42 +81,41 @@ class CategoricalToOnehot:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CategoricalToOnehot:
-    def run(
-        column_schema: dict, data_frame_source: pandas.DataFrame
-    ) -&gt; pandas.DataFrame:
-        name_column = column_schema[&#34;name_column&#34;]
-        type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
-        if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
-            raise ValueError(type_missing_policy)
+<pre><code class="python">class CategoricalToOnehot(SafeFunctionBase):
+    @staticmethod
+    def run(series: Series) -&gt; List[Series]:
+        if series.data_model_series.type_data_level != DataModelSeries.DataLevelCategorical:
+            raise ValueError()
 
-        if type_missing_policy == &#34;propagate_add_column&#34;:
-            dummy_na = True
-        else:
-            dummy_na = False
-
-        if type_missing_policy == &#34;raise_exception&#34;:
-            if 0 &lt; data_frame_source[name_column].isna().sum():
-                raise ValueError(
-                    f&#34;Column {name_column} contains expeption while not should be present&#34;
-                )
-
-        data_frame_target = pandas.get_dummies(
-            data_frame_source[name_column],
-            prefix=name_column,
+        data_frame_pandas = pandas.get_dummies(
+            series,
+            prefix=series.series_name,
             prefix_sep=&#34;_&#34;,
-            dummy_na=dummy_na,
-            columns=column_schema[&#34;list_value&#34;],
+            dummy_na=True,
+            columns=series.data_model_series.list_value,
             sparse=False,
             drop_first=False,
             dtype=numpy.float64,
         )
-        return data_frame_target</code></pre>
+        list_series = []
+        for series_name in data_frame_pandas.columns:
+            series_pandas = data_frame_pandas[series_name]
+            data_model_series = DataModelSeries.create_numerical(
+                series_name, -1, type_agregator=DataModelSeries.AgregatorComputed
+            )
+            series_created = Series.from_pandas(series_name, data_model_series, series_pandas)
+            series_created.index = series_pandas.index
+            list_series.append(series_created)
+        return list_series</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.convert.categorical_to_onehot.CategoricalToOnehot.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>column_schema: dict, data_frame_source: pandas.core.frame.DataFrame) ‑> pandas.core.frame.DataFrame</span>
+<span>def <span class="ident">run</span></span>(<span>series: sail_safe_functions_orchestrator.series.Series) ‑> List[sail_safe_functions_orchestrator.series.Series]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -124,36 +123,31 @@ class CategoricalToOnehot:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    column_schema: dict, data_frame_source: pandas.DataFrame
-) -&gt; pandas.DataFrame:
-    name_column = column_schema[&#34;name_column&#34;]
-    type_missing_policy = column_schema[&#34;type_missing_policy&#34;]
-    if type_missing_policy not in [&#34;propagate_add_column&#34;, &#34;raise_exception&#34;]:
-        raise ValueError(type_missing_policy)
+<pre><code class="python">@staticmethod
+def run(series: Series) -&gt; List[Series]:
+    if series.data_model_series.type_data_level != DataModelSeries.DataLevelCategorical:
+        raise ValueError()
 
-    if type_missing_policy == &#34;propagate_add_column&#34;:
-        dummy_na = True
-    else:
-        dummy_na = False
-
-    if type_missing_policy == &#34;raise_exception&#34;:
-        if 0 &lt; data_frame_source[name_column].isna().sum():
-            raise ValueError(
-                f&#34;Column {name_column} contains expeption while not should be present&#34;
-            )
-
-    data_frame_target = pandas.get_dummies(
-        data_frame_source[name_column],
-        prefix=name_column,
+    data_frame_pandas = pandas.get_dummies(
+        series,
+        prefix=series.series_name,
         prefix_sep=&#34;_&#34;,
-        dummy_na=dummy_na,
-        columns=column_schema[&#34;list_value&#34;],
+        dummy_na=True,
+        columns=series.data_model_series.list_value,
         sparse=False,
         drop_first=False,
         dtype=numpy.float64,
     )
-    return data_frame_target</code></pre>
+    list_series = []
+    for series_name in data_frame_pandas.columns:
+        series_pandas = data_frame_pandas[series_name]
+        data_model_series = DataModelSeries.create_numerical(
+            series_name, -1, type_agregator=DataModelSeries.AgregatorComputed
+        )
+        series_created = Series.from_pandas(series_name, data_model_series, series_pandas)
+        series_created.index = series_pandas.index
+        list_series.append(series_created)
+    return list_series</code></pre>
 </details>
 </dd>
 </dl>

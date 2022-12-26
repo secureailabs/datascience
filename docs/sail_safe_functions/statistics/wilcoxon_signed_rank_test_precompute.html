@@ -26,29 +26,57 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List
+<pre><code class="python">from typing import Tuple
 
 import numpy
 import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_constant,
+    check_series_nan,
+    check_series_one_value,
+)
 
 
-class WilcoxonSingedRankTestPrecompute:
+class WilcoxonSingedRankTestPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for the  WilcoxonSingedRankTest
     &#34;&#34;&#34;
 
+    @staticmethod
     def run(
-        sample_difference: pandas.Series,
-        sample_absolute_difference_ranked: pandas.Series,
-    ):
-        rank_minus = numpy.sum(
-            (sample_difference.to_numpy() &lt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
+        reference_sample_difference: ReferenceSeries,
+        reference_sample_absolute_difference_ranked: ReferenceSeries,
+    ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Function to Precomputes data for the  WilcoxonSingedRankTest TODO: What does this mean? Be more verbose than the function name.
+
+        :param reference_sample_difference: reference to the sample input
+        :type sample_difference: ReferenceSeries
+        :param reference_sample_absolute_difference_ranked: absolute differences ranked TODO: what does this mean? Be more verbose than the variable name.
+        :type sample_absolute_difference_ranked: ReferenceSeries
+        :return: Tuple rank_minus, rank_plus TODO: What does this mean?
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
+        sample_difference = ServiceReference.get_instance().reference_to_series(reference_sample_difference).to_numpy()
+        sample_absolute_difference_ranked = (
+            ServiceReference.get_instance().reference_to_series(reference_sample_absolute_difference_ranked).to_numpy()
         )
-        rank_plus = numpy.sum(
-            (sample_difference.to_numpy() &gt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
+        check_empty_series(sample_difference)
+        check_empty_series(sample_absolute_difference_ranked)
+        check_series_nan(sample_difference)
+        check_series_one_value(sample_difference)
+        check_series_nan(sample_absolute_difference_ranked)
+        check_series_one_value(sample_absolute_difference_ranked)
+        check_series_constant(sample_difference)
+        check_series_constant(sample_absolute_difference_ranked)
+
+        rank_minus = numpy.sum((sample_difference &lt; 0) * sample_absolute_difference_ranked)
+        rank_plus = numpy.sum((sample_difference &gt; 0) * sample_absolute_difference_ranked)
         return [rank_minus, rank_plus]</code></pre>
 </details>
 </section>
@@ -71,48 +99,95 @@ WilcoxonSingedRankTest</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class WilcoxonSingedRankTestPrecompute:
+<pre><code class="python">class WilcoxonSingedRankTestPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for the  WilcoxonSingedRankTest
     &#34;&#34;&#34;
 
+    @staticmethod
     def run(
-        sample_difference: pandas.Series,
-        sample_absolute_difference_ranked: pandas.Series,
-    ):
-        rank_minus = numpy.sum(
-            (sample_difference.to_numpy() &lt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
+        reference_sample_difference: ReferenceSeries,
+        reference_sample_absolute_difference_ranked: ReferenceSeries,
+    ) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        Function to Precomputes data for the  WilcoxonSingedRankTest TODO: What does this mean? Be more verbose than the function name.
+
+        :param reference_sample_difference: reference to the sample input
+        :type sample_difference: ReferenceSeries
+        :param reference_sample_absolute_difference_ranked: absolute differences ranked TODO: what does this mean? Be more verbose than the variable name.
+        :type sample_absolute_difference_ranked: ReferenceSeries
+        :return: Tuple rank_minus, rank_plus TODO: What does this mean?
+        :rtype: Tuple[float, float]
+        &#34;&#34;&#34;
+        sample_difference = ServiceReference.get_instance().reference_to_series(reference_sample_difference).to_numpy()
+        sample_absolute_difference_ranked = (
+            ServiceReference.get_instance().reference_to_series(reference_sample_absolute_difference_ranked).to_numpy()
         )
-        rank_plus = numpy.sum(
-            (sample_difference.to_numpy() &gt; 0)
-            * sample_absolute_difference_ranked.to_numpy()
-        )
+        check_empty_series(sample_difference)
+        check_empty_series(sample_absolute_difference_ranked)
+        check_series_nan(sample_difference)
+        check_series_one_value(sample_difference)
+        check_series_nan(sample_absolute_difference_ranked)
+        check_series_one_value(sample_absolute_difference_ranked)
+        check_series_constant(sample_difference)
+        check_series_constant(sample_absolute_difference_ranked)
+
+        rank_minus = numpy.sum((sample_difference &lt; 0) * sample_absolute_difference_ranked)
+        rank_plus = numpy.sum((sample_difference &gt; 0) * sample_absolute_difference_ranked)
         return [rank_minus, rank_plus]</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.wilcoxon_signed_rank_test_precompute.WilcoxonSingedRankTestPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_difference: pandas.core.series.Series, sample_absolute_difference_ranked: pandas.core.series.Series)</span>
+<span>def <span class="ident">run</span></span>(<span>reference_sample_difference: sail_safe_functions_orchestrator.reference_series.ReferenceSeries, reference_sample_absolute_difference_ranked: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function to Precomputes data for the
+WilcoxonSingedRankTest TODO: What does this mean? Be more verbose than the function name.</p>
+<p>:param reference_sample_difference: reference to the sample input
+:type sample_difference: ReferenceSeries
+:param reference_sample_absolute_difference_ranked: absolute differences ranked TODO: what does this mean? Be more verbose than the variable name.
+:type sample_absolute_difference_ranked: ReferenceSeries
+:return: Tuple rank_minus, rank_plus TODO: What does this mean?
+:rtype: Tuple[float, float]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    sample_difference: pandas.Series,
-    sample_absolute_difference_ranked: pandas.Series,
-):
-    rank_minus = numpy.sum(
-        (sample_difference.to_numpy() &lt; 0)
-        * sample_absolute_difference_ranked.to_numpy()
+<pre><code class="python">@staticmethod
+def run(
+    reference_sample_difference: ReferenceSeries,
+    reference_sample_absolute_difference_ranked: ReferenceSeries,
+) -&gt; Tuple[float, float]:
+    &#34;&#34;&#34;
+    Function to Precomputes data for the  WilcoxonSingedRankTest TODO: What does this mean? Be more verbose than the function name.
+
+    :param reference_sample_difference: reference to the sample input
+    :type sample_difference: ReferenceSeries
+    :param reference_sample_absolute_difference_ranked: absolute differences ranked TODO: what does this mean? Be more verbose than the variable name.
+    :type sample_absolute_difference_ranked: ReferenceSeries
+    :return: Tuple rank_minus, rank_plus TODO: What does this mean?
+    :rtype: Tuple[float, float]
+    &#34;&#34;&#34;
+    sample_difference = ServiceReference.get_instance().reference_to_series(reference_sample_difference).to_numpy()
+    sample_absolute_difference_ranked = (
+        ServiceReference.get_instance().reference_to_series(reference_sample_absolute_difference_ranked).to_numpy()
     )
-    rank_plus = numpy.sum(
-        (sample_difference.to_numpy() &gt; 0)
-        * sample_absolute_difference_ranked.to_numpy()
-    )
+    check_empty_series(sample_difference)
+    check_empty_series(sample_absolute_difference_ranked)
+    check_series_nan(sample_difference)
+    check_series_one_value(sample_difference)
+    check_series_nan(sample_absolute_difference_ranked)
+    check_series_one_value(sample_absolute_difference_ranked)
+    check_series_constant(sample_difference)
+    check_series_constant(sample_absolute_difference_ranked)
+
+    rank_minus = numpy.sum((sample_difference &lt; 0) * sample_absolute_difference_ranked)
+    rank_plus = numpy.sum((sample_difference &gt; 0) * sample_absolute_difference_ranked)
     return [rank_minus, rank_plus]</code></pre>
 </details>
 </dd>

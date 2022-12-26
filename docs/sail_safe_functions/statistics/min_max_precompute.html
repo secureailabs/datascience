@@ -29,44 +29,53 @@
 <pre><code class="python">from typing import Tuple
 
 import numpy as np
-import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
+from sail_safe_functions_orchestrator.tools_common import (
+    check_empty_series,
+    check_instance,
+    check_series_nan,
+    check_series_one_value,
+)
 
 
-class MinMaxPrecompute:
+class MinMaxPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes min and max for a given sample
     &#34;&#34;&#34;
 
-    def run(series_sample: pd.Series) -&gt; Tuple[float, float]:
-        &#34;&#34;&#34;This function is designed to counteract disclosure of the min and max while giving them estimates that
+    def run(sample_0_series: ReferenceSeries) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min &lt;= sample_min and sample_max &lt;= max
         For uniform distributions this follows the UMVU-estimator altough with bigger variance
         For normal distribution this creates a min and a max that are far outside the sample
         min and max to protect outliers.
         TODO this function can be improved by doing the actual estimation in the aggregate section
 
-        :param series_sample: the sample from witch to estimate the min and max
-        :type series_sample: pd.Series
+        :param sample_0_series: the sample from witch to estimate the min and max
+        :type sample_0_series: ReferenceSeries
         :raises ValueError: raises a ValueError if the series contains `na` values
         :return: The min and max estimate from the series
         :rtype: Tuple[float, float]
         &#34;&#34;&#34;
-        if 0 &lt; series_sample.isna().sum():
+
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        if np.isnan(np.sum(sample_0)):
             raise ValueError(&#34;Sample contains `na` values&#34;)
-        array_sample = np.array(
-            series_sample.sort_values(ascending=True, inplace=False)
-        )
-        subsample_size = int(np.ceil(np.sqrt(series_sample.size)))
-        subsample_min = array_sample[:subsample_size]
-        subsample_max = array_sample[-subsample_size:]
+        sample_0 = np.sort(sample_0)
+        check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+
+        subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
+        subsample_min = sample_0[:subsample_size]
+        subsample_max = sample_0[-subsample_size:]
         subsample_min_width = np.max(subsample_min) - np.min(subsample_min)
-        estimate_min = np.min(subsample_min) - (
-            subsample_min_width**2 / series_sample.size
-        )
+        estimate_min = np.min(subsample_min) - (subsample_min_width**2 / sample_0.size)
         subsample_max_width = np.max(subsample_max) - np.min(subsample_max)
-        estimate_max = np.max(subsample_max) + (
-            subsample_max_width**2 / series_sample.size
-        )
+        estimate_max = np.max(subsample_max) + (subsample_max_width**2 / sample_0.size)
         return estimate_min, estimate_max</code></pre>
 </details>
 </section>
@@ -88,47 +97,52 @@ class MinMaxPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MinMaxPrecompute:
+<pre><code class="python">class MinMaxPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes min and max for a given sample
     &#34;&#34;&#34;
 
-    def run(series_sample: pd.Series) -&gt; Tuple[float, float]:
-        &#34;&#34;&#34;This function is designed to counteract disclosure of the min and max while giving them estimates that
+    def run(sample_0_series: ReferenceSeries) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;
+        This function is designed to counteract disclosure of the min and max while giving them estimates that
         are independant for sample size bigger than 2. The function guarantees that min &lt;= sample_min and sample_max &lt;= max
         For uniform distributions this follows the UMVU-estimator altough with bigger variance
         For normal distribution this creates a min and a max that are far outside the sample
         min and max to protect outliers.
         TODO this function can be improved by doing the actual estimation in the aggregate section
 
-        :param series_sample: the sample from witch to estimate the min and max
-        :type series_sample: pd.Series
+        :param sample_0_series: the sample from witch to estimate the min and max
+        :type sample_0_series: ReferenceSeries
         :raises ValueError: raises a ValueError if the series contains `na` values
         :return: The min and max estimate from the series
         :rtype: Tuple[float, float]
         &#34;&#34;&#34;
-        if 0 &lt; series_sample.isna().sum():
+
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+        if np.isnan(np.sum(sample_0)):
             raise ValueError(&#34;Sample contains `na` values&#34;)
-        array_sample = np.array(
-            series_sample.sort_values(ascending=True, inplace=False)
-        )
-        subsample_size = int(np.ceil(np.sqrt(series_sample.size)))
-        subsample_min = array_sample[:subsample_size]
-        subsample_max = array_sample[-subsample_size:]
+        sample_0 = np.sort(sample_0)
+        check_empty_series(sample_0)
+        check_series_nan(sample_0)
+        check_series_one_value(sample_0)
+
+        subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
+        subsample_min = sample_0[:subsample_size]
+        subsample_max = sample_0[-subsample_size:]
         subsample_min_width = np.max(subsample_min) - np.min(subsample_min)
-        estimate_min = np.min(subsample_min) - (
-            subsample_min_width**2 / series_sample.size
-        )
+        estimate_min = np.min(subsample_min) - (subsample_min_width**2 / sample_0.size)
         subsample_max_width = np.max(subsample_max) - np.min(subsample_max)
-        estimate_max = np.max(subsample_max) + (
-            subsample_max_width**2 / series_sample.size
-        )
+        estimate_max = np.max(subsample_max) + (subsample_max_width**2 / sample_0.size)
         return estimate_min, estimate_max</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.min_max_precompute.MinMaxPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>series_sample: pandas.core.series.Series) ‑> Tuple[float, float]</span>
+<span>def <span class="ident">run</span></span>(<span>sample_0_series: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function is designed to counteract disclosure of the min and max while giving them estimates that
@@ -137,8 +151,8 @@ For uniform distributions this follows the UMVU-estimator altough with bigger va
 For normal distribution this creates a min and a max that are far outside the sample
 min and max to protect outliers.
 TODO this function can be improved by doing the actual estimation in the aggregate section</p>
-<p>:param series_sample: the sample from witch to estimate the min and max
-:type series_sample: pd.Series
+<p>:param sample_0_series: the sample from witch to estimate the min and max
+:type sample_0_series: ReferenceSeries
 :raises ValueError: raises a ValueError if the series contains <code>na</code> values
 :return: The min and max estimate from the series
 :rtype: Tuple[float, float]</p></div>
@@ -146,36 +160,37 @@ TODO this function can be improved by doing the actual estimation in the aggrega
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(series_sample: pd.Series) -&gt; Tuple[float, float]:
-    &#34;&#34;&#34;This function is designed to counteract disclosure of the min and max while giving them estimates that
+<pre><code class="python">def run(sample_0_series: ReferenceSeries) -&gt; Tuple[float, float]:
+    &#34;&#34;&#34;
+    This function is designed to counteract disclosure of the min and max while giving them estimates that
     are independant for sample size bigger than 2. The function guarantees that min &lt;= sample_min and sample_max &lt;= max
     For uniform distributions this follows the UMVU-estimator altough with bigger variance
     For normal distribution this creates a min and a max that are far outside the sample
     min and max to protect outliers.
     TODO this function can be improved by doing the actual estimation in the aggregate section
 
-    :param series_sample: the sample from witch to estimate the min and max
-    :type series_sample: pd.Series
+    :param sample_0_series: the sample from witch to estimate the min and max
+    :type sample_0_series: ReferenceSeries
     :raises ValueError: raises a ValueError if the series contains `na` values
     :return: The min and max estimate from the series
     :rtype: Tuple[float, float]
     &#34;&#34;&#34;
-    if 0 &lt; series_sample.isna().sum():
+
+    sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
+    if np.isnan(np.sum(sample_0)):
         raise ValueError(&#34;Sample contains `na` values&#34;)
-    array_sample = np.array(
-        series_sample.sort_values(ascending=True, inplace=False)
-    )
-    subsample_size = int(np.ceil(np.sqrt(series_sample.size)))
-    subsample_min = array_sample[:subsample_size]
-    subsample_max = array_sample[-subsample_size:]
+    sample_0 = np.sort(sample_0)
+    check_empty_series(sample_0)
+    check_series_nan(sample_0)
+    check_series_one_value(sample_0)
+
+    subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
+    subsample_min = sample_0[:subsample_size]
+    subsample_max = sample_0[-subsample_size:]
     subsample_min_width = np.max(subsample_min) - np.min(subsample_min)
-    estimate_min = np.min(subsample_min) - (
-        subsample_min_width**2 / series_sample.size
-    )
+    estimate_min = np.min(subsample_min) - (subsample_min_width**2 / sample_0.size)
     subsample_max_width = np.max(subsample_max) - np.min(subsample_max)
-    estimate_max = np.max(subsample_max) + (
-        subsample_max_width**2 / series_sample.size
-    )
+    estimate_max = np.max(subsample_max) + (subsample_max_width**2 / sample_0.size)
     return estimate_min, estimate_max</code></pre>
 </details>
 </dd>

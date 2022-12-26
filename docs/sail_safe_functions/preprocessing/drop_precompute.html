@@ -27,9 +27,10 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class DropPrecompute:
+class DropPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Drop specific rows or columns
     &#34;&#34;&#34;
@@ -100,7 +101,7 @@ class DropPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DropPrecompute:
+<pre><code class="python">class DropPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Drop specific rows or columns
     &#34;&#34;&#34;
@@ -152,6 +153,10 @@ class DropPrecompute:
             errors=errors,
         )</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.drop_precompute.DropPrecompute.run"><code class="name flex">

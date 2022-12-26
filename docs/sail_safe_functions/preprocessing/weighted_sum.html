@@ -28,17 +28,20 @@
 </summary>
 <pre><code class="python">from typing import List
 
-import pandas
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.series import Series
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class SumWeighted:
+class SumWeighted(SafeFunctionBase):
     &#34;&#34;&#34;
     Takes the weighted sum of a list of series
     &#34;&#34;&#34;
 
-    def run(
-        list_series: List[pandas.Series], list_weight: List[float]
-    ) -&gt; pandas.Series:
+    @staticmethod
+    def run(list_reference_series: List[ReferenceSeries], list_weight: List[float]) -&gt; ReferenceSeries:
         &#34;&#34;&#34;Takes the weighted sum of a list of series
 
         :param list_series:list of series to be weighted
@@ -49,12 +52,18 @@ class SumWeighted:
         :return: returns a new series that is a weighted sum
         :rtype: pandas.Series
         &#34;&#34;&#34;
-        if len(list_series) != len(list_weight):
+        if len(list_reference_series) != len(list_weight):
             raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)
-        series_sum = list_series[0] * 0
-        for series, weight in zip(list_series, list_weight):
+        series_sum = ServiceReference.get_instance().reference_to_series(list_reference_series[0]) * 0
+        for reference_series, weight in zip(list_reference_series, list_weight):
+            series = ServiceReference.get_instance().reference_to_series(reference_series)
+            dataset_id = series.dataset_id
             series_sum += series * weight
-        return series_sum</code></pre>
+        data_model_series = DataModelSeries.create_numerical(
+            &#34;weigthed_sum&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+        )
+        series_sum = Series(dataset_id, data_model_series, series_sum.tolist())
+        return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
 </section>
 <section>
@@ -75,14 +84,13 @@ class SumWeighted:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SumWeighted:
+<pre><code class="python">class SumWeighted(SafeFunctionBase):
     &#34;&#34;&#34;
     Takes the weighted sum of a list of series
     &#34;&#34;&#34;
 
-    def run(
-        list_series: List[pandas.Series], list_weight: List[float]
-    ) -&gt; pandas.Series:
+    @staticmethod
+    def run(list_reference_series: List[ReferenceSeries], list_weight: List[float]) -&gt; ReferenceSeries:
         &#34;&#34;&#34;Takes the weighted sum of a list of series
 
         :param list_series:list of series to be weighted
@@ -93,17 +101,27 @@ class SumWeighted:
         :return: returns a new series that is a weighted sum
         :rtype: pandas.Series
         &#34;&#34;&#34;
-        if len(list_series) != len(list_weight):
+        if len(list_reference_series) != len(list_weight):
             raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)
-        series_sum = list_series[0] * 0
-        for series, weight in zip(list_series, list_weight):
+        series_sum = ServiceReference.get_instance().reference_to_series(list_reference_series[0]) * 0
+        for reference_series, weight in zip(list_reference_series, list_weight):
+            series = ServiceReference.get_instance().reference_to_series(reference_series)
+            dataset_id = series.dataset_id
             series_sum += series * weight
-        return series_sum</code></pre>
+        data_model_series = DataModelSeries.create_numerical(
+            &#34;weigthed_sum&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+        )
+        series_sum = Series(dataset_id, data_model_series, series_sum.tolist())
+        return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.preprocessing.weighted_sum.SumWeighted.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>list_series: List[pandas.core.series.Series], list_weight: List[float]) ‑> pandas.core.series.Series</span>
+<span>def <span class="ident">run</span></span>(<span>list_reference_series: List[sail_safe_functions_orchestrator.reference_series.ReferenceSeries], list_weight: List[float]) ‑> sail_safe_functions_orchestrator.reference_series.ReferenceSeries</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Takes the weighted sum of a list of series</p>
@@ -118,9 +136,8 @@ class SumWeighted:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(
-    list_series: List[pandas.Series], list_weight: List[float]
-) -&gt; pandas.Series:
+<pre><code class="python">@staticmethod
+def run(list_reference_series: List[ReferenceSeries], list_weight: List[float]) -&gt; ReferenceSeries:
     &#34;&#34;&#34;Takes the weighted sum of a list of series
 
     :param list_series:list of series to be weighted
@@ -131,12 +148,18 @@ class SumWeighted:
     :return: returns a new series that is a weighted sum
     :rtype: pandas.Series
     &#34;&#34;&#34;
-    if len(list_series) != len(list_weight):
+    if len(list_reference_series) != len(list_weight):
         raise ValueError(&#34;`list_series` and `list_weight` must be of same lenght&#34;)
-    series_sum = list_series[0] * 0
-    for series, weight in zip(list_series, list_weight):
+    series_sum = ServiceReference.get_instance().reference_to_series(list_reference_series[0]) * 0
+    for reference_series, weight in zip(list_reference_series, list_weight):
+        series = ServiceReference.get_instance().reference_to_series(reference_series)
+        dataset_id = series.dataset_id
         series_sum += series * weight
-    return series_sum</code></pre>
+    data_model_series = DataModelSeries.create_numerical(
+        &#34;weigthed_sum&#34;, -1, type_agregator=DataModelSeries.AgregatorComputed
+    )
+    series_sum = Series(dataset_id, data_model_series, series_sum.tolist())
+    return ServiceReference.get_instance().series_to_reference(series_sum)</code></pre>
 </details>
 </dd>
 </dl>

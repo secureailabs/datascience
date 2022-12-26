@@ -30,9 +30,10 @@
 
 import numpy
 from scipy.stats import distributions
+from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-class ChisquareAggregate:
+class ChisquareAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Aggregates data for Chisquare test
     &#34;&#34;&#34;
@@ -97,7 +98,7 @@ class ChisquareAggregate:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ChisquareAggregate:
+<pre><code class="python">class ChisquareAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Aggregates data for Chisquare test
     &#34;&#34;&#34;
@@ -143,6 +144,10 @@ class ChisquareAggregate:
         p_value = distributions.chi2.sf(chisquare_statistic, degrees_of_freedom)
         return chisquare_statistic, p_value</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.chisquare_aggregate.ChisquareAggregate.run"><code class="name flex">

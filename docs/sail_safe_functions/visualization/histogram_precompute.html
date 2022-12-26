@@ -28,15 +28,18 @@
 </summary>
 <pre><code class="python">from typing import List
 
-import pandas as pd
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.reference_series import ReferenceSeries
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
-class HistogramPrecompute:
+class HistogramPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for Histogram
     &#34;&#34;&#34;
 
-    def run(sample_0_series: pd.Series) -&gt; List[float]:
+    @staticmethod
+    def run(sample_0_series: ReferenceSeries) -&gt; List[float]:
         &#34;&#34;&#34;Generates the precompute count Frequency for use in a histogram
 
         Parameters
@@ -50,7 +53,8 @@ class HistogramPrecompute:
         list_2 : list of frequecy(count of total number of time each vallue came in the seires) of every unique value.
         &#34;&#34;&#34;
         # series containing unique value in index and frequency.
-        series = sample_0_series.value_counts()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series)
+        series = sample_0.value_counts()
         l1 = list(series.index)
         l2 = list(series)
 
@@ -77,12 +81,13 @@ class HistogramPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class HistogramPrecompute:
+<pre><code class="python">class HistogramPrecompute(SafeFunctionBase):
     &#34;&#34;&#34;
     Precomputes data for Histogram
     &#34;&#34;&#34;
 
-    def run(sample_0_series: pd.Series) -&gt; List[float]:
+    @staticmethod
+    def run(sample_0_series: ReferenceSeries) -&gt; List[float]:
         &#34;&#34;&#34;Generates the precompute count Frequency for use in a histogram
 
         Parameters
@@ -96,7 +101,8 @@ class HistogramPrecompute:
         list_2 : list of frequecy(count of total number of time each vallue came in the seires) of every unique value.
         &#34;&#34;&#34;
         # series containing unique value in index and frequency.
-        series = sample_0_series.value_counts()
+        sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series)
+        series = sample_0.value_counts()
         l1 = list(series.index)
         l2 = list(series)
 
@@ -104,10 +110,14 @@ class HistogramPrecompute:
 
         return list_precompute</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
+<h3>Static methods</h3>
 <dl>
 <dt id="sail_safe_functions.visualization.histogram_precompute.HistogramPrecompute.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>sample_0_series: pandas.core.series.Series) ‑> List[float]</span>
+<span>def <span class="ident">run</span></span>(<span>sample_0_series: sail_safe_functions_orchestrator.reference_series.ReferenceSeries) ‑> List[float]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generates the precompute count Frequency for use in a histogram</p>
@@ -128,7 +138,8 @@ class HistogramPrecompute:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(sample_0_series: pd.Series) -&gt; List[float]:
+<pre><code class="python">@staticmethod
+def run(sample_0_series: ReferenceSeries) -&gt; List[float]:
     &#34;&#34;&#34;Generates the precompute count Frequency for use in a histogram
 
     Parameters
@@ -142,7 +153,8 @@ class HistogramPrecompute:
     list_2 : list of frequecy(count of total number of time each vallue came in the seires) of every unique value.
     &#34;&#34;&#34;
     # series containing unique value in index and frequency.
-    series = sample_0_series.value_counts()
+    sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series)
+    series = sample_0.value_counts()
     l1 = list(series.index)
     l2 = list(series)
 

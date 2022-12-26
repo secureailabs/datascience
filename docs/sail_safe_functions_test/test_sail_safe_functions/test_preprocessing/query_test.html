@@ -30,10 +30,11 @@
 import pytest
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 @pytest.mark.active
-def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_constant(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with constant query
 
@@ -47,15 +48,19 @@ def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_feder
     query = &#34;pcc == &#39;notpresent&#39;&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)
+    assert data_frame_result.equals(data_frame_result_direct)
 
 
 @pytest.mark.active
-def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_columns(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with column query
 
@@ -69,15 +74,19 @@ def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federa
     query = &#34;sg &lt; al&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)
+    assert data_frame_result.equals(data_frame_result_direct)
 
 
 @pytest.mark.active
-def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_variable(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with variable query
 
@@ -93,11 +102,15 @@ def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_feder
     query = &#34;@min_age &lt;= age &lt;= @max_age&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)
+    assert data_frame_result.equals(data_frame_result_direct)
 
 
 @pytest.mark.active
@@ -162,7 +175,7 @@ def test_object_attribute(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.query_test.test_comparison_on_columns"><code class="name flex">
-<span>def <span class="ident">test_comparison_on_columns</span></span>(<span>dataframe_kidney: pandas.core.frame.DataFrame, data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_comparison_on_columns</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Tests comparison with column query</p>
@@ -177,7 +190,7 @@ def test_object_attribute(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_columns(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with column query
 
@@ -191,15 +204,19 @@ def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federa
     query = &#34;sg &lt; al&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)</code></pre>
+    assert data_frame_result.equals(data_frame_result_direct)</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.query_test.test_comparison_on_constant"><code class="name flex">
-<span>def <span class="ident">test_comparison_on_constant</span></span>(<span>dataframe_kidney: pandas.core.frame.DataFrame, data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_comparison_on_constant</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Tests comparison with constant query</p>
@@ -214,7 +231,7 @@ def test_comparison_on_columns(dataframe_kidney: pd.DataFrame, data_frame_federa
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_constant(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with constant query
 
@@ -228,15 +245,19 @@ def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_feder
     query = &#34;pcc == &#39;notpresent&#39;&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)</code></pre>
+    assert data_frame_result.equals(data_frame_result_direct)</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.query_test.test_comparison_on_variable"><code class="name flex">
-<span>def <span class="ident">test_comparison_on_variable</span></span>(<span>dataframe_kidney: pandas.core.frame.DataFrame, data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_comparison_on_variable</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Tests comparison with variable query</p>
@@ -251,7 +272,7 @@ def test_comparison_on_constant(dataframe_kidney: pd.DataFrame, data_frame_feder
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_federated_kidney: DataFrameFederated):
+def test_comparison_on_variable(data_frame_federated_kidney: DataFrameFederated):
     &#34;&#34;&#34;
     Tests comparison with variable query
 
@@ -267,11 +288,15 @@ def test_comparison_on_variable(dataframe_kidney: pd.DataFrame, data_frame_feder
     query = &#34;@min_age &lt;= age &lt;= @max_age&#34;
 
     # Act
-    federated_dataframe_result = preprocessing.query(data_frame_federated_kidney, query)
-    pd_dataframe_result = list(federated_dataframe_result.dict_dataframe.values())[0]
+    data_frame_federated_result = preprocessing.query(data_frame_federated_kidney, query)
+    reference_data_frame_kidney = list(data_frame_federated_kidney.dict_reference_data_frame.values())[0]
+    reference_data_frame_result = list(data_frame_federated_result.dict_reference_data_frame.values())[0]
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+    data_frame_result = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_result)
+    data_frame_result_direct = data_frame_kidney.query(query)
 
     # Assert
-    assert dataframe_kidney.query(query).equals(pd_dataframe_result)</code></pre>
+    assert data_frame_result.equals(data_frame_result_direct)</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.query_test.test_object_attribute"><code class="name flex">

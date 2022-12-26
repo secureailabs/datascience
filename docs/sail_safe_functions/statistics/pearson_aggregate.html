@@ -27,10 +27,13 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import math
-from typing import List
+from typing import List, Tuple
+
+from sail_safe_functions.safe_function_base import SafeFunctionBase
+from sail_safe_functions_orchestrator.tools_common import check_variance_zero
 
 
-class PearsonAggregate(object):
+class PearsonAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Computing the pearson Aggregate
 
@@ -41,7 +44,7 @@ class PearsonAggregate(object):
     def __init__(self) -&gt; None:
         super().__init__()
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
         &#34;&#34;&#34;
         This function run to calculate the final precompute
         and calculate the federated pearson value.
@@ -72,6 +75,7 @@ class PearsonAggregate(object):
         sample_mean_0 = sum_x_0 / size_sample_0
         # Calculating sample variance
         sample_variance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        check_variance_zero(sample_variance_0)
         # Calculating Sample
         sample_standard_deviation_0 = math.sqrt(sample_variance_0)
         # Calculating for the second column
@@ -79,14 +83,13 @@ class PearsonAggregate(object):
         sample_mean_1 = sum_x_1 / size_sample_1
         # Calculating sample variance
         sample_variance_1 = (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
+        check_variance_zero(sample_variance_1)
         # Calculating Sample
         sample_standard_deviation_1 = math.sqrt(sample_variance_1)
 
         E_xy = sum_x1_into_x2 / size_sample_0
 
-        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (
-            sample_standard_deviation_0 * sample_standard_deviation_1
-        )
+        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
         degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom</code></pre>
 </details>
@@ -111,7 +114,7 @@ class PearsonAggregate(object):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class PearsonAggregate(object):
+<pre><code class="python">class PearsonAggregate(SafeFunctionBase):
     &#34;&#34;&#34;
     Computing the pearson Aggregate
 
@@ -122,7 +125,7 @@ class PearsonAggregate(object):
     def __init__(self) -&gt; None:
         super().__init__()
 
-    def run(list_list_precompute: List[List[float]]):
+    def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
         &#34;&#34;&#34;
         This function run to calculate the final precompute
         and calculate the federated pearson value.
@@ -153,6 +156,7 @@ class PearsonAggregate(object):
         sample_mean_0 = sum_x_0 / size_sample_0
         # Calculating sample variance
         sample_variance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+        check_variance_zero(sample_variance_0)
         # Calculating Sample
         sample_standard_deviation_0 = math.sqrt(sample_variance_0)
         # Calculating for the second column
@@ -160,21 +164,24 @@ class PearsonAggregate(object):
         sample_mean_1 = sum_x_1 / size_sample_1
         # Calculating sample variance
         sample_variance_1 = (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
+        check_variance_zero(sample_variance_1)
         # Calculating Sample
         sample_standard_deviation_1 = math.sqrt(sample_variance_1)
 
         E_xy = sum_x1_into_x2 / size_sample_0
 
-        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (
-            sample_standard_deviation_0 * sample_standard_deviation_1
-        )
+        rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
         degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sail_safe_functions.safe_function_base.SafeFunctionBase" href="../safe_function_base.html#sail_safe_functions.safe_function_base.SafeFunctionBase">SafeFunctionBase</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="sail_safe_functions.statistics.pearson_aggregate.PearsonAggregate.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]])</span>
+<span>def <span class="ident">run</span></span>(<span>list_list_precompute: List[List[float]]) ‑> Tuple[float, float]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This function run to calculate the final precompute
@@ -187,7 +194,7 @@ and calculate the federated pearson value.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(list_list_precompute: List[List[float]]):
+<pre><code class="python">def run(list_list_precompute: List[List[float]]) -&gt; Tuple[float, float]:
     &#34;&#34;&#34;
     This function run to calculate the final precompute
     and calculate the federated pearson value.
@@ -218,6 +225,7 @@ and calculate the federated pearson value.</p>
     sample_mean_0 = sum_x_0 / size_sample_0
     # Calculating sample variance
     sample_variance_0 = (sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)
+    check_variance_zero(sample_variance_0)
     # Calculating Sample
     sample_standard_deviation_0 = math.sqrt(sample_variance_0)
     # Calculating for the second column
@@ -225,14 +233,13 @@ and calculate the federated pearson value.</p>
     sample_mean_1 = sum_x_1 / size_sample_1
     # Calculating sample variance
     sample_variance_1 = (sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)
+    check_variance_zero(sample_variance_1)
     # Calculating Sample
     sample_standard_deviation_1 = math.sqrt(sample_variance_1)
 
     E_xy = sum_x1_into_x2 / size_sample_0
 
-    rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (
-        sample_standard_deviation_0 * sample_standard_deviation_1
-    )
+    rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
     degrees_of_freedom = size_sample_0 - 2
     return rho, degrees_of_freedom</code></pre>
 </details>

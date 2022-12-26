@@ -29,10 +29,11 @@
 <pre><code class="python">import pytest
 from sail_safe_functions_orchestrator import preprocessing
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 
 
 @pytest.mark.active
-def test_age_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_age_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 9 nan in the age column get repaced by ones
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -42,17 +43,20 @@ def test_age_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;age&#34;], missing_value=0
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;age&#34;], missing_value=0
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 9 == data_frame_kidney[&#34;age&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;age&#34;].isna().sum()
 
 
 @pytest.mark.active
-def test_age_exception(data_frame_federated_kidney: DataFrameFederated):
+def test_age_exception(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the string insertion gets rejected
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -61,16 +65,16 @@ def test_age_exception(data_frame_federated_kidney: DataFrameFederated):
     # Arrange
 
     # Act
-    with pytest.raises(ValueError, match=&#34;missing_value is string type but column with name age is not&#34;):
+    with pytest.raises(ValueError, match=&#34;missing_value is string type but series with series_name age is not&#34;):
         preprocessing.impute_constant(
-            data_frame_federated_kidney, list_name_column=[&#34;age&#34;], missing_value=&#34;stringvalue&#34;
+            data_frame_federated_kidney_hasnan, list_name_column=[&#34;age&#34;], missing_value=&#34;stringvalue&#34;
         )
 
     # Assert
 
 
 @pytest.mark.active
-def test_rbc_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 152 nan in the `rbc` column get repaced by &#34;normal&#34;
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -80,17 +84,20 @@ def test_rbc_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;], missing_value=&#34;normal&#34;
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;], missing_value=&#34;normal&#34;
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;rbc&#34;].isna().sum()
 
 
 @pytest.mark.active
-def test_rbc_exception(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_exception(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the string insertion gets rejected
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -99,14 +106,14 @@ def test_rbc_exception(data_frame_federated_kidney: DataFrameFederated):
     # Arrange
 
     # Act
-    with pytest.raises(ValueError, match=&#34;missing_value is numeric type but column with name rbc is not&#34;):
-        preprocessing.impute_constant(data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;], missing_value=0)
+    with pytest.raises(ValueError, match=&#34;missing_value is numeric type but series with series_name rbc is not&#34;):
+        preprocessing.impute_constant(data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;], missing_value=0)
 
     # Assert
 
 
 @pytest.mark.active
-def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_pc_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the nan in the `rbc` and `pc` column get repaced by &#34;normal&#34;
 
     :param dataframe_kidney: a dataframe with nans
@@ -116,10 +123,12 @@ def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;, &#34;pc&#34;], missing_value=&#34;normal&#34;
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;, &#34;pc&#34;], missing_value=&#34;normal&#34;
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
@@ -136,7 +145,7 @@ def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_constant_test.test_age_exception"><code class="name flex">
-<span>def <span class="ident">test_age_exception</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_age_exception</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the string insertion gets rejected</p>
@@ -147,7 +156,7 @@ def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_age_exception(data_frame_federated_kidney: DataFrameFederated):
+def test_age_exception(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the string insertion gets rejected
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -156,16 +165,16 @@ def test_age_exception(data_frame_federated_kidney: DataFrameFederated):
     # Arrange
 
     # Act
-    with pytest.raises(ValueError, match=&#34;missing_value is string type but column with name age is not&#34;):
+    with pytest.raises(ValueError, match=&#34;missing_value is string type but series with series_name age is not&#34;):
         preprocessing.impute_constant(
-            data_frame_federated_kidney, list_name_column=[&#34;age&#34;], missing_value=&#34;stringvalue&#34;
+            data_frame_federated_kidney_hasnan, list_name_column=[&#34;age&#34;], missing_value=&#34;stringvalue&#34;
         )
 
     # Assert</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_constant_test.test_age_happy"><code class="name flex">
-<span>def <span class="ident">test_age_happy</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_age_happy</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the 9 nan in the age column get repaced by ones</p>
@@ -176,7 +185,7 @@ def test_age_exception(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_age_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_age_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 9 nan in the age column get repaced by ones
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -186,17 +195,20 @@ def test_age_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;age&#34;], missing_value=0
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;age&#34;], missing_value=0
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 9 == data_frame_kidney[&#34;age&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;age&#34;].isna().sum()</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_constant_test.test_rbc_exception"><code class="name flex">
-<span>def <span class="ident">test_rbc_exception</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_rbc_exception</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the string insertion gets rejected</p>
@@ -207,7 +219,7 @@ def test_age_happy(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_rbc_exception(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_exception(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the string insertion gets rejected
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -216,14 +228,14 @@ def test_rbc_exception(data_frame_federated_kidney: DataFrameFederated):
     # Arrange
 
     # Act
-    with pytest.raises(ValueError, match=&#34;missing_value is numeric type but column with name rbc is not&#34;):
-        preprocessing.impute_constant(data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;], missing_value=0)
+    with pytest.raises(ValueError, match=&#34;missing_value is numeric type but series with series_name rbc is not&#34;):
+        preprocessing.impute_constant(data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;], missing_value=0)
 
     # Assert</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_constant_test.test_rbc_happy"><code class="name flex">
-<span>def <span class="ident">test_rbc_happy</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_rbc_happy</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the 152 nan in the <code>rbc</code> column get repaced by "normal"</p>
@@ -234,7 +246,7 @@ def test_rbc_exception(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_rbc_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the 152 nan in the `rbc` column get repaced by &#34;normal&#34;
 
     :param data_frame_federated_kidney: a dataframe with nans
@@ -244,17 +256,20 @@ def test_rbc_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;], missing_value=&#34;normal&#34;
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;], missing_value=&#34;normal&#34;
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
+
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()
     assert 0 == data_frame_kidney_fixed[&#34;rbc&#34;].isna().sum()</code></pre>
 </details>
 </dd>
 <dt id="sail_safe_functions_test.test_sail_safe_functions.test_preprocessing.impute_constant_test.test_rbc_pc_happy"><code class="name flex">
-<span>def <span class="ident">test_rbc_pc_happy</span></span>(<span>data_frame_federated_kidney: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
+<span>def <span class="ident">test_rbc_pc_happy</span></span>(<span>data_frame_federated_kidney_hasnan: sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Test if the nan in the <code>rbc</code> and <code>pc</code> column get repaced by "normal"</p>
@@ -265,7 +280,7 @@ def test_rbc_happy(data_frame_federated_kidney: DataFrameFederated):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.active
-def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
+def test_rbc_pc_happy(data_frame_federated_kidney_hasnan: DataFrameFederated):
     &#34;&#34;&#34;Test if the nan in the `rbc` and `pc` column get repaced by &#34;normal&#34;
 
     :param dataframe_kidney: a dataframe with nans
@@ -275,10 +290,12 @@ def test_rbc_pc_happy(data_frame_federated_kidney: DataFrameFederated):
 
     # Act
     data_frame_federated_kidney_fixed = preprocessing.impute_constant(
-        data_frame_federated_kidney, list_name_column=[&#34;rbc&#34;, &#34;pc&#34;], missing_value=&#34;normal&#34;
+        data_frame_federated_kidney_hasnan, list_name_column=[&#34;rbc&#34;, &#34;pc&#34;], missing_value=&#34;normal&#34;
     )
-    data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_dataframe.values())[0]
-    data_frame_kidney = list(data_frame_federated_kidney.dict_dataframe.values())[0]
+    reference_data_frame_kidney_fixed = list(data_frame_federated_kidney_fixed.dict_reference_data_frame.values())[0]
+    reference_data_frame_kidney = list(data_frame_federated_kidney_hasnan.dict_reference_data_frame.values())[0]
+    data_frame_kidney_fixed = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney_fixed)
+    data_frame_kidney = ServiceReference.get_instance().reference_to_data_frame(reference_data_frame_kidney)
 
     # Assert
     assert 152 == data_frame_kidney[&#34;rbc&#34;].isna().sum()

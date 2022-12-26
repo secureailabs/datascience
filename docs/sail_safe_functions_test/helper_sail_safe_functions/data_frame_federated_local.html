@@ -26,47 +26,23 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List
+<pre><code class="python">from typing import Dict, List
 
 import numpy as np
-import pandas as pd
+import pandas
+from pandas.api.types import is_numeric_dtype, is_string_dtype
+from sail_safe_functions_orchestrator.data_frame import DataFrame
 from sail_safe_functions_orchestrator.data_frame_federated import DataFrameFederated
+from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions_orchestrator.series_federated import SeriesFederated
+from sail_safe_functions_orchestrator.service_reference import ServiceReference
 from sail_safe_functions_test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions_test.helper_sail_safe_functions.service_client_local import ServiceClientLocal
 
 
-class DataFrameFederatedLocal(DataFrameFederated):
+class DataFrameFederatedLocal:
     &#34;&#34;&#34;This should be a multyline docstring&#34;&#34;&#34;
-
-    def __init__(self) -&gt; None:
-        super().__init__()
-
-    # oveloads
-    def create_new(self) -&gt; &#34;DataFrameFederated&#34;:
-        return DataFrameFederatedLocal()
-
-    def _get_dataframe_first(self) -&gt; pd.DataFrame:
-        return list(self.dict_dataframe.values())[0]
-
-    def head(self):
-        return self._get_dataframe_first().head()
-
-    @property
-    def columns(self):
-        return self._get_dataframe_first().columns
-
-    def add_csv(self, path_file_csv: str) -&gt; None:
-        if path_file_csv in self.dict_dataframe:
-            raise RuntimeError(&#34;Dataframe alreaddy present: &#34; + path_file_csv)
-        dataframe_new = pd.read_csv(path_file_csv)
-        if 0 &lt; len(self.dict_dataframe):
-            dataframe_first = list(self.dict_dataframe.values())[0]
-            if set(dataframe_first.columns) != set(dataframe_new.columns):
-                raise RuntimeError(&#34;Dataframe has different columns: &#34; + path_file_csv)
-                #
-                # #TODO also check datatype
-                #
-        self.dict_dataframe[path_file_csv] = dataframe_new
 
     def query(self, querystring: str) -&gt; &#34;DataFrameFederatedLocal&#34;:
         dataframe_new = DataFrameFederatedLocal()
@@ -95,7 +71,6 @@ class DataFrameFederatedLocal(DataFrameFederated):
         raise NotImplementedError()
 
     def to_numpy(self) -&gt; np.ndarray:
-
         list_array_numpy = []
         for data_frame in self.dict_dataframe.values():
             list_array_numpy.append(data_frame.to_numpy())
@@ -103,13 +78,55 @@ class DataFrameFederatedLocal(DataFrameFederated):
 
     @staticmethod
     def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -&gt; np.ndarray:
-        data_frame = pd.DataFrame(array)
+        data_frame = pandas.DataFrame(array)
         if list_name_column is not None:
             for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
                 data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
         data_frame_federated = DataFrameFederatedLocal()
-        data_frame_federated.dict_dataframe[dataset_id] = data_frame
-        return data_frame_federated</code></pre>
+        data_frame_federated.list_dataset_id = data_frame
+        return data_frame_federated
+
+    @staticmethod
+    def from_csv(dict_csv: Dict[str, str]) -&gt; DataFrameFederated:
+        data_model_data_frame = DataModelDataFrame(&#34;data_frame_0&#34;)
+        # TODO do this for multy csv as well
+        data_frame_pandas = pandas.read_csv(list(dict_csv.values())[0])
+        list_series_name = data_frame_pandas.columns
+        for series_name in list_series_name:
+            if is_numeric_dtype(data_frame_pandas[series_name]):
+                data_model_series = DataModelSeries.create_numerical(
+                    series_name,
+                    resolution=None,
+                    measurement_source_name=&#34;&#34;,
+                    type_agregator=DataModelSeries.AgregatorCsv,
+                    unit=&#34;unitless&#34;,
+                )
+
+            elif is_string_dtype(data_frame_pandas[series_name]):
+                list_value = pandas.unique(data_frame_pandas[series_name])
+                if len(list_value) == len(data_frame_pandas[series_name]):
+                    data_model_series = DataModelSeries.create_unique(
+                        series_name,
+                        type_agregator=DataModelSeries.AgregatorCsv,
+                    )
+
+                else:
+                    data_model_series = DataModelSeries.create_categorical(
+                        series_name,
+                        list_value,
+                        type_agregator=DataModelSeries.AgregatorCsv,
+                    )
+
+            else:
+                raise ValueError(&#34;Neither numeric or string dtype&#34;)
+            data_model_data_frame.add_data_model_series(data_model_series)
+        list_reference = []
+        for dataset_id, path_file_csv in dict_csv.items():
+            data_frame = DataFrame.from_csv(dataset_id, &#34;data_frame_0&#34;, data_model_data_frame, path_file_csv)
+            list_reference.append(ServiceReference.get_instance().data_frame_to_reference(data_frame))
+
+        service_client = ServiceClientLocal()
+        return DataFrameFederated(service_client, list_reference, data_model_data_frame)</code></pre>
 </details>
 </section>
 <section>
@@ -130,38 +147,8 @@ class DataFrameFederatedLocal(DataFrameFederated):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DataFrameFederatedLocal(DataFrameFederated):
+<pre><code class="python">class DataFrameFederatedLocal:
     &#34;&#34;&#34;This should be a multyline docstring&#34;&#34;&#34;
-
-    def __init__(self) -&gt; None:
-        super().__init__()
-
-    # oveloads
-    def create_new(self) -&gt; &#34;DataFrameFederated&#34;:
-        return DataFrameFederatedLocal()
-
-    def _get_dataframe_first(self) -&gt; pd.DataFrame:
-        return list(self.dict_dataframe.values())[0]
-
-    def head(self):
-        return self._get_dataframe_first().head()
-
-    @property
-    def columns(self):
-        return self._get_dataframe_first().columns
-
-    def add_csv(self, path_file_csv: str) -&gt; None:
-        if path_file_csv in self.dict_dataframe:
-            raise RuntimeError(&#34;Dataframe alreaddy present: &#34; + path_file_csv)
-        dataframe_new = pd.read_csv(path_file_csv)
-        if 0 &lt; len(self.dict_dataframe):
-            dataframe_first = list(self.dict_dataframe.values())[0]
-            if set(dataframe_first.columns) != set(dataframe_new.columns):
-                raise RuntimeError(&#34;Dataframe has different columns: &#34; + path_file_csv)
-                #
-                # #TODO also check datatype
-                #
-        self.dict_dataframe[path_file_csv] = dataframe_new
 
     def query(self, querystring: str) -&gt; &#34;DataFrameFederatedLocal&#34;:
         dataframe_new = DataFrameFederatedLocal()
@@ -190,7 +177,6 @@ class DataFrameFederatedLocal(DataFrameFederated):
         raise NotImplementedError()
 
     def to_numpy(self) -&gt; np.ndarray:
-
         list_array_numpy = []
         for data_frame in self.dict_dataframe.values():
             list_array_numpy.append(data_frame.to_numpy())
@@ -198,21 +184,110 @@ class DataFrameFederatedLocal(DataFrameFederated):
 
     @staticmethod
     def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -&gt; np.ndarray:
-        data_frame = pd.DataFrame(array)
+        data_frame = pandas.DataFrame(array)
         if list_name_column is not None:
             for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
                 data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
         data_frame_federated = DataFrameFederatedLocal()
-        data_frame_federated.dict_dataframe[dataset_id] = data_frame
-        return data_frame_federated</code></pre>
+        data_frame_federated.list_dataset_id = data_frame
+        return data_frame_federated
+
+    @staticmethod
+    def from_csv(dict_csv: Dict[str, str]) -&gt; DataFrameFederated:
+        data_model_data_frame = DataModelDataFrame(&#34;data_frame_0&#34;)
+        # TODO do this for multy csv as well
+        data_frame_pandas = pandas.read_csv(list(dict_csv.values())[0])
+        list_series_name = data_frame_pandas.columns
+        for series_name in list_series_name:
+            if is_numeric_dtype(data_frame_pandas[series_name]):
+                data_model_series = DataModelSeries.create_numerical(
+                    series_name,
+                    resolution=None,
+                    measurement_source_name=&#34;&#34;,
+                    type_agregator=DataModelSeries.AgregatorCsv,
+                    unit=&#34;unitless&#34;,
+                )
+
+            elif is_string_dtype(data_frame_pandas[series_name]):
+                list_value = pandas.unique(data_frame_pandas[series_name])
+                if len(list_value) == len(data_frame_pandas[series_name]):
+                    data_model_series = DataModelSeries.create_unique(
+                        series_name,
+                        type_agregator=DataModelSeries.AgregatorCsv,
+                    )
+
+                else:
+                    data_model_series = DataModelSeries.create_categorical(
+                        series_name,
+                        list_value,
+                        type_agregator=DataModelSeries.AgregatorCsv,
+                    )
+
+            else:
+                raise ValueError(&#34;Neither numeric or string dtype&#34;)
+            data_model_data_frame.add_data_model_series(data_model_series)
+        list_reference = []
+        for dataset_id, path_file_csv in dict_csv.items():
+            data_frame = DataFrame.from_csv(dataset_id, &#34;data_frame_0&#34;, data_model_data_frame, path_file_csv)
+            list_reference.append(ServiceReference.get_instance().data_frame_to_reference(data_frame))
+
+        service_client = ServiceClientLocal()
+        return DataFrameFederated(service_client, list_reference, data_model_data_frame)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated</li>
-<li>abc.ABC</li>
-</ul>
 <h3>Static methods</h3>
 <dl>
+<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_csv"><code class="name flex">
+<span>def <span class="ident">from_csv</span></span>(<span>dict_csv: Dict[str, str]) ‑> sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_csv(dict_csv: Dict[str, str]) -&gt; DataFrameFederated:
+    data_model_data_frame = DataModelDataFrame(&#34;data_frame_0&#34;)
+    # TODO do this for multy csv as well
+    data_frame_pandas = pandas.read_csv(list(dict_csv.values())[0])
+    list_series_name = data_frame_pandas.columns
+    for series_name in list_series_name:
+        if is_numeric_dtype(data_frame_pandas[series_name]):
+            data_model_series = DataModelSeries.create_numerical(
+                series_name,
+                resolution=None,
+                measurement_source_name=&#34;&#34;,
+                type_agregator=DataModelSeries.AgregatorCsv,
+                unit=&#34;unitless&#34;,
+            )
+
+        elif is_string_dtype(data_frame_pandas[series_name]):
+            list_value = pandas.unique(data_frame_pandas[series_name])
+            if len(list_value) == len(data_frame_pandas[series_name]):
+                data_model_series = DataModelSeries.create_unique(
+                    series_name,
+                    type_agregator=DataModelSeries.AgregatorCsv,
+                )
+
+            else:
+                data_model_series = DataModelSeries.create_categorical(
+                    series_name,
+                    list_value,
+                    type_agregator=DataModelSeries.AgregatorCsv,
+                )
+
+        else:
+            raise ValueError(&#34;Neither numeric or string dtype&#34;)
+        data_model_data_frame.add_data_model_series(data_model_series)
+    list_reference = []
+    for dataset_id, path_file_csv in dict_csv.items():
+        data_frame = DataFrame.from_csv(dataset_id, &#34;data_frame_0&#34;, data_model_data_frame, path_file_csv)
+        list_reference.append(ServiceReference.get_instance().data_frame_to_reference(data_frame))
+
+    service_client = ServiceClientLocal()
+    return DataFrameFederated(service_client, list_reference, data_model_data_frame)</code></pre>
+</details>
+</dd>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_numpy"><code class="name flex">
 <span>def <span class="ident">from_numpy</span></span>(<span>dataset_id, array: numpy.ndarray, list_name_column=None) ‑> numpy.ndarray</span>
 </code></dt>
@@ -224,82 +299,18 @@ class DataFrameFederatedLocal(DataFrameFederated):
 </summary>
 <pre><code class="python">@staticmethod
 def from_numpy(dataset_id, array: np.ndarray, list_name_column=None) -&gt; np.ndarray:
-    data_frame = pd.DataFrame(array)
+    data_frame = pandas.DataFrame(array)
     if list_name_column is not None:
         for name_column_source, name_column_target in zip(data_frame.columns, list_name_column):
             data_frame.rename(columns={name_column_source: name_column_target}, inplace=True)
     data_frame_federated = DataFrameFederatedLocal()
-    data_frame_federated.dict_dataframe[dataset_id] = data_frame
+    data_frame_federated.list_dataset_id = data_frame
     return data_frame_federated</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns"><code class="name">var <span class="ident">columns</span></code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def columns(self):
-    return self._get_dataframe_first().columns</code></pre>
 </details>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv"><code class="name flex">
-<span>def <span class="ident">add_csv</span></span>(<span>self, path_file_csv: str) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_csv(self, path_file_csv: str) -&gt; None:
-    if path_file_csv in self.dict_dataframe:
-        raise RuntimeError(&#34;Dataframe alreaddy present: &#34; + path_file_csv)
-    dataframe_new = pd.read_csv(path_file_csv)
-    if 0 &lt; len(self.dict_dataframe):
-        dataframe_first = list(self.dict_dataframe.values())[0]
-        if set(dataframe_first.columns) != set(dataframe_new.columns):
-            raise RuntimeError(&#34;Dataframe has different columns: &#34; + path_file_csv)
-            #
-            # #TODO also check datatype
-            #
-    self.dict_dataframe[path_file_csv] = dataframe_new</code></pre>
-</details>
-</dd>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.create_new"><code class="name flex">
-<span>def <span class="ident">create_new</span></span>(<span>self) ‑> sail_safe_functions_orchestrator.data_frame_federated.DataFrameFederated</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_new(self) -&gt; &#34;DataFrameFederated&#34;:
-    return DataFrameFederatedLocal()</code></pre>
-</details>
-</dd>
-<dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.head"><code class="name flex">
-<span>def <span class="ident">head</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def head(self):
-    return self._get_dataframe_first().head()</code></pre>
-</details>
-</dd>
 <dt id="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query"><code class="name flex">
 <span>def <span class="ident">query</span></span>(<span>self, querystring: str) ‑> <a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a></span>
 </code></dt>
@@ -341,7 +352,6 @@ def columns(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def to_numpy(self) -&gt; np.ndarray:
-
     list_array_numpy = []
     for data_frame in self.dict_dataframe.values():
         list_array_numpy.append(data_frame.to_numpy())
@@ -368,12 +378,9 @@ def columns(self):
 <ul>
 <li>
 <h4><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal">DataFrameFederatedLocal</a></code></h4>
-<ul class="two-column">
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.add_csv">add_csv</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.columns">columns</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.create_new" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.create_new">create_new</a></code></li>
+<ul class="">
+<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_csv" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_csv">from_csv</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.from_numpy">from_numpy</a></code></li>
-<li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.head" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.head">head</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.query">query</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_list_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_list_numpy">to_list_numpy</a></code></li>
 <li><code><a title="sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_numpy" href="#sail_safe_functions_test.helper_sail_safe_functions.data_frame_federated_local.DataFrameFederatedLocal.to_numpy">to_numpy</a></code></li>
