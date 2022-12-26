@@ -3,14 +3,14 @@ import os
 from typing import List
 
 from pydantic import BaseModel
-from sail_safe_functions_orchestrator import preprocessing, statistics, visualization
-from sail_safe_functions_orchestrator.client_rpc_zero import ClientRPCZero
-from sail_safe_functions_orchestrator.data_model.data_model_data_frame import DataModelDataFrame
-from sail_safe_functions_orchestrator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions_orchestrator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions_orchestrator.preprocessing import convert
-from sail_safe_functions_orchestrator.service_client_dict import ServiceClientDict
-from sail_safe_functions_test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+from sail_safe_functions.aggregator import preprocessing, statistics, visualization
+from sail_safe_functions.aggregator.client_rpc_zero import ClientRPCZero
+from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
+from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
+from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions.aggregator.preprocessing import convert
+from sail_safe_functions.aggregator.service_client_dict import ServiceClientDict
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
