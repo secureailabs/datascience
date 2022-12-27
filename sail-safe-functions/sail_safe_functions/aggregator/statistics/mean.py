@@ -1,7 +1,8 @@
+from typing import List
+
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.mean_aggregate import MeanAggregate
 from sail_safe_functions.participant.statistics.mean_precompute import MeanPrecompute
 
 
@@ -25,21 +26,32 @@ class Mean(Estimator):
 
     def run(self, sample_0: SeriesFederated):
         """
-        It takes one federated series, and returns the Mean
+        It takes one federated series, and returns the mean
 
         :param sample_0: _description_
         :type sample_0: SeriesFederated
-        :return: _description_
-        :rtype: _type_
+        :return: mean
+        :rtype: float
         """
 
-        list_list_precompute = []
-        for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
-            reference_series = sample_0.get_reference_series(dataset_id)
-            list_list_precompute.append(client.call(MeanPrecompute, reference_series))
-        mean_statistic = MeanAggregate.run(list_list_precompute)  # TODO this does not need to get merged
+        list_precompute = sample_0.map_function(MeanPrecompute)
+
+        mean_statistic = self.aggregate(list_precompute)
         return mean_statistic
+
+    def aggregate(self, list_list_precompute: List[List[float]]) -> float:
+        sum_x_0 = 0
+        degrees_of_freedom_0 = 0
+
+        for list_precompute in list_list_precompute:
+            sum_x_0 += list_precompute[0]
+            degrees_of_freedom_0 += list_precompute[1]
+
+        sample_mean_0 = sum_x_0 / degrees_of_freedom_0
+
+        # if degrees_of_freedom < 20:
+        #     raise Exception()
+        return sample_mean_0
 
     def run_reference(self, sample_0: SeriesFederated):
         return numpy.mean(sample_0.to_numpy())

@@ -44,19 +44,10 @@ class ImputeMultivariate:
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
 
-        list_reference = []
-        for dataset_id in data_frame_source.list_dataset_id:
-            client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
-            list_reference.append(
-                client.call(
-                    ImputeMultivariatePrecompute,
-                    reference_data_frame,
-                    list_name_column,
-                    imputation_order,
-                    max_iter,
-                )
-            )
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
+        list_reference = data_frame_source.map_function(
+            ImputeMultivariatePrecompute,
+            list_name_column,
+            imputation_order,
+            max_iter,
         )
+        return DataFrameFederated(list_reference, data_frame_source.data_model_data_frame)

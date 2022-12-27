@@ -18,6 +18,7 @@ class LevenePrecompute(SafeFunctionBase):
     Precomputes data for computing the variance
     """
 
+    @staticmethod
     def run(
         reference_series_0: ReferenceSeries,
         reference_series_1: ReferenceSeries,

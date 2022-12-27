@@ -1,9 +1,8 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.min_max_aggregate import MinMaxAggregate
 from sail_safe_functions.participant.statistics.min_max_precompute import MinMaxPrecompute
 
 
@@ -30,18 +29,30 @@ class MinMax(Estimator):
         :return: min and max value
         :rtype: Tuple[float, float]
         """
-        list_list_precompute = []
+        list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 
         # Calculating precompute
-        for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
-            reference_series_0 = sample_0.get_reference_series(dataset_id)
-            list_list_precompute.append(client.call(MinMaxPrecompute, reference_series_0))
+        list_precompute = sample_0.map_function(MinMaxPrecompute)
 
         # Final min max values
-        min, max = MinMaxAggregate.run(list_list_precompute)
+        min, max = self.aggregate(list_precompute)
         return min, max
+
+    def aggregate(self, list_tuple_min_max: List[Tuple[float, float]]) -> Tuple[float, float]:
+        """Aggregates the results of multiple precompute functions into a global min and max
+
+        :param list_tuple_min_max: A list of tuples from various precompute functions
+        :type list_tuple_min_max: List[Tuple[float, float]]
+        :return: return the federated estimated sample min max
+        :rtype: Tuple[float, float]
+        """
+        list_min = []
+        list_max = []
+        for tuple_min_max in list_tuple_min_max:
+            list_min.append(tuple_min_max[0])
+            list_max.append(tuple_min_max[1])
+        return min(list_min), max(list_max)
 
     def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:
         min_numpy = numpy.min(sample_0.to_numpy())  # TODO this is ugly as fuck

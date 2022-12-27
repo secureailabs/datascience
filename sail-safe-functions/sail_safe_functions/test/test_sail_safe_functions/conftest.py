@@ -36,13 +36,13 @@ def pytest_sessionfinish(session, exitstatus):
 @pytest.fixture
 def dataset_longitudinal_r4sep2019_20_1() -> DatasetLongitudinalFederated:
     path_file_data_federation = os.path.join(DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_20_1.zip")
-    return DatasetLongitudinalFederated.read_for_path_file(path_file_data_federation)
+    return ToolsDataTest.read_for_path_file(path_file_data_federation)
 
 
 @pytest.fixture
 def dataset_longitudinal_r4sep2019_1k_3() -> DatasetLongitudinalFederated:
     path_file_data_federation = os.path.join(DATA_PATH, "data_federation_packaged", "r4sep2019_fhirv1_1k_3.zip")
-    return DatasetLongitudinalFederated.read_for_path_file(path_file_data_federation)
+    return ToolsDataTest.read_for_path_file(path_file_data_federation)
 
 
 @pytest.fixture
@@ -190,7 +190,7 @@ def two_sample_small_paired() -> Tuple[SeriesFederated, SeriesFederated]:
     sample_0_numpy = np.array([30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
     sample_1_numpy = np.array([29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "sample_1", sample_1_numpy)
 
     return (sample_0, sample_1)

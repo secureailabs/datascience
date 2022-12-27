@@ -1,8 +1,10 @@
-from typing import Tuple
+from typing import List, Tuple
 
+import numpy as np
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.paired_t_test_aggregate import PairedTTestAggregate
+from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.paired_t_test_precompute import PairedTTestPrecompute
 from scipy import stats
 from scipy.stats import t
@@ -77,7 +79,10 @@ class PairedTTest(Estimator):
     PairedTTest this is the orchestator class that preforms a federated t-test
     """
 
-    def __init__(self, alternative) -> None:
+    def __init__(
+        self,
+        alternative: str,
+    ) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
@@ -86,19 +91,21 @@ class PairedTTest(Estimator):
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames: check indexes are the same
+
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
             reference_series_0 = sample_0.get_reference_series(dataset_id)
             reference_series_1 = sample_1.get_reference_series(dataset_id)
             list_list_precompute.append(
-                client.call(
+                participant_service.call(
+                    dataset_id,
                     PairedTTestPrecompute,
                     reference_series_0,
                     reference_series_1,
                 )
             )
 
-        t_statistic, degrees_of_freedom = PairedTTestAggregate.run(list_list_precompute)
+        t_statistic, degrees_of_freedom = self.aggregate(list_list_precompute)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
         elif self.alternative == "two-sided":
@@ -108,6 +115,37 @@ class PairedTTest(Estimator):
         else:
             raise ValueError()
         return t_statistic, p_value
+
+    def aggregate(self, list_list_precompute: List[List[float]]) -> Tuple[float, float]:
+        """collects the parts of a t-test and aggregates them into statisitcs
+
+        :param list_list_precompute: a list of 3 floats; two moments for sample_d followed by the size of paired sample
+        :type list_list_precompute: List[List[float]]
+        :return: returns a t-statistic and its effect size
+        :rtype: Tuple[float, float]
+        """
+
+        sum_d_0 = 0
+        sum_dd_0 = 0
+        size_sample_d = 0
+
+        for list_precompute in list_list_precompute:
+            sum_d_0 += list_precompute[0]
+            sum_dd_0 += list_precompute[1]
+            size_sample_d += list_precompute[2]
+
+        sample_mean_d = sum_d_0 / size_sample_d
+        sample_variance_d = ((sum_dd_0 / size_sample_d) - (sample_mean_d * sample_mean_d)) * (
+            size_sample_d / (size_sample_d - 1)  # unbiased estimator (numpy version is biased by default)
+        )
+        check_variance_zero(sample_variance_d)
+        t_statistic = sample_mean_d / (np.sqrt(sample_variance_d) / np.sqrt(size_sample_d))
+        degrees_of_freedom = size_sample_d - 1
+
+        # TODO we need to enable this when error handling is implemented
+        # if degrees_of_freedom < 20:
+        #     raise Exception()
+        return t_statistic, degrees_of_freedom
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
         return stats.ttest_rel(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

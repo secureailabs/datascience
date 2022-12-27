@@ -1,8 +1,7 @@
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.count_precompute import \
-    CountPrecompute
+from sail_safe_functions.participant.statistics.count_precompute import CountPrecompute
 
 
 def count(sample_0: SeriesFederated):
@@ -27,12 +26,8 @@ class Count(Estimator):
         :return: the numer of elements in a series
         :rtype: float
         """
-        count = 0
-        for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
-            reference_series_0 = sample_0.get_reference_series(dataset_id)
-            count += client.call(CountPrecompute, reference_series_0)
-        return count
+        list_precompute = sample_0.map_function(CountPrecompute)
+        return sum(list_precompute)
 
     def run_reference(self, sample_0: SeriesFederated):
         return sample_0.to_numpy().size

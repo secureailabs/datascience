@@ -1,12 +1,10 @@
 from typing import Tuple
 
 import numpy
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.mean import Mean
-from sail_safe_functions.aggregator.statistics.variance import Variance
-from sail_safe_functions.participant.statistics.kolmogorov_smirnov_test_aggregate import KolmogorovSmirnovTestAggregate
 from sail_safe_functions.participant.statistics.kolmogorov_smirnov_test_precompute import (
     KolmogorovSmirnovTestPrecompute,
 )
@@ -43,7 +41,11 @@ class KolmogorovSmirnovTest(Estimator):
     Federated version of the KolmogorovSmirnovFederate test
     """
 
-    def __init__(self, type_distribution: str, type_ranking: str) -> None:
+    def __init__(
+        self,
+        type_distribution: str,
+        type_ranking: str,
+    ) -> None:
         super().__init__(["k_statistic", "p_value"])
 
         if type_distribution not in {"normal", "normalunit"}:
@@ -53,10 +55,13 @@ class KolmogorovSmirnovTest(Estimator):
         self.type_distribution = type_distribution
         self.type_ranking = type_ranking
 
-    def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+    def run(
+        self,
+        sample_0: SeriesFederated,
+    ) -> Tuple[float, float]:
         if self.type_distribution == "normal":
-            sample_mean = Mean(sample_0)
-            sample_standart_deviation = numpy.sqrt(Variance(sample_0))
+            sample_mean = statistics.mean(sample_0)
+            sample_standart_deviation = numpy.sqrt(statistics.variance(sample_0))
             distribution = {
                 "type_distribution": self.type_distribution,
                 "sample_mean": sample_mean,
@@ -70,13 +75,13 @@ class KolmogorovSmirnovTest(Estimator):
 
         sample_0_ranked = preprocessing.rank(sample_0, type_ranking=self.type_ranking)
         list_precompute = []
-
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
             reference_series_0 = sample_0.dict_reference_series[dataset_id]
             reference_series_0_ranked = sample_0_ranked.dict_reference_series[dataset_id]
             list_precompute.append(
-                client.call(
+                participant_service.call(
+                    dataset_id,
                     KolmogorovSmirnovTestPrecompute,
                     reference_series_0,
                     reference_series_0_ranked,
@@ -84,13 +89,17 @@ class KolmogorovSmirnovTest(Estimator):
                     size_sample,
                 )
             )
-        k_statistic = KolmogorovSmirnovTestAggregate.run(list_precompute)
+
+        k_statistic = max(list_precompute)
 
         p_value = kstwo.sf(k_statistic, size_sample)
 
         return k_statistic, p_value
 
-    def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+    def run_reference(
+        self,
+        sample_0: SeriesFederated,
+    ) -> Tuple[float, float]:
         if self.type_distribution == "normalunit":
             return stats.kstest(sample_0.to_numpy(), "norm")
         else:

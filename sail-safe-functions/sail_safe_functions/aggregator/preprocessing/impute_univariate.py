@@ -6,7 +6,9 @@ from sail_safe_functions.participant.preprocessing.impute_univariate_precompute 
 
 
 def impute_univariate(
-    data_frame_source: DataFrameFederated, list_name_column: List[str], strategy: str
+    data_frame_source: DataFrameFederated,
+    list_name_column: List[str],
+    strategy: str,
 ) -> DataFrameFederated:
     """Imputes one or more columns with a univariate strategy
 
@@ -35,13 +37,5 @@ class ImputeUnivariate:
         missing_value: Union[str, int, float],
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
-        list_reference = []
-        for dataset_id in data_frame_source.list_dataset_id:
-            client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
-            list_reference.append(
-                client.call(ImputeUnivariatePrecompute, reference_data_frame, list_series_name, missing_value)
-            )
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
-        )
+        list_reference = data_frame_source.map_function(ImputeUnivariatePrecompute, list_series_name, missing_value)
+        return DataFrameFederated(list_reference, data_frame_source.data_model_data_frame)

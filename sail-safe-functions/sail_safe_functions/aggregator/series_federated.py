@@ -1,7 +1,8 @@
 from abc import ABC
-from typing import List
+from typing import Any, List, Type
 
 import numpy
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
@@ -27,6 +28,15 @@ class SeriesFederated:
         if dataset_id not in self.__dict_reference_series:
             raise Exception(f"No series_reference for dataset_id: {dataset_id}")
         return self.__dict_reference_series[dataset_id]
+
+    def map_function(self, function: Type, *argument_list, **argument_dict) -> List[Any]:
+        participant_service = ImplementationManager.get_instance().get_participant_service()
+        list_result = []
+        for dataset_id, reference_series in self.__dict_reference_series.items():
+            list_result.append(
+                participant_service.call(dataset_id, function, reference_series, *argument_list, **argument_dict)
+            )
+        return list_result
 
     # property section start
     @property

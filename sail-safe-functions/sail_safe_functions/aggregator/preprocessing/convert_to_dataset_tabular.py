@@ -1,3 +1,4 @@
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.aggregator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions.aggregator.dataset_tabular_federated import DatasetTabularFederated
@@ -33,10 +34,11 @@ class ConvertToDatasetTabular(SafeFunctionBase):
         check_instance(data_model_tabular, DataModelTabular)
 
         list_reference = []
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id, dataset_refrence in dataset_source.dict_reference_dataset_longitudinal.items():
             dataset_name = dataset_id  # TODO fix this
-            client = dataset_source.service_client.get_client(dataset_id)
-            dataset_tabular_reference = client.call(
+            dataset_tabular_reference = participant_service.call(
+                dataset_id,
                 ConvertToDatasetTabularPrecompute,
                 dataset_refrence,
                 dataset_federation_id,
@@ -46,4 +48,4 @@ class ConvertToDatasetTabular(SafeFunctionBase):
                 data_model_tabular,
             )
             list_reference.append(dataset_tabular_reference)
-        return DatasetTabularFederated(dataset_source.service_client, list_reference, data_model_tabular)
+        return DatasetTabularFederated(list_reference, data_model_tabular)

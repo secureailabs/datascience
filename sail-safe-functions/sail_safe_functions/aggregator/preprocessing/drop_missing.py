@@ -42,6 +42,7 @@ class DropMissing:
     Drop rows or columns with missing data
     """
 
+    @staticmethod
     def run(
         data_frame_source: DataFrameFederated,
         axis: int,
@@ -50,12 +51,5 @@ class DropMissing:
         subset: Any,
     ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
-        list_reference = []
-        for dataset_id in data_frame_source.list_dataset_id:
-            client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.get_reference_data_frame(dataset_id)
-            list_reference.append(client.call(DropMissingPrecompute, reference_data_frame, axis, how, thresh, subset))
-
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
-        )
+        list_reference = data_frame_source.map_function(DropMissingPrecompute, axis, how, thresh, subset)
+        return DataFrameFederated(list_reference, data_frame_source.data_model_data_frame)

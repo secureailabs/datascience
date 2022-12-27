@@ -2,11 +2,11 @@ from typing import Tuple
 
 import numpy
 import scipy
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
 from sail_safe_functions.aggregator.tools_common import check_instance
-from sail_safe_functions.participant.statistics.mann_whitney_u_test_aggregate import MannWhitneyUTestAggregate
 from sail_safe_functions.participant.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
 from scipy import stats
 
@@ -28,7 +28,11 @@ class MannWhitneyUTest(Estimator):
     2. The p values is always computed asymptotoicly, exact methods is only feasable for small smalle sizes.
     """
 
-    def __init__(self, alternative: str, type_ranking: str) -> None:
+    def __init__(
+        self,
+        alternative: str,
+        type_ranking: str,
+    ) -> None:
         super().__init__(["f_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
@@ -57,13 +61,15 @@ class MannWhitneyUTest(Estimator):
         sample_concatenated_ranked = preprocessing.rank(sample_concatenated, self.type_ranking)
 
         list_precompute = []
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
             series_0 = sample_0.dict_reference_series[dataset_id]
             series_concatenated_ranked = sample_concatenated_ranked.dict_reference_series[dataset_id]
-            list_precompute.append(client.call(MannWhitneyUTestPrecompute, series_0, series_concatenated_ranked))
+            list_precompute.append(
+                participant_service.call(dataset_id, MannWhitneyUTestPrecompute, series_0, series_concatenated_ranked)
+            )
 
-        sum_ranks_0 = MannWhitneyUTestAggregate.run(list_precompute)
+        sum_ranks_0 = numpy.array(list_precompute).sum()
 
         U0 = sum_ranks_0 - n0 * (n0 + 1) / 2
         U1 = n0 * n1 - U0

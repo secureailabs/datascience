@@ -1,7 +1,8 @@
+from typing import List
+
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.variance_aggregate import VarianceAggregate
 from sail_safe_functions.participant.statistics.variance_precompute import VariancePrecompute
 
 
@@ -22,18 +23,32 @@ class Variance(Estimator):
         """
         It takes one federated series, and returns the variance of the series
 
-        :param sample_0: _description_
+        :param sample_0: sample_0
         :type sample_0: SeriesFederated
-        :return: _description_
-        :rtype: _type_
+        :return: varriance
+        :rtype: float
         """
-        list_list_precompute = []
-        for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
-            reference_series_0 = sample_0.get_reference_series(dataset_id)
-            list_list_precompute.append(client.call(VariancePrecompute, reference_series_0))
-        variance = VarianceAggregate.run(list_list_precompute)
+        list_precompute = sample_0.map_function(VariancePrecompute)
+        variance = self.aggregate(list_precompute)
         return variance
+
+    def aggregate(self, list_list_precompute: List[List[float]]) -> float:
+        sum_x_0 = 0
+        sum_xx_0 = 0
+        size_sample_0 = 0
+
+        for list_precompute in list_list_precompute:
+            sum_x_0 += list_precompute[0]
+            sum_xx_0 += list_precompute[1]
+            size_sample_0 += list_precompute[2]
+
+        sample_mean_0 = sum_x_0 / size_sample_0
+
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
+        )
+
+        return sample_variance_0
 
     def run_reference(self, sample_0: SeriesFederated):
         return numpy.var(sample_0.to_numpy(), ddof=1)

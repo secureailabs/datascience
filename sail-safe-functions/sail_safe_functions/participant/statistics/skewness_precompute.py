@@ -17,7 +17,10 @@ class SkewnessPrecompute(SafeFunctionBase):
     Precomputes data for computing skewness
     """
 
-    def run(sample_0_series: ReferenceSeries) -> List[float]:
+    @staticmethod
+    def run(
+        sample_0_series: ReferenceSeries,
+    ) -> List[float]:
         """Generates the geometric moments for use in a Skewness
 
         Parameters

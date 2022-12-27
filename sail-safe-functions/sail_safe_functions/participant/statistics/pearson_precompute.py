@@ -21,7 +21,11 @@ class PearsonPrecompute(SafeFunctionBase):
     :type object:
     """
 
-    def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -> List[float]:
+    @staticmethod
+    def run(
+        sample_0_series: ReferenceSeries,
+        sample_1_series: ReferenceSeries,
+    ) -> List[float]:
         """
         Parameters
         ----------

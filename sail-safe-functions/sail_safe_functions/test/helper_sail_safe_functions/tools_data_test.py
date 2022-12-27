@@ -101,7 +101,6 @@ class ToolsDataTest:
         return SeriesFederated(list_reference, data_model_series)
 
     @staticmethod
-    @staticmethod
     def read_for_path_file(path_file_data_federation: str) -> DatasetLongitudinalFederated:
         # TODO call safe function via RPC ReadDatasetFhirv1Precompute
         packager = PackagerDataFederation()

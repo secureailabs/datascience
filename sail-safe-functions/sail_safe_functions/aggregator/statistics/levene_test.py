@@ -1,9 +1,10 @@
-from typing import Tuple
+from typing import List, Tuple
 
+import numpy as np
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.levene_aggregate import LeveneAggregate
 from sail_safe_functions.participant.statistics.levene_precompute import LevenePrecompute
 from scipy import stats
 from scipy.stats import distributions
@@ -97,16 +98,21 @@ class LeveneTest(Estimator):
     def __init__(self) -> None:
         super().__init__(["f_statistic", "p_value"])
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ):
         mean_sample_0 = statistics.mean(sample_0)
         mean_sample_1 = statistics.mean(sample_1)
 
-        list_list_precompute = []
+        list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
-            list_list_precompute.append(
-                client.call(
+            list_precompute.append(
+                participant_service.call(
+                    dataset_id,
                     LevenePrecompute,
                     sample_0.dict_reference_series[dataset_id],
                     sample_1.dict_reference_series[dataset_id],
@@ -115,9 +121,52 @@ class LeveneTest(Estimator):
                 )
             )
 
-        f_statistic, dof = LeveneAggregate.run(list_list_precompute)
+        f_statistic, dof = self.aggregate(list_precompute)
         p_value = distributions.f.sf(f_statistic, 1, dof)  # 1 - cdf
         return f_statistic, p_value
+
+    def aggregate(
+        self,
+        list_list_precompute: List[List[float]],
+    ) -> Tuple[float, float]:
+        sum_x_0 = 0
+        sum_xx_0 = 0
+        size_sample_0 = 0
+        sum_x_1 = 0
+        sum_xx_1 = 0
+        size_sample_1 = 0
+        final_z1j = []
+        final_z2j = []
+        for list_precompute in list_list_precompute:
+            sum_x_0 += list_precompute[0]
+            sum_xx_0 += list_precompute[1]
+            size_sample_0 += list_precompute[2]
+            sum_x_1 += list_precompute[3]
+            sum_xx_1 += list_precompute[4]
+            size_sample_1 += list_precompute[5]
+            final_z1j.extend(list_precompute[6])
+            final_z2j.extend(list_precompute[7])
+
+        z1_ = np.mean(final_z1j)
+        z2_ = np.mean(final_z2j)
+
+        z__ = (z1_ + z2_) / 2
+
+        denomenator_1 = final_z1j - z1_
+        denomenator_1 = np.sum(denomenator_1 * denomenator_1)
+
+        denomenator_2 = final_z2j - z2_
+        denomenator_2 = np.sum(denomenator_2 * denomenator_2)
+
+        final_denomenator = denomenator_1 + denomenator_2
+        length1 = size_sample_0
+        length2 = size_sample_1
+        dof = length1 + length2 - 2
+        final_numerator = dof * (length1 * (z1_ - z__) * (z1_ - z__) + length2 * (z2_ - z__) * (z2_ - z__))
+
+        f_statictic = final_numerator / final_denomenator
+
+        return f_statictic, dof
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         return stats.levene(sample_0.to_numpy(), sample_1.to_numpy(), center="mean")

@@ -1,11 +1,11 @@
+from typing import List, Tuple
+
 import numpy
 import scipy
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_aggregate import (
-    WilcoxonSingedRankTestAggregate,
-)
 from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
     WilcoxonSingedRankTestPrecompute,
 )
@@ -26,7 +26,11 @@ class WilcoxonSingedRankTest(Estimator):
     This class contains method for federated Wilcoxon Singed Rank Test
     """
 
-    def __init__(self, alternative, type_ranking: str) -> None:
+    def __init__(
+        self,
+        alternative: str,
+        type_ranking: str,
+    ) -> None:
         super().__init__(["w_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
@@ -35,7 +39,11 @@ class WilcoxonSingedRankTest(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ):
         """
         It takes two federated series, and returns the p-value and w_statistic of the Wilcoxon Singed Rank Test
 
@@ -64,14 +72,15 @@ class WilcoxonSingedRankTest(Estimator):
 
         # Calculating precompute
         list_precompute = []
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_difference.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
             reference_series_difference = sample_difference.dict_reference_series[dataset_id]
             reference_series_difference_absolute_ranked = sample_difference_absolute_ranked.dict_reference_series[
                 dataset_id
             ]
             list_precompute.append(
-                client.call(
+                participant_service.call(
+                    dataset_id,
                     WilcoxonSingedRankTestPrecompute,
                     reference_series_difference,
                     reference_series_difference_absolute_ranked,
@@ -79,7 +88,7 @@ class WilcoxonSingedRankTest(Estimator):
             )
 
         # rank_minus rank_plus
-        rank_minus, rank_plus = WilcoxonSingedRankTestAggregate.run(list_precompute)
+        rank_minus, rank_plus = self.aggregate(list_precompute)
 
         if self.alternative == "two-sided":
             w_statistic = min(rank_minus, rank_plus)
@@ -100,6 +109,17 @@ class WilcoxonSingedRankTest(Estimator):
             raise Exception()
 
         return w_statistic, p_value
+
+    def aggregate(
+        self,
+        list_precompute: List,
+    ) -> Tuple[float, float]:
+        rank_minus = 0
+        rank_plus = 0
+        for precompute in list_precompute:
+            rank_minus += precompute[0]
+            rank_plus += precompute[1]
+        return rank_minus, rank_plus
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         # we only do aproximation of T(aproximation does not work very wel below 10) and only do wilcox mode tie resolution

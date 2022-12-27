@@ -1,8 +1,10 @@
-from typing import Tuple
+from typing import List, Tuple
 
+import numpy as np
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.participant.statistics.student_t_test_aggregate import StudentTTestAggregate
+from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from scipy import stats
 from scipy.stats import t
@@ -23,7 +25,10 @@ class StudentTTest(Estimator):
     This class contains method for federated Student T test
     """
 
-    def __init__(self, alternative) -> None:
+    def __init__(
+        self,
+        alternative: str,
+    ) -> None:
         super().__init__(["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
@@ -42,19 +47,20 @@ class StudentTTest(Estimator):
         """
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
+        participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
-            client = sample_0.service_client.get_client(dataset_id)
             reference_series_0 = sample_0.get_reference_series(dataset_id)
             reference_series_1 = sample_1.get_reference_series(dataset_id)
             list_list_precompute.append(
-                client.call(
+                participant_service.call(
+                    dataset_id,
                     UnpairedTTestPrecompute,
                     reference_series_0,
                     reference_series_1,
                 )
             )
 
-        t_statistic, degrees_of_freedom = StudentTTestAggregate.run(list_list_precompute)
+        t_statistic, degrees_of_freedom = self.aggregate(list_list_precompute)
         p_value = t.cdf(t_statistic, degrees_of_freedom)
         if self.alternative == "less":
             p_value = t.cdf(t_statistic, degrees_of_freedom)
@@ -65,6 +71,45 @@ class StudentTTest(Estimator):
         else:
             raise ValueError()
         return t_statistic, p_value
+
+    def aggregate(
+        self,
+        list_list_precompute: List[List[float]],
+    ) -> Tuple[float, float]:
+        sum_x_0 = 0
+        sum_xx_0 = 0
+        size_sample_0 = 0
+        sum_x_1 = 0
+        sum_xx_1 = 0
+        size_sample_1 = 0
+        for list_precompute in list_list_precompute:
+            sum_x_0 += list_precompute[0]
+            sum_xx_0 += list_precompute[1]
+            size_sample_0 += list_precompute[2]
+            sum_x_1 += list_precompute[3]
+            sum_xx_1 += list_precompute[4]
+            size_sample_1 += list_precompute[5]
+
+        sample_mean_0 = sum_x_0 / size_sample_0
+        sample_variance_0 = ((sum_xx_0 / size_sample_0) - (sample_mean_0 * sample_mean_0)) * (
+            size_sample_0 / (size_sample_0 - 1)  # unbiased estimator (numpy version is biased by default)
+        )
+        check_variance_zero(sample_variance_0)
+        sample_mean_1 = sum_x_1 / size_sample_1
+        sample_variance_1 = ((sum_xx_1 / size_sample_1) - (sample_mean_1 * sample_mean_1)) * (
+            size_sample_1 / (size_sample_1 - 1)  # unbiased estimator (np version is biased by default)
+        )
+        check_variance_zero(sample_variance_1)
+        sample_variance_pooled = (
+            ((size_sample_0 - 1) * sample_variance_0) + ((size_sample_1 - 1) * sample_variance_1)
+        ) / (size_sample_0 + size_sample_1 - 2)
+        check_variance_zero(sample_variance_pooled)
+        t_statistic = (sample_mean_0 - sample_mean_1) / (
+            np.sqrt(sample_variance_pooled) * np.sqrt((1 / size_sample_0 + 1 / size_sample_1))
+        )
+        degrees_of_freedom = size_sample_0 + size_sample_1 - 2
+
+        return t_statistic, degrees_of_freedom
 
     def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
         return stats.ttest_ind(

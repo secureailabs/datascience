@@ -8,6 +8,7 @@ from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 class ConvertToDatasetTabularPrecompute(SafeFunctionBase):
     # TODO this might be in the wrong spot, is this a convert function?
+    @staticmethod
     def run(
         reference_dataset_logitudinal: ReferenceDatasetLongitudinal,
         dataset_federation_id: str,

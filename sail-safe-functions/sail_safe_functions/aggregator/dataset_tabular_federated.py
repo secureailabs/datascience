@@ -24,9 +24,11 @@ class DatasetTabularFederated:
     def map_function(self, function: Type, *argument_list, **argument_dict) -> List[Any]:
         participant_service = ImplementationManager.get_instance().get_participant_service()
         list_result = []
-        for dataset_id, reference_data_frame in self.__dict_reference_dataset_tabular.items():
+        for dataset_id, reference_dataset_tabular in self.__dict_reference_dataset_tabular.items():
             list_result.append(
-                participant_service.call(dataset_id, function, reference_data_frame, argument_list, argument_dict)
+                participant_service.call(
+                    dataset_id, function, reference_dataset_tabular, *argument_list, **argument_dict
+                )
             )
         return list_result
 
