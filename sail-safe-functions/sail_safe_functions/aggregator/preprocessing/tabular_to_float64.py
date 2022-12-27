@@ -6,7 +6,9 @@ from sail_safe_functions.participant.preprocessing.convert.tabular_to_float64_pr
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
-def tabular_to_float64(data_frame_source: DataFrameFederated) -> DataFrameFederated:
+def tabular_to_float64(
+    data_frame_source: DataFrameFederated,
+) -> DataFrameFederated:
     """
     Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
 
@@ -34,7 +36,9 @@ def tabular_to_float64(data_frame_source: DataFrameFederated) -> DataFrameFedera
 
 class TabularToFloat64(SafeFunctionBase):
     @staticmethod
-    def run(data_frame_source: DataFrameFederated) -> DataFrameFederated:
+    def run(
+        data_frame_source: DataFrameFederated,
+    ) -> DataFrameFederated:
         check_instance(data_frame_source, DataFrameFederated)
         """
         Function used to convert a mixed tabular datafram containing string columns as well as numerical columns to a purely float64 dataframe for use in machinelearning type operations
@@ -47,12 +51,5 @@ class TabularToFloat64(SafeFunctionBase):
             :rtype: DataFrameFederated
         """
 
-        list_reference = []
-        for dataset_id in data_frame_source.list_dataset_id:
-            client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame = data_frame_source.dict_reference_data_frame[dataset_id]
-            list_reference.append(client.call(TabularToFloat64Precompute, reference_data_frame))
-
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, list_reference[0].data_model_data_frame
-        )
+        list_reference = data_frame_source.map_function(TabularToFloat64Precompute)
+        return DataFrameFederated(list_reference, list_reference[0].data_model_data_frame)

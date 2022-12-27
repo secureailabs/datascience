@@ -1,6 +1,6 @@
 import json
 import statistics
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class DataModelSeries:
@@ -150,7 +150,7 @@ class DataModelSeries:
     @staticmethod
     def create_numerical(
         series_name: str,
-        resolution: float = None,
+        resolution: Optional[float] = None,
         measurement_source_name: str = None,
         type_agregator: str = None,
         unit: str = "unitless",

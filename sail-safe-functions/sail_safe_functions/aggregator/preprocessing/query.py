@@ -71,22 +71,15 @@ class Query:
         )
         validated_local_dict, validated_global_dict = Query._validate_envs(local_dict, global_dict)
 
-        list_reference = []
-        for dataset_id in data_frame_source.list_dataset_id:
-            client = data_frame_source.service_client.get_client(dataset_id)
-            reference_data_frame_source = data_frame_source.dict_reference_data_frame[dataset_id]
-            reference_data_frame = client.call(
-                QueryPrecompute,
-                reference_data_frame_source,
-                validated_query,
-                parser,
-                validated_local_dict,
-                validated_global_dict,
-            )
-            list_reference.append(reference_data_frame)
-        return DataFrameFederated(
-            data_frame_source.service_client, list_reference, data_frame_source.data_model_data_frame
+        list_reference = data_frame_source.map_function(
+            QueryPrecompute,
+            validated_query,
+            parser,
+            validated_local_dict,
+            validated_global_dict,
         )
+
+        return DataFrameFederated(list_reference, data_frame_source.data_model_data_frame)
 
     # Target dataframe will be allowed even if pd.DataFrame is not included here
     _allowed_var_types = frozenset(

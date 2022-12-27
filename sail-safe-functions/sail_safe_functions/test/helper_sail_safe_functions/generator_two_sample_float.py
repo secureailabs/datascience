@@ -1,9 +1,7 @@
-from random import uniform
 from typing import List
 
 import numpy
-import pandas
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 class GeneratorTwoSampleFloat:
@@ -28,9 +26,8 @@ class GeneratorTwoSampleFloat:
         self.resolution = resolution
 
     def generate(self, size_sample, effect_size, is_paired):
-        sample_0 = SeriesFederatedLocal()
-        sample_1 = SeriesFederatedLocal()
-
+        dict_array_0 = {}
+        dict_array_1 = {}
         for i, weight_federation in enumerate(self.list_weight_federation):
             count_federation = int(round(size_sample * weight_federation))
 
@@ -56,7 +53,9 @@ class GeneratorTwoSampleFloat:
                 array_0 = (array_0 * (1 / self.resolution)).round().astype(int) * self.resolution
                 array_1 = (array_1 * (1 / self.resolution)).round().astype(int) * self.resolution
 
-            sample_0.add_series(f"federation_{i}", pandas.Series(array_0))
-            sample_1.add_series(f"federation_{i}", pandas.Series(array_1))
+            dict_array_0[f"federation_{i}"] = array_0
+            dict_array_1[f"federation_{i}"] = array_1
 
+        sample_0 = ToolsDataTest.from_dict_array("series_0", dict_array_0)
+        sample_1 = ToolsDataTest.from_dict_array("series_1", dict_array_1)
         return sample_0, sample_1

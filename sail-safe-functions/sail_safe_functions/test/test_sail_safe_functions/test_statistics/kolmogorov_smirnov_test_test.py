@@ -3,8 +3,7 @@ from typing import Tuple
 import numpy
 import pytest
 from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 from sklearn.utils import estimator_html_repr
 
 
@@ -14,7 +13,7 @@ def test_kolmogorov_smirnov_normalunit():
     # Arrange
     numpy.random.seed(42)
     array_sample_0 = numpy.random.normal(0, 1, 17)  # works from size 17 onwards
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", array_sample_0)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", array_sample_0)
     # Act
     estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
     k_statistic_sail, p_value_sail = estimator.run(sample_0)
@@ -33,7 +32,7 @@ def test_ks_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     # Act
     estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
 
@@ -52,7 +51,7 @@ def test_ks_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     # Act
     estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
 
@@ -73,7 +72,7 @@ def test_ks_nan_value():
     a = numpy.empty((20))
     a[12:] = numpy.nan
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
     # Act
     estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
 

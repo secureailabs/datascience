@@ -2,25 +2,25 @@ from typing import Tuple
 
 import numpy
 import pytest
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.spearman import Spearman
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
-def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
     sample_size = 10
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
     type_ranking = "unsafe"
 
@@ -35,19 +35,19 @@ def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFe
 
 
 @pytest.mark.active
-def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman with different mean and standard deviation
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
     sample_size = 10
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
     type_ranking = "unsafe"
 
@@ -63,12 +63,12 @@ def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederatedLocal, Series
 
 
 @pytest.mark.active
-def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_less(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
@@ -87,19 +87,19 @@ def test_spearman_less(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederat
 
 
 @pytest.mark.active
-def test_spearman_less_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_less_2(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman with different mean and standard deviation.
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
     sample_size = 10
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "less"
     type_ranking = "unsafe"
 
@@ -114,12 +114,12 @@ def test_spearman_less_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFeder
 
 
 @pytest.mark.active
-def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_greater(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman with different mean and standard deviation
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
@@ -138,19 +138,19 @@ def test_spearman_greater(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFede
 
 
 @pytest.mark.active
-def test_spearman_greater_2(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_spearman_greater_2(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Spearman with different mean and standard deviation
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
     sample_1 = two_sample_big[1]
     sample_size = 10
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -172,8 +172,8 @@ def test_spearman_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -194,8 +194,8 @@ def test_spearman_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -218,8 +218,8 @@ def test_spearman_nan_value():
     sample_size = 20
     a = numpy.empty((20))
     a[12:] = numpy.nan
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -242,8 +242,8 @@ def test_spearman_nan_value():
 #    sample_size = 8
 #    a = [1, 1, 1, 1, 1, 1, 1, 1]
 #    a = numpy.array(a)
-#    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-#    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+#    sample_0 = SeriesFederated.from_array("dataset_0", "series_0", a)
+#    sample_1 = SeriesFederated.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
 #    alternative = "greater"
 #    type_ranking = "unsafe"
 

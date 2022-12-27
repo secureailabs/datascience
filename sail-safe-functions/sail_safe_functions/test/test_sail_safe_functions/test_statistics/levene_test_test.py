@@ -2,19 +2,18 @@ from typing import Tuple
 
 import numpy
 import pytest
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.levene_test import LeveneTest
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy.stats import levene
-from sklearn.cluster import estimate_bandwidth
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
-def test_levene(two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_levene(two_sample_small_two: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Levene test
 
     :param two_sample_small_two:
-    :type two_sample_small_two: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_small_two: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_small_two[0]
@@ -38,8 +37,8 @@ def test_levens_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     estimator = LeveneTest()
 
     # Act
@@ -59,8 +58,8 @@ def test_levens_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     estimator = LeveneTest()
 
     # Act
@@ -82,8 +81,8 @@ def test_levens_nan_value():
     a = numpy.empty((20))
     a[12:] = numpy.nan
     sample_size = 20
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     estimator = LeveneTest()
 
     # Act

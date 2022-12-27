@@ -1,13 +1,17 @@
+from typing import Optional
+
 from sail_core.api.config_service_base import ConfigServiceBase
 from sail_core.api.logging_service_base import LoggingServiceBase
+from sail_core.api.participant_service_base import ParticipantServiceBase
 
 
 class ImplementationManager:
     _instance: "ImplementationManager"
 
     def __init__(self) -> None:
-        self.__logging_service: LoggingServiceBase
-        self.__config_service: ConfigServiceBase
+        self.__logging_service: Optional[LoggingServiceBase] = None
+        self.__config_service: Optional[ConfigServiceBase] = None
+        self.__participant_service: Optional[ParticipantServiceBase] = None
         self.__is_initialized = False
 
     def __call__(self):
@@ -36,6 +40,8 @@ class ImplementationManager:
             self.__logging_service.initialize()
         if self.__config_service is not None:
             self.__config_service.initialize()
+        if self.__participant_service is not None:
+            self.__participant_service.initialize()
 
     def get_logging_service(self) -> LoggingServiceBase:
         if not self.__is_initialized:
@@ -56,3 +62,13 @@ class ImplementationManager:
         if self.__is_initialized:
             raise RuntimeError("Cannot change implemention: Implementation Manager is initialized")
         self.__config_service = config_service
+
+    def get_participant_service(self) -> ParticipantServiceBase:
+        if not self.__is_initialized:
+            raise RuntimeError("Implementation Manager is not initialized")
+        return self.__participant_service
+
+    def set_participant_service(self, participant_service: ParticipantServiceBase) -> None:
+        if self.__is_initialized:
+            raise RuntimeError("Cannot change implemention: Implementation Manager is initialized")
+        self.__participant_service = participant_service

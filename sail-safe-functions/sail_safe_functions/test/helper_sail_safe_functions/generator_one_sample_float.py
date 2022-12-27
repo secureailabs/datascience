@@ -3,7 +3,7 @@ from typing import List
 
 import numpy
 import pandas
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions.test.helper_sail_safe_functions.series_federated import SeriesFederatedLocal
 
 
 class GeneratorOneSampleFloat:

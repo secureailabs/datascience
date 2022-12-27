@@ -2,18 +2,18 @@ from typing import Tuple
 
 import numpy
 import pytest
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.pearson import Pearson
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
-def test_pearson(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_pearson(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """
     This is our test for the Sails federated Pearson
 
     :param two_sample_big:
-    :type two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]
+    :type two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     """
     # Arrange
     sample_0 = two_sample_big[0]
@@ -38,8 +38,8 @@ def test_pearson_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
 
     # Act
@@ -59,8 +59,8 @@ def test_pearson_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
 
     # Act
@@ -82,8 +82,8 @@ def test_pearson_nan_value():
     sample_size = 20
     a = numpy.empty((20))
     a[12:] = numpy.nan
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
 
     # Act
@@ -105,7 +105,7 @@ def test_pearson_same_sample():
 
     alternative = "two-sided"
     sample_size = 100
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     estimator = Pearson(alternative=alternative)
     pearson_sail, p_value_sail = estimator.run(sample_0, sample_0)
     pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_0)
@@ -128,8 +128,8 @@ def test_pearson_same_sample_negative():
     a = numpy.array(a)
     b = numpy.array(b)
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", b)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", b)
 
     alternative = "two-sided"
     estimator = Pearson(alternative=alternative)
@@ -149,8 +149,8 @@ def test_pearson_zero_variance():
     # Arrange
     numpy.random.seed(42)
     sample_size = 20
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
     alternative = "two-sided"
 
     # Act

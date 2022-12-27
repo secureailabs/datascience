@@ -1,4 +1,6 @@
-from sail_safe_functions.aggregator.client_rpc_base import ClientRPCBase
+from typing import Type
+
+from sail_core.api.client_rpc_base import ClientRPCBase
 from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions.aggregator.data_model.data_model_longitudinal import DataModelLongitudinal
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
@@ -9,6 +11,8 @@ from sail_safe_functions.aggregator.reference_dataset_tabular import ReferenceDa
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.tools_common import check_instance
 from zero import ZeroClient
+
+# TODO move this somewhere
 
 
 class ClientRPCZero(ClientRPCBase):
@@ -34,8 +38,8 @@ class ClientRPCZero(ClientRPCBase):
         self._zero_client._deserializer_table["DataModelDataFrame"] = DataModelDataFrame
         self._zero_client._deserializer_table["DataModelSeries"] = DataModelSeries
 
-    def call(self, safe_function_class: type, *safe_function_arguments):
+    def call(self, safe_function_class: Type, *arguments_list, **arguments_dict):
         # TODO this only deals with args, should also deal with kvargs
-        check_instance(safe_function_class, type)
+        check_instance(safe_function_class, Type)
         safe_function_class_name = str(safe_function_class).split(".")[-1][:-2]
-        return self._zero_client.call(safe_function_class_name, *safe_function_arguments)
+        return self._zero_client.call(safe_function_class_name, *arguments_list, **arguments_dict)

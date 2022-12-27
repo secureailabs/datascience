@@ -1,10 +1,8 @@
 import numpy
-import pandas
 import pytest
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.wilcoxon_signed_rank_test import WilcoxonSingedRankTest
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
@@ -15,8 +13,8 @@ def test_wilcoxon_singed_rank_test_two_sided():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "two-sided"
     type_ranking = "unsafe"
 
@@ -38,8 +36,8 @@ def test_wilcoxon_singed_rank_test_two_sided_2():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
 
     alternative = "two-sided"
     type_ranking = "unsafe"
@@ -62,8 +60,8 @@ def test_wilcoxon_singed_rank_test_less():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
 
     alternative = "less"
     type_ranking = "unsafe"
@@ -86,8 +84,8 @@ def test_wilcoxon_singed_rank_test_less_2():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
 
     alternative = "less"
     type_ranking = "unsafe"
@@ -110,8 +108,8 @@ def test_wilcoxon_singed_rank_test_greater():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -133,8 +131,8 @@ def test_wilcoxon_singed_rank_test_greater_2():
     # Arrange
     numpy.random.seed(42)
     sample_size = 200
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(2, 5, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -156,8 +154,8 @@ def test_wilcoxon_singed_rank_test_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -180,8 +178,8 @@ def test_wilcoxon_singed_rank_test_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -208,8 +206,8 @@ def test_wilcoxon_singed_rank_test_nan_value():
     a = numpy.empty((20))
     a[12:] = numpy.nan
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "greater"
     type_ranking = "unsafe"
 
@@ -234,8 +232,8 @@ def test_wilcoxon_singed_rank_test_nan_value():
 #    sample_size = 8
 #    a = [1, 1, 1, 1, 1, 1, 1, 1]
 #    a = numpy.array(a)
-#    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-#    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+#    sample_0 = SeriesFederated.from_array("dataset_0", "series_0", a)
+#    sample_1 = SeriesFederated.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
 #    alternative = "greater"
 #    type_ranking = "unsafe"
 

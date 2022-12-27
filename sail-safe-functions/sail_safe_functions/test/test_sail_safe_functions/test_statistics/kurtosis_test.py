@@ -1,17 +1,17 @@
 import numpy
 import pytest
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.kurtosis import Kurtosis
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
-def test_kurtosis(one_sample_big: SeriesFederatedLocal):
+def test_kurtosis(one_sample_big: SeriesFederated):
     """
     This function is here to test the sail-statistics federated kurtosis
 
         :param one_sample_big: Input sample values
-        :type one_sample_big: SeriesFederatedLocal
+        :type one_sample_big: SeriesFederated
     """
     # Arrange
     sample_0 = one_sample_big
@@ -33,7 +33,7 @@ def test_kurtosis_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     # Act
     estimator = Kurtosis()
 
@@ -52,7 +52,7 @@ def test_kurtosis_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     # Act
     estimator = Kurtosis()
 
@@ -71,7 +71,7 @@ def test_kurtosis_nan_value():
     numpy.random.seed(42)
     a = numpy.empty((20))
     a[12:] = numpy.nan
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
     # Act
     estimator = Kurtosis()
 

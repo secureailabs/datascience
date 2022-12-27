@@ -2,17 +2,17 @@ from typing import Tuple
 
 import numpy
 import pytest
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.paired_t_test import PairedTTest
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
-from scipy import stats
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 @pytest.mark.active
-def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     """Preform a paired t-test using a bigger dataset
 
     Args:
-        two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
+        two_sample_big (Tuple[SeriesFederated, SeriesFederated]): A tuple of two federated series
     """
     # Arrange
     sample_0 = two_sample_big[0]
@@ -30,11 +30,11 @@ def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederatedLocal, SeriesFed
 
 
 @pytest.mark.active
-def test_t_test_paired_small(two_sample_small_paired: Tuple[SeriesFederatedLocal, SeriesFederatedLocal]):
+def test_t_test_paired_small(two_sample_small_paired: Tuple[SeriesFederated, SeriesFederated]):
     """Preform a paired t-test using a smaller dataset
 
     Args:
-        two_sample_big (Tuple[SeriesFederatedLocal, SeriesFederatedLocal]): A tuple of two federated series
+        two_sample_big (Tuple[SeriesFederated, SeriesFederated]): A tuple of two federated series
     """
     # Arrange
     sample_0 = two_sample_small_paired[0]
@@ -58,8 +58,8 @@ def test_paired_t_test_empty():
     # Arrange
     numpy.random.seed(42)
     sample_size = 0
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "less"
 
     # Act
@@ -80,8 +80,8 @@ def test_paired_t_test_one_value():
     # Arrange
     numpy.random.seed(42)
     sample_size = 1
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "less"
 
     # Act
@@ -104,8 +104,8 @@ def test_paired_t_test_nan_value():
     sample_size = 20
     a = numpy.empty((20))
     a[12:] = numpy.nan
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", a)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     alternative = "less"
 
     # Act
@@ -126,8 +126,8 @@ def test_paired_t_test_zero_variance():
     # Arrange
     numpy.random.seed(42)
     sample_size = 20
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 0, sample_size))
     alternative = "less"
 
     # Act

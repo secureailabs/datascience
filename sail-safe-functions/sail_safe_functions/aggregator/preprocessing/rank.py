@@ -1,4 +1,5 @@
 import numpy
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.series import Series
@@ -32,7 +33,7 @@ def rank_unsafe(sample_0: SeriesFederated) -> SeriesFederated:
         list_reference.append(reference)
         index_start = index_end
 
-    return SeriesFederated(sample_0.service_client, list_reference, data_model_series)
+    return SeriesFederated(list_reference, data_model_series)
 
 
 def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
@@ -40,14 +41,14 @@ def rank_cdf(sample_0: SeriesFederated) -> SeriesFederated:
     list_domain_cdf, list_value_cdf = preprocessing.cumulative_distribution_function(sample_0)
     list_reference = []
     count = statistics.count(sample_0)
+    service_participant = ImplementationManager.get_instance().get_participant_service()
     for dataset_id in sample_0.list_dataset_id:
-        client = sample_0.service_client.get_client(dataset_id)
         reference_series_0 = sample_0.get_reference_series(dataset_id)
-        reference_series_0_ranked = client.call(
-            RankCumulativeDistributionFunction, reference_series_0, count, list_domain_cdf, list_value_cdf
+        reference_series_0_ranked = service_participant.call(
+            dataset_id, RankCumulativeDistributionFunction, reference_series_0, count, list_domain_cdf, list_value_cdf
         )
         list_reference.append(reference_series_0_ranked)
-    return SeriesFederated(sample_0.service_client, list_reference, reference_series_0.data_model_series)
+    return SeriesFederated(list_reference, reference_series_0.data_model_series)
 
 
 def rank(sample_0: SeriesFederated, type_ranking: str) -> SeriesFederated:

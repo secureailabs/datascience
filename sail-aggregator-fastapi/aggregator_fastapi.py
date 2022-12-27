@@ -2,17 +2,17 @@ import json
 import os
 from typing import List
 
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+from sail_core.implementation.participant_service_client_dict import ParticipantServiceClientDict
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics, visualization
 from sail_safe_functions.aggregator.client_rpc_zero import ClientRPCZero
 from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
-from sail_safe_functions.aggregator.service_client_dict import ServiceClientDict
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -34,12 +34,16 @@ with open(IV_SETTINGS_FILE, "r") as initial_settings:
         scn_names.append(entry["ip_address"])
         list_dataset_id.append(entry["dataset_id"])
 
-
-service_client = ServiceClientDict()
-
+# TODO make this a other implementation that autoconfigures
+participant_service = ParticipantServiceClientDict()
 for dataset_id, scn_name in zip(list_dataset_id, scn_names):
-    service_client.register_client(dataset_id, ClientRPCZero(scn_name, 5010))
+    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, 5010))
     print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
+
+
+implementation_manager = ImplementationManager.get_instance()
+implementation_manager.set_participant_service(participant_service)
+implementation_manager.initialize()
 
 
 @app.get("/")

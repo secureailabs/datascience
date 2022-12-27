@@ -5,10 +5,10 @@ with open("README.md", "r") as file:
 
 setup(
     name="sail-core",
-    version="0.0.1",
+    version="1.0.1",
     packages=find_packages(),
     package_data={},
-    python_requires=">=3.5",
+    python_requires="==3.8.10",
     author="Jaap Oosterbroek",
     author_email="jaap@secureailabs.com",
     description="A set of safe functions to be used on the sail platform",

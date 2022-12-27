@@ -7,12 +7,30 @@ from typing import Tuple
 
 import numpy as np
 import pytest
+from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.data_frame_federated import DataFrameFederated
 from sail_safe_functions.aggregator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.test.config import DATA_PATH
-from sail_safe_functions.test.helper_sail_safe_functions.data_frame_federated_local import DataFrameFederatedLocal
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated_local import SeriesFederatedLocal
+from sail_safe_functions.test.helper_sail_safe_functions.participant_service_local import ParticipantSeriviceLocal
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
+
+
+def pytest_sessionstart(session):
+    """
+    Called after the Session object has been created and
+    before performing collection and entering the run test loop.
+    """
+    implementation_manager = ImplementationManager.get_instance()
+    implementation_manager.set_participant_service(ParticipantSeriviceLocal())
+    implementation_manager.initialize()
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """
+    Called after whole test run finished, right before
+    returning the exit status to the system.
+    """
 
 
 @pytest.fixture
@@ -42,7 +60,7 @@ def data_frame_federated_kidney() -> DataFrameFederated:
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    return DataFrameFederatedLocal.from_csv(dict_csv)
+    return ToolsDataTest.from_csv(dict_csv)
 
 
 @pytest.fixture
@@ -50,7 +68,7 @@ def data_frame_federated_kidney_hasnan() -> DataFrameFederated:
     """
     Fixture for loading a dataframe with missing values
     :return: data_frame_federated_kidney: a federated dataframe
-    :rtype: class : DataFrameFederatedLocal
+    :rtype: class : DataFrameFederated
     """
 
     list_name_file_csv = ["kidney_disease.csv"]
@@ -60,31 +78,13 @@ def data_frame_federated_kidney_hasnan() -> DataFrameFederated:
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    return DataFrameFederatedLocal.from_csv(dict_csv)
-
-
-@pytest.fixture
-def scheme_kidney() -> dict:
-    """
-    Fixture for loading the scheme for kidney dataset
-
-    :return: scheme_kidney: Scheme is associated with the kidney dataset
-    :rtype: class : dict
-    """
-
-    path_file_json = os.path.join(DATA_PATH, "data_csv_kidney_clean", "schema.json")
-    file = open(path_file_json, "r")
-    schema_content = file.read()
-    return json.loads(schema_content)
+    return ToolsDataTest.from_csv(dict_csv)
 
 
 @pytest.fixture
 def one_sample_big() -> SeriesFederated:
     """
     Fixture for SeriesFederated with this first part of the investor demo dataset
-
-    :return: DataFrameFederatedLocal
-    :rtype: class : test_sail_safe_functions.series_federated.SeriesFederated
     """
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
@@ -93,7 +93,7 @@ def one_sample_big() -> SeriesFederated:
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    data_frame_federated = DataFrameFederatedLocal.from_csv(dict_csv)
+    data_frame_federated = ToolsDataTest.from_csv(dict_csv)
     return data_frame_federated[id_column_0]
 
 
@@ -101,9 +101,6 @@ def one_sample_big() -> SeriesFederated:
 def two_sample_big() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     Fixture for SeriesFederated with this first part of the investor demo dataset
-
-    :return: DataFrameFederatedLocal
-    :rtype: class : test_sail_safe_functions.series_federated.SeriesFederated
     """
     list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
@@ -113,7 +110,7 @@ def two_sample_big() -> Tuple[SeriesFederated, SeriesFederated]:
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    data_frame = DataFrameFederatedLocal.from_csv(dict_csv)
+    data_frame = ToolsDataTest.from_csv(dict_csv)
 
     return (data_frame[id_column_0], data_frame[id_column_1])
 
@@ -121,10 +118,7 @@ def two_sample_big() -> Tuple[SeriesFederated, SeriesFederated]:
 @pytest.fixture
 def two_sample_categorical() -> Tuple[SeriesFederated, SeriesFederated]:
     """
-    Fixture for SeriesFederated with this first part of the kidney disease dataset
-
-    :return: DataFrameFederatedLocal
-    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederated
+    Fixture for a tuple of two SeriesFederated with this first part of the kidney disease dataset
     """
     list_name_file_csv = ["kidney_disease_clean.csv"]
     id_column_0 = "rbc"
@@ -134,7 +128,7 @@ def two_sample_categorical() -> Tuple[SeriesFederated, SeriesFederated]:
     for name_file_csv in list_name_file_csv:
         path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    data_frame = DataFrameFederatedLocal.from_csv(dict_csv)
+    data_frame = ToolsDataTest.from_csv(dict_csv)
 
     return (data_frame[id_column_0], data_frame[id_column_1])
 
@@ -143,9 +137,6 @@ def two_sample_categorical() -> Tuple[SeriesFederated, SeriesFederated]:
 def two_sample_small() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     A two sample tuple with data from wikipedia
-
-    :return: SeriesFederated
-    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederated
     """
     sample_0_numpy = np.array([17.2, 20.9, 22.6, 18.1, 21.7, 21.4, 23.5, 24.2, 14.7, 21.8])
     sample_1_numpy = np.array(
@@ -173,24 +164,21 @@ def two_sample_small() -> Tuple[SeriesFederated, SeriesFederated]:
         ]
     )
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "sample_1", sample_1_numpy)
     return (sample_0, sample_1)
 
 
 @pytest.fixture
-def two_sample_small_two() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
+def two_sample_small_two() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     A two sample tuple with data from wikipedia
-
-    :return: SeriesFederatedLocal
-    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
     sample_0_numpy = np.array([14, 34, 16, 43, 45, 36, 42, 43, 16, 27])
     sample_1_numpy = np.array([34, 36, 44, 18, 42, 39, 16, 35, 15, 33])
 
-    sample_0 = SeriesFederatedLocal.from_array("dataset_0", "sample_0", sample_0_numpy)
-    sample_1 = SeriesFederatedLocal.from_array("dataset_0", "sample_1", sample_1_numpy)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "sample_0", sample_0_numpy)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "sample_1", sample_1_numpy)
     return (sample_0, sample_1)
 
 
@@ -198,9 +186,6 @@ def two_sample_small_two() -> Tuple[SeriesFederatedLocal, SeriesFederatedLocal]:
 def two_sample_small_paired() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     A two sample tuple with data from https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples
-
-    :return: SeriesFederatedLocal
-    :rtype: class : test_sail_safe_functions.series_federated_local.SeriesFederatedLocal
     """
     sample_0_numpy = np.array([30.02, 29.99, 30.11, 29.97, 30.01, 29.99])
     sample_1_numpy = np.array([29.89, 29.93, 29.72, 29.98, 30.02, 29.98])
