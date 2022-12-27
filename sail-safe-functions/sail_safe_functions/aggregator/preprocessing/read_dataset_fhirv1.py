@@ -15,9 +15,12 @@ class ReadDatasetFhirv1:
     @staticmethod
     def run(service_client: ServiceClientBase, list_dataset_id: List[str]) -> DatasetLongitudinalFederated:
         list_reference = []
+        print(list_dataset_id)
         for dataset_id in list_dataset_id:
             client = service_client.get_client(dataset_id)
             dataset_longitudinal_reference = client.call(ReadDatasetFhirv1Precompute, dataset_id)
+            print("dataset_longitudinal_reference")
+            print(dataset_longitudinal_reference)
             list_reference.append(dataset_longitudinal_reference)
         data_model_longitudinal = list_reference[0].data_model_logitudinal  # TODO typo
         return DatasetLongitudinalFederated(service_client, list_reference, data_model_longitudinal)

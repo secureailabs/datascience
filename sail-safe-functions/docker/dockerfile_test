@@ -18,9 +18,9 @@ RUN git config --global url."https://$git_personal_token:@github.com/".insteadOf
 RUN git clone -b $branch https://$git_personal_token@github.com/secureailabs/datascience.git
 WORKDIR /datascience
 RUN ls
-RUN python3 build/install.py
-WORKDIR /datascience/sail-safe-functions-test/
 
+WORKDIR /datascience/sail-safe-functions/
+RUN pip install sail-safe-functions
 CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-m", "active or slow", "-sv"]
 
 # Usage
