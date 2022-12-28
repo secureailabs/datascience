@@ -172,7 +172,7 @@ async def data_model_add_series_model(
 @app.post("/ingestion/read_longitudinal/fhirv1")
 async def read_longitudinal_fhirv1() -> dict:
     print(list_dataset_id, flush=True)
-    dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
+    dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
 
     longitudinal_id = service_reference.get_instance().federated_longitudinal_data_to_reference(dataset_longitudinal)
 
@@ -206,7 +206,7 @@ async def read_dataset_tabular_from_longitudinal(
 async def dataset_tabular_fhirv1(
     dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
 ) -> dict:
-    dataset_longitudinal = preprocessing.read_dataset_fhirv1(service_client, list_dataset_id)
+    dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
     data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
 
     dataset_tabular = preprocessing.convert_to_dataset_tabular(
@@ -228,7 +228,7 @@ class DataFederation(BaseModel):
 @app.post("/ingestion/read_dataset_csvv1")
 async def read_dataset_csvv1(data_federation: DataFederation) -> dict:
     list_dataset_id = data_federation.list_dataset_id
-    dataset_tabular = preprocessing.read_dataset_csvv1(service_client, list_dataset_id)
+    dataset_tabular = preprocessing.read_dataset_csvv1(list_dataset_id)
     dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
     return {"dataset_id": dataset_id}
 

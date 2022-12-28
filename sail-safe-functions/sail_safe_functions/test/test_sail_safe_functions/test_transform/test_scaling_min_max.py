@@ -47,7 +47,7 @@ def test_values(
 
 
 @pytest.mark.active
-def test_values(
+def test_values_min(
     data_frame_federated_house: DataFrameFederated,
 ):
     """

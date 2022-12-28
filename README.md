@@ -42,3 +42,23 @@ None that depending on where you are this need a different formatting below is t
 - Exit from your Virtual Env `deactivate`
 
 
+
+## running integration test - direct
+terminal 1
+- Run `cd notebooks`
+- Run `jupyter notebook`
+- Select `platform_direct_fhir.ipynb`
+- Run every cell exactly once in sequence
+
+## running integration test - localhost
+terminal 1
+- Run `cd sail-participant-zeromq`
+- Run `python server.py 5010`
+terminal 2
+- Run `cd sail-aggregator-zerfastapi`
+- Run `uvicorn aggregator_fastapi:app --host 0.0.0.0 --port 8000`
+terminal 3
+- Run `cd notebooks`
+- Run `jupyter notebook`
+- Select `platform_localhost_fhir.ipynb`
+- Run every cell exactly once in sequence
