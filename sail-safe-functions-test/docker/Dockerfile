@@ -19,8 +19,9 @@ RUN git clone -b $branch https://$git_personal_token@github.com/secureailabs/dat
 WORKDIR /datascience
 RUN ls
 
-WORKDIR /datascience/
+WORKDIR /datascience/sail-core
 RUN pip install sail-core
+WORKDIR /datascience/sail-safe-functions
 RUN pip install sail-safe-functions
 CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-m", "active or slow", "-sv"]
 
