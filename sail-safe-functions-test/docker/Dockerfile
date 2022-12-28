@@ -20,7 +20,8 @@ WORKDIR /datascience
 RUN ls
 
 WORKDIR /datascience/
-RUN python build/install.py
+RUN pip install sail-core
+RUN pip install sail-safe-functions
 CMD ["python3", "-m", "pytest", "sail_safe_functions_test", "-m", "active or slow", "-sv"]
 
 # Usage
