@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -42,6 +43,6 @@ class PairedTTestPrecompute(SafeFunctionBase):
         sum_dd_0 = np.sum(sample_d * sample_d)
         count_d = len(sample_d)
 
-        list_precompute = [sum_d_0, sum_dd_0, count_d]
-
-        return list_precompute
+        precompute = [sum_d_0, sum_dd_0, count_d]
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -18,9 +19,10 @@ class VariancePrecompute(SafeFunctionBase):
     Precomputes data for computing the variance
     """
 
+    @staticmethod
     def run(
         sample_0_series: ReferenceSeries,
-    ) -> Tuple[List[float], List[bool]]:
+    ) -> List[float]:
         """
         Function collects the precomptues requireds for calculating variance
 
@@ -38,5 +40,6 @@ class VariancePrecompute(SafeFunctionBase):
         sum_xx_0 = np.sum(sample_0 * sample_0)
         sample_0_dof = len(sample_0)
 
-        list_precompute = [sum_x_0, sum_xx_0, sample_0_dof]
-        return list_precompute
+        precompute = [sum_x_0, sum_xx_0, sample_0_dof]
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

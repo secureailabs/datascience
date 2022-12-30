@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -41,9 +42,9 @@ class MeanPrecompute(SafeFunctionBase):
         check_series_one_value(sample_0)
         sample_0 = sample_0.to_numpy()
 
-        sum_x_0 = np.sum(sample_0)
+        sum_x_0 = np.sum(sample_0).item()
         sample_0_degrees_of_freedom = len(sample_0)
 
-        list_precompute = [sum_x_0, sample_0_degrees_of_freedom]
-        # list_safe = [False, False, False, False, False, False ]
-        return list_precompute  # , list_safe
+        precompute = [sum_x_0, sample_0_degrees_of_freedom]
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

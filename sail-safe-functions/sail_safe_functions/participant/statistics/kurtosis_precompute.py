@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -47,6 +48,6 @@ class KurtosisPrecompute(SafeFunctionBase):
         # Sample size
         count_0 = len(sample_0)
 
-        list_precompute = [sum_x_0, sum_xx_0, sum_xxx_0, sum_xxxx_0, count_0]
-
-        return list_precompute
+        precompute = [sum_x_0, sum_xx_0, sum_xxx_0, sum_xxxx_0, count_0]
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

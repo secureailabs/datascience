@@ -2,6 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -58,7 +59,7 @@ class PearsonPrecompute(SafeFunctionBase):
 
         sum_x1_into_x2 = np.sum(np.multiply(sample_0, sample_1))
 
-        list_precompute = [
+        precompute = [
             sum_x_0,
             sum_xx_0,
             sample_0_degrees_of_freedom,
@@ -68,5 +69,5 @@ class PearsonPrecompute(SafeFunctionBase):
             sum_x1_into_x2,
         ]
 
-        # list_safe = [False, False, False, False, False, False ]
-        return list_precompute  # , list_safe
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

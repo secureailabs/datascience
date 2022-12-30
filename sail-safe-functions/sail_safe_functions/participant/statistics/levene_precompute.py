@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
 import numpy as np
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -60,7 +61,7 @@ class LevenePrecompute(SafeFunctionBase):
         z1j = list(abs(sample_0 - mean_0))
         z2j = list(abs(sample_1 - mean_1))
 
-        list_precompute = [
+        precompute = [
             sum_x_0,
             sum_xx_0,
             count_0,
@@ -70,5 +71,5 @@ class LevenePrecompute(SafeFunctionBase):
             z1j,
             z2j,
         ]
-
-        return list_precompute
+        precompute = sanitize_dict_for_json(precompute)
+        return precompute

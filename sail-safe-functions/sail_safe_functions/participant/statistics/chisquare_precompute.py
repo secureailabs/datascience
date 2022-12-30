@@ -1,5 +1,6 @@
 from typing import Dict
 
+from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
@@ -16,6 +17,7 @@ class ChisquarePrecompute(SafeFunctionBase):
     Precomputes data for Chisquare test
     """
 
+    @staticmethod
     def run(sample_0_series: ReferenceSeries, sample_1_series: ReferenceSeries) -> Dict:
         precompute = {}
 
@@ -34,4 +36,5 @@ class ChisquarePrecompute(SafeFunctionBase):
                 precompute[tuple_value] = 0
             precompute[tuple_value] = precompute[tuple_value] + 1
 
+        # precompute = sanitize_dict_for_json(precompute)
         return precompute

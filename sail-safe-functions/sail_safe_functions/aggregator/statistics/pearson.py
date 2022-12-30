@@ -101,15 +101,26 @@ class Pearson(Estimator):
                 )
             )
         rho, degrees_of_freedom = self.aggregate(list_list_precompute)
-        t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
-        if self.alternative == "less":
-            p_value = t.cdf(t_statistic, degrees_of_freedom)
-        elif self.alternative == "two-sided":
-            p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
-        elif self.alternative == "greater":
-            p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
+        if rho < 1:
+            t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
+
+            if self.alternative == "less":
+                p_value = t.cdf(t_statistic, degrees_of_freedom)
+            elif self.alternative == "two-sided":
+                p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
+            elif self.alternative == "greater":
+                p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
+            else:
+                raise ValueError()
         else:
-            raise ValueError()
+            if self.alternative == "less":
+                p_value = 1
+            elif self.alternative == "two-sided":
+                p_value = 0
+            elif self.alternative == "greater":
+                p_value = 0
+            else:
+                raise ValueError()
 
         return rho, p_value
 
