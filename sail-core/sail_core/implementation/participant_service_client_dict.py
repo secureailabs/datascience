@@ -20,4 +20,4 @@ class ParticipantServiceClientDict(ParticipantServiceBase):
         return self.__dict_client[dataset_id]
 
     def call(self, dataset_id: str, safe_function_class: Type, *argument_list, **argument_dict) -> Any:
-        return self.__dict_client[dataset_id].call(safe_function_class, argument_list, argument_dict)
+        return self.__dict_client[dataset_id].call(safe_function_class, *argument_list, **argument_dict)

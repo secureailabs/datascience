@@ -1,4 +1,4 @@
-from sail_safe_functions.aggregator.client_rpc_base import ClientRPCBase
+from sail_core.api.client_rpc_base import ClientRPCBase
 
 
 class ServiceClient:

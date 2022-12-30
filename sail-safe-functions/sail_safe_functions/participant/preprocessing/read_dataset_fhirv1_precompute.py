@@ -5,7 +5,8 @@ from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
 class ReadDatasetFhirv1Precompute(SafeFunctionBase):
-    def run(dataset_id: str) -> ReferenceDatasetLongitudinal:
+    @staticmethod
+    def run(dataset_id_to_load: str) -> ReferenceDatasetLongitudinal:
         serializer = SerializerDatasetFhirv1()
-        dataset_longitudinal = serializer.read_dataset(dataset_id)
+        dataset_longitudinal = serializer.read_dataset(dataset_id_to_load)
         return ServiceReference.get_instance().dataset_longitudinal_to_reference(dataset_longitudinal)

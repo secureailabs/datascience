@@ -3,7 +3,7 @@ from typing import List
 
 import numpy
 import pandas
-from sail_safe_functions.test.helper_sail_safe_functions.series_federated import SeriesFederatedLocal
+from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
 class GeneratorOneSampleFloat:
@@ -28,7 +28,8 @@ class GeneratorOneSampleFloat:
         self.resolution = resolution
 
     def generate(self, size_sample):
-        sample_0 = SeriesFederatedLocal()
+
+        dict_array_0 = {}
         for i, weight_federation in enumerate(self.list_weight_federation):
             count_federation = int(round(size_sample * weight_federation))
             if self.type_distribution == "normal":
@@ -40,9 +41,8 @@ class GeneratorOneSampleFloat:
 
             if self.resolution != -1:
                 array_0 = (array_0 * (1 / self.resolution)).round().astype(int) * self.resolution
-            sample_0.add_series(
-                f"federation_{i}",
-                pandas.Series(array_0),
-            )
 
+            dict_array_0[f"federation_{i}"] = array_0
+
+        sample_0 = ToolsDataTest.from_dict_array("series_0", dict_array_0)
         return sample_0

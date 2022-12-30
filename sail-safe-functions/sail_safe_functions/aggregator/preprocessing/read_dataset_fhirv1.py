@@ -22,6 +22,7 @@ class ReadDatasetFhirv1:
         print(list_dataset_id)
         service_participant = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in list_dataset_id:
+
             dataset_longitudinal_reference = service_participant.call(
                 dataset_id, ReadDatasetFhirv1Precompute, dataset_id
             )

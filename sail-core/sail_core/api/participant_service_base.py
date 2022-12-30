@@ -9,5 +9,5 @@ class ParticipantServiceBase(ServiceBase):
         super().__init__()
 
     @abstractmethod
-    def call(self, dataset_id: str, safe_function_class: Type, *argument_list, **argument_dict) -> Any:
+    def call(self, node_dataset_id: str, safe_function_class: Type, *argument_list, **argument_dict) -> Any:
         raise NotImplementedError()
