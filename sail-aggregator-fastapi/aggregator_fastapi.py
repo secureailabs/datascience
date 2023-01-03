@@ -1,9 +1,12 @@
 import json
+import logging
 import os
+import threading
 from typing import List
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
+from log.audit_log import _AsyncLogger, log_message
 from pydantic import BaseModel
 from sail_core.implementation.participant_service_client_dict import ParticipantServiceClientDict
 from sail_core.implementation_manager import ImplementationManager
@@ -21,6 +24,7 @@ service_reference = TestServiceReference.get_instance()
 dataframe_name_lookup = {}
 
 scn_names = []
+scn_ports = []
 list_dataset_id = []
 
 IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
@@ -28,22 +32,51 @@ IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
 if os.environ.get("IV_FILEPATH") is not None:
     IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
-with open(IV_SETTINGS_FILE, "r") as initial_settings:
+with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
         scn_names.append(entry["ip_address"])
+        scn_ports.append(entry["port"])
         list_dataset_id.append(entry["dataset_id"])
+
 
 # TODO make this a other implementation that autoconfigures
 participant_service = ParticipantServiceClientDict()
-for dataset_id, scn_name in zip(list_dataset_id, scn_names):
-    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, 5010))
+for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports):
+    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, scn_port))
     print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 
 implementation_manager = ImplementationManager.get_instance()
 implementation_manager.set_participant_service(participant_service)
 implementation_manager.initialize()
+
+
+class Audit_log_task(threading.Thread):
+    """
+    Auxillary class for audit log server in isolated thread
+    """
+
+    def run(self):
+        """
+        Start async logger server
+        """
+        _AsyncLogger.start_log_poller(_AsyncLogger.ipc, _AsyncLogger.port)
+
+
+@app.on_event("startup")
+async def start_audit_logger():
+    """
+    Start async audit logger server at start up as a background task
+    """
+    t = Audit_log_task()
+    t.start()
+
+
+async def log_validation_failure(message):
+    logger = logging.getLogger("uvicorn.error")
+    logger.error(message)
+    await log_message(message)
 
 
 @app.get("/")
@@ -74,7 +107,7 @@ def query_limit_n(series, n=10) -> bool:
     return statistics.count(series) > n
 
 
-def validate(series):
+async def validate(series):
     """
     Validates execution criteria for data inputs
     :param: data: the data item being validated
@@ -83,7 +116,9 @@ def validate(series):
     :type: None
     """
     if not query_limit_n(series):
-        raise HTTPException(status_code=500, detail="Validation Failure: Sample size too small")
+        message = "Validation Failure: Sample size too small"
+        await log_validation_failure(message)
+        raise HTTPException(status_code=500, detail=message)
     else:
         return
 
@@ -171,7 +206,6 @@ async def data_model_add_series_model(
 # DATA INGESTION
 @app.post("/ingestion/read_longitudinal/fhirv1")
 async def read_longitudinal_fhirv1() -> dict:
-    print(list_dataset_id, flush=True)
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
 
     longitudinal_id = service_reference.get_instance().federated_longitudinal_data_to_reference(dataset_longitudinal)
@@ -305,8 +339,8 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
 
     return {"chisquare": statistics.chisquare(series_1, series_2)}
 
@@ -315,7 +349,7 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
 async def count(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    validate(series)
+    await validate(series)
     return {"count": statistics.count(series)}
 
 
@@ -323,14 +357,14 @@ async def count(series_id: str) -> dict:
 async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_ranking: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
-    validate(series)
+    await validate(series)
     return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
 
 
 @app.post("/statistics/kurtosis/{series_id}")
 async def kurtosis(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    validate(series)
+    await validate(series)
     return {"kurtosis": statistics.kurtosis(series)}
 
 
@@ -339,9 +373,9 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
+    await validate(series_1)
+    await validate(series_2)
 
-    validate(series_2)
     f_statistic_sail, p_value_sail = statistics.levene_test(series_1, series_2)
 
     return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
@@ -352,8 +386,9 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
+
     w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
@@ -362,7 +397,8 @@ async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: s
 async def mean(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    validate(series)
+    await validate(series)
+
     return {"mean": statistics.mean(series)}
 
 
@@ -370,7 +406,7 @@ async def mean(series_id: str) -> dict:
 async def min_max(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
-    validate(series)
+    await validate(series)
 
     min, max = statistics.min_max(series)
     return {"min": min, "max": max}
@@ -381,8 +417,8 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.paired_t_test(series_1, series_2, alternative)
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
@@ -393,8 +429,9 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
+
     pearson_sail, p_value_sail = statistics.pearson(series_1, series_2, alternative)
     return {"pearson": pearson_sail, "p_value": p_value_sail}
 
@@ -402,7 +439,8 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
 @app.post("/statistics/skewness/{series_id}")
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    validate(series)
+    await validate(series)
+
     return {"skewness": statistics.skewness(series)}
 
 
@@ -411,8 +449,8 @@ async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ra
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
     spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
     return {"spearman": spearman_sail, "p_value": p_value_sail}
 
@@ -422,8 +460,8 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
 
     t_statistic_sail, p_value_sail = statistics.student_t_test(series_1, series_2, alternative)
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
@@ -432,7 +470,8 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
 @app.post("/statistics/variance/{series_id}")
 async def variance(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
-    validate(series)
+    await validate(series)
+
     return {"variance": statistics.variance(series)}
 
 
@@ -441,8 +480,9 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
+
     t_statistic_sail, p_value_sail = statistics.welch_t_test(series_1, series_2, alternative)
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
@@ -452,8 +492,9 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
-    validate(series_1)
-    validate(series_2)
+    await validate(series_1)
+    await validate(series_2)
+
     w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
@@ -467,7 +508,7 @@ async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternat
 async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
-    validate(series_1)
+    await validate(series_1)
 
     figure = visualization.histogram_federated(series_1, bin_count)
 
@@ -478,7 +519,7 @@ async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
 async def kernel_density_estimation(series_1_id: str, bin_size: float) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
-    validate(series_1)
+    await validate(series_1)
 
     figure = visualization.kernel_density_estimation(series_1, bin_size)
 
