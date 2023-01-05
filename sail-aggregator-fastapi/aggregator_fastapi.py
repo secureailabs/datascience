@@ -36,7 +36,7 @@ with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
         scn_names.append(entry["ip_address"])
-        scn_ports.append(entry["port"])
+        scn_ports.append(5010)
         list_dataset_id.append(entry["dataset_id"])
 
 
