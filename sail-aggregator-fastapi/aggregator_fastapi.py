@@ -4,7 +4,6 @@ import os
 import threading
 from typing import List
 
-from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from log.audit_log import _AsyncLogger, log_message
 from pydantic import BaseModel
@@ -16,6 +15,8 @@ from sail_safe_functions.aggregator.data_model.data_model_data_frame import Data
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -238,7 +239,9 @@ async def read_dataset_tabular_from_longitudinal(
 
 @app.post("/ingestion/dataset_tabular/fhirv1")
 async def dataset_tabular_fhirv1(
-    dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
+    dataset_federation_id: str,
+    dataset_federation_name: str,
+    data_model_tabular_id: str,
 ) -> dict:
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
     data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
@@ -281,12 +284,31 @@ async def data_frame_tabular_select_dataframe(data_frame_tabular_id: str, data_f
 
 
 @app.post("/data_frame/select_series/{data_frame_id}")
-async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict:
+async def data_frame_select_series(
+    data_frame_id: str,
+    series_name: str,
+) -> dict:
     data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
     series = data_frame[series_name]
 
     series_id = service_reference.get_instance().federated_series_to_reference(series)
     return {"series_id": series_id}
+
+
+class ListSeriesName(BaseModel):
+    list_series_name: List[str]
+
+
+@app.post("/data_frame/data_frame/{data_frame_id}")
+async def data_frame_select_data_frame(
+    data_frame_id: str,
+    list_series_name: ListSeriesName,
+) -> dict:
+    data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
+    data_frame_target = data_frame.select_sub_data_frame(list_series_name.list_series_name)
+
+    data_frame_target_id = service_reference.get_instance().federated_dataframe_to_reference(data_frame_target)
+    return {"data_frame_id": data_frame_target_id}
 
 
 # DATAFRAME_MANIPULATION END

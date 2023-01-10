@@ -13,8 +13,8 @@ class DataFrame(DataFramePandas):
 
     def __init__(self, dataset_id: str, data_frame_name: str, list_series: List[Series]) -> None:
         super().__init__()
-        self.dataset_id = dataset_id
-        self.data_frame_name = data_frame_name
+        self.dataset_id: str = dataset_id
+        self.data_frame_name: str = data_frame_name
         self.data_model_data_frame = DataModelDataFrame(data_frame_name)
         for series in list_series:
             self._add_series(series)

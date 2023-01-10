@@ -58,6 +58,16 @@ def data_frame_tabular_select_data_frame(session, data_frame_tabular_id, data_fr
     return result.json()["data_frame_id"]
 
 
+def data_frame_select_data_frame(session, data_frame_id, list_series_name):
+    payload = {"data_frame_id": data_frame_id, "list_series_name": list_series_name}
+    result = requests.post(
+        session.get_url() + "/data_frame/data_frame/" + data_frame_id,
+        json=payload,
+        verify=False,
+    )
+    return result.json()["data_frame_id"]
+
+
 def data_frame_select_series(session, data_frame_id, series_name):
     payload = {"data_frame_id": data_frame_id, "series_name": series_name}
     result = requests.post(
