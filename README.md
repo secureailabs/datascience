@@ -41,21 +41,18 @@ None that depending on where you are this need a different formatting below is t
 ## Deactivate your Virtual Env (venv)
 - Exit from your Virtual Env `deactivate`
 
+## running integration test - localhost - FHIR
 
+Set environment variables:
+This is a bit of a mess but an example there is an example for r4sep2019_fhirv1_60_3 in DOCKER/smartbroker/InitializationVector.json
+- Run `export IV_FILEPATH="FILE_PATH_TO_IV_FILE"`
+- Run `export PATH_DIR_DATASET="FILE_PATH_TO_DATASET_DIR"`
 
-## running integration test - direct
-terminal 1
-- Run `cd notebooks`
-- Run `jupyter notebook`
-- Select `platform_direct_fhir.ipynb`
-- Run every cell exactly once in sequence
-
-## running integration test - localhost
 terminal 1
 - Run `cd sail-participant-zeromq`
 - Run `python server.py 5010`
 terminal 2
-- Run `cd sail-aggregator-zerfastapi`
+- Run `cd sail-aggregator-fastapi`
 - Run `uvicorn aggregator_fastapi:app --host 0.0.0.0 --port 8000`
 terminal 3
 - Run `cd notebooks`
