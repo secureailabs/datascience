@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY Entrypoint.sh /Entrypoint.sh
+RUN sed -i -e 's/\r$//' Entrypoint.sh
 RUN chmod +x /Entrypoint.sh
 
 ENTRYPOINT [ "/Entrypoint.sh" ]

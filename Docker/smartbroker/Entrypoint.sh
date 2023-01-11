@@ -2,6 +2,8 @@
 set -e
 imageName=smartbroker
 
+ls
+ls /
 cd /app || exit
 
 # Start the nginx server
@@ -35,10 +37,15 @@ popd
 
 # Start the Public API Server
 cd datascience
+pip install -e sail-core
 pip install -e sail-safe-functions
 
-cd fastapi
-PATH_DIR_PUBLIC_KEY_ZEROMQ=/app/RPCLib/public_keys/ PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT=/app/RPCLib/private_keys/client.key_secret PATH_DIR_DATASET=/data/ uvicorn smart_broker:app --host 0.0.0.0 --port 8000 $reload
+export PATH_DIR_PUBLIC_KEY_ZEROMQ="/app/RPCLib/public_keys/"
+export PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT="/app/RPCLib/private_keys/client.key_secret"
+export PATH_DIR_DATASET="/data/"
+
+cd sail-aggregator-fastapi
+uvicorn aggregator_fastapi:app --host 0.0.0.0 --port 8000 $reload
 
 # To keep the container running
 tail -f /dev/null
