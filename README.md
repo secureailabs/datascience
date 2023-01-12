@@ -26,11 +26,6 @@ The repository contains 3 python packages
 
 ## Install all Dependencies for local development
 - Run `python build/install.py` \
-*`Dependency Requirements are listed in config/requirements/*.txt`*
-
-## Set the required environment variables:
-None that depending on where you are this need a different formatting below is the setting from the test docker
-- Run `export PATH_DIR_DATASET=/data`
 
 ## Run Test package
 - Run `python run_tests.py`
@@ -44,9 +39,13 @@ None that depending on where you are this need a different formatting below is t
 ## running integration test - localhost - FHIR
 
 Set environment variables:
+Or define them in your bashrc file
 This is a bit of a mess but an example there is an example for r4sep2019_fhirv1_60_3 in DOCKER/smartbroker/InitializationVector.json
-- Run `export IV_FILEPATH="FILE_PATH_TO_IV_FILE"`
-- Run `export PATH_DIR_DATASET="FILE_PATH_TO_DATASET_DIR"`
+- Run `export IV_FILEPATH=""`
+- Run `export PATH_DIR_DATASET=""`
+- Run `export PATH_DIR_PUBLIC_KEY_ZEROMQ=""`
+- Run `export PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT=""`
+- Run `export PATH_FILE_PRIVATE_KEY_ZEROMQ_SERVER=""`
 
 terminal 1
 - Run `cd sail-participant-zeromq`
