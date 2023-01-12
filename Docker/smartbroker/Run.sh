@@ -41,7 +41,7 @@ if [ "$mode" == "dev" ]
 then
     echo "Running in dev mode"
     mountOption=$(pwd)/../../:/app/datascience
-    #network="--network sailNetwork"
+    network="--network sailNetwork"
     detach=it
 else
     echo "Running in prod mode"
