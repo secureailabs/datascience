@@ -41,7 +41,9 @@ The repository contains 3 python packages
 Set environment variables:
 Or define them in your bashrc file
 This is a bit of a mess but an example there is an example for r4sep2019_fhirv1_60_3 in DOCKER/smartbroker/InitializationVector.json
+NOTE!!! the IV_FILEPATH evironment veriable is specific to the notebook you are running, SET it apropriately!
 - Run `export IV_FILEPATH=""`
+
 - Run `export PATH_DIR_DATASET=""`
 - Run `export PATH_DIR_PUBLIC_KEY_ZEROMQ=""`
 - Run `export PATH_FILE_PRIVATE_KEY_ZEROMQ_CLIENT=""`

@@ -7,6 +7,8 @@ with open("requirements.txt") as file:
 with open("README.md", "r") as file:
     long_description = file.read()
 
+# find_packages(exclude=("test",)),
+
 setup(
     name="sail-safe-functions",
     version="1.0.1",
