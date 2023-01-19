@@ -33,6 +33,8 @@ ARG git_personal_token
 ARG branch_datascience
 ARG branch_engineering
 RUN git config --global url."https://$git_personal_token:@github.com/".insteadOf " https://github.com/"
+# TODO there has to be a better way to bust cache
+ARG CACHEBUST=1
 RUN git clone -b $branch_datascience https://$git_personal_token@github.com/secureailabs/datascience.git
 RUN git clone -b $branch_engineering https://$git_personal_token@github.com/secureailabs/Engineering.git
 
