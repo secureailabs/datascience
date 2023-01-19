@@ -1,0 +1,62 @@
+FROM ubuntu:20.04
+ENV TZ=America/Toronto
+LABEL authors="jaap@secureailabs.com"
+USER root
+
+# Set tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get -y upgrade
+RUN apt-get install -y nginx
+RUN apt-get install -y wget
+RUN apt-get install -y curl
+RUN apt-get install -y sudo
+RUN apt-get install -y iputils-ping
+RUN apt-get install --no-install-recommends -y python3.8
+RUN apt-get install --no-install-recommends -y python3-pip
+RUN apt-get install --no-install-recommends -y python3.8-dev git
+
+
+
+
+
+# requirements
+# this section exists to speed up repeated builds but should not be necisary if we have a proper build server
+# if the installs below add more requirements we should add them to this list
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# GIT
+ARG git_personal_token
+ARG branch_datascience
+ARG branch_engineering
+RUN git config --global url."https://$git_personal_token:@github.com/".insteadOf " https://github.com/"
+# TODO there has to be a better way to bust cache
+ARG CACHEBUST=1
+RUN git clone -b $branch_datascience https://$git_personal_token@github.com/secureailabs/datascience.git
+RUN git clone -b $branch_engineering https://$git_personal_token@github.com/secureailabs/Engineering.git
+
+
+WORKDIR /datascience/sail-core
+RUN pip install .
+WORKDIR /datascience/sail-safe-functions
+RUN pip install .
+WORKDIR /datascience/sail-aggregator-fastapi
+RUN pip install .
+WORKDIR /Engineering/RPCLib/zero
+RUN pip install .
+
+# Entry points
+COPY entrypoint_aggregator.sh /entrypoint_aggregator.sh
+RUN sed -i -e 's/\r$//' /entrypoint_aggregator.sh
+RUN chmod +x /entrypoint_aggregator.sh
+
+COPY entrypoint_participant.sh /entrypoint_participant.sh
+RUN sed -i -e 's/\r$//' /entrypoint_participant.sh
+RUN chmod +x /entrypoint_participant.sh
+
+#RUN rm -rf /var/lib/apt/lists/* TODO what does this do
+#TODO mount this next one instead
+COPY nginx.conf /etc/nginx/nginx.conf
