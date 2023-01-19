@@ -4,7 +4,6 @@ import os
 import threading
 from typing import List
 
-from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from log.audit_log import _AsyncLogger, log_message
 from pydantic import BaseModel
@@ -16,6 +15,8 @@ from sail_safe_functions.aggregator.data_model.data_model_data_frame import Data
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -36,7 +37,7 @@ with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
         scn_names.append(entry["ip_address"])
-        scn_ports.append(5010)
+        scn_ports.append(5556)
         list_dataset_id.append(entry["dataset_id"])
 
 
