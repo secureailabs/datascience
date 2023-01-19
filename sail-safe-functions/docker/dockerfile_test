@@ -27,4 +27,4 @@ CMD ["python3", "-m", "pytest", "sail_safe_functions/test/", "-m", "active or sl
 
 # Usage
 # docker build --build-arg git_personal_token={git_personal_token} --build-arg branch={branch_name} -t sail/datascience-test .
-# docker run sail/datascience-test 
+# docker run sail/datascience-test
