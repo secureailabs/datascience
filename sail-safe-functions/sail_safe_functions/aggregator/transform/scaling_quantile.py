@@ -40,7 +40,7 @@ class ScalingQuantile:
         array_size = len(list_name_feature_source) + 1
 
         for name_feature in list_name_feature_source:
-            estimator = Quantiles(quantile_list)
+            estimator = Quantiles()
             list_quantile = estimator.run(data_frame[name_feature], quantile_list)
             scale = max(list_quantile) - min(list_quantile)
             list_add.append(-min(list_quantile) / scale)
