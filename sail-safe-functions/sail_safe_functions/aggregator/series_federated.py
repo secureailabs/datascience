@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, List, Type
+from typing import Any, Dict, List, Type
 
 import numpy
 from sail_core.implementation_manager import ImplementationManager
@@ -14,8 +14,8 @@ class SeriesFederated:
         list_reference: List[ReferenceSeries],
         data_model_series: DataModelSeries,
     ) -> None:
-        self.__data_model_series = data_model_series
-        self.__dict_reference_series = {}
+        self.__data_model_series: DataModelSeries = data_model_series
+        self.__dict_reference_series: Dict[str, ReferenceSeries] = {}
         for reference in list_reference:
             self._add_reference_series(reference)
 

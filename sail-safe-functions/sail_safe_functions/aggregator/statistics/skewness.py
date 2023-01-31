@@ -2,29 +2,34 @@ import math
 from typing import List, Tuple
 
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.skewness_precompute import SkewnessPrecompute
 from scipy import stats
 
 
 def skewness(
     sample_0: SeriesFederated,
-) -> Tuple[float]:
+) -> float:
 
     estimator = Skewness()
     return estimator.run(sample_0)
 
 
-class Skewness(Estimator):
+class Skewness(EstimatorOneSample):
 
     """
     An estimator for Skewness
     """
 
-    def __init__(self) -> None:
-        super().__init__(["skewness"])
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__("Skewness", ["skewness"])
 
-    def run(self, sample_0: SeriesFederated):
+    def run(
+        self,
+        sample_0: SeriesFederated,
+    ) -> float:
         """
         It takes one federated series, and returns the skewness value of the series.
 
@@ -38,7 +43,10 @@ class Skewness(Estimator):
         skewness = self.aggregate(list_precompute)
         return skewness
 
-    def aggregate(self, list_list_precompute: List[List[float]]) -> float:
+    def aggregate(
+        self,
+        list_list_precompute: List[List[float]],
+    ) -> float:
 
         """
         A Function to get the fedrated skewness value.

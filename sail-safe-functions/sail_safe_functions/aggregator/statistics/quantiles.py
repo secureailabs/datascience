@@ -3,22 +3,28 @@ from typing import List
 import numpy
 from sail_safe_functions.aggregator import preprocessing
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from scipy import interpolate
 
 
 def quantiles(sample_0: SeriesFederated, list_quantile) -> List[float]:
-    estimator = Quantiles(list_quantile)
+    estimator = Quantiles()
     return estimator.run(sample_0, list_quantile)
 
 
-class Quantiles(Estimator):
+class Quantiles(EstimatorOneSample):
     """
-    Class that wraps the safe function for min and max
+    Class that wraps the safe function for quantiles min and max
     """
 
+    def __init__(self) -> None:
+        super().__init__("Quantiles", ["quantiles"])
+
     @staticmethod
-    def run(sample_0: SeriesFederated, list_quantile):
+    def run(
+        sample_0: SeriesFederated,
+        list_quantile: List[float],
+    ) -> List[float]:
         """
         Method to find quantiles for the series
 

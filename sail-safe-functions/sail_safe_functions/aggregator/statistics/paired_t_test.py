@@ -3,7 +3,7 @@ from typing import List, Tuple
 import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.paired_t_test_precompute import PairedTTestPrecompute
 from scipy import stats
@@ -74,7 +74,7 @@ def paired_t_test(
     return estimator.run(sample_0, sample_1)
 
 
-class PairedTTest(Estimator):
+class PairedTTest(EstimatorTwoSample):
     """
     PairedTTest this is the orchestator class that preforms a federated t-test
     """
@@ -83,7 +83,7 @@ class PairedTTest(Estimator):
         self,
         alternative: str,
     ) -> None:
-        super().__init__(["t_statistic", "p_value"])
+        super().__init__(f"PairedTTest - {alternative}", ["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative

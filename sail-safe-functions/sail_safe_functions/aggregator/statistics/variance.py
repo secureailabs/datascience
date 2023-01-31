@@ -2,24 +2,31 @@ from typing import List
 
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.variance_precompute import VariancePrecompute
 
 
-def variance(sample_0: SeriesFederated):
+def variance(
+    sample_0: SeriesFederated,
+) -> float:
     estimator = Variance()
     return estimator.run(sample_0)
 
 
-class Variance(Estimator):
+class Variance(EstimatorOneSample):
     """
     Class have run method to perform the federated variance.
     """
 
-    def __init__(self) -> None:
-        super().__init__(["variance"])
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__("Variance", ["variance"])
 
-    def run(self, sample_0: SeriesFederated):
+    def run(
+        self,
+        sample_0: SeriesFederated,
+    ) -> float:
         """
         It takes one federated series, and returns the variance of the series
 
@@ -32,7 +39,10 @@ class Variance(Estimator):
         variance = self.aggregate(list_precompute)
         return variance
 
-    def aggregate(self, list_list_precompute: List[List[float]]) -> float:
+    def aggregate(
+        self,
+        list_list_precompute: List[List[float]],
+    ) -> float:
         sum_x_0 = 0
         sum_xx_0 = 0
         size_sample_0 = 0

@@ -2,24 +2,31 @@ from typing import List, Tuple
 
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.min_max_precompute import MinMaxPrecompute
 
 
-def min_max(sample_0: SeriesFederated) -> Tuple[float, float]:
+def min_max(
+    sample_0: SeriesFederated,
+) -> Tuple[float, float]:
     estimator = MinMax()
     return estimator.run(sample_0)
 
 
-class MinMax(Estimator):
+class MinMax(EstimatorOneSample):
     """
     Class that wraps the safe function for min and max
     """
 
-    def __init__(self) -> None:
-        super().__init__(["min", "max"])
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__("MinMax", ["min", "max"])
 
-    def run(self, sample_0: SeriesFederated) -> Tuple[float, float]:
+    def run(
+        self,
+        sample_0: SeriesFederated,
+    ) -> Tuple[float, float]:
         """
         Perform federated min max.
         It takes one federated series, and returns min and max value for it.
@@ -39,7 +46,10 @@ class MinMax(Estimator):
         min, max = self.aggregate(list_precompute)
         return min, max
 
-    def aggregate(self, list_tuple_min_max: List[Tuple[float, float]]) -> Tuple[float, float]:
+    def aggregate(
+        self,
+        list_tuple_min_max: List[Tuple[float, float]],
+    ) -> Tuple[float, float]:
         """Aggregates the results of multiple precompute functions into a global min and max
 
         :param list_tuple_min_max: A list of tuples from various precompute functions

@@ -10,7 +10,11 @@ from scipy import stats
 from scipy.stats import t
 
 
-def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
+def pearson(
+    sample_0: SeriesFederated,
+    sample_1: SeriesFederated,
+    alternative: str,
+) -> Tuple[float, float]:
     """
     Perform federated Pearson.
     It takes two federated series, and returns the rho value and the p-value

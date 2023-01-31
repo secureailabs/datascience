@@ -1,6 +1,6 @@
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.count_precompute import CountPrecompute
 
 
@@ -9,13 +9,13 @@ def count(sample_0: SeriesFederated):
     return estimator.run(sample_0)
 
 
-class Count(Estimator):
+class Count(EstimatorOneSample):
     """
     Class have run method to perform the federated variance.
     """
 
     def __init__(self) -> None:
-        super().__init__(["count"])
+        super().__init__("Count", ["count"])
 
     def run(self, sample_0: SeriesFederated):
         """

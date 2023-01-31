@@ -4,7 +4,7 @@ import numpy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.kolmogorov_smirnov_test_precompute import (
     KolmogorovSmirnovTestPrecompute,
 )
@@ -13,7 +13,9 @@ from scipy.stats import kstwo
 
 
 def kolmogorov_smirnov_test(
-    sample_0: SeriesFederated, type_distribution: str, type_ranking: str
+    sample_0: SeriesFederated,
+    type_distribution: str,
+    type_ranking: str,
 ) -> Tuple[float, float]:
     """
     Perform federated kolmogorov_smirnov test.
@@ -35,7 +37,7 @@ def kolmogorov_smirnov_test(
     return estimator.run(sample_0)
 
 
-class KolmogorovSmirnovTest(Estimator):
+class KolmogorovSmirnovTest(EstimatorOneSample):
 
     """
     Federated version of the KolmogorovSmirnovFederate test
@@ -46,7 +48,7 @@ class KolmogorovSmirnovTest(Estimator):
         type_distribution: str,
         type_ranking: str,
     ) -> None:
-        super().__init__(["k_statistic", "p_value"])
+        super().__init__(f"KolmogorovSmirnovTest - {type_distribution} - {type_ranking}", ["k_statistic", "p_value"])
 
         if type_distribution not in {"normal", "normalunit"}:
             raise ValueError("`type_distribution` must be `normal` or `normalunit`")

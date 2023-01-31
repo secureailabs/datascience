@@ -3,7 +3,7 @@ from typing import Tuple
 
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_series_constant
 from scipy import stats
 
@@ -37,14 +37,14 @@ def spearman(
     return estimator.run(sample_0, sample_1)
 
 
-class Spearman(Estimator):
+class Spearman(EstimatorTwoSample):
 
     """
     The Spearman correlation estimator
     """
 
-    def __init__(self, alternative, type_ranking: str) -> None:
-        super().__init__(["rho", "p_value"])
+    def __init__(self, alternative: str, type_ranking: str) -> None:
+        super().__init__(f"Spearman - {alternative} - {type_ranking}", ["rho", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         if type_ranking not in {"unsafe", "cdf"}:
@@ -52,7 +52,11 @@ class Spearman(Estimator):
         self.alternative = alternative
         self.type_ranking = type_ranking
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def run(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ) -> Tuple[float, float]:
         count_0 = statistics.count(sample_0)
         count_1 = statistics.count(sample_1)
         if count_0 != count_1:
@@ -67,5 +71,9 @@ class Spearman(Estimator):
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def run_reference(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ) -> Tuple[float, float]:
         return stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

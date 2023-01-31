@@ -3,7 +3,7 @@ from typing import Dict, Tuple
 import numpy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.participant.statistics.chisquare_precompute import ChisquarePrecompute
 from scipy import stats
 from scipy.stats import distributions
@@ -32,15 +32,15 @@ def chisquare(sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[flo
     return estimator.run(sample_0, sample_1)
 
 
-class Chisquare(Estimator):
+class Chisquare(EstimatorTwoSample):
     """
     Final function to run for Fedrated Chisquare test
     """
 
     def __init__(self) -> None:
-        super().__init__(["chisquare_statistic", "p_value"])
+        super().__init__("ChisquareTest for independance", ["chisquare_statistic", "p_value"])
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
 
         list_precompute = []
         for dataset_id in sample_0.list_dataset_id:
@@ -54,7 +54,7 @@ class Chisquare(Estimator):
             list_precompute.append(precompute)
         return self.aggregate(list_precompute)
 
-    def aggregate(self, list_precompute) -> Dict:
+    def aggregate(self, list_precompute) -> Tuple[float, float]:
 
         list_unique_0 = []
         list_unique_1 = []
