@@ -57,7 +57,7 @@ class SeriesFederated:
 
     # property section end
 
-    # TODO move to local client
+    # TODO move to tools data client
     def to_numpy(self) -> numpy.ndarray:
         list_array_numpy = []
         for reference_series in self.dict_reference_series.values():

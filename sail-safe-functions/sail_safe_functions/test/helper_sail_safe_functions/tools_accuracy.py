@@ -4,7 +4,10 @@ import numpy
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.estimator_reference import EstimatorReference
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat
 from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import GeneratorTwoSampleFloat
 from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import compute_single_knockout_privacy_measure
@@ -12,23 +15,23 @@ from scipy import interpolate
 
 
 def evaluate_accuracy(
-    estimator: Estimator,
+    estimator: EstimatorOneSample,
     generator: GeneratorOneSampleFloat,
     list_sample_size: List[int],
     count_run_bias_variance: int,
     count_run_privacy: int,
 ):
-    estimator_reference = EstimatorReference(estimator)
+    estimator_reference = EstimatorOneSampleReference(estimator)
     # accuracy
     # bias
-    count_estimate = len(estimator.list_name_estimate)
+    count_estimate = len(estimator.list_estimate_name)
     report = {}
     report["list_size_sample"] = list_sample_size
-    report["list_name_estimate"] = estimator.list_name_estimate
+    report["list_estimate_name"] = estimator.list_estimate_name
     report["count_run_bias_variance"] = count_run_bias_variance
     report["count_run_privacy"] = count_run_privacy
     report["dict_estimate"] = {}
-    for name_estimate in estimator.list_name_estimate:
+    for name_estimate in estimator.list_estimate_name:
         report["dict_estimate"][name_estimate] = {}
         report["dict_estimate"][name_estimate]["list_error_mean"] = []
         report["dict_estimate"][name_estimate]["list_variance"] = []
@@ -41,7 +44,7 @@ def evaluate_accuracy(
             array_error[index_run, :] = numpy.array(estimator_reference.run(sample)) - numpy.array(
                 estimator.run(sample)
             )
-        for i, name_estimate in enumerate(estimator.list_name_estimate):
+        for i, name_estimate in enumerate(estimator.list_estimate_name):
             error_mean = numpy.mean(array_error[:, i])
             variance = numpy.var(array_error[:, i], ddof=1)
             report["dict_estimate"][name_estimate]["list_error_mean"].append(error_mean)
@@ -57,7 +60,7 @@ def evaluate_accuracy(
                 estimator_reference, sample
             )  # TODO set reference
 
-        for i, name_estimate in enumerate(estimator.list_name_estimate):
+        for i, name_estimate in enumerate(estimator.list_estimate_name):
             privacy_estimator = numpy.mean(array_estimator[:, i])
             privacy_reference = numpy.mean(array_reference[:, i])
             report["dict_estimate"][name_estimate]["list_privacy_estimator_mean"].append(privacy_estimator)
@@ -125,7 +128,7 @@ def plot_estimator_comparrison(list_tuple_report):
 
 def plot_report_estimator(title, report):
 
-    for name_estimate in report["list_name_estimate"]:
+    for name_estimate in report["list_estimate_name"]:
         list_subplot_title = []
         list_subplot_title.append(f'"{name_estimate}" bias')
         list_subplot_title.append(f'"{name_estimate}" efficiency / quality')

@@ -2,6 +2,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.variance import Variance
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -18,7 +21,8 @@ def test_variance(one_sample_big: SeriesFederated):
     #
     estimator = Variance()
     variance_sail = estimator.run(sample_0)
-    variance_numpy = estimator.run_reference(sample_0)
+    estimator_reference = EstimatorOneSampleReference(estimator)
+    variance_numpy = estimator_reference.run(sample_0)
 
     # Assert
     assert variance_sail == pytest.approx(variance_numpy, 0.0001)

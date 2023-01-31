@@ -70,10 +70,3 @@ class Spearman(EstimatorTwoSample):
         rank_1 = preprocessing.rank(sample_1, self.type_ranking)
         rho, p_value = statistics.pearson(rank_0, rank_1, self.alternative)
         return rho, p_value
-
-    def run_reference(
-        self,
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-    ) -> Tuple[float, float]:
-        return stats.spearmanr(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

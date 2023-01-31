@@ -3,9 +3,11 @@ from typing import List, Tuple
 import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
+    EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_variance_zero
-from sail_safe_functions.participant.statistics.paired_t_test_precompute import PairedTTestPrecompute
+from sail_safe_functions.participant.statistics.paired_t_test_precompute import \
+    PairedTTestPrecompute
 from scipy import stats
 from scipy.stats import t
 
@@ -147,5 +149,3 @@ class PairedTTest(EstimatorTwoSample):
         #     raise Exception()
         return t_statistic, degrees_of_freedom
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        return stats.ttest_rel(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)

@@ -5,10 +5,10 @@ import scipy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
-from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
-    WilcoxonSingedRankTestPrecompute,
-)
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
+    EstimatorTwoSample
+from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import \
+    WilcoxonSingedRankTestPrecompute
 
 
 def wilcoxon_singed_rank_test(
@@ -121,12 +121,3 @@ class WilcoxonSingedRankTest(EstimatorTwoSample):
             rank_plus += precompute[1]
         return rank_minus, rank_plus
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        # we only do aproximation of T(aproximation does not work very wel below 10) and only do wilcox mode tie resolution
-        return scipy.stats.wilcoxon(
-            sample_0.to_numpy(),
-            sample_1.to_numpy(),
-            zero_method="wilcox",
-            alternative=self.alternative,
-            mode="approx",
-        )

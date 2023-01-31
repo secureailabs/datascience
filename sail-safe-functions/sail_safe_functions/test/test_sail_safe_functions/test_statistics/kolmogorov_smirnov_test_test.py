@@ -3,6 +3,9 @@ from typing import Tuple
 import numpy
 import pytest
 from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 from sklearn.utils import estimator_html_repr
 
@@ -17,7 +20,8 @@ def test_kolmogorov_smirnov_normalunit():
     # Act
     estimator = KolmogorovSmirnovTest(type_distribution="normalunit", type_ranking="unsafe")
     k_statistic_sail, p_value_sail = estimator.run(sample_0)
-    k_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0)
+    estimator_reference = EstimatorOneSampleReference(estimator)
+    k_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0)
 
     # Assert
     assert k_statistic_sail == pytest.approx(k_statistic_scipy, 0.0001)

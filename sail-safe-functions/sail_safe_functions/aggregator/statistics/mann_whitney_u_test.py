@@ -95,15 +95,3 @@ class MannWhitneyUTest(EstimatorTwoSample):
         p = numpy.clip(p, 0, 1)
 
         return U0, p
-
-    def run_reference(
-        self,
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-    ):
-        return stats.mannwhitneyu(
-            sample_0.to_numpy(),
-            sample_1.to_numpy(),
-            alternative=self.alternative,
-            method="asymptotic",
-        )

@@ -2,6 +2,9 @@ import numpy
 import pandas
 import pytest
 from sail_safe_functions.aggregator.statistics.mann_whitney_u_test import MannWhitneyUTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -20,7 +23,8 @@ def test_mann_whitney_u_test_two_sided():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
@@ -45,7 +49,8 @@ def test_mann_whitney_u_test_two_sided_2():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
@@ -70,7 +75,8 @@ def test_mann_whitney_u_test_less():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
@@ -95,7 +101,8 @@ def test_mann_whitney_u_test_less_2():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
@@ -120,7 +127,8 @@ def test_mann_whitney_u_test_greater():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
@@ -145,7 +153,8 @@ def test_mann_whitney_u_test_greater_2_():
     # Act
     estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(
         sample_0,
         sample_1,
     )
