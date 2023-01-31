@@ -5,10 +5,10 @@ import scipy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
-    EstimatorTwoSample
-from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import \
-    WilcoxonSingedRankTestPrecompute
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
+    WilcoxonSingedRankTestPrecompute,
+)
 
 
 def wilcoxon_singed_rank_test(
@@ -120,4 +120,3 @@ class WilcoxonSingedRankTest(EstimatorTwoSample):
             rank_minus += precompute[0]
             rank_plus += precompute[1]
         return rank_minus, rank_plus
-

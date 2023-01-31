@@ -2,10 +2,8 @@ from typing import List, Tuple
 
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
-    EstimatorOneSample
-from sail_safe_functions.participant.statistics.min_max_precompute import \
-    MinMaxPrecompute
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.participant.statistics.min_max_precompute import MinMaxPrecompute
 
 
 def min_max(
@@ -65,4 +63,3 @@ class MinMax(EstimatorOneSample):
             list_min.append(tuple_min_max[0])
             list_max.append(tuple_min_max[1])
         return min(list_min), max(list_max)
-
