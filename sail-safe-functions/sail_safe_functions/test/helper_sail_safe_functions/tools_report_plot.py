@@ -11,8 +11,6 @@ from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import co
 from scipy import interpolate
 
 
-def plot_report_matplotlib(report)
-
 def plot_estimator_summary_go(report, name_estimate):
     # for the executive summary we compute our stats at the sample_size=10 level and normalize them according to the underlining distribution (sd=1)
     accuracy_10 = abs(
