@@ -4,6 +4,9 @@ import pytest
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.mean import Mean
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -25,8 +28,8 @@ def test_mean(one_sample_big: SeriesFederated):
     # Act
     estimator = Mean()
     mean_sail = estimator.run(sample_0)
-    mean_numpy = estimator.run_reference(sample_0)
-
+    estimator_reference = EstimatorOneSampleReference(estimator)
+    mean_numpy = estimator_reference.run(sample_0)
     # Assert
     assert mean_sail == pytest.approx(mean_numpy, 0.0001)
 

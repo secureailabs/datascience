@@ -4,7 +4,9 @@ import numpy
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.estimator_reference import EstimatorReference
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat
 from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import GeneratorTwoSampleFloat
 from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import compute_single_knockout_privacy_measure
@@ -70,7 +72,7 @@ def plot_estimator_comparrison(list_tuple_report):
 
 def plot_report_estimator(title, report):
 
-    for name_estimate in report["list_name_estimate"]:
+    for name_estimate in report["list_estimate_name"]:
         list_subplot_title = []
         list_subplot_title.append(f'"{name_estimate}" bias')
         list_subplot_title.append(f'"{name_estimate}" efficiency / quality')

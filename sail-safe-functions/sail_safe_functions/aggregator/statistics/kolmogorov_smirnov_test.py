@@ -94,15 +94,6 @@ class KolmogorovSmirnovTest(EstimatorOneSample):
 
         k_statistic = max(list_precompute)
 
-        p_value = kstwo.sf(k_statistic, size_sample)
+        p_value = float(kstwo.sf(k_statistic, size_sample))
 
         return k_statistic, p_value
-
-    def run_reference(
-        self,
-        sample_0: SeriesFederated,
-    ) -> Tuple[float, float]:
-        if self.type_distribution == "normalunit":
-            return stats.kstest(sample_0.to_numpy(), "norm")
-        else:
-            raise Exception()

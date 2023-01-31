@@ -2,6 +2,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.wilcoxon_signed_rank_test import WilcoxonSingedRankTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -21,7 +24,8 @@ def test_wilcoxon_singed_rank_test_two_sided():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
@@ -45,7 +49,8 @@ def test_wilcoxon_singed_rank_test_two_sided_2():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
@@ -69,7 +74,8 @@ def test_wilcoxon_singed_rank_test_less():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
@@ -93,7 +99,8 @@ def test_wilcoxon_singed_rank_test_less_2():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
@@ -116,7 +123,8 @@ def test_wilcoxon_singed_rank_test_greater():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)
@@ -139,7 +147,8 @@ def test_wilcoxon_singed_rank_test_greater_2():
     # Act
     estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
     w_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    w_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    w_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert w_statistic_scipy == pytest.approx(w_statistic_sail, 0.0001)

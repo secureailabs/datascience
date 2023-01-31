@@ -4,6 +4,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.spearman import Spearman
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -27,7 +30,8 @@ def test_spearman_two_sided(two_sample_big: Tuple[SeriesFederated, SeriesFederat
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -54,7 +58,8 @@ def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederated, SeriesFeder
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -79,7 +84,8 @@ def test_spearman_less(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -106,7 +112,8 @@ def test_spearman_less_2(two_sample_big: Tuple[SeriesFederated, SeriesFederated]
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -130,7 +137,8 @@ def test_spearman_greater(two_sample_big: Tuple[SeriesFederated, SeriesFederated
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
@@ -157,7 +165,8 @@ def test_spearman_greater_2(two_sample_big: Tuple[SeriesFederated, SeriesFederat
     # Act
     estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
     spearman_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    spearman_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    spearman_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)

@@ -88,6 +88,3 @@ class Skewness(EstimatorOneSample):
         )
 
         return skewness_value
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return stats.skew(sample_0.to_numpy())

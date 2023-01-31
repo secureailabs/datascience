@@ -88,30 +88,5 @@ class Chisquare(EstimatorTwoSample):
         chisquare_statistic = (numpy.power(array_true - array_pred, 2) / array_pred).sum()
         degrees_of_freedom = (len(list_unique_0) - 1) * (len(list_unique_1) - 1)
 
-        p_value = distributions.chi2.sf(chisquare_statistic, degrees_of_freedom)
-        return chisquare_statistic, p_value
-
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        count_total = sample_0.to_numpy().size
-
-        array_0 = list(sample_0.to_numpy())
-        array_1 = list(sample_1.to_numpy())
-        list_unique_0 = numpy.unique(array_0).tolist()
-        list_unique_1 = numpy.unique(array_1).tolist()
-        array_true = numpy.zeros((len(list_unique_0), len(list_unique_1)))
-        array_pred = numpy.zeros((len(list_unique_0), len(list_unique_1)))
-
-        for i in range(len(array_0)):
-            index_0 = list_unique_0.index(array_0[i])
-            index_1 = list_unique_1.index(array_1[i])
-            array_true[index_0, index_1] += 1
-
-        for i_0 in range(len(list_unique_0)):
-            for i_1 in range(len(list_unique_1)):
-                array_pred[i_0, i_1] = array_true[i_0, :].sum() * array_true[:, i_1].sum() / count_total
-
-        ddof = -((len(list_unique_0) - 1) * (len(list_unique_1) - 1)) + (
-            len(array_true.ravel()) - 1
-        )  # 2d instead of 1d
-        chisquare_statistic, p_value = stats.chisquare(array_true.ravel(), f_exp=array_pred.ravel(), ddof=ddof)
+        p_value = float(distributions.chi2.sf(chisquare_statistic, degrees_of_freedom))
         return chisquare_statistic, p_value

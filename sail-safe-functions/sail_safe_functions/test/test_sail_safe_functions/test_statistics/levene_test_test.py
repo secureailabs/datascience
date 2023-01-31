@@ -4,6 +4,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.levene_test import LeveneTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -22,7 +25,8 @@ def test_levene(two_sample_small_two: Tuple[SeriesFederated, SeriesFederated]):
     # Act
     estimator = LeveneTest()
     f_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    f_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    f_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert f_statistic_scipy == pytest.approx(f_statistic_sail, 0.0001)

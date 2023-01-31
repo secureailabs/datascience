@@ -4,6 +4,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.pearson import Pearson
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -23,7 +26,8 @@ def test_pearson(two_sample_big: Tuple[SeriesFederated, SeriesFederated]):
     # Act
     estimator = Pearson(alternative=alternative)
     pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    pearson_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
@@ -108,7 +112,8 @@ def test_pearson_same_sample():
     sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
     estimator = Pearson(alternative=alternative)
     pearson_sail, p_value_sail = estimator.run(sample_0, sample_0)
-    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_0)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    pearson_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_0)
     print(pearson_sail)
     print(pearson_scipy)
     # Assert
@@ -134,7 +139,8 @@ def test_pearson_same_sample_negative():
     alternative = "two-sided"
     estimator = Pearson(alternative=alternative)
     pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    pearson_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
