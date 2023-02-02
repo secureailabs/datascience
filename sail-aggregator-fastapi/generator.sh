@@ -1,3 +1,5 @@
+#!/bin/bash
+
 generatedDir="generated"
 
 # Create the generated folder if it doesn't exist
@@ -18,15 +20,15 @@ wget http://127.0.0.1:8000/openapi.json -P docs/ --no-check-certificate
 # But _is is considered a private member so "id" is used instead
 sed -i 's/\"_id\"/\"id\"/g' docs/openapi.json
 
-# # Generate the python client
+# Generate the python client
 rm -rf sail-client/
 openapi-python-client generate --path docs/openapi.json
 
-# # TODO: Generate a typescript client
+# TODO: Generate a typescript client
 
-# # TODO: Generate a C# client
+# TODO: Generate a C# client
 
-# # Generate API documentation
-redoc-cli bundle -o docs/index.html docs/openapi.json
+# Generate API documentation
+redoc-cli build -o docs/index.html docs/openapi.json
 
 popd
