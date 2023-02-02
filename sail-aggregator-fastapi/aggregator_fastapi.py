@@ -4,6 +4,7 @@ import os
 import threading
 from typing import List
 
+from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
 from fastapi.responses import RedirectResponse
 from log.audit_log import _AsyncLogger, log_message
 from pydantic import BaseModel
@@ -15,8 +16,6 @@ from sail_safe_functions.aggregator.data_model.data_model_data_frame import Data
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-
-from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -51,6 +50,10 @@ for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports)
 implementation_manager = ImplementationManager.get_instance()
 implementation_manager.set_participant_service(participant_service)
 implementation_manager.initialize()
+
+
+class DataFederation(BaseModel):
+    list_dataset_id: List[str]
 
 
 class Audit_log_task(threading.Thread):
@@ -129,38 +132,72 @@ async def validate(series):
     # CLOSE CHECKS
 
 
-@app.post("/admin/get_dataframe_name_lookup_table")
-async def get_dataframe_name_lookup_table() -> dict:
-    return {"dataframe_name_lookup": dataframe_name_lookup}
-
-
 # DATA MODEL
 
 
-@app.post("/data_model/new_tabular_model")
-async def data_frame_tabular() -> dict:
+@app.post(
+    path="/new_data_frame_tabular",
+    description="Create new Tabular Data Model",
+    response_description="Reference to generated tabular data model",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="new_tabular_model",
+)
+async def new_data_frame_tabular() -> dict:
     data_frame_tabular = DataModelTabular()
     data_frame_id = service_reference.get_instance().data_model_tabular_to_reference(data_frame_tabular)
 
     return {"data_frame_tabular_id": data_frame_id}
 
 
-@app.post("/data_model/new_series_model_numerical")
-async def new_series_numerical(series_name: str, measurement_source_name: str, type_agregator: str, unit: str) -> dict:
-
+@app.post(
+    path="/new_series_model_numerical",
+    description="Create new numerical Series Model",
+    response_description="Reference to generated numerical Series Model",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="new_series_model_numerical",
+)
+async def new_series_model_numerical(
+    series_name: str = Body(description="name of the series"),
+    measurement_source_name: str = Body(description="Source featuree of the series."),
+    type_agregator: str = Body(description="Method by which source of data is to be aggregated"),
+    unit: str = Body(description="The unit type of the series model"),
+) -> dict:
     series = DataModelSeries.create_numerical(
         series_name=series_name,
         measurement_source_name=measurement_source_name,
         type_agregator=type_agregator,
         unit=unit,
     )
-    series_ref = service_reference.get_instance().data_model_series_to_reference(series)
+    series_id = service_reference.get_instance().data_model_series_to_reference(series)
 
-    return {"series": series_ref}
+    return {"series": series_id}
 
 
-@app.post("/data_model/tabular/{data_model_tabular_id}/add_dataframe")
-async def tabular_model_add_dataframe_model(data_model_tabular_id: str, data_model_dataframe_id: str) -> dict:
+@app.post(
+    path="/data_model_tabular_add_dataframe",
+    description="Add a Dataframe model to a Tabular Dataframe Model",
+    response_description="Reference to Tabular Dataframe Model",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="tabular_model_add_dataframe_model",
+)
+async def tabular_model_add_dataframe_model(
+    data_model_tabular_id: str = Body(description="The reference to the Tabular Dataframe model being added to."),
+    data_model_dataframe_id: str = Body(
+        description="The reference to the Dataframe model being added to the Tabular Dataframe."
+    ),
+) -> dict:
     data_model_tabular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
     data_model = service_reference.get_instance().reference_to_data_model_data_frame(data_model_dataframe_id)
 
@@ -169,8 +206,20 @@ async def tabular_model_add_dataframe_model(data_model_tabular_id: str, data_mod
     return {"data_frame_tabular_id": data_model_tabular_id}
 
 
-@app.post("/data_model/new_data_frame_model")
-async def create_data_model_data_frame(data_frame_name: str) -> dict:
+@app.post(
+    path="/new_data_model_data_frame",
+    description="Create a new Dataframe model.",
+    response_description="Reference to Dataframe model",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="new_data_model_data_frame",
+)
+async def new_data_model_data_frame(
+    data_frame_name: str = Body(description="Desired name of the new Dataframe"),
+) -> dict:
     dataframe_id = ""
     if data_frame_name not in dataframe_name_lookup:
         new_dataframe = DataModelDataFrame(data_frame_name)
@@ -182,12 +231,23 @@ async def create_data_model_data_frame(data_frame_name: str) -> dict:
     return {"data_model_id": dataframe_id}
 
 
-@app.post("/data_model/data_frame/{data_model_id}/add_new_series_model")
-async def data_model_add_series_model(
-    data_model_id: str,
-    series_name: str,
-    measurement_source_name: str,
-    type_agregator: str,
+@app.post(
+    path="/dataframe_model_add_new_series_model.",
+    description="Create a new numerical series model and add it to a Dataframe model.",
+    response_description="Reference to Dataframe model.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="dataframe_model_add_new_series_model",
+)
+async def dataframe_model_add_series_model(
+    data_model_id: str = Body(description="Reference to the data model being added to."),
+    series_name: str = Body(description="Name of the new series model to be added."),
+    measurement_source_name: str = Body("The feature to aggregate."),
+    type_agregator: str = Body(description="Method by which source of data is to be aggregated for new series model"),
+    unit: str = Body(description="The unit of measurement of the new series to be added."),
 ) -> dict:
     data_model_data_frame = service_reference.get_instance().reference_to_data_model_data_frame(data_model_id)
     if data_model_data_frame is not None:
@@ -196,7 +256,7 @@ async def data_model_add_series_model(
                 series_name=series_name,
                 measurement_source_name=measurement_source_name,
                 type_agregator=type_agregator,
-                unit="kg/m2",
+                unit=unit,
             )
         )
 
@@ -205,7 +265,17 @@ async def data_model_add_series_model(
 
 # DATA MODEL END
 # DATA INGESTION
-@app.post("/ingestion/read_longitudinal/fhirv1")
+@app.post(
+    path="/read_longitudinal_fhirv1.",
+    description="Reads a Longitudinal dataset from a fhirv1 data source.",
+    response_description="Reference to Longitudinal Dataframe model.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="read_longitudinal_fhirv1",
+)
 async def read_longitudinal_fhirv1() -> dict:
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
 
@@ -214,17 +284,27 @@ async def read_longitudinal_fhirv1() -> dict:
     return {"longitudinal_id": longitudinal_id}
 
 
-@app.post("/ingestion/read_dataset_tabular_from_longitudinal")
+@app.post(
+    path="/read_dataset_tabular_from_longitudinal.",
+    description="Populates a Tabular dataset from a Longitudinal dataset.",
+    response_description="Reference to Tabular Dataframe.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="read_dataset_tabular_from_longitudinal",
+)
 async def read_dataset_tabular_from_longitudinal(
-    longitudinal_id: str,
-    dataset_federation_id: str,
-    dataset_federation_name: str,
-    data_model_tabular_id: str,
+    longitudinal_id: str = Body(description="The identifier of the Longitudinal Dataset to be added from."),
+    dataset_federation_id: str = Body("The identifier of the dataset federation"),
+    dataset_federation_name: str = Body(description="The name of the federation being worked with."),
+    data_model_tabular_id: str = Body(
+        "the identifier of the data model being used to query from the longitudinal dataset."
+    ),
 ) -> dict:
     dataset_longitudinal = service_reference.get_instance().reference_to_federated_longitudinal_data(longitudinal_id)
-
     data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
-
     dataset_tabular = preprocessing.convert_to_dataset_tabular(
         dataset_longitudinal,
         dataset_federation_id,
@@ -237,31 +317,53 @@ async def read_dataset_tabular_from_longitudinal(
     return {"dataset_id": dataset_id}
 
 
-@app.post("/ingestion/dataset_tabular/fhirv1")
+@app.post(
+    path="/dataset_tabular_fhirv1.",
+    description="Pull data from fhirv1 source straight to tabular Dataframe.",
+    response_description="Reference to Tabular Dataframe.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="dataset_tabular_fhirv1",
+)
 async def dataset_tabular_fhirv1(
-    dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
+    dataset_federation_id: str = Body(description="The identifier of the data federation"),
+    dataset_federation_name: str = Body("the name of the data federation"),
+    data_model_tabular_id: str = Body(
+        "The identifier of the tabular dataframe modle being used to pull data from the fhirv1 source."
+    ),
 ) -> dict:
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
     data_model_tablular = service_reference.get_instance().reference_to_data_model_tabular(data_model_tabular_id)
 
-    dataset_tabular = preprocessing.convert_to_dataset_tabular(
+    dataframe_tabular = preprocessing.convert_to_dataset_tabular(
         dataset_longitudinal,
         dataset_federation_id,
         dataset_federation_name,
         data_model_tablular,
     )
 
-    dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
+    tabular_dataframe_id = service_reference.get_instance().data_set_tabular_to_reference(dataframe_tabular)
 
-    return {"dataset_id": dataset_id}
-
-
-class DataFederation(BaseModel):
-    list_dataset_id: List[str]
+    return {"tabular_dataframe_id": tabular_dataframe_id}
 
 
-@app.post("/ingestion/read_dataset_csvv1")
-async def read_dataset_csvv1(data_federation: DataFederation) -> dict:
+@app.post(
+    path="/read_tabular_dataframe_csvv1.",
+    description="Pull a Tabular Dataframe from csvv1 source.",
+    response_description="Reference to Tabular Dataframe.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="read_tabular_dataframe_csvv1",
+)
+async def read_tabular_dataframe_csvv1(
+    data_federation: DataFederation = Body(description="TODO: What is this datatype? This should be a reference"),
+) -> dict:
     list_dataset_id = data_federation.list_dataset_id
     dataset_tabular = preprocessing.read_dataset_csvv1(list_dataset_id)
     dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
@@ -272,8 +374,21 @@ async def read_dataset_csvv1(data_federation: DataFederation) -> dict:
 # DATAFRAME MANIPULATION
 
 
-@app.post("/data_frame_tabular/select_dataframe/{data_frame_tabular_id}")
-async def data_frame_tabular_select_dataframe(data_frame_tabular_id: str, data_frame_name: str) -> dict:
+@app.post(
+    path="/data_frame_tabular_select_dataframe.",
+    description="Select an individual datafame from a tabular dataframe.",
+    response_description="Reference to Dataframe.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="data_frame_tabular_select_dataframe",
+)
+async def data_frame_tabular_select_dataframe(
+    data_frame_tabular_id: str = Body(description="The identifier of the dataframe being queried."),
+    data_frame_name: str = Body(description="The name of the dataframe being pulled from the tabular dataframe."),
+) -> dict:
     data_frame_tabular = service_reference.get_instance().reference_to_data_set_tabular(data_frame_tabular_id)
     data_frame = data_frame_tabular[data_frame_name]
 
@@ -281,8 +396,21 @@ async def data_frame_tabular_select_dataframe(data_frame_tabular_id: str, data_f
     return {"data_frame_id": data_frame_id}
 
 
-@app.post("/data_frame/select_series/{data_frame_id}")
-async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict:
+@app.post(
+    path="/data_frame_select_series.",
+    description="Select an individual series from a  dataframe.",
+    response_description="Reference to Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="data_frame_select_series",
+)
+async def data_frame_select_series(
+    data_frame_id: str = Body(description="The identifier of the dataframe being queried."),
+    series_name: str = Body("The name of the seires to be pulled from the dataframe."),
+) -> dict:
     data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
     series = data_frame[series_name]
 
@@ -310,18 +438,43 @@ async def data_frame_select_series(data_frame_id: str, series_name: str) -> dict
 #     return {"series_id": new_series_id}
 
 
-@app.post("/preprocessing/data_frame/drop_missing/{dataset_id}")
-async def series_drop_missing(dataset_id: str) -> dict:
+@app.post(
+    path="/dataframe_drop_missing.",
+    description="Drop all missing values from a dataframe and return this copy.",
+    response_description="Reference to cleaned dataframe.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="dataframe_drop_missing",
+)
+async def dataframe_drop_missing(
+    dataset_id: str = Body(description="Identifier of the dataframe to be cleaned."),
+) -> dict:
     orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(dataset_id)
     new_data_frame = preprocessing.drop_missing(orig_data_frame, axis=0, how="any", thresh=None, subset=None)
 
     new_data_frame_id = service_reference.get_instance().federated_dataframe_to_reference(new_data_frame)
 
-    return {"result_data_frame_id": new_data_frame_id}
+    return {"new_data_frame_id": new_data_frame_id}
 
 
-@app.post("/preprocessing/data_frame/query/{data_frame_id}")
-async def data_frame_query(data_frame_id: str, query_str: str) -> dict:
+@app.post(
+    path="/data_frame_query.",
+    description="Query a Dataframe for a given String.",
+    response_description="Reference to result of dataframe query.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="data_frame_query",
+)
+async def data_frame_query(
+    data_frame_id: str = Body(description="The identifier of the dataframe to be queried."),
+    query_str: str = Body(description="The string to be queried."),
+) -> dict:
     orig_data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
     new_data_frame = preprocessing.query(orig_data_frame, query_str)
 
@@ -335,8 +488,21 @@ async def data_frame_query(data_frame_id: str, query_str: str) -> dict:
 # STATS
 
 
-@app.post("/statistics/chisquare/{series_1_id}/{series_2_id}")
-async def chisquare(series_1_id: str, series_2_id: str) -> dict:
+@app.post(
+    path="/statistics_chisquare.",
+    description="Computes the chisquare of two Series.",
+    response_description="The chisquare statistic and p value.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_chisquare",
+)
+async def statistics_chisquare(
+    series_1_id: str = Body(description="The identifier of Series 1"),
+    series_2_id: str = Body(description="The identifier of Series 2."),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -346,31 +512,78 @@ async def chisquare(series_1_id: str, series_2_id: str) -> dict:
     return {"chisquare": statistics.chisquare(series_1, series_2)}
 
 
-@app.post("/statistics/count/{series_id}")
-async def count(series_id: str) -> dict:
+@app.post(
+    path="/statistics_count.",
+    description="Computes the count of a Series.",
+    response_description="The count of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_count",
+)
+@app.post("/statistics_count")
+async def count(series_id: str = Body(description="The identifier of the series to be counted.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
     return {"count": statistics.count(series)}
 
 
-@app.post("/statistics/kolmogorovSmirnovTest/{series_1_id}")
-async def kolmogorovSmirnovTest(series_1_id: str, type_distribution: str, type_ranking: str) -> dict:
+@app.post(
+    path="/statistics_kolmogorov_smirnov_test",
+    description="Computes Kolmogorov Smirnov Test of a Series.",
+    response_description="The K statisic and P value of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_kolmogorov_smirnov_test",
+)
+async def kolmogorov_smirnov_test(
+    series_1_id: str = Body(description="the identifier of the Series to be computed"),
+    type_distribution: str = Body(description="Type of distribution of Series. May be 'normal' or 'normal unit'"),
+) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
     await validate(series)
-    return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, type_ranking)}
+    return {"kolmogorov_smirnov_test": statistics.kolmogorov_smirnov_test(series, type_distribution, "cdf")}
 
 
-@app.post("/statistics/kurtosis/{series_id}")
+@app.post(
+    path="/statistics_kurtosis",
+    description="Computes Kurtosis of a Series.",
+    response_description="The Kurtosis value of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_kurtosis",
+)
 async def kurtosis(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     await validate(series)
     return {"kurtosis": statistics.kurtosis(series)}
 
 
-@app.post("/statistics/levene_test/{series_1_id}/{series_2_id}")
-async def levene_test(series_1_id: str, series_2_id: str) -> dict:
+@app.post(
+    path="/statistics_levene_test",
+    description="Computes the Levene Test of two Series.",
+    response_description="The F statistic and P value of the two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_levene_test",
+)
+async def levene_test(
+    series_1_id: str = Body(description="The identifier of series 1."),
+    series_2_id: str = Body(description="The identifier of series 2."),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -382,20 +595,44 @@ async def levene_test(series_1_id: str, series_2_id: str) -> dict:
     return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/mann_whitney_u_test/{series_1_id}/{series_2_id}")
-async def mann_whitney_u_test(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+@app.post(
+    path="/mann_whitney_u_test",
+    description="Computes the Mann Whitney U Test of two Series.",
+    response_description="The W statistic and P value of the two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="mann_whitney_u_test",
+)
+async def mann_whitney_u_test(
+    series_1_id: str = Body(description="The identifer of Series 1."),
+    series_2_id: str = Body(description="The identifier of Series 2."),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     await validate(series_1)
     await validate(series_2)
 
-    w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, type_ranking)
+    w_statistic_sail, p_value_sail = statistics.mann_whitney_u_test(series_1, series_2, alternative, "cdf")
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/mean/{series_id}")
-async def mean(series_id: str) -> dict:
+@app.post(
+    path="/statistics_mean",
+    description="Computes the Mean of a Series.",
+    response_description="The Series Mean.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_mean",
+)
+async def mean(series_id: str = Body("The identifer of the Series to be computed.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
@@ -403,8 +640,18 @@ async def mean(series_id: str) -> dict:
     return {"mean": statistics.mean(series)}
 
 
-@app.post("/statistics/min_max/{series_id}")
-async def min_max(series_id: str) -> dict:
+@app.post(
+    path="/statistics_min_max",
+    description="Computes the Min and Max of a Series.",
+    response_description="The Series Min and Max.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_min_max",
+)
+async def min_max(series_id: str = Body("The identifer of the Series to be computed.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
@@ -413,8 +660,22 @@ async def min_max(series_id: str) -> dict:
     return {"min": min, "max": max}
 
 
-@app.post("/statistics/paired_t_test/{series_1_id}/{series_2_id}")
-async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
+@app.post(
+    path="/statistics_paired_t_test",
+    description="Computes the Paired T Test of two Series.",
+    response_description="The T statistic and P value of the two series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_paired_t_test",
+)
+async def paired_t_test(
+    series_1_id: str = Body("Identifier of Series 1"),
+    series_2_id: str = Body("Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -425,8 +686,22 @@ async def paired_t_test(series_1_id: str, series_2_id: str, alternative: str) ->
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/pearson/{series_1_id}/{series_2_id}")
-async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
+@app.post(
+    path="/statistics_pearson",
+    description="Computes the Pearson of two Series.",
+    response_description="The Pearson statistic and P value of the two series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_pearson",
+)
+async def pearson(
+    series_1_id: str = Body("Identifier of Series 1"),
+    series_2_id: str = Body("Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -437,7 +712,17 @@ async def pearson(series_1_id: str, series_2_id: str, alternative: str) -> dict:
     return {"pearson": pearson_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/skewness/{series_id}")
+@app.post(
+    path="/statistics_skewness",
+    description="Computes the Skewness of a Series.",
+    response_description="The Skewness of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_skewness",
+)
 async def skewness(series_id: str) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     await validate(series)
@@ -445,8 +730,22 @@ async def skewness(series_id: str) -> dict:
     return {"skewness": statistics.skewness(series)}
 
 
-@app.post("/statistics/spearman/{series_1_id}/{series_2_id}")
-async def spearman(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+@app.post(
+    path="/statistics_spearman",
+    description="Computes the Spearman statistic of two Series.",
+    response_description="The Spearman of two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_skewness",
+)
+async def spearman(
+    series_1_id: str = Body("Identifier of Series 1"),
+    series_2_id: str = Body("Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
