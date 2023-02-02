@@ -4,7 +4,7 @@ import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.participant.statistics.levene_precompute import LevenePrecompute
 from scipy import stats
 from scipy.stats import distributions
@@ -86,7 +86,7 @@ def levene_test(
     return estimator.run(sample_0, sample_1)
 
 
-class LeveneTest(Estimator):
+class LeveneTest(EstimatorTwoSample):
     """
     This class contains the federated Levenes method
 
@@ -96,13 +96,13 @@ class LeveneTest(Estimator):
     """
 
     def __init__(self) -> None:
-        super().__init__(["f_statistic", "p_value"])
+        super().__init__("LeveneTest", ["f_statistic", "p_value"])
 
     def run(
         self,
         sample_0: SeriesFederated,
         sample_1: SeriesFederated,
-    ):
+    ) -> Tuple[float, float]:
         mean_sample_0 = statistics.mean(sample_0)
         mean_sample_1 = statistics.mean(sample_1)
 

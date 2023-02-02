@@ -3,7 +3,7 @@ from typing import List, Tuple
 import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from scipy import stats
@@ -20,7 +20,7 @@ def student_t_test(
     return estimator.run(sample_0, sample_1)
 
 
-class StudentTTest(Estimator):
+class StudentTTest(EstimatorTwoSample):
     """
     This class contains method for federated Student T test
     """
@@ -29,12 +29,16 @@ class StudentTTest(Estimator):
         self,
         alternative: str,
     ) -> None:
-        super().__init__(["t_statistic", "p_value"])
+        super().__init__(f"StudentTTest - {alternative}", ["t_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
+    def run(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ) -> Tuple[float, float]:
         """
         It takes two federated series, and returns the p-value and t-statistics
 

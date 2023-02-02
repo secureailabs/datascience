@@ -5,7 +5,7 @@ import scipy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
     WilcoxonSingedRankTestPrecompute,
 )
@@ -16,12 +16,12 @@ def wilcoxon_singed_rank_test(
     sample_1: SeriesFederated,
     alternative: str,
     type_ranking: str,
-):
+) -> Tuple[float, float]:
     estimator = WilcoxonSingedRankTest(alternative, type_ranking)
     return estimator.run(sample_0, sample_1)
 
 
-class WilcoxonSingedRankTest(Estimator):
+class WilcoxonSingedRankTest(EstimatorTwoSample):
     """
     This class contains method for federated Wilcoxon Singed Rank Test
     """
@@ -31,7 +31,7 @@ class WilcoxonSingedRankTest(Estimator):
         alternative: str,
         type_ranking: str,
     ) -> None:
-        super().__init__(["w_statistic", "p_value"])
+        super().__init__(f"WilcoxonSingedRankTest - {alternative} - {type_ranking}", ["w_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         if type_ranking not in {"unsafe", "cdf"}:
@@ -43,7 +43,7 @@ class WilcoxonSingedRankTest(Estimator):
         self,
         sample_0: SeriesFederated,
         sample_1: SeriesFederated,
-    ):
+    ) -> Tuple[float, float]:
         """
         It takes two federated series, and returns the p-value and w_statistic of the Wilcoxon Singed Rank Test
 

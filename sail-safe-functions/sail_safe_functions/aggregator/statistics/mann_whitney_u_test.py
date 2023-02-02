@@ -5,7 +5,7 @@ import scipy
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
 from scipy import stats
@@ -21,7 +21,7 @@ def mann_whitney_u_test(
     return estimator.run(sample_0, sample_1)
 
 
-class MannWhitneyUTest(Estimator):
+class MannWhitneyUTest(EstimatorTwoSample):
     """
     Federated version of the mann whiney u test, it makes two compromised
     1. Tie correction was removed, it has a small impact most of the time. The reference implementation still does this.
@@ -33,7 +33,7 @@ class MannWhitneyUTest(Estimator):
         alternative: str,
         type_ranking: str,
     ) -> None:
-        super().__init__(["f_statistic", "p_value"])
+        super().__init__(f"MannWhitneyUTest - {alternative} - {type_ranking}", ["f_statistic", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         if type_ranking not in {"unsafe", "cdf"}:

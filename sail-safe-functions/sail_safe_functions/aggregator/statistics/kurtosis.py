@@ -2,12 +2,12 @@ import math
 from typing import List, Tuple
 
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.kurtosis_precompute import KurtosisPrecompute
 from scipy import stats
 
 
-def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
+def kurtosis(sample_0: SeriesFederated) -> float:
     """
     Perform federated kurtosis.
     It takes one federated series, and returns the kurtosis value of the series
@@ -21,13 +21,13 @@ def kurtosis(sample_0: SeriesFederated) -> Tuple[float]:
     return estimator.run(sample_0)
 
 
-class Kurtosis(Estimator):
+class Kurtosis(EstimatorOneSample):
     """
     A estimator for Kurtosis
     """
 
     def __init__(self) -> None:
-        super().__init__(["kurtosis"])
+        super().__init__("Kurtosis", ["kurtosis"])
 
     def run(self, sample_0: SeriesFederated):
         # Calculating precompute

@@ -1,16 +1,16 @@
-from abc import ABC, abstractmethod
-
-from sail_safe_functions.aggregator.series_federated import SeriesFederated
+from abc import ABC
+from typing import List
 
 
 class Estimator(ABC):
-    def __init__(self, list_name_estimate) -> None:
-        self.list_name_estimate = list_name_estimate
+    def __init__(self, estimator_name: str, list_estimate_name: List[str]) -> None:
+        self.__estimator_name = estimator_name
+        self.__list_estimate_name = list_estimate_name
 
-    @abstractmethod
-    def run(self, sample_0: SeriesFederated):
-        raise NotImplementedError()
+    @property
+    def estimator_name(self) -> str:
+        return self.__estimator_name
 
-    @abstractmethod
-    def run_reference(self, sample_0: SeriesFederated):
-        raise NotImplementedError()
+    @property
+    def list_estimate_name(self) -> List[str]:
+        return self.__list_estimate_name.copy()

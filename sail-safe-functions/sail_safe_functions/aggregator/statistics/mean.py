@@ -2,7 +2,7 @@ from typing import List
 
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.participant.statistics.mean_precompute import MeanPrecompute
 
 
@@ -20,9 +20,9 @@ def mean(sample_0: SeriesFederated):
     return estimator.run(sample_0)
 
 
-class Mean(Estimator):
+class Mean(EstimatorOneSample):
     def __init__(self) -> None:
-        super().__init__(["mean"])
+        super().__init__("Mean", ["mean"])
 
     def run(self, sample_0: SeriesFederated):
         """

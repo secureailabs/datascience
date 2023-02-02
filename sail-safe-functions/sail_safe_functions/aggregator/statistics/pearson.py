@@ -3,14 +3,18 @@ from typing import List, Tuple
 
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator import Estimator
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.pearson_precompute import PearsonPrecompute
 from scipy import stats
 from scipy.stats import t
 
 
-def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: str) -> Tuple[float, float]:
+def pearson(
+    sample_0: SeriesFederated,
+    sample_1: SeriesFederated,
+    alternative: str,
+) -> Tuple[float, float]:
     """
     Perform federated Pearson.
     It takes two federated series, and returns the rho value and the p-value
@@ -72,18 +76,25 @@ def pearson(sample_0: SeriesFederated, sample_1: SeriesFederated, alternative: s
     return estimator.run(sample_0, sample_1)
 
 
-class Pearson(Estimator):
+class Pearson(EstimatorTwoSample):
     """
     Estimator for pearson product
     """
 
-    def __init__(self, alternative) -> None:
-        super().__init__(["rho", "p_value"])
+    def __init__(
+        self,
+        alternative: str,
+    ) -> None:
+        super().__init__(f"Pearson - {alternative}", ["rho", "p_value"])
         if alternative not in ["less", "two-sided", "greater"]:
             raise ValueError('Alternative must be of "less", "two-sided" or "greater"')
         self.alternative = alternative
 
-    def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def run(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ) -> Tuple[float, float]:
 
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
@@ -121,10 +132,13 @@ class Pearson(Estimator):
                 p_value = 0
             else:
                 raise ValueError()
-
+        p_value = float(p_value)
         return rho, p_value
 
-    def aggregate(self, list_list_precompute: List[List[float]]) -> Tuple[float, float]:
+    def aggregate(
+        self,
+        list_list_precompute: List[List[float]],
+    ) -> Tuple[float, float]:
         """
         This function run to calculate the final precompute
         and calculate the federated pearson value.
@@ -173,5 +187,9 @@ class Pearson(Estimator):
         degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom
 
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
+    def run_reference(
+        self,
+        sample_0: SeriesFederated,
+        sample_1: SeriesFederated,
+    ) -> Tuple[float, float]:
         return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())
