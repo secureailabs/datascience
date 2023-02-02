@@ -672,8 +672,8 @@ async def min_max(series_id: str = Body("The identifer of the Series to be compu
     operation_id="statistics_paired_t_test",
 )
 async def paired_t_test(
-    series_1_id: str = Body("Identifier of Series 1"),
-    series_2_id: str = Body("Identifier of Series 2"),
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
     alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
 ) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
@@ -689,7 +689,7 @@ async def paired_t_test(
 @app.post(
     path="/statistics_pearson",
     description="Computes the Pearson of two Series.",
-    response_description="The Pearson statistic and P value of the two series.",
+    response_description="The Pearson statistic and P value of the two Series.",
     response_model=dict,
     response_model_by_alias=False,
     response_model_exclude_unset=True,
@@ -698,8 +698,8 @@ async def paired_t_test(
     operation_id="statistics_pearson",
 )
 async def pearson(
-    series_1_id: str = Body("Identifier of Series 1"),
-    series_2_id: str = Body("Identifier of Series 2"),
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
     alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
 ) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
@@ -733,17 +733,17 @@ async def skewness(series_id: str) -> dict:
 @app.post(
     path="/statistics_spearman",
     description="Computes the Spearman statistic of two Series.",
-    response_description="The Spearman of two Series.",
+    response_description="The Spearman statistic and P value of the two Series.",
     response_model=dict,
     response_model_by_alias=False,
     response_model_exclude_unset=True,
     dependencies=None,
     status_code=status.HTTP_200_OK,
-    operation_id="statistics_skewness",
+    operation_id="statistics_spearman",
 )
 async def spearman(
-    series_1_id: str = Body("Identifier of Series 1"),
-    series_2_id: str = Body("Identifier of Series 2"),
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
     alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
 ) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
@@ -751,12 +751,26 @@ async def spearman(
 
     await validate(series_1)
     await validate(series_2)
-    spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
+    spearman_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, "cdf")
     return {"spearman": spearman_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/student_t_test/{series_1_id}/{series_2_id}")
-async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
+@app.post(
+    path="/statistics_student_t_test",
+    description="Computes the Student T test of two Series.",
+    response_description="The T statistic and P value of the two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_student_t_test",
+)
+async def student_t_test(
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -767,16 +781,40 @@ async def student_t_test(series_1_id: str, series_2_id: str, alternative: str) -
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/variance/{series_id}")
-async def variance(series_id: str) -> dict:
+@app.post(
+    path="/statistics_variance",
+    description="Computes the Variance of a Series.",
+    response_description="The Variance of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_variance",
+)
+async def variance(series_id: str = Body(description="The identifier of the series")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
     await validate(series)
 
     return {"variance": statistics.variance(series)}
 
 
-@app.post("/statistics/welch_t_test/{series_1_id}/{series_2_id}")
-async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> dict:
+@app.post(
+    path="/statistics_welch_t_test",
+    description="Computes the Welch T test of two Series.",
+    response_description="The T statistic and P value of the two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_welch_t_test",
+)
+async def welch_t_test(
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
@@ -787,25 +825,50 @@ async def welch_t_test(series_1_id: str, series_2_id: str, alternative: str) -> 
     return {"t_statistic": t_statistic_sail, "p_value": p_value_sail}
 
 
-@app.post("/statistics/wilcoxon_signed_rank_test/{series_1_id}/{series_2_id}")
-async def wilcoxon_signed_rank_test(series_1_id: str, series_2_id: str, alternative: str, type_ranking: str) -> dict:
+@app.post(
+    path="/statistics_wilcoxon_signed_rank_test",
+    description="Computes the Wilcoxon signed rank test of two Series.",
+    response_description="The W statistic and P value of the two Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="statistics_wilcoxon_signed_rank_test",
+)
+async def wilcoxon_signed_rank_test(
+    series_1_id: str = Body(description="Identifier of Series 1"),
+    series_2_id: str = Body(description="Identifier of Series 2"),
+    alternative: str = Body(description="Alternative must be of 'less', 'two-sided' or 'greater'"),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
     series_2 = service_reference.get_instance().reference_to_federated_series(series_2_id)
 
     await validate(series_1)
     await validate(series_2)
 
-    w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, type_ranking)
+    w_statistic_sail, p_value_sail = statistics.spearman(series_1, series_2, alternative, "cdf")
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}
 
 
 # END STATS
 
 # START VISUALIZATION
-
-
-@app.post("/visualization/histogram/")
-async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
+@app.post(
+    path="/visualization_histogram",
+    description="Creates a histogram of a given Series.",
+    response_description="The Histogram of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="visualization_histogram",
+)
+async def histogram_federated(
+    series_1_id: str = Body(description="The identifier of the Series"),
+    bin_count: int = Body("How many bins to sort the Series into."),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
     await validate(series_1)
@@ -815,8 +878,22 @@ async def histogram_federated(series_1_id: str, bin_count: int) -> dict:
     return {"figure": figure}
 
 
-@app.post("/visualization/kernel_density_estimation/")
-async def kernel_density_estimation(series_1_id: str, bin_size: float) -> dict:
+@app.post("/visualization_kernel_density_estimation")
+@app.post(
+    path="/visualization_kernel_density_estimation",
+    description="Creates a Kernel Density Estimation of a given Series.",
+    response_description="The Kernel Density Estimation of the Series.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="visualization_kernel_density_estimation",
+)
+async def kernel_density_estimation(
+    series_1_id: str = Body(description="The identifier of the Series"),
+    bin_size: float = Body(description="The size of each bin the Serirs will be sorted into."),
+) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
     await validate(series_1)
