@@ -83,22 +83,6 @@ async def log_validation_failure(message):
     await log_message(message)
 
 
-@app.get("/")
-async def root():
-    """
-    Redirects user to docs as hompage
-    """
-    return RedirectResponse("/docs")
-
-
-def get_series(series_uuid: str):
-    return service_reference.reference_to_federated_series(series_uuid)
-
-
-def get_dataframe(dataframe_uuid: str):
-    return service_reference.reference_to_federated_dataframe(dataframe_uuid)
-
-
 def query_limit_n(series, n=10) -> bool:
     """
     Checks data or series in question is over a given threshold.
@@ -130,6 +114,36 @@ async def validate(series):
     # TODO:
     #       1. Check for pandas query injection in column_id string
     # CLOSE CHECKS
+
+
+# OUTLAWED METHODS - Returns raw data
+# def get_series(series_uuid: str):
+#     return service_reference.reference_to_federated_series(series_uuid)
+
+
+# def get_dataframe(dataframe_uuid: str):
+#     return service_reference.reference_to_federated_dataframe(dataframe_uuid)
+# END OUTLAWED METHODS
+
+
+# Redirect Response Breaks things + we dont need this?
+# @app.post(
+#     path="/",
+#     description="Returns Swagger Docs",
+#     response_description="Redirect response brings user to the docs page.",
+#     response_model=RedirectResponse,
+#     response_model_by_alias=False,
+#     response_model_exclude_unset=True,
+#     dependencies=None,
+#     status_code=status.HTTP_200_OK,
+#     operation_id="get_docs",
+# )
+# @app.get("/")
+# async def root():
+#     """
+#     Redirects user to docs as hompage
+#     """
+#     return RedirectResponse("/docs")
 
 
 # DATA MODEL
