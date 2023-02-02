@@ -26,11 +26,11 @@ dataframe_name_lookup = {}
 scn_names = []
 scn_ports = []
 list_dataset_id = []
+IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
-IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
 
-if os.environ.get("IV_FILEPATH") is not None:
-    IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
+# if os.environ.get("IV_FILEPATH") is not None:
+#     IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
 with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
@@ -245,7 +245,7 @@ async def new_data_model_data_frame(
 async def dataframe_model_add_series_model(
     data_model_id: str = Body(description="Reference to the data model being added to."),
     series_name: str = Body(description="Name of the new series model to be added."),
-    measurement_source_name: str = Body("The feature to aggregate."),
+    measurement_source_name: str = Body(description="The feature to aggregate."),
     type_agregator: str = Body(description="Method by which source of data is to be aggregated for new series model"),
     unit: str = Body(description="The unit of measurement of the new series to be added."),
 ) -> dict:
@@ -297,10 +297,10 @@ async def read_longitudinal_fhirv1() -> dict:
 )
 async def read_dataset_tabular_from_longitudinal(
     longitudinal_id: str = Body(description="The identifier of the Longitudinal Dataset to be added from."),
-    dataset_federation_id: str = Body("The identifier of the dataset federation"),
+    dataset_federation_id: str = Body(description="The identifier of the dataset federation"),
     dataset_federation_name: str = Body(description="The name of the federation being worked with."),
     data_model_tabular_id: str = Body(
-        "the identifier of the data model being used to query from the longitudinal dataset."
+        description="the identifier of the data model being used to query from the longitudinal dataset."
     ),
 ) -> dict:
     dataset_longitudinal = service_reference.get_instance().reference_to_federated_longitudinal_data(longitudinal_id)
@@ -330,9 +330,9 @@ async def read_dataset_tabular_from_longitudinal(
 )
 async def dataset_tabular_fhirv1(
     dataset_federation_id: str = Body(description="The identifier of the data federation"),
-    dataset_federation_name: str = Body("the name of the data federation"),
+    dataset_federation_name: str = Body(description="the name of the data federation"),
     data_model_tabular_id: str = Body(
-        "The identifier of the tabular dataframe modle being used to pull data from the fhirv1 source."
+        description="The identifier of the tabular dataframe modle being used to pull data from the fhirv1 source."
     ),
 ) -> dict:
     dataset_longitudinal = preprocessing.read_dataset_fhirv1(list_dataset_id)
@@ -409,7 +409,7 @@ async def data_frame_tabular_select_dataframe(
 )
 async def data_frame_select_series(
     data_frame_id: str = Body(description="The identifier of the dataframe being queried."),
-    series_name: str = Body("The name of the seires to be pulled from the dataframe."),
+    series_name: str = Body(description="The name of the seires to be pulled from the dataframe."),
 ) -> dict:
     data_frame = service_reference.get_instance().reference_to_federated_dataframe(data_frame_id)
     series = data_frame[series_name]
@@ -632,7 +632,7 @@ async def mann_whitney_u_test(
     status_code=status.HTTP_200_OK,
     operation_id="statistics_mean",
 )
-async def mean(series_id: str = Body("The identifer of the Series to be computed.")) -> dict:
+async def mean(series_id: str = Body(description="The identifer of the Series to be computed.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
@@ -651,7 +651,7 @@ async def mean(series_id: str = Body("The identifer of the Series to be computed
     status_code=status.HTTP_200_OK,
     operation_id="statistics_min_max",
 )
-async def min_max(series_id: str = Body("The identifer of the Series to be computed.")) -> dict:
+async def min_max(series_id: str = Body(description="The identifer of the Series to be computed.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 
     await validate(series)
@@ -867,7 +867,7 @@ async def wilcoxon_signed_rank_test(
 )
 async def histogram_federated(
     series_1_id: str = Body(description="The identifier of the Series"),
-    bin_count: int = Body("How many bins to sort the Series into."),
+    bin_count: int = Body(description="How many bins to sort the Series into."),
 ) -> dict:
     series_1 = service_reference.get_instance().reference_to_federated_series(series_1_id)
 
