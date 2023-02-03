@@ -32,10 +32,9 @@ class MannWhitneyUTestPrecompute(SafeFunctionBase):
             ServiceReference.get_instance().reference_to_series(reference_series_concatenated_ranked).to_numpy()
         )
         check_empty_series(series_0)
-        check_empty_series(series_concatenated_ranked)
         check_series_nan(series_0)
-        check_series_one_value(series_0)
-        check_series_nan(series_concatenated_ranked)
-        check_series_one_value(series_concatenated_ranked)
+
+        # check_series_one_value(series_0) TODO move these up and only one
+        # check_series_one_value(series_concatenated_ranked)
 
         return series_concatenated_ranked[: series_0.size].sum()

@@ -23,5 +23,4 @@ class CountPrecompute(SafeFunctionBase):
         check_instance(sample_0_series, ReferenceSeries)
         check_empty_series(sample_0)
         check_series_nan(sample_0)
-        check_series_one_value(sample_0)
         return sample_0.size

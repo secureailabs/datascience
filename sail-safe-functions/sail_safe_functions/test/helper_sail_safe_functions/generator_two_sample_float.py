@@ -25,7 +25,7 @@ class GeneratorTwoSampleFloat:
 
         self.resolution = resolution
 
-    def generate(self, size_sample, effect_size, is_paired):
+    def generate(self, size_sample: int, effect_size: float, is_paired: bool):
         dict_array_0 = {}
         dict_array_1 = {}
         for i, weight_federation in enumerate(self.list_weight_federation):
@@ -35,11 +35,11 @@ class GeneratorTwoSampleFloat:
                 array_0 = numpy.random.normal(self.mean, self.standard_deviation, count_federation)
                 if is_paired:
                     array_1 = array_0 + numpy.random.normal(
-                        self.mean + self.standard_deviation * effect_size, self.standard_deviation, count_federation
+                        self.mean + (self.standard_deviation * effect_size), self.standard_deviation, count_federation
                     )
                 else:
                     array_1 = numpy.random.normal(
-                        self.mean + self.standard_deviation * effect_size, self.standard_deviation, count_federation
+                        self.mean + (self.standard_deviation * effect_size), self.standard_deviation, count_federation
                     )
             elif self.type_distribution == "uniform":
                 shift = self.standard_deviation * (numpy.sqrt(12) / 2)
@@ -49,6 +49,8 @@ class GeneratorTwoSampleFloat:
                     array_1 = array_0 + numpy.random.uniform(mean_1 - shift, mean_1 + shift, count_federation)
                 else:
                     array_1 = numpy.random.uniform(mean_1 - shift, mean_1 + shift, count_federation)
+            else:
+                raise Exception("Unkown type_distribution: {self.type_distribution}")
             if self.resolution != -1:
                 array_0 = (array_0 * (1 / self.resolution)).round().astype(int) * self.resolution
                 array_1 = (array_1 * (1 / self.resolution)).round().astype(int) * self.resolution
