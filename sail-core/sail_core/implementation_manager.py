@@ -14,6 +14,10 @@ class ImplementationManager:
         self.__participant_service: Optional[ParticipantServiceBase] = None
         self.__is_initialized = False
 
+    @property
+    def is_initialized(self) -> bool:
+        return self.__is_initialized
+
     def __call__(self):
         raise TypeError("Singletons must be accessed through `get_instance()`.")
 

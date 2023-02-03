@@ -38,14 +38,13 @@ class WilcoxonSingedRankTestPrecompute(SafeFunctionBase):
         sample_absolute_difference_ranked = (
             ServiceReference.get_instance().reference_to_series(reference_sample_absolute_difference_ranked).to_numpy()
         )
-        check_empty_series(sample_difference)
-        check_empty_series(sample_absolute_difference_ranked)
         check_series_nan(sample_difference)
-        check_series_one_value(sample_difference)
         check_series_nan(sample_absolute_difference_ranked)
-        check_series_one_value(sample_absolute_difference_ranked)
-        check_series_constant(sample_difference)
-        check_series_constant(sample_absolute_difference_ranked)
+        # check_series_one_value(sample_difference) TODO move these
+        # check_series_one_value(sample_absolute_difference_ranked)
+
+        # check_series_constant(sample_difference)  TODO move these
+        # check_series_constant(sample_absolute_difference_ranked)
 
         rank_minus = numpy.sum((sample_difference < 0) * sample_absolute_difference_ranked)
         rank_plus = numpy.sum((sample_difference > 0) * sample_absolute_difference_ranked)

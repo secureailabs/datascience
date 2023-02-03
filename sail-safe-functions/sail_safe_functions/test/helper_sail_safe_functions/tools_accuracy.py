@@ -1,10 +1,12 @@
 from typing import List
 
 import numpy
+import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
 from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
     EstimatorOneSampleReference,
 )
@@ -204,6 +206,154 @@ def plot_report_power(report_power: dict, title: str):
 
     fig.update_layout(height=350, width=1200, title_text="Quality report for " + title, showlegend=False)
     fig.show()
+
+
+def plot_list_report_power(list_report_power: List[dict]):
+    list_subplot_titles = []
+    list_sample_size = list_report_power[0]["list_sample_size"]
+    for sample_size in list_sample_size:
+        list_subplot_titles.append(f"N={sample_size}")
+
+    fig = make_subplots(rows=1, cols=len(list_subplot_titles), shared_yaxes=True, subplot_titles=list_subplot_titles)
+
+    for i, sample_size in enumerate(list_sample_size):
+        for report_power in list_report_power:
+            go_power = go.Scatter(
+                x=report_power["list_effect_size"],
+                y=report_power["list_list_fraction_hit"][i],
+                line=dict(color="#0000ff"),
+            )
+            fig.add_trace(go_power, row=1, col=i + 1)
+
+    fig["layout"]["yaxis"]["title"] = "statistical power"
+    fig["layout"]["xaxis"]["title"] = "effect size"
+    for i in range(len(report_power["list_sample_size"]) - 1):
+        fig["layout"][f"xaxis{i+2}"]["title"] = "effect size"
+
+    fig.update_layout(height=350, width=1200, showlegend=False)
+    fig.show()
+
+
+def experiment_power(
+    estimator: EstimatorTwoSample,
+    generator: GeneratorTwoSampleFloat,
+    sample_size: int,
+    effect_size: float,
+    is_paired: bool,
+    significance: float,
+    run_count: int,
+) -> dict:
+    hit_count = 0
+    for _ in range(run_count):
+        sample_0, sample_1 = generator.generate(sample_size, effect_size, is_paired)
+        _, p_value = estimator.run(sample_0, sample_1)
+        if p_value < significance:
+            hit_count += 1
+    fraction_hit = hit_count / run_count
+    experiment = {}
+    experiment["estimator_name"] = estimator.estimator_name
+    experiment["generator_name"] = generator.name
+    experiment["sample_size"] = sample_size
+    experiment["effect_size"] = effect_size
+    experiment["significance"] = significance
+    experiment["run_count"] = run_count
+    experiment["statistical_power"] = fraction_hit
+    return experiment
+
+
+def plot_experiment_power(list_sample_size, list_list_list_experiment: List[List[List[dict]]]):
+    list_subplot_titles = []
+    for sample_size in list_sample_size:
+        list_subplot_titles.append(f"N={sample_size}")
+
+    fig = make_subplots(rows=1, cols=len(list_sample_size), shared_yaxes=True, subplot_titles=list_subplot_titles)
+    dict_line = {}
+    for index_col, list_list_experiment in enumerate(list_list_list_experiment):
+        show_legend = index_col == len(list_sample_size) - 1
+        for index_estimator, list_experiment in enumerate(list_list_experiment):
+
+            add_trace_experiment(
+                fig,
+                1,
+                index_col + 1,
+                "effect_size",
+                "statistical_power",
+                "estimator_name",
+                show_legend,
+                dict_line,
+                list_experiment,
+            )
+
+    fig["layout"]["xaxis"]["title"] = "effect size"
+    for i in range(len(list_sample_size) - 1):
+        fig["layout"][f"xaxis{i+2}"]["title"] = "effect size"
+    fig["layout"]["yaxis"]["title"] = "statistical power"
+    fig.update_layout(height=350, width=1200, showlegend=True)
+    fig.show()
+
+
+def add_trace_experiment(
+    fig,
+    index_row: int,
+    index_col: int,
+    attribute_x: str,
+    attribute_y: str,
+    attribute_name: str,
+    show_legend: bool,
+    dict_line: dict,
+    list_experiment: List[dict],
+):
+    name = list_experiment[0][attribute_name]
+    # gather data
+    list_x = []
+    list_y = []
+    for experiment in list_experiment:
+        list_x.append(experiment[attribute_x])
+        list_y.append(experiment[attribute_y])
+    # sort
+    list_x_sorted = [x for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+    list_y_sorted = [y for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+    # plot
+    # go_power = go.Scatter(
+    #     x=list_x_sorted,
+    #     y=list_y_sorted,
+    #     name=name,
+    #     line=dict(color="#0000ff"),
+    # )
+    if name not in dict_line:
+        line = dict(color=px.colors.qualitative.Plotly[len(dict_line)])
+        dict_line[name] = line
+
+    line = dict_line[name]
+    go_power = go.Scatter(
+        x=list_x_sorted, y=list_y_sorted, name=name, legendgroup=name, showlegend=show_legend, line=line
+    )
+    fig.add_trace(go_power, row=index_row, col=index_col)
+
+
+# def plot_line_grid(
+#     list_experiment,
+#     field_subplot_row: str,
+#     field_subplot_col: str,
+#     field_subplot_stack: str,
+#     name_data_x: str,
+#     name_data_y: str,
+# ):
+#     dict_row = {}
+#     list_value_subplot_row = []
+#     list_value_subplot_col = []
+#     list_value_subplot_stack = []
+#     for experiment in list_experiment:
+#         value_row = experiment[field_subplot_row]
+#         value_col = experiment[field_subplot_col]
+#         if value_row not in dict_row:
+#             dict_row[value_row] = {}
+
+#         if value_col not in dict_row[value_row]:
+#             dict_row[value_row][value_row] = []
+#         dict_row[value_row][value_row].append(experiment)
+#     list_field_subplot_row
+#     fig = make_subplots(rows=1, cols=len(list_subplot_titles), shared_yaxes=True, subplot_titles=list_subplot_titles)
 
 
 def create_report_power(
