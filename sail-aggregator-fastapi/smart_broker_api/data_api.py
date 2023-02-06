@@ -49,7 +49,7 @@ def data_frame_select_series(operation, data_frame_id, series_name):
 
     body = BodyDataFrameSelectSeries(data_frame_id, series_name)
 
-    return operation.data_frame_select_series(body).additonal_properties["series_id"]
+    return operation.data_frame_select_series(body).additional_properties["series_id"]
 
 
 def read_tabular_dataframe_csvv1(operation, list_dataset_id: List[str]):

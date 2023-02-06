@@ -1,24 +1,17 @@
 import requests
+from fast_api_client.models import BodyDataFrameQuery
 
 
-def drop_na_data_frame(session, data_frame_id):
-    payload = {"data_frame_id": data_frame_id}
-    result = requests.post(
-        session.get_url() + "/preprocessing/data_frame/drop_missing/" + data_frame_id,
-        params=payload,
-        verify=False,
-    )
-    return result.json()["result_data_frame_id"]
+def dataframe_drop_missing(operation, data_frame_id):
+
+    return operation.dataframe_drop_missing(data_frame_id).additional_properties["new_data_frame_id"]
 
 
-def query_data_frame(session, data_frame_id, query):
-    payload = {"query_str": query}
-    result = requests.post(
-        session.get_url() + "/preprocessing/data_frame/query/" + data_frame_id,
-        params=payload,
-        verify=False,
-    )
-    return result.json()["result_data_frame_id"]
+def data_frame_query(operation, data_frame_id, query):
+
+    body = BodyDataFrameQuery(data_frame_id, query)
+
+    return operation.data_frame_query(body).additional_properties["result_data_frame_id"]
 
 
 # NOTE: Doesn't work but we should allow it

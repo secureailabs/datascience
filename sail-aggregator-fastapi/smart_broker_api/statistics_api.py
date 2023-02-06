@@ -2,21 +2,18 @@ from ast import literal_eval
 
 import requests
 
+# def interpret_result(result):
+#     if result.status_code == 200:
+#         return result.json()
+#     elif result.status_code == 500:
+#         return literal_eval(result.content.decode("utf-8"))["detail"]
+#     else:
+#         print("Unknown Response '" + result.status_code + "': Returning Full Response Object")
+#         return result
 
-def interpret_result(result):
-    if result.status_code == 200:
-        return result.json()
-    elif result.status_code == 500:
-        return literal_eval(result.content.decode("utf-8"))["detail"]
-    else:
-        print("Unknown Response '" + result.status_code + "': Returning Full Response Object")
-        return result
 
-
-def count(session, series_id):
-    payload = {"series_id": series_id}
-    result = requests.post(session.get_url() + "/statistics/count/" + series_id, params=payload, verify=False)
-    return interpret_result(result)
+def count(operation, series_id):
+    return operation.statistics_count(series_id)
 
 
 def mean(session, series_id):

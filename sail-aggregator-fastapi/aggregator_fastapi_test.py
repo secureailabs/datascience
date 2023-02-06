@@ -88,7 +88,7 @@ async def log_validation_failure(message):
     await log_message(message)
 
 
-def query_limit_n(series, n=10) -> bool:
+def query_limit_n(series, n=0) -> bool:
     """
     Checks data or series in question is over a given threshold.
 
@@ -197,7 +197,7 @@ async def new_series_model_numerical(
     )
     series_id = service_reference.get_instance().data_model_series_to_reference(series)
 
-    return {"series": series_id}
+    return {"series_id": series_id}
 
 
 @app.post(
@@ -336,6 +336,7 @@ async def read_dataset_tabular_from_longitudinal(
     return {"dataset_id": dataset_id}
 
 
+# TODO: add 'read' to operation_id
 @app.post(
     path="/dataset_tabular_fhirv1.",
     description="Pull data from fhirv1 source straight to tabular Dataframe.",
