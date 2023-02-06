@@ -543,7 +543,6 @@ async def statistics_chisquare(
     status_code=status.HTTP_200_OK,
     operation_id="statistics_count",
 )
-@app.post("/statistics_count")
 async def count(series_id: str = Body(description="The identifier of the series to be counted.")) -> dict:
     series = service_reference.get_instance().reference_to_federated_series(series_id)
 

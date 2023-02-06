@@ -1,14 +1,10 @@
-from typing import Any
-
 from .api.default import (
-    count_statistics_count_post,
     data_frame_query,
     data_frame_select_series,
     data_frame_tabular_select_dataframe,
     dataframe_drop_missing,
     dataframe_model_add_new_series_model,
     dataset_tabular_fhirv1,
-    kernel_density_estimation_visualization_kernel_density_estimation_post,
     mann_whitney_u_test,
     new_data_model_data_frame,
     new_series_model_numerical,
@@ -33,6 +29,7 @@ from .api.default import (
     statistics_wilcoxon_signed_rank_test,
     tabular_model_add_dataframe_model,
     visualization_histogram,
+    visualization_kernel_density_estimation,
 )
 from .client import AuthenticatedClient, Client
 from .models.body_data_frame_query import BodyDataFrameQuery
@@ -40,9 +37,6 @@ from .models.body_data_frame_select_series import BodyDataFrameSelectSeries
 from .models.body_data_frame_tabular_select_dataframe import BodyDataFrameTabularSelectDataframe
 from .models.body_dataframe_model_add_new_series_model import BodyDataframeModelAddNewSeriesModel
 from .models.body_dataset_tabular_fhirv_1 import BodyDatasetTabularFhirv1
-from .models.body_kernel_density_estimation_visualization_kernel_density_estimation_post import (
-    BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-)
 from .models.body_mann_whitney_u_test import BodyMannWhitneyUTest
 from .models.body_new_series_model_numerical import BodyNewSeriesModelNumerical
 from .models.body_read_dataset_tabular_from_longitudinal import BodyReadDatasetTabularFromLongitudinal
@@ -57,6 +51,7 @@ from .models.body_statistics_welch_t_test import BodyStatisticsWelchTTest
 from .models.body_statistics_wilcoxon_signed_rank_test import BodyStatisticsWilcoxonSignedRankTest
 from .models.body_tabular_model_add_dataframe_model import BodyTabularModelAddDataframeModel
 from .models.body_visualization_histogram import BodyVisualizationHistogram
+from .models.body_visualization_kernel_density_estimation import BodyVisualizationKernelDensityEstimation
 from .models.data_federation import DataFederation
 from .models.data_frame_query_response_data_frame_query import DataFrameQueryResponseDataFrameQuery
 from .models.data_frame_select_series_response_data_frame_select_series import (
@@ -123,6 +118,9 @@ from .models.tabular_model_add_dataframe_model_response_tabular_model_add_datafr
 )
 from .models.visualization_histogram_response_visualization_histogram import (
     VisualizationHistogramResponseVisualizationHistogram,
+)
+from .models.visualization_kernel_density_estimation_response_visualization_kernel_density_estimation import (
+    VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation,
 )
 
 
@@ -543,34 +541,6 @@ class SyncOperations:
             raise Exception("No response")
 
         assert isinstance(response, StatisticsChisquareResponseStatisticsChisquare)
-        return response
-
-    def count_statistics_count_post(
-        self,
-        json_body: str,
-    ) -> Any:
-        """Count
-
-        Args:
-            json_body (str): The identifier of the series to be counted.
-
-        Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
-            httpx.TimeoutException: If the request takes longer than Client.timeout.
-
-        Returns:
-            Response[Any]
-        """
-
-        response = count_statistics_count_post.sync(
-            client=self._client,
-            json_body=json_body,
-        )
-
-        if response is None:
-            raise Exception("No response")
-
-        assert isinstance(response, Any)
         return response
 
     def statistics_count(
@@ -1053,24 +1023,26 @@ class SyncOperations:
         assert isinstance(response, VisualizationHistogramResponseVisualizationHistogram)
         return response
 
-    def kernel_density_estimation_visualization_kernel_density_estimation_post(
+    def visualization_kernel_density_estimation(
         self,
-        json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-    ) -> Any:
+        json_body: BodyVisualizationKernelDensityEstimation,
+    ) -> VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation:
         """Kernel Density Estimation
 
+         Creates a Kernel Density Estimation of a given Series.
+
         Args:
-            json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+            json_body (BodyVisualizationKernelDensityEstimation):
 
         Raises:
             errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Any]
+            Response[VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
         """
 
-        response = kernel_density_estimation_visualization_kernel_density_estimation_post.sync(
+        response = visualization_kernel_density_estimation.sync(
             client=self._client,
             json_body=json_body,
         )
@@ -1078,5 +1050,5 @@ class SyncOperations:
         if response is None:
             raise Exception("No response")
 
-        assert isinstance(response, Any)
+        assert isinstance(response, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation)
         return response

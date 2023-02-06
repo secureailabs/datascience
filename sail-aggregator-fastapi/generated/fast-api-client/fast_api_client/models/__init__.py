@@ -5,9 +5,6 @@ from .body_data_frame_select_series import BodyDataFrameSelectSeries
 from .body_data_frame_tabular_select_dataframe import BodyDataFrameTabularSelectDataframe
 from .body_dataframe_model_add_new_series_model import BodyDataframeModelAddNewSeriesModel
 from .body_dataset_tabular_fhirv_1 import BodyDatasetTabularFhirv1
-from .body_kernel_density_estimation_visualization_kernel_density_estimation_post import (
-    BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-)
 from .body_mann_whitney_u_test import BodyMannWhitneyUTest
 from .body_new_series_model_numerical import BodyNewSeriesModelNumerical
 from .body_read_dataset_tabular_from_longitudinal import BodyReadDatasetTabularFromLongitudinal
@@ -84,6 +81,9 @@ from .validation_error import ValidationError
 from .visualization_histogram_response_visualization_histogram import (
     VisualizationHistogramResponseVisualizationHistogram,
 )
+from .visualization_kernel_density_estimation_response_visualization_kernel_density_estimation import (
+    VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation,
+)
 
 __all__ = (
     "BodyDataframeModelAddNewSeriesModel",
@@ -91,7 +91,6 @@ __all__ = (
     "BodyDataFrameSelectSeries",
     "BodyDataFrameTabularSelectDataframe",
     "BodyDatasetTabularFhirv1",
-    "BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost",
     "BodyMannWhitneyUTest",
     "BodyNewSeriesModelNumerical",
     "BodyReadDatasetTabularFromLongitudinal",
@@ -140,4 +139,5 @@ __all__ = (
     "TabularModelAddDataframeModelResponseTabularModelAddDataframeModel",
     "ValidationError",
     "VisualizationHistogramResponseVisualizationHistogram",
+    "VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation",
 )

@@ -1,21 +1,22 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union, cast
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
 from ...client import Client
-from ...models.body_kernel_density_estimation_visualization_kernel_density_estimation_post import (
-    BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-)
+from ...models.body_visualization_kernel_density_estimation import BodyVisualizationKernelDensityEstimation
 from ...models.http_validation_error import HTTPValidationError
+from ...models.visualization_kernel_density_estimation_response_visualization_kernel_density_estimation import (
+    VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation,
+)
 from ...types import Response
 
 
 def _get_kwargs(
     *,
     client: Client,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
+    json_body: BodyVisualizationKernelDensityEstimation,
 ) -> Dict[str, Any]:
     url = "{}/visualization_kernel_density_estimation".format(client.base_url)
 
@@ -34,13 +35,20 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(
+    *, client: Client, response: httpx.Response
+) -> Optional[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
 
     if response.status_code < 200 or response.status_code >= 300:
         raise Exception(f"Failure status code: {response.status_code}. Details: {response.text}")
 
     if response.status_code == HTTPStatus.OK:
-        response_200 = cast(Any, response.json())
+        response_200 = VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation.from_dict(
+            response.json()
+        )
+
         return response_200
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -52,7 +60,11 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Uni
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(
+    *, client: Client, response: httpx.Response
+) -> Response[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,19 +76,23 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Uni
 def sync_detailed(
     *,
     client: Client,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-) -> Response[Union[Any, HTTPValidationError]]:
+    json_body: BodyVisualizationKernelDensityEstimation,
+) -> Response[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
     """Kernel Density Estimation
 
+     Creates a Kernel Density Estimation of a given Series.
+
     Args:
-        json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+        json_body (BodyVisualizationKernelDensityEstimation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]]
     """
 
     kwargs = _get_kwargs(
@@ -95,19 +111,23 @@ def sync_detailed(
 def sync(
     *,
     client: Client,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-) -> Optional[Union[Any, HTTPValidationError]]:
+    json_body: BodyVisualizationKernelDensityEstimation,
+) -> Optional[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
     """Kernel Density Estimation
 
+     Creates a Kernel Density Estimation of a given Series.
+
     Args:
-        json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+        json_body (BodyVisualizationKernelDensityEstimation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]]
     """
 
     return sync_detailed(
@@ -119,19 +139,23 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Client,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-) -> Response[Union[Any, HTTPValidationError]]:
+    json_body: BodyVisualizationKernelDensityEstimation,
+) -> Response[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
     """Kernel Density Estimation
 
+     Creates a Kernel Density Estimation of a given Series.
+
     Args:
-        json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+        json_body (BodyVisualizationKernelDensityEstimation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]]
     """
 
     kwargs = _get_kwargs(
@@ -148,19 +172,23 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Client,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-) -> Optional[Union[Any, HTTPValidationError]]:
+    json_body: BodyVisualizationKernelDensityEstimation,
+) -> Optional[
+    Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+]:
     """Kernel Density Estimation
 
+     Creates a Kernel Density Estimation of a given Series.
+
     Args:
-        json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+        json_body (BodyVisualizationKernelDensityEstimation):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]]
     """
 
     return (
