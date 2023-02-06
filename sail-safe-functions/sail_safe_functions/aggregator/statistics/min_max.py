@@ -63,8 +63,3 @@ class MinMax(EstimatorOneSample):
             list_min.append(tuple_min_max[0])
             list_max.append(tuple_min_max[1])
         return min(list_min), max(list_max)
-
-    def run_reference(self, sample_0: SeriesFederated) -> Tuple[float, float]:
-        min_numpy = numpy.min(sample_0.to_numpy())  # TODO this is ugly as fuck
-        max_numpy = numpy.max(sample_0.to_numpy())
-        return min_numpy, max_numpy

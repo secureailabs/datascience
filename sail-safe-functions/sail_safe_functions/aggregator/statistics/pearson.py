@@ -186,10 +186,3 @@ class Pearson(EstimatorTwoSample):
         rho = (E_xy - (sample_mean_0 * sample_mean_1)) / (sample_standard_deviation_0 * sample_standard_deviation_1)
         degrees_of_freedom = size_sample_0 - 2
         return rho, degrees_of_freedom
-
-    def run_reference(
-        self,
-        sample_0: SeriesFederated,
-        sample_1: SeriesFederated,
-    ) -> Tuple[float, float]:
-        return stats.pearsonr(sample_0.to_numpy(), sample_1.to_numpy())

@@ -2,6 +2,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.skewness import Skewness
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -15,7 +18,8 @@ def test_skewness(one_sample_big: SeriesFederated):
     # Act
     estimator = Skewness()
     skewness_sail = estimator.run(sample_0)
-    skewness_scipy = estimator.run_reference(sample_0)
+    estimator_reference = EstimatorOneSampleReference(estimator)
+    skewness_scipy = estimator_reference.run(sample_0)
 
     # Assert
     assert skewness_scipy == pytest.approx(skewness_sail, 0.0001)

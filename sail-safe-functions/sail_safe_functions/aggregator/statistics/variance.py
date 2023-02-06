@@ -59,6 +59,3 @@ class Variance(EstimatorOneSample):
         )
 
         return sample_variance_0
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return numpy.var(sample_0.to_numpy(), ddof=1)

@@ -5,6 +5,9 @@ import pytest
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.chisquare import Chisquare
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -39,7 +42,8 @@ def test_chisquare(two_sample_categorical: Tuple[SeriesFederated, SeriesFederate
     # Act
     estimator = Chisquare()
     pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    pearson_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    pearson_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)

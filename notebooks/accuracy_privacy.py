@@ -4,7 +4,6 @@ import numpy
 import pandas
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.estimator_reference import EstimatorReference
 from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
 from sail_safe_functions.aggregator.statistics.kurtosis import Kurtosis
 from sail_safe_functions.aggregator.statistics.mean import Mean
@@ -12,6 +11,7 @@ from sail_safe_functions.aggregator.statistics.min_max import MinMax
 
 # import tests
 from sail_safe_functions.aggregator.statistics.paired_t_test import PairedTTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import EstimatorReference
 
 # import helper
 from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat

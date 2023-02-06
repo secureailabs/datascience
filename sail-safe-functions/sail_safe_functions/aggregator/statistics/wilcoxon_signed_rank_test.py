@@ -120,13 +120,3 @@ class WilcoxonSingedRankTest(EstimatorTwoSample):
             rank_minus += precompute[0]
             rank_plus += precompute[1]
         return rank_minus, rank_plus
-
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated):
-        # we only do aproximation of T(aproximation does not work very wel below 10) and only do wilcox mode tie resolution
-        return scipy.stats.wilcoxon(
-            sample_0.to_numpy(),
-            sample_1.to_numpy(),
-            zero_method="wilcox",
-            alternative=self.alternative,
-            mode="approx",
-        )

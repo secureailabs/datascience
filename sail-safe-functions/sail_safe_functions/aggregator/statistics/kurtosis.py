@@ -84,6 +84,3 @@ class Kurtosis(EstimatorOneSample):
         )
 
         return kurtosis_value - 3
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return stats.kurtosis(sample_0.to_numpy())

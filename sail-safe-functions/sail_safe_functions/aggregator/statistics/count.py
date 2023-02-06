@@ -28,6 +28,3 @@ class Count(EstimatorOneSample):
         """
         list_precompute = sample_0.map_function(CountPrecompute)
         return sum(list_precompute)
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return sample_0.to_numpy().size

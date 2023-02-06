@@ -52,6 +52,3 @@ class Mean(EstimatorOneSample):
         # if degrees_of_freedom < 20:
         #     raise Exception()
         return sample_mean_0
-
-    def run_reference(self, sample_0: SeriesFederated):
-        return numpy.mean(sample_0.to_numpy())

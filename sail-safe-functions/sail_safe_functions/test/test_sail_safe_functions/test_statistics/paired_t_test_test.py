@@ -4,6 +4,9 @@ import numpy
 import pytest
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.paired_t_test import PairedTTest
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import ToolsDataTest
 
 
@@ -22,7 +25,8 @@ def test_t_test_paired_big(two_sample_big: Tuple[SeriesFederated, SeriesFederate
     # Act
     estimator = PairedTTest(alternative=alternative)
     t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    t_statistic_scipy, p_value_scipy = estimator_reference.run(sample_0, sample_1)
 
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
@@ -44,7 +48,8 @@ def test_t_test_paired_small(two_sample_small_paired: Tuple[SeriesFederated, Ser
     # Act
     estimator = PairedTTest(alternative=alternative)
     t_statistic_sail, p_value_sail = estimator.run(sample_0, sample_1)
-    t_statistic_scipy, p_value_scipy = estimator.run_reference(sample_0, sample_1)
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+    t_statistic_scipy, p_value_scipy = estimator.run(sample_0, sample_1)
     # Assert
     assert t_statistic_sail == pytest.approx(t_statistic_scipy, 0.0001)
     assert p_value_sail == pytest.approx(p_value_scipy, 0.0001)

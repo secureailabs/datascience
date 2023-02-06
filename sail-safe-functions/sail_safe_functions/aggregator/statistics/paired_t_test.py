@@ -146,6 +146,3 @@ class PairedTTest(EstimatorTwoSample):
         # if degrees_of_freedom < 20:
         #     raise Exception()
         return t_statistic, degrees_of_freedom
-
-    def run_reference(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        return stats.ttest_rel(sample_0.to_numpy(), sample_1.to_numpy(), alternative=self.alternative)
