@@ -15,6 +15,7 @@ from sail_safe_functions.aggregator.client_rpc_zero import ClientRPCZero
 from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions.test.helper_sail_safe_functions.participant_service_local import ParticipantSeriviceLocal
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 app = FastAPI()
@@ -41,14 +42,18 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 # TODO make this a other implementation that autoconfigures
-participant_service = ParticipantServiceClientDict()
-for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports):
-    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, scn_port))
-    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
+# participant_service = ParticipantServiceClientDict()
+# for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports):
+#     participant_service.register_client(dataset_id, ClientRPCZero(scn_name, scn_port))
+#     print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
+
+# implementation_manager = ImplementationManager.get_instance()
+# implementation_manager.set_participant_service(participant_service)
+# implementation_manager.initialize()
 
 implementation_manager = ImplementationManager.get_instance()
-implementation_manager.set_participant_service(participant_service)
+implementation_manager.set_participant_service(ParticipantSeriviceLocal())
 implementation_manager.initialize()
 
 
@@ -128,7 +133,7 @@ async def validate(series):
 
 # Redirect Response Breaks things + we dont need this?
 # @app.post(
-#     path="",
+#     path="/",
 #     description="Returns Swagger Docs",
 #     response_description="Redirect response brings user to the docs page.",
 #     response_model=RedirectResponse,
@@ -150,7 +155,7 @@ async def validate(series):
 
 
 @app.post(
-    path="new_data_frame_tabular",
+    path="/new_data_frame_tabular/",
     description="Create new Tabular Data Model",
     response_description="Reference to generated tabular data model",
     response_model=dict,
@@ -168,7 +173,7 @@ async def new_data_frame_tabular() -> dict:
 
 
 @app.post(
-    path="new_series_model_numerical",
+    path="/new_series_model_numerical",
     description="Create new numerical Series Model",
     response_description="Reference to generated numerical Series Model",
     response_model=dict,
@@ -196,7 +201,7 @@ async def new_series_model_numerical(
 
 
 @app.post(
-    path="data_model_tabular_add_dataframe",
+    path="/data_model_tabular_add_dataframe",
     description="Add a Dataframe model to a Tabular Dataframe Model",
     response_description="Reference to Tabular Dataframe Model",
     response_model=dict,
@@ -221,7 +226,7 @@ async def tabular_model_add_dataframe_model(
 
 
 @app.post(
-    path="new_data_model_data_frame",
+    path="/new_data_model_data_frame",
     description="Create a new Dataframe model.",
     response_description="Reference to Dataframe model",
     response_model=dict,
@@ -246,7 +251,7 @@ async def new_data_model_data_frame(
 
 
 @app.post(
-    path="dataframe_model_add_new_series_model.",
+    path="/dataframe_model_add_new_series_model.",
     description="Create a new numerical series model and add it to a Dataframe model.",
     response_description="Reference to Dataframe model.",
     response_model=dict,
@@ -280,7 +285,7 @@ async def dataframe_model_add_series_model(
 # DATA MODEL END
 # DATA INGESTION
 @app.post(
-    path="read_longitudinal_fhirv1.",
+    path="/read_longitudinal_fhirv1.",
     description="Reads a Longitudinal dataset from a fhirv1 data source.",
     response_description="Reference to Longitudinal Dataframe model.",
     response_model=dict,
@@ -299,7 +304,7 @@ async def read_longitudinal_fhirv1() -> dict:
 
 
 @app.post(
-    path="read_dataset_tabular_from_longitudinal.",
+    path="/read_dataset_tabular_from_longitudinal.",
     description="Populates a Tabular dataset from a Longitudinal dataset.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,
@@ -332,7 +337,7 @@ async def read_dataset_tabular_from_longitudinal(
 
 
 @app.post(
-    path="dataset_tabular_fhirv1.",
+    path="/dataset_tabular_fhirv1.",
     description="Pull data from fhirv1 source straight to tabular Dataframe.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,
@@ -365,7 +370,7 @@ async def dataset_tabular_fhirv1(
 
 
 @app.post(
-    path="read_tabular_dataframe_csvv1.",
+    path="/read_tabular_dataframe_csvv1.",
     description="Pull a Tabular Dataframe from csvv1 source.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,
@@ -389,7 +394,7 @@ async def read_tabular_dataframe_csvv1(
 
 
 @app.post(
-    path="data_frame_tabular_select_dataframe.",
+    path="/data_frame_tabular_select_dataframe.",
     description="Select an individual datafame from a tabular dataframe.",
     response_description="Reference to Dataframe.",
     response_model=dict,
@@ -411,7 +416,7 @@ async def data_frame_tabular_select_dataframe(
 
 
 @app.post(
-    path="data_frame_select_series.",
+    path="/data_frame_select_series.",
     description="Select an individual series from a  dataframe.",
     response_description="Reference to Series.",
     response_model=dict,
@@ -453,7 +458,7 @@ async def data_frame_select_series(
 
 
 @app.post(
-    path="dataframe_drop_missing.",
+    path="/dataframe_drop_missing.",
     description="Drop all missing values from a dataframe and return this copy.",
     response_description="Reference to cleaned dataframe.",
     response_model=dict,
@@ -475,7 +480,7 @@ async def dataframe_drop_missing(
 
 
 @app.post(
-    path="data_frame_query.",
+    path="/data_frame_query.",
     description="Query a Dataframe for a given String.",
     response_description="Reference to result of dataframe query.",
     response_model=dict,
@@ -503,7 +508,7 @@ async def data_frame_query(
 
 
 @app.post(
-    path="statistics_chisquare.",
+    path="/statistics_chisquare.",
     description="Computes the chisquare of two Series.",
     response_description="The chisquare statistic and p value.",
     response_model=dict,
@@ -527,7 +532,7 @@ async def statistics_chisquare(
 
 
 @app.post(
-    path="statistics_count.",
+    path="/statistics_count.",
     description="Computes the count of a Series.",
     response_description="The count of the Series.",
     response_model=dict,
@@ -546,7 +551,7 @@ async def count(series_id: str = Body(description="The identifier of the series 
 
 
 @app.post(
-    path="statistics_kolmogorov_smirnov_test",
+    path="/statistics_kolmogorov_smirnov_test",
     description="Computes Kolmogorov Smirnov Test of a Series.",
     response_description="The K statisic and P value of the Series.",
     response_model=dict,
@@ -567,7 +572,7 @@ async def kolmogorov_smirnov_test(
 
 
 @app.post(
-    path="statistics_kurtosis",
+    path="/statistics_kurtosis",
     description="Computes Kurtosis of a Series.",
     response_description="The Kurtosis value of the Series.",
     response_model=dict,
@@ -584,7 +589,7 @@ async def kurtosis(series_id: str) -> dict:
 
 
 @app.post(
-    path="statistics_levene_test",
+    path="/statistics_levene_test",
     description="Computes the Levene Test of two Series.",
     response_description="The F statistic and P value of the two Series.",
     response_model=dict,
@@ -610,7 +615,7 @@ async def levene_test(
 
 
 @app.post(
-    path="mann_whitney_u_test",
+    path="/mann_whitney_u_test",
     description="Computes the Mann Whitney U Test of two Series.",
     response_description="The W statistic and P value of the two Series.",
     response_model=dict,
@@ -636,7 +641,7 @@ async def mann_whitney_u_test(
 
 
 @app.post(
-    path="statistics_mean",
+    path="/statistics_mean",
     description="Computes the Mean of a Series.",
     response_description="The Series Mean.",
     response_model=dict,
@@ -655,7 +660,7 @@ async def mean(series_id: str = Body(description="The identifer of the Series to
 
 
 @app.post(
-    path="statistics_min_max",
+    path="/statistics_min_max",
     description="Computes the Min and Max of a Series.",
     response_description="The Series Min and Max.",
     response_model=dict,
@@ -675,7 +680,7 @@ async def min_max(series_id: str = Body(description="The identifer of the Series
 
 
 @app.post(
-    path="statistics_paired_t_test",
+    path="/statistics_paired_t_test",
     description="Computes the Paired T Test of two Series.",
     response_description="The T statistic and P value of the two series.",
     response_model=dict,
@@ -701,7 +706,7 @@ async def paired_t_test(
 
 
 @app.post(
-    path="statistics_pearson",
+    path="/statistics_pearson",
     description="Computes the Pearson of two Series.",
     response_description="The Pearson statistic and P value of the two Series.",
     response_model=dict,
@@ -727,7 +732,7 @@ async def pearson(
 
 
 @app.post(
-    path="statistics_skewness",
+    path="/statistics_skewness",
     description="Computes the Skewness of a Series.",
     response_description="The Skewness of the Series.",
     response_model=dict,
@@ -745,7 +750,7 @@ async def skewness(series_id: str) -> dict:
 
 
 @app.post(
-    path="statistics_spearman",
+    path="/statistics_spearman",
     description="Computes the Spearman statistic of two Series.",
     response_description="The Spearman statistic and P value of the two Series.",
     response_model=dict,
@@ -770,7 +775,7 @@ async def spearman(
 
 
 @app.post(
-    path="statistics_student_t_test",
+    path="/statistics_student_t_test",
     description="Computes the Student T test of two Series.",
     response_description="The T statistic and P value of the two Series.",
     response_model=dict,
@@ -796,7 +801,7 @@ async def student_t_test(
 
 
 @app.post(
-    path="statistics_variance",
+    path="/statistics_variance",
     description="Computes the Variance of a Series.",
     response_description="The Variance of the Series.",
     response_model=dict,
@@ -814,7 +819,7 @@ async def variance(series_id: str = Body(description="The identifier of the seri
 
 
 @app.post(
-    path="statistics_welch_t_test",
+    path="/statistics_welch_t_test",
     description="Computes the Welch T test of two Series.",
     response_description="The T statistic and P value of the two Series.",
     response_model=dict,
@@ -840,7 +845,7 @@ async def welch_t_test(
 
 
 @app.post(
-    path="statistics_wilcoxon_signed_rank_test",
+    path="/statistics_wilcoxon_signed_rank_test",
     description="Computes the Wilcoxon signed rank test of two Series.",
     response_description="The W statistic and P value of the two Series.",
     response_model=dict,
@@ -869,7 +874,7 @@ async def wilcoxon_signed_rank_test(
 
 # START VISUALIZATION
 @app.post(
-    path="visualization_histogram",
+    path="/visualization_histogram",
     description="Creates a histogram of a given Series.",
     response_description="The Histogram of the Series.",
     response_model=dict,
@@ -892,8 +897,9 @@ async def histogram_federated(
     return {"figure": figure}
 
 
+@app.post("/visualization_kernel_density_estimation")
 @app.post(
-    path="visualization_kernel_density_estimation",
+    path="/visualization_kernel_density_estimation",
     description="Creates a Kernel Density Estimation of a given Series.",
     response_description="The Kernel Density Estimation of the Series.",
     response_model=dict,
