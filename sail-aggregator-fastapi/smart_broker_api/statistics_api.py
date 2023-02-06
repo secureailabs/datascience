@@ -71,7 +71,9 @@ def mann_whitney_u_test(operation, series_1_id, series_2_id, alternative):
 
 def min_max(operation, series_1_id):
 
-    return operation.statistics_min_max(series_1_id).additional_properties["min_max"]
+    result = operation.statistics_min_max(series_1_id).additional_properties
+
+    return result["min"], result["max"]
 
 
 def paired_t_test(operation, series_1_id, series_2_id, alternative):

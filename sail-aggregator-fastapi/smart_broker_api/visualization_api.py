@@ -8,7 +8,7 @@ from fast_api_client.models import (
 def histogram(operation, series_1_id, bin_count):
 
     body = BodyVisualizationHistogram(series_1_id, bin_count)
-    result = operation.visualization_histogram(body).additional_properties
+    result = operation.visualization_histogram(body).additional_properties["figure"]
 
     return result
 

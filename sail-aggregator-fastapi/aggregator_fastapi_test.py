@@ -898,7 +898,6 @@ async def histogram_federated(
     return {"figure": figure}
 
 
-@app.post("/visualization_kernel_density_estimation")
 @app.post(
     path="/visualization_kernel_density_estimation",
     description="Creates a Kernel Density Estimation of a given Series.",
