@@ -12,6 +12,9 @@ The repository contains 3 python packages
 - the `config` folder contains dependency management files  `ie: requirements.txt`
 - the `docs` folder contains the documentation that we generate and is published on github pages
 
+An up to date list of what is available for use is held [here](https://fluffy-couscous-a7e264fe.pages.github.io/)
+
+
 
 ## Create virtual environment
 - Install Python 3.8
