@@ -758,34 +758,6 @@ status code that was not documented in the source OpenAPI document.</dd>
         assert isinstance(response, StatisticsChisquareResponseStatisticsChisquare)
         return response
 
-    def count_statistics_count_post(
-        self,
-        json_body: str,
-    ) -&gt; Any:
-        &#34;&#34;&#34;Count
-
-        Args:
-            json_body (str): The identifier of the series to be counted.
-
-        Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
-            httpx.TimeoutException: If the request takes longer than Client.timeout.
-
-        Returns:
-            Response[Any]
-        &#34;&#34;&#34;
-
-        response = count_statistics_count_post.sync(
-            client=self._client,
-            json_body=json_body,
-        )
-
-        if response is None:
-            raise Exception(&#34;No response&#34;)
-
-        assert isinstance(response, Any)
-        return response
-
     def statistics_count(
         self,
         json_body: str,
@@ -1266,24 +1238,26 @@ status code that was not documented in the source OpenAPI document.</dd>
         assert isinstance(response, VisualizationHistogramResponseVisualizationHistogram)
         return response
 
-    def kernel_density_estimation_visualization_kernel_density_estimation_post(
+    def visualization_kernel_density_estimation(
         self,
-        json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-    ) -&gt; Any:
+        json_body: BodyVisualizationKernelDensityEstimation,
+    ) -&gt; VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation:
         &#34;&#34;&#34;Kernel Density Estimation
 
+         Creates a Kernel Density Estimation of a given Series.
+
         Args:
-            json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
+            json_body (BodyVisualizationKernelDensityEstimation):
 
         Raises:
             errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Any]
+            Response[VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
         &#34;&#34;&#34;
 
-        response = kernel_density_estimation_visualization_kernel_density_estimation_post.sync(
+        response = visualization_kernel_density_estimation.sync(
             client=self._client,
             json_body=json_body,
         )
@@ -1291,63 +1265,11 @@ status code that was not documented in the source OpenAPI document.</dd>
         if response is None:
             raise Exception(&#34;No response&#34;)
 
-        assert isinstance(response, Any)
+        assert isinstance(response, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation)
         return response</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="fast_api_client.SyncOperations.count_statistics_count_post"><code class="name flex">
-<span>def <span class="ident">count_statistics_count_post</span></span>(<span>self, json_body: str) ‑> Any</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Count</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
-<dd>The identifier of the series to be counted.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code><a title="fast_api_client.errors.UnexpectedStatus" href="errors.html#fast_api_client.errors.UnexpectedStatus">UnexpectedStatus</a></code></dt>
-<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
-<dt><code>httpx.TimeoutException</code></dt>
-<dd>If the request takes longer than Client.timeout.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>Response[Any]</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def count_statistics_count_post(
-    self,
-    json_body: str,
-) -&gt; Any:
-    &#34;&#34;&#34;Count
-
-    Args:
-        json_body (str): The identifier of the series to be counted.
-
-    Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
-        httpx.TimeoutException: If the request takes longer than Client.timeout.
-
-    Returns:
-        Response[Any]
-    &#34;&#34;&#34;
-
-    response = count_statistics_count_post.sync(
-        client=self._client,
-        json_body=json_body,
-    )
-
-    if response is None:
-        raise Exception(&#34;No response&#34;)
-
-    assert isinstance(response, Any)
-    return response</code></pre>
-</details>
-</dd>
 <dt id="fast_api_client.SyncOperations.data_frame_query"><code class="name flex">
 <span>def <span class="ident">data_frame_query</span></span>(<span>self, json_body: <a title="fast_api_client.models.body_data_frame_query.BodyDataFrameQuery" href="models/body_data_frame_query.html#fast_api_client.models.body_data_frame_query.BodyDataFrameQuery">BodyDataFrameQuery</a>) ‑> <a title="fast_api_client.models.data_frame_query_response_data_frame_query.DataFrameQueryResponseDataFrameQuery" href="models/data_frame_query_response_data_frame_query.html#fast_api_client.models.data_frame_query_response_data_frame_query.DataFrameQueryResponseDataFrameQuery">DataFrameQueryResponseDataFrameQuery</a></span>
 </code></dt>
@@ -1661,55 +1583,6 @@ dataframe.</p>
         raise Exception(&#34;No response&#34;)
 
     assert isinstance(response, DatasetTabularFhirv1ResponseDatasetTabularFhirv1)
-    return response</code></pre>
-</details>
-</dd>
-<dt id="fast_api_client.SyncOperations.kernel_density_estimation_visualization_kernel_density_estimation_post"><code class="name flex">
-<span>def <span class="ident">kernel_density_estimation_visualization_kernel_density_estimation_post</span></span>(<span>self, json_body: <a title="fast_api_client.models.body_kernel_density_estimation_visualization_kernel_density_estimation_post.BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost" href="models/body_kernel_density_estimation_visualization_kernel_density_estimation_post.html#fast_api_client.models.body_kernel_density_estimation_visualization_kernel_density_estimation_post.BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost">BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost</a>) ‑> Any</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Kernel Density Estimation</p>
-<h2 id="args">Args</h2>
-<p>json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):</p>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code><a title="fast_api_client.errors.UnexpectedStatus" href="errors.html#fast_api_client.errors.UnexpectedStatus">UnexpectedStatus</a></code></dt>
-<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
-<dt><code>httpx.TimeoutException</code></dt>
-<dd>If the request takes longer than Client.timeout.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>Response[Any]</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def kernel_density_estimation_visualization_kernel_density_estimation_post(
-    self,
-    json_body: BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost,
-) -&gt; Any:
-    &#34;&#34;&#34;Kernel Density Estimation
-
-    Args:
-        json_body (BodyKernelDensityEstimationVisualizationKernelDensityEstimationPost):
-
-    Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
-        httpx.TimeoutException: If the request takes longer than Client.timeout.
-
-    Returns:
-        Response[Any]
-    &#34;&#34;&#34;
-
-    response = kernel_density_estimation_visualization_kernel_density_estimation_post.sync(
-        client=self._client,
-        json_body=json_body,
-    )
-
-    if response is None:
-        raise Exception(&#34;No response&#34;)
-
-    assert isinstance(response, Any)
     return response</code></pre>
 </details>
 </dd>
@@ -2965,6 +2838,58 @@ dataframe.</p>
     return response</code></pre>
 </details>
 </dd>
+<dt id="fast_api_client.SyncOperations.visualization_kernel_density_estimation"><code class="name flex">
+<span>def <span class="ident">visualization_kernel_density_estimation</span></span>(<span>self, json_body: <a title="fast_api_client.models.body_visualization_kernel_density_estimation.BodyVisualizationKernelDensityEstimation" href="models/body_visualization_kernel_density_estimation.html#fast_api_client.models.body_visualization_kernel_density_estimation.BodyVisualizationKernelDensityEstimation">BodyVisualizationKernelDensityEstimation</a>) ‑> <a title="fast_api_client.models.visualization_kernel_density_estimation_response_visualization_kernel_density_estimation.VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation" href="models/visualization_kernel_density_estimation_response_visualization_kernel_density_estimation.html#fast_api_client.models.visualization_kernel_density_estimation_response_visualization_kernel_density_estimation.VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation">VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Kernel Density Estimation</p>
+<p>Creates a Kernel Density Estimation of a given Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyVisualizationKernelDensityEstimation):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code><a title="fast_api_client.errors.UnexpectedStatus" href="errors.html#fast_api_client.errors.UnexpectedStatus">UnexpectedStatus</a></code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualization_kernel_density_estimation(
+    self,
+    json_body: BodyVisualizationKernelDensityEstimation,
+) -&gt; VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation:
+    &#34;&#34;&#34;Kernel Density Estimation
+
+     Creates a Kernel Density Estimation of a given Series.
+
+    Args:
+        json_body (BodyVisualizationKernelDensityEstimation):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation]
+    &#34;&#34;&#34;
+
+    response = visualization_kernel_density_estimation.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, VisualizationKernelDensityEstimationResponseVisualizationKernelDensityEstimation)
+    return response</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -3019,14 +2944,12 @@ dataframe.</p>
 <li>
 <h4><code><a title="fast_api_client.SyncOperations" href="#fast_api_client.SyncOperations">SyncOperations</a></code></h4>
 <ul class="">
-<li><code><a title="fast_api_client.SyncOperations.count_statistics_count_post" href="#fast_api_client.SyncOperations.count_statistics_count_post">count_statistics_count_post</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.data_frame_query" href="#fast_api_client.SyncOperations.data_frame_query">data_frame_query</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.data_frame_select_series" href="#fast_api_client.SyncOperations.data_frame_select_series">data_frame_select_series</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.data_frame_tabular_select_dataframe" href="#fast_api_client.SyncOperations.data_frame_tabular_select_dataframe">data_frame_tabular_select_dataframe</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.dataframe_drop_missing" href="#fast_api_client.SyncOperations.dataframe_drop_missing">dataframe_drop_missing</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.dataframe_model_add_new_series_model" href="#fast_api_client.SyncOperations.dataframe_model_add_new_series_model">dataframe_model_add_new_series_model</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.dataset_tabular_fhirv1" href="#fast_api_client.SyncOperations.dataset_tabular_fhirv1">dataset_tabular_fhirv1</a></code></li>
-<li><code><a title="fast_api_client.SyncOperations.kernel_density_estimation_visualization_kernel_density_estimation_post" href="#fast_api_client.SyncOperations.kernel_density_estimation_visualization_kernel_density_estimation_post">kernel_density_estimation_visualization_kernel_density_estimation_post</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.mann_whitney_u_test" href="#fast_api_client.SyncOperations.mann_whitney_u_test">mann_whitney_u_test</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.new_data_model_data_frame" href="#fast_api_client.SyncOperations.new_data_model_data_frame">new_data_model_data_frame</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.new_series_model_numerical" href="#fast_api_client.SyncOperations.new_series_model_numerical">new_series_model_numerical</a></code></li>
@@ -3051,6 +2974,7 @@ dataframe.</p>
 <li><code><a title="fast_api_client.SyncOperations.statistics_wilcoxon_signed_rank_test" href="#fast_api_client.SyncOperations.statistics_wilcoxon_signed_rank_test">statistics_wilcoxon_signed_rank_test</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.tabular_model_add_dataframe_model" href="#fast_api_client.SyncOperations.tabular_model_add_dataframe_model">tabular_model_add_dataframe_model</a></code></li>
 <li><code><a title="fast_api_client.SyncOperations.visualization_histogram" href="#fast_api_client.SyncOperations.visualization_histogram">visualization_histogram</a></code></li>
+<li><code><a title="fast_api_client.SyncOperations.visualization_kernel_density_estimation" href="#fast_api_client.SyncOperations.visualization_kernel_density_estimation">visualization_kernel_density_estimation</a></code></li>
 </ul>
 </li>
 </ul>

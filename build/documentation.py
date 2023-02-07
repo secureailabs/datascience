@@ -15,6 +15,8 @@ subprocess.run(["pdoc", "sail_safe_functions", "--html", "-o", "../docs"])
 # subprocess.run(["pdoc", "sail_safe_functions_test", "--html", "-o", "../docs"])
 # subprocess.run(["pdoc", "helper_libs", "--html", "-o", "../docs"])
 subprocess.run(["pdoc", "fast_api_client", "--html", "-o", "../docs"])
+subprocess.run(["pdoc", "smart_broker_api", "--html", "-o", "../docs"])
+
 shutil.copyfile("index.html.bak", "../docs/index.html")
 
 time.sleep(3)  # Sleep for 3 seconds

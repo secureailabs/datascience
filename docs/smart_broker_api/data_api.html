@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>smart_broker_api.data_api API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>smart_broker_api.data_api</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import List
+
+from fast_api_client.models import (
+    BodyDataFrameSelectSeries,
+    BodyDataFrameTabularSelectDataframe,
+    BodyDatasetTabularFhirv1,
+    BodyReadDatasetTabularFromLongitudinal,
+    DataFederation,
+)
+from fast_api_client.sail_class import SyncOperations
+
+
+def read_longitudinal_fhirv1(operation: SyncOperations) -&gt; str:
+    &#34;&#34;&#34;
+    Reads Longitudinal Dataset from FHIRv1 source on remote SCNs.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+
+    Returns
+    -------
+    string
+       The identifier of the newlygenerated Longitudinal Dataframe.
+    &#34;&#34;&#34;
+    return operation.read_longitudinal_fhirv1().additional_properties[&#34;longitudinal_id&#34;]
+
+
+def read_dataset_tabular_from_longitudinal(
+    operation: SyncOperations,
+    longitudinal_id: str,
+    dataset_federation_id: str,
+    dataset_federation_name: str,
+    data_model_tabular_id: str,
+) -&gt; str:
+    &#34;&#34;&#34;
+    Transforms a Longitudinal Dataset into Tabular form, given a valid Tabular model.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param longitudinal_id: The identifier of the Longitudinal Dataset
+    :type longitudinal_id: string
+    :param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_id: string
+    :param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_name: string
+    :param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+    :type data_model_tabular_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the newly generated Tabular Dataframe.
+    &#34;&#34;&#34;
+    body = BodyReadDatasetTabularFromLongitudinal(
+        longitudinal_id, dataset_federation_id, dataset_federation_name, data_model_tabular_id
+    )
+
+    return operation.read_dataset_tabular_from_longitudinal(body).additional_properties[&#34;dataset_id&#34;]
+
+
+# TODO: add &#39;read&#39; to operation_id
+def dataset_tabular_fhirv1(
+    operation: SyncOperations, dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
+):
+    &#34;&#34;&#34;
+    Reads Tabular Dataset from FHIRv1 source on remote SCNs.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_id: string
+    :param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_name: string
+    :param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+    :type data_model_tabular_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the newly generated Tabular Dataframe.
+    &#34;&#34;&#34;
+    body = BodyDatasetTabularFhirv1(dataset_federation_id, dataset_federation_name, data_model_tabular_id)
+
+    return operation.dataset_tabular_fhirv1(body).additional_properties[&#34;tabular_dataframe_id&#34;]
+
+
+def data_frame_tabular_select_data_frame(
+    operation: SyncOperations, data_frame_tabular_id: str, data_frame_name: str
+) -&gt; str:
+    &#34;&#34;&#34;
+    Selects Dataframe from Tabular Dataframe
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param data_frame_tabular_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+    :type data_frame_tabular_id: string
+    :param data_frame_name: The name of the dataframe to be pulled
+    :type data_frame_name: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Dataframe.
+    &#34;&#34;&#34;
+
+    body = BodyDataFrameTabularSelectDataframe(data_frame_tabular_id, data_frame_name)
+
+    return operation.data_frame_tabular_select_dataframe(body).additional_properties[&#34;data_frame_id&#34;]
+
+
+def data_frame_select_series(operation: SyncOperations, data_frame_id: str, series_name: str) -&gt; str:
+    &#34;&#34;&#34;
+    Selects Series from Dataframe
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param data_frame_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+    :type data_frame_id: string
+    :param series_name: The name of the dataframe to be pulled
+    :type series_name: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Dataframe.
+    &#34;&#34;&#34;
+
+    body = BodyDataFrameSelectSeries(data_frame_id, series_name)
+
+    return operation.data_frame_select_series(body).additional_properties[&#34;series_id&#34;]
+
+
+def read_tabular_dataframe_csvv1(operation: SyncOperations, list_dataset_id: List[str]) -&gt; str:
+    &#34;&#34;&#34;
+    Reads a Tabular Dataframe from csvv1 source
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param list_dataset_id: The identifiers of the csv1 type dataset to be pulled from.
+    :type list_dataset_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Tabular Dataframe.
+    &#34;&#34;&#34;
+
+    body = DataFederation(list_dataset_id)
+
+    return operation.read_tabular_dataframe_csvv1(body)[&#34;dataset_id&#34;]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="smart_broker_api.data_api.data_frame_select_series"><code class="name flex">
+<span>def <span class="ident">data_frame_select_series</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations, data_frame_id: str, series_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Selects Series from Dataframe
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations
+:param data_frame_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+:type data_frame_id: string
+:param series_name: The name of the dataframe to be pulled
+:type series_name: string</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the pulled Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data_frame_select_series(operation: SyncOperations, data_frame_id: str, series_name: str) -&gt; str:
+    &#34;&#34;&#34;
+    Selects Series from Dataframe
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param data_frame_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+    :type data_frame_id: string
+    :param series_name: The name of the dataframe to be pulled
+    :type series_name: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Dataframe.
+    &#34;&#34;&#34;
+
+    body = BodyDataFrameSelectSeries(data_frame_id, series_name)
+
+    return operation.data_frame_select_series(body).additional_properties[&#34;series_id&#34;]</code></pre>
+</details>
+</dd>
+<dt id="smart_broker_api.data_api.data_frame_tabular_select_data_frame"><code class="name flex">
+<span>def <span class="ident">data_frame_tabular_select_data_frame</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations, data_frame_tabular_id: str, data_frame_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Selects Dataframe from Tabular Dataframe
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations
+:param data_frame_tabular_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+:type data_frame_tabular_id: string
+:param data_frame_name: The name of the dataframe to be pulled
+:type data_frame_name: string</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the pulled Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data_frame_tabular_select_data_frame(
+    operation: SyncOperations, data_frame_tabular_id: str, data_frame_name: str
+) -&gt; str:
+    &#34;&#34;&#34;
+    Selects Dataframe from Tabular Dataframe
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param data_frame_tabular_id: The identifier of the Tabular Dataframe to pull the Dataframe from
+    :type data_frame_tabular_id: string
+    :param data_frame_name: The name of the dataframe to be pulled
+    :type data_frame_name: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Dataframe.
+    &#34;&#34;&#34;
+
+    body = BodyDataFrameTabularSelectDataframe(data_frame_tabular_id, data_frame_name)
+
+    return operation.data_frame_tabular_select_dataframe(body).additional_properties[&#34;data_frame_id&#34;]</code></pre>
+</details>
+</dd>
+<dt id="smart_broker_api.data_api.dataset_tabular_fhirv1"><code class="name flex">
+<span>def <span class="ident">dataset_tabular_fhirv1</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations, dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reads Tabular Dataset from FHIRv1 source on remote SCNs.
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations
+:param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+:type dataset_federation_id: string
+:param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+:type dataset_federation_name: string
+:param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+:type data_model_tabular_id: string</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the newly generated Tabular Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dataset_tabular_fhirv1(
+    operation: SyncOperations, dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str
+):
+    &#34;&#34;&#34;
+    Reads Tabular Dataset from FHIRv1 source on remote SCNs.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_id: string
+    :param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_name: string
+    :param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+    :type data_model_tabular_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the newly generated Tabular Dataframe.
+    &#34;&#34;&#34;
+    body = BodyDatasetTabularFhirv1(dataset_federation_id, dataset_federation_name, data_model_tabular_id)
+
+    return operation.dataset_tabular_fhirv1(body).additional_properties[&#34;tabular_dataframe_id&#34;]</code></pre>
+</details>
+</dd>
+<dt id="smart_broker_api.data_api.read_dataset_tabular_from_longitudinal"><code class="name flex">
+<span>def <span class="ident">read_dataset_tabular_from_longitudinal</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations, longitudinal_id: str, dataset_federation_id: str, dataset_federation_name: str, data_model_tabular_id: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Transforms a Longitudinal Dataset into Tabular form, given a valid Tabular model.
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations
+:param longitudinal_id: The identifier of the Longitudinal Dataset
+:type longitudinal_id: string
+:param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+:type dataset_federation_id: string
+:param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+:type dataset_federation_name: string
+:param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+:type data_model_tabular_id: string</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the newly generated Tabular Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_dataset_tabular_from_longitudinal(
+    operation: SyncOperations,
+    longitudinal_id: str,
+    dataset_federation_id: str,
+    dataset_federation_name: str,
+    data_model_tabular_id: str,
+) -&gt; str:
+    &#34;&#34;&#34;
+    Transforms a Longitudinal Dataset into Tabular form, given a valid Tabular model.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param longitudinal_id: The identifier of the Longitudinal Dataset
+    :type longitudinal_id: string
+    :param dataset_federation_id: The identifier of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_id: string
+    :param dataset_federation_name: The name of the federation to which the Longitudinal Dataset belongs
+    :type dataset_federation_name: string
+    :param data_model_tabular_id: The identifier of the Tabular Data Model which pulls values from the Longitudinal Dataset.
+    :type data_model_tabular_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the newly generated Tabular Dataframe.
+    &#34;&#34;&#34;
+    body = BodyReadDatasetTabularFromLongitudinal(
+        longitudinal_id, dataset_federation_id, dataset_federation_name, data_model_tabular_id
+    )
+
+    return operation.read_dataset_tabular_from_longitudinal(body).additional_properties[&#34;dataset_id&#34;]</code></pre>
+</details>
+</dd>
+<dt id="smart_broker_api.data_api.read_longitudinal_fhirv1"><code class="name flex">
+<span>def <span class="ident">read_longitudinal_fhirv1</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reads Longitudinal Dataset from FHIRv1 source on remote SCNs.
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the newlygenerated Longitudinal Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_longitudinal_fhirv1(operation: SyncOperations) -&gt; str:
+    &#34;&#34;&#34;
+    Reads Longitudinal Dataset from FHIRv1 source on remote SCNs.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+
+    Returns
+    -------
+    string
+       The identifier of the newlygenerated Longitudinal Dataframe.
+    &#34;&#34;&#34;
+    return operation.read_longitudinal_fhirv1().additional_properties[&#34;longitudinal_id&#34;]</code></pre>
+</details>
+</dd>
+<dt id="smart_broker_api.data_api.read_tabular_dataframe_csvv1"><code class="name flex">
+<span>def <span class="ident">read_tabular_dataframe_csvv1</span></span>(<span>operation: fast_api_client.sail_class.SyncOperations, list_dataset_id: List[str]) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reads a Tabular Dataframe from csvv1 source
+Parameters</p>
+<hr>
+<p>:param operation: Object used to reference fast_api_client function calls
+:type operation: SyncOperations
+:param list_dataset_id: The identifiers of the csv1 type dataset to be pulled from.
+:type list_dataset_id: string</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The identifier of the pulled Tabular Dataframe.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_tabular_dataframe_csvv1(operation: SyncOperations, list_dataset_id: List[str]) -&gt; str:
+    &#34;&#34;&#34;
+    Reads a Tabular Dataframe from csvv1 source
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param list_dataset_id: The identifiers of the csv1 type dataset to be pulled from.
+    :type list_dataset_id: string
+
+    Returns
+    -------
+    string
+       The identifier of the pulled Tabular Dataframe.
+    &#34;&#34;&#34;
+
+    body = DataFederation(list_dataset_id)
+
+    return operation.read_tabular_dataframe_csvv1(body)[&#34;dataset_id&#34;]</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="smart_broker_api" href="index.html">smart_broker_api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="smart_broker_api.data_api.data_frame_select_series" href="#smart_broker_api.data_api.data_frame_select_series">data_frame_select_series</a></code></li>
+<li><code><a title="smart_broker_api.data_api.data_frame_tabular_select_data_frame" href="#smart_broker_api.data_api.data_frame_tabular_select_data_frame">data_frame_tabular_select_data_frame</a></code></li>
+<li><code><a title="smart_broker_api.data_api.dataset_tabular_fhirv1" href="#smart_broker_api.data_api.dataset_tabular_fhirv1">dataset_tabular_fhirv1</a></code></li>
+<li><code><a title="smart_broker_api.data_api.read_dataset_tabular_from_longitudinal" href="#smart_broker_api.data_api.read_dataset_tabular_from_longitudinal">read_dataset_tabular_from_longitudinal</a></code></li>
+<li><code><a title="smart_broker_api.data_api.read_longitudinal_fhirv1" href="#smart_broker_api.data_api.read_longitudinal_fhirv1">read_longitudinal_fhirv1</a></code></li>
+<li><code><a title="smart_broker_api.data_api.read_tabular_dataframe_csvv1" href="#smart_broker_api.data_api.read_tabular_dataframe_csvv1">read_tabular_dataframe_csvv1</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
