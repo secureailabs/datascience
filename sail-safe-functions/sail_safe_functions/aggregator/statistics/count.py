@@ -11,7 +11,7 @@ def count(sample_0: SeriesFederated):
 
 class Count(EstimatorOneSample):
     """
-    Class have run method to perform the federated variance.
+    Class have run method to perform the federated count.
     """
 
     def __init__(self) -> None:
