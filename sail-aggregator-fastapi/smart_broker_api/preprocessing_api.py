@@ -1,13 +1,43 @@
 import requests
 from fast_api_client.models import BodyDataFrameQuery
+from fast_api_client.sail_class import SyncOperations
 
 
-def dataframe_drop_missing(operation, data_frame_id):
+def dataframe_drop_missing(operation: SyncOperations, data_frame_id: str) -> str:
+    """
+    Remove missing values.
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param series_1_id: The id of the dataframe to drop values from
+    :type series_1_id: string
 
+    Returns
+    -------
+    str
+        The id of the dataframe with missing values removed.
+    """
     return operation.dataframe_drop_missing(data_frame_id).additional_properties["new_data_frame_id"]
 
 
-def data_frame_query(operation, data_frame_id, query):
+def data_frame_query(operation: SyncOperations, data_frame_id: str, query: str) -> str:
+    """
+    Federated equivalent of (pd.DataFrame.query)
+    Parameters
+    ----------
+    :param operation: Object used to reference fast_api_client function calls
+    :type operation: SyncOperations
+    :param data_frame_id: The id of the dataframe to query
+    :type series_1_id: string
+    :param query: The query to be performed
+    :type query: string
+
+    Returns
+    -------
+    str
+        The id of the resultant dataframe from the query.
+    """
 
     body = BodyDataFrameQuery(data_frame_id, query)
 
