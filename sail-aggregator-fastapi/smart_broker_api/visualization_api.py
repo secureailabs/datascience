@@ -11,8 +11,8 @@ def histogram(operation: SyncOperations, series_1_id: str, bin_count: int) -> Fi
     -----------
         :param operation: Object used to reference fast_api_client function calls
         :type operation: SyncOperations
-        :param sample_0: The first sample of data
-        :type sample_0: SeriesFederated
+        :param series_1_id: The id of the series being visualised
+        :type series_1_id: string
         :param bin_count: The second sample of data
         :type bin_count: int
         :return: pyplot figure valuie
@@ -61,11 +61,11 @@ def kernel_density_estimation(operation: SyncOperations, series_1_id: str, bin_s
     -----------
         :param operation: Object used to reference fast_api_client function calls
         :type operation: SyncOperations
-        :param sample_0: The first sample of data
-        :type sample_0: SeriesFederated
-        :param bin_size: The second sample of data
+        :param series_1_id: The id of the series being visualised
+        :type series_1_id: string
+        :param bin_size: The size of each bin to sort the histogram into
         :type bin_size: float
-        :return: pyplot figure valuie
+        :return: pyplot figure
         :rtype: pyplot object
 
     """
