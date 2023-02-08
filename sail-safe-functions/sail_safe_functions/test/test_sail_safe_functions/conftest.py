@@ -53,12 +53,14 @@ def data_frame_federated_kidney() -> DataFrameFederated:
     :rtype: class : DataFrameFederatedLocal
     """
 
-    list_name_file_csv = ["kidney_disease_clean.csv"]
-    id_column_0 = "PD-L1 level before treatment"
+    return load_kidney_clean(DATA_PATH)
 
+
+def load_kidney_clean(data_path: str) -> DataFrameFederated:
+    list_name_file_csv = ["kidney_disease_clean.csv"]
     dict_csv = {}
     for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
+        path_file_csv = os.path.join(data_path, "data_csv_kidney_clean", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
     return ToolsDataTest.from_csv(dict_csv)
 
@@ -71,12 +73,14 @@ def data_frame_federated_kidney_hasnan() -> DataFrameFederated:
     :rtype: class : DataFrameFederated
     """
 
-    list_name_file_csv = ["kidney_disease.csv"]
-    id_column_0 = "PD-L1 level before treatment"
+    return load_kidney_hasnan(DATA_PATH)
 
+
+def load_kidney_hasnan(data_path: str) -> DataFrameFederated:
+    list_name_file_csv = ["kidney_disease.csv"]
     dict_csv = {}
     for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney", name_file_csv)
+        path_file_csv = os.path.join(data_path, "data_csv_kidney", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
     return ToolsDataTest.from_csv(dict_csv)
 
@@ -86,15 +90,9 @@ def one_sample_big() -> SeriesFederated:
     """
     Fixture for SeriesFederated with this first part of the investor demo dataset
     """
-    list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
-
-    dict_csv = {}
-    for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
-        dict_csv[name_file_csv] = path_file_csv
-    data_frame_federated = ToolsDataTest.from_csv(dict_csv)
-    return data_frame_federated[id_column_0]
+    data_frame = load_investor(DATA_PATH)
+    return data_frame[id_column_0]
 
 
 @pytest.fixture
@@ -102,17 +100,21 @@ def two_sample_big() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     Fixture for SeriesFederated with this first part of the investor demo dataset
     """
-    list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
     id_column_0 = "PD-L1 level before treatment"
     id_column_1 = "PD-L1 level after treatment"
+    data_frame = load_investor(DATA_PATH)
+
+    return (data_frame[id_column_0], data_frame[id_column_1])
+
+
+def load_investor(data_path: str) -> DataFrameFederated:
+    list_name_file_csv = ["bmc1.csv", "bwh1.csv", "mgh1.csv"]
 
     dict_csv = {}
     for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_investor_demo", name_file_csv)
+        path_file_csv = os.path.join(data_path, "data_csv_investor_demo", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
-    data_frame = ToolsDataTest.from_csv(dict_csv)
-
-    return (data_frame[id_column_0], data_frame[id_column_1])
+    return ToolsDataTest.from_csv(dict_csv)
 
 
 @pytest.fixture
@@ -120,16 +122,9 @@ def two_sample_categorical() -> Tuple[SeriesFederated, SeriesFederated]:
     """
     Fixture for a tuple of two SeriesFederated with this first part of the kidney disease dataset
     """
-    list_name_file_csv = ["kidney_disease_clean.csv"]
     id_column_0 = "rbc"
     id_column_1 = "classification"
-
-    dict_csv = {}
-    for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_kidney_clean", name_file_csv)
-        dict_csv[name_file_csv] = path_file_csv
-    data_frame = ToolsDataTest.from_csv(dict_csv)
-
+    data_frame = load_kidney_clean(DATA_PATH)
     return (data_frame[id_column_0], data_frame[id_column_1])
 
 
@@ -204,10 +199,52 @@ def data_frame_federated_house() -> DataFrameFederated:
     :rtype: class : DataFrameFederatedLocal
     """
 
+    return load_house(DATA_PATH)
+
+
+def load_house(data_path: str) -> DataFrameFederated:
     list_name_file_csv = ["california_housing_train.csv"]
 
     dict_csv = {}
     for name_file_csv in list_name_file_csv:
-        path_file_csv = os.path.join(DATA_PATH, "data_csv_house", name_file_csv)
+        path_file_csv = os.path.join(data_path, "data_csv_house", name_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    return ToolsDataTest.from_csv(dict_csv)
+
+
+@pytest.fixture
+def data_frame_federated_cardio() -> DataFrameFederated:
+    """
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    """
+    return load_cardio(DATA_PATH)
+
+
+def load_cardio(data_path: str) -> DataFrameFederated:
+    list_name_file_csv = ["cardio_70000_0.csv", "cardio_70000_1.csv", "cardio_70000_2.csv"]
+    dict_csv = {}
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(data_path, "data_csv_cardio", name_file_csv)
+        dict_csv[name_file_csv] = path_file_csv
+    return ToolsDataTest.from_csv(dict_csv)
+
+
+@pytest.fixture
+def data_frame_federated_gdc_941_1() -> DataFrameFederated:
+    """
+    Fixture for loading a dataframe with missing values
+    :return: data_frame_federated_kidney: a federated dataframe
+    :rtype: class : DataFrameFederatedLocal
+    """
+    return load_gdc_941_1(DATA_PATH)
+
+
+def load_gdc_941_1(data_path: str) -> DataFrameFederated:
+    list_name_file_csv = ["gdc_csvv1_941_0.csv"]
+    dict_csv = {}
+    for name_file_csv in list_name_file_csv:
+        path_file_csv = os.path.join(data_path, "data_csv_gdc_941_1", name_file_csv)
         dict_csv[name_file_csv] = path_file_csv
     return ToolsDataTest.from_csv(dict_csv)
