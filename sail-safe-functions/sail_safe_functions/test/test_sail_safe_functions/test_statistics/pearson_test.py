@@ -144,7 +144,7 @@ def test_pearson_same_sample_negative():
 
     # Assert
     assert pearson_scipy == pytest.approx(pearson_sail, 0.0001)
-    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
 
 
 @pytest.mark.active

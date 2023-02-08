@@ -7,6 +7,12 @@ class Estimator(ABC):
         self.__estimator_name = estimator_name
         self.__list_estimate_name = list_estimate_name
 
+    def get_estimate_index(self, estimate_name_requested: str) -> int:
+        for i, estimate_name in enumerate(self.__list_estimate_name):
+            if estimate_name == estimate_name_requested:
+                return i
+        raise Exception(f"no such estimate in estimator {estimate_name_requested}")
+
     @property
     def estimator_name(self) -> str:
         return self.__estimator_name

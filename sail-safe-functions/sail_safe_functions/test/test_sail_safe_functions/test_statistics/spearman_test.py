@@ -63,8 +63,7 @@ def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederated, SeriesFeder
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
-    # TODO
-    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
 
 
 @pytest.mark.active
