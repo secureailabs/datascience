@@ -5,20 +5,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
-    EstimatorOneSample
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
-    EstimatorTwoSample
-from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import \
-    EstimatorOneSampleReference
-from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import \
-    EstimatorTwoSampleReference
-from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import \
-    GeneratorOneSampleFloat
-from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import \
-    GeneratorTwoSampleFloat
-from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import \
-    compute_single_knockout_privacy_measure
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
+    EstimatorOneSampleReference,
+)
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
+)
+from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat
+from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import GeneratorTwoSampleFloat
+from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import compute_single_knockout_privacy_measure
 from scipy import interpolate
 
 
@@ -381,6 +378,40 @@ def plot_experiment_bias_variance_two_sample_hist(list_experiment: List[dict]):
     fig["layout"]["yaxis"]["title"] = "frequency"
     fig.update_layout(height=350, width=1200, showlegend=True)
     fig.show()
+
+
+def add_trace_experiment(
+    fig,
+    index_row: int,
+    index_col: int,
+    attribute_x: str,
+    attribute_y: str,
+    attribute_name: str,
+    show_legend: bool,
+    dict_line: dict,
+    list_experiment: List[dict],
+):
+    name = list_experiment[0]["parameter"][attribute_name]
+    # gather data
+    list_x = []
+    list_y = []
+    for experiment in list_experiment:
+        list_x.append(experiment["parameter"][attribute_x])
+        list_y.append(experiment["result"][attribute_y])
+    # sort
+    list_x_sorted = [x for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+    list_y_sorted = [y for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+
+    # plot
+    if name not in dict_line:
+        line = dict(color=px.colors.qualitative.Plotly[len(dict_line)])
+        dict_line[name] = line
+
+    line = dict_line[name]
+    go_power = go.Scatter(
+        x=list_x_sorted, y=list_y_sorted, name=name, legendgroup=name, showlegend=show_legend, line=line
+    )
+    fig.add_trace(go_power, row=index_row, col=index_col)
 
 
 def add_trace_experiment_hist(
