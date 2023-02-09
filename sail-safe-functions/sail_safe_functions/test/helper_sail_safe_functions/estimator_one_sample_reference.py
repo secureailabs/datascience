@@ -3,10 +3,8 @@ from typing import Tuple
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.count import Count
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
-    EstimatorOneSample
-from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import \
-    KolmogorovSmirnovTest
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
 from sail_safe_functions.aggregator.statistics.kurtosis import Kurtosis
 from sail_safe_functions.aggregator.statistics.mean import Mean
 from sail_safe_functions.aggregator.statistics.min_max import MinMax
@@ -68,7 +66,7 @@ class EstimatorOneSampleReference(EstimatorOneSample):
         self,
         estimator: EstimatorOneSample,
     ) -> None:
-        super().__init__(estimator.estimator_name, estimator.list_estimate_name)
+        super().__init__(f"{estimator.estimator_name} - reference", estimator.list_estimate_name)
         self.__estimator = estimator
 
     def run(
