@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
-requirements = []
-with open("requirements.txt") as file:
-    requirements = file.read().splitlines()
+# requirements = []
+# with open("requirements.txt") as file:
+#    requirements = file.read().splitlines()
 
 with open("README.md", "r") as file:
     long_description = file.read()
@@ -12,7 +12,7 @@ with open("README.md", "r") as file:
 setup(
     name="sail-safe-functions",
     version="1.0.1",
-    install_requires=requirements,
+    # install_requires=requirements,
     packages=find_packages(),
     package_data={},
     python_requires="==3.8.10",
