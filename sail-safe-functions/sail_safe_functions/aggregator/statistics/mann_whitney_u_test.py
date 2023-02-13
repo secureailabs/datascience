@@ -3,10 +3,10 @@ from typing import Tuple
 import numpy
 import scipy
 from sail_core.implementation_manager import ImplementationManager
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
 from scipy import stats
 

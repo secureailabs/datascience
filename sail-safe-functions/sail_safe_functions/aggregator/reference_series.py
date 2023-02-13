@@ -1,7 +1,7 @@
 from typing import Dict
 
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
-from sail_safe_functions.aggregator.tools_common import check_instance
 
 
 class ReferenceSeries:

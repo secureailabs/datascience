@@ -1,8 +1,8 @@
 from sail_core.implementation_manager import ImplementationManager
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.aggregator.dataset_longitudinal_federated import DatasetLongitudinalFederated
 from sail_safe_functions.aggregator.dataset_tabular_federated import DatasetTabularFederated
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.preprocessing.convert_to_dataset_tabular_precompute import (
     ConvertToDatasetTabularPrecompute,
 )

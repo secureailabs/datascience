@@ -6,7 +6,6 @@ from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
 from sail_safe_functions.aggregator.tools_common import (
     check_empty_series,
-    check_instance,
     check_series_constant,
     check_series_nan,
     check_series_one_value,

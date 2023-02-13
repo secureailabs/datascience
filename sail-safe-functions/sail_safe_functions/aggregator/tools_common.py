@@ -4,11 +4,7 @@ from typing import Dict
 import numpy
 import pandas as pd
 from sail_safe_functions.aggregator.series import Series
-
-
-def check_instance(instance, class_check) -> None:
-    if not isinstance(instance, class_check):
-        raise Exception(f"{instance} is not instance of class: {class_check} instead type is {type(instance)}")
+from sail_safe_functions.aggregator.series_federated import SeriesFederated
 
 
 def check_series_nan(series: Series) -> None:
@@ -24,6 +20,25 @@ def check_empty_series(series: Series) -> None:
 
 def check_series_one_value(series: Series) -> None:
     if series.size == 1:
+        raise Exception("series cannot containt only one value")
+
+
+def check_series_paired(series_0: SeriesFederated, series_1: SeriesFederated) -> None:
+    # TODO this avoids a serial import but it should move
+    from sail_safe_functions.aggregator import statistics
+
+    size_0 = statistics.count(series_0)
+    size_1 = statistics.count(series_1)
+    if size_0 != size_1:
+        # TODO check the indexes for matching
+        raise ValueError("`sample_0` and `sample_1` must have the same length.")
+
+
+def check_series_one_value_federated(series: SeriesFederated) -> None:
+    # TODO this avoids a serial import but it should move
+    from sail_safe_functions.aggregator import statistics
+
+    if statistics.count(series) == 1:
         raise Exception("series cannot containt only one value")
 
 

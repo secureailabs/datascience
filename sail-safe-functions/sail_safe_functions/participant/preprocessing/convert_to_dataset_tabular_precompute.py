@@ -1,8 +1,8 @@
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
 from sail_safe_functions.aggregator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions.aggregator.reference_dataset_tabular import ReferenceDatasetTabular
 from sail_safe_functions.aggregator.service_reference import ServiceReference
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 

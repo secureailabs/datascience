@@ -6,6 +6,7 @@ from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.aggregator.tools_common import check_series_one_value_federated, check_series_paired
 from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
     WilcoxonSingedRankTestPrecompute,
 )
@@ -57,13 +58,12 @@ class WilcoxonSingedRankTest(EstimatorTwoSample):
         :rtype: float, float
         """
 
-        size_0 = statistics.count(sample_0)
-        size_1 = statistics.count(sample_1)
-        if size_0 != size_1:
-            # TODO check the indexes for matching
-            raise ValueError("`sample_0` and `sample_1` must have the same length.")
+        check_series_paired(sample_0, sample_1)
+        check_series_one_value_federated(
+            sample_0
+        )  # No need to check the other because the series are checked to be paired
 
-        size_sample = size_0
+        size_sample = statistics.count(sample_0)
         (
             sample_difference,
             sample_difference_absolute,

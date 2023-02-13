@@ -1,14 +1,12 @@
 import numpy
 from sail_core.implementation_manager import ImplementationManager
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator import preprocessing, statistics
-from sail_safe_functions.aggregator.data_model.data_model_series import \
-    DataModelSeries
+from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.series import Series
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.service_reference import ServiceReference
-from sail_safe_functions.aggregator.tools_common import check_instance
-from sail_safe_functions.participant.preprocessing.rank_cdf import \
-    RankCumulativeDistributionFunction
+from sail_safe_functions.participant.preprocessing.rank_cdf import RankCumulativeDistributionFunction
 from scipy.stats import rankdata
 
 
