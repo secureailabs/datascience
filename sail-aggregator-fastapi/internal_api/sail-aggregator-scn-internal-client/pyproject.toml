@@ -1,15 +1,15 @@
 [tool.poetry]
-name = "fast-api-client"
+name = "sail-aggregator-scn-internal-client"
 version = "0.1.0"
-description = "A client library for accessing FastAPI"
+description = "A client library for accessing sail_aggregator_scn_internal"
 
 authors = []
 
 readme = "README.md"
 packages = [
-    {include = "fast_api_client"},
+    {include = "sail_aggregator_scn_internal_client"},
 ]
-include = ["CHANGELOG.md", "fast_api_client/py.typed"]
+include = ["CHANGELOG.md", "sail_aggregator_scn_internal_client/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.7"

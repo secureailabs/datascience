@@ -4,10 +4,19 @@ from sail_core.implementation.participant_service_client_dict import Participant
 from sail_core.implementation_manager import ImplementationManager
 from routers import data_model, data_ingestion, data_manipulation, preprocessing, statistics, visualization
 from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
+import config
+
+import threading
+import logging
+from log.audit_log import _AsyncLogger, log_message
 
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="sail_aggregator_scn_internal",
+    description="Internally facing API for communicating with the SAIL aggregator node",
+    version="0.1.0",
+)
 
 app.include_router(data_model.router)
 app.include_router(data_ingestion.router)
@@ -21,6 +30,14 @@ implementation_manager.set_participant_service(ParticipantSeriviceLocal())
 implementation_manager.initialize()
 
 service_reference = TestServiceReference.get_instance()
+
+@app.on_event("startup")
+async def start_audit_logger():
+    """
+    Start async audit logger server at start up as a background task
+    """
+    t = config.Audit_log_task()
+    t.start()
 
 @app.get(
     path="/",

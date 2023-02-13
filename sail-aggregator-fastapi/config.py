@@ -2,6 +2,11 @@ import os
 import json
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 from sail_safe_functions.aggregator.statistics import count
+import threading
+import logging
+from log.audit_log import _AsyncLogger, log_message
+from fastapi import HTTPException
+
 
 dataframe_name_lookup = {}
 
@@ -18,7 +23,24 @@ list_dataset_id = []
 IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 service_reference = TestServiceReference.get_instance()
 
-MINIMUM_SAMPLE_SIZE = 0
+MINIMUM_SAMPLE_SIZE = 100
+
+
+class Audit_log_task(threading.Thread):
+    """
+    Auxillary class for audit log server in isolated thread
+    """
+
+    def run(self):
+        """
+        Start async logger server
+        """
+        _AsyncLogger.start_log_poller(_AsyncLogger.ipc, _AsyncLogger.port)
+
+async def log_validation_failure(message):
+    logger = logging.getLogger("uvicorn.error")
+    logger.error(message)
+    await log_message(message)
 
 def query_limit_n(series, n = MINIMUM_SAMPLE_SIZE) -> bool:
     """
