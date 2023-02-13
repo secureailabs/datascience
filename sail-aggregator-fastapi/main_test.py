@@ -16,14 +16,8 @@ app.include_router(preprocessing.router)
 app.include_router(statistics.router)
 app.include_router(visualization.router)
 
-participant_service = ParticipantServiceClientDict()
-for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports):
-    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, scn_port))
-    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
-
-
 implementation_manager = ImplementationManager.get_instance()
-implementation_manager.set_participant_service(participant_service)
+implementation_manager.set_participant_service(ParticipantSeriviceLocal())
 implementation_manager.initialize()
 
 service_reference = TestServiceReference.get_instance()

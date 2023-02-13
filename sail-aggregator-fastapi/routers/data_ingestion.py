@@ -30,7 +30,6 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 router = APIRouter(
     prefix='/data_ingestion',
-    tags = ['Data Ingestion Functionality']
 )
 # service_reference = TestServiceReference.get_instance()
 
@@ -39,7 +38,7 @@ class DataFederation(BaseModel):
 
 # DATA INGESTION
 @router.post(
-    path="/read_longitudinal_fhirv1.",
+    path="/read_longitudinal_fhirv1",
     description="Reads a Longitudinal dataset from a fhirv1 data source.",
     response_description="Reference to Longitudinal Dataframe model.",
     response_model=dict,
@@ -58,7 +57,7 @@ async def read_longitudinal_fhirv1() -> dict:
 
 
 @router.post(
-    path="/read_dataset_tabular_from_longitudinal.",
+    path="/read_dataset_tabular_from_longitudinal",
     description="Populates a Tabular dataset from a Longitudinal dataset.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,
@@ -92,7 +91,7 @@ async def read_dataset_tabular_from_longitudinal(
 
 # TODO: add 'read' to operation_id
 @router.post(
-    path="/dataset_tabular_fhirv1.",
+    path="/dataset_tabular_fhirv1",
     description="Pull data from fhirv1 source straight to tabular Dataframe.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,
@@ -125,7 +124,7 @@ async def dataset_tabular_fhirv1(
 
 
 @router.post(
-    path="/read_tabular_dataframe_csvv1.",
+    path="/read_tabular_dataframe_csvv1",
     description="Pull a Tabular Dataframe from csvv1 source.",
     response_description="Reference to Tabular Dataframe.",
     response_model=dict,

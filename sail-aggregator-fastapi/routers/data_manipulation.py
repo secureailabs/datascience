@@ -27,7 +27,6 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 router = APIRouter(
     prefix='/data_manipulation',
-    tags = ['Data Manipulation Functionality']
 )
 
 

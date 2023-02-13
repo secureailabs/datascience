@@ -1,7 +1,9 @@
 import plotly.graph_objects as go
-from fast_api_client.models import BodyVisualizationHistogram, BodyVisualizationKernelDensityEstimation
+from fast_api_client.models import BodyHistogram, BodyKernelDensityEstimation
 from fast_api_client.sail_class import SyncOperations
 from plotly.graph_objects import Figure
+from config import validate, query_limit_n
+
 
 
 def histogram(operation: SyncOperations, series_1_id: str, bin_count: int) -> Figure:
@@ -48,8 +50,8 @@ def histogram(operation: SyncOperations, series_1_id: str, bin_count: int) -> Fi
     It will show you the result in the plot.
 
     """
-    body = BodyVisualizationHistogram(series_1_id, bin_count)
-    result = operation.visualization_histogram(body).additional_properties["figure"]
+    body = BodyHistogram(series_1_id, bin_count)
+    result = operation.histogram(body).additional_properties["figure"]
 
     return go.Figure(result)
 
@@ -69,7 +71,7 @@ def kernel_density_estimation(operation: SyncOperations, series_1_id: str, bin_s
         :rtype: pyplot object
 
     """
-    body = BodyVisualizationKernelDensityEstimation(series_1_id, bin_size)
-    result = operation.visualization_kernel_density_estimation(body).additional_properties["figure"]
+    body = BodyKernelDensityEstimation(series_1_id, bin_size)
+    result = operation.kernel_density_estimation(body).additional_properties["figure"]
 
     return go.Figure(result)

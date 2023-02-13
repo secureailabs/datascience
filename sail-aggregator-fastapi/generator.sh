@@ -1,6 +1,6 @@
 #!/bin/bash
 
-generatedDir="generated"
+generatedDir="generated2"
 
 # Create the generated folder if it doesn't exist
 mkdir -p $generatedDir

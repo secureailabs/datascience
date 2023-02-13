@@ -3,6 +3,7 @@ from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, statu
 from fastapi import APIRouter
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 from sail_safe_functions.aggregator import visualization
+from config import validate, query_limit_n
 
 import config
 import os
@@ -32,7 +33,6 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 router = APIRouter(
     prefix='/visualisation',
-    tags = ['Visualisation Functionality']
 )
 
 @router.post(

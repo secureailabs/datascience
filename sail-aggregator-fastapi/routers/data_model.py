@@ -8,14 +8,15 @@ from sail_safe_functions.aggregator.data_model.data_model_tabular import DataMod
 
 router = APIRouter(
     prefix='/data_model',
-    tags = ['Data Model Functionality']
 )
+
+dataframe_name_lookup = {}
 
 # DATA MODEL
 service_reference = TestServiceReference.get_instance()
 
 @router.post(
-    path="/new_data_frame_tabular/",
+    path="/new_data_frame_tabular",
     description="Create new Tabular Data Model",
     response_description="Reference to generated tabular data model",
     response_model=dict,

@@ -31,7 +31,6 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 router = APIRouter(
     prefix='/preprocessing',
-    tags = ['Preprocessing Functionality']
 )
 
 # Doesn't work but we should allow it

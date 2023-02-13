@@ -3,8 +3,10 @@ from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, statu
 from fastapi import APIRouter
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 from sail_safe_functions.aggregator import statistics
-
+from sail_safe_functions.aggregator.statistics import wilcoxon_singed_rank_test
 import config
+from config import validate, query_limit_n
+
 import os
 import json
 # from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
@@ -32,7 +34,6 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 router = APIRouter(
     prefix='/statistics',
-    tags = ['Statistics Functionality']
 )
 
 @router.post(
@@ -391,5 +392,5 @@ async def wilcoxon_signed_rank_test(
     await validate(series_1)
     await validate(series_2)
 
-    w_statistic_sail, p_value_sail = statistics.wilcoxon_signed_rank_test(series_1, series_2, alternative, "cdf")
+    w_statistic_sail, p_value_sail = wilcoxon_singed_rank_test(series_1, series_2, alternative, "cdf")
     return {"w_statistic": w_statistic_sail, "p_value": p_value_sail}

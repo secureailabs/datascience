@@ -3,15 +3,15 @@ from typing import Tuple
 
 from fast_api_client.models import (
     BodyMannWhitneyUTest,
-    BodyStatisticsChisquare,
-    BodyStatisticsKolmogorovSmirnovTest,
-    BodyStatisticsLeveneTest,
-    BodyStatisticsPairedTTest,
-    BodyStatisticsPearson,
-    BodyStatisticsSpearman,
-    BodyStatisticsStudentTTest,
-    BodyStatisticsWelchTTest,
-    BodyStatisticsWilcoxonSignedRankTest,
+    BodyChisquare,
+    BodyKolmogorovSmirnovTest,
+    BodyLeveneTest,
+    BodyPairedTTest,
+    BodyPearson,
+    BodySpearman,
+    BodyStudentTTest,
+    BodyWelchTTest,
+    BodyWilcoxonSignedRankTest,
 )
 from fast_api_client.sail_class import SyncOperations
 
@@ -40,7 +40,7 @@ def count(operation: SyncOperations, series_1_id: str) -> int:
     int
        The count of the sample series.
     """
-    return operation.statistics_count(series_1_id).additional_properties["count"]
+    return operation.count(series_1_id).additional_properties["count"]
 
 
 def mean(operation: SyncOperations, series_1_id: str):
@@ -58,7 +58,7 @@ def mean(operation: SyncOperations, series_1_id: str):
     int
        The mean of the sample series.
     """
-    return operation.statistics_mean(series_1_id).additional_properties["mean"]
+    return operation.mean(series_1_id).additional_properties["mean"]
 
 
 def chisquare(operation: SyncOperations, series_1_id: str, series_2_id: str) -> Tuple[float, float]:
@@ -80,8 +80,8 @@ def chisquare(operation: SyncOperations, series_1_id: str, series_2_id: str) -> 
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsChisquare(series_1_id, series_2_id)
-    return operation.statistics_chisquare(body).additional_properties["chisquare"]
+    body = BodyChisquare(series_1_id, series_2_id)
+    return operation.chisquare(body).additional_properties["chisquare"]
 
 
 def kolmogorov_smirnov_test(operation: SyncOperations, series_1_id: str, type_distribution: str) -> Tuple[float, float]:
@@ -102,8 +102,8 @@ def kolmogorov_smirnov_test(operation: SyncOperations, series_1_id: str, type_di
     float
        The p-value of the sample series compared to the distriubtion.
     """
-    body = BodyStatisticsKolmogorovSmirnovTest(series_1_id, type_distribution)
-    result = operation.statistics_kolmogorov_smirnov_test(body).additional_properties["kolmogorov_smirnov_test"]
+    body = BodyKolmogorovSmirnovTest(series_1_id, type_distribution)
+    result = operation.kolmogorov_smirnov_test(body).additional_properties["kolmogorov_smirnov_test"]
     return result[0], result[1]
 
 
@@ -122,7 +122,7 @@ def kurtosis(operation: SyncOperations, series_1_id: str) -> float:
     float
        The kurtosis of the sample series.
     """
-    return operation.statistics_kurtosis(series_1_id).additional_properties["kurtosis"]
+    return operation.kurtosis(series_1_id).additional_properties["kurtosis"]
 
 
 def levene_test(operation: SyncOperations, series_1_id: str, series_2_id: str) -> Tuple[float, float]:
@@ -145,9 +145,9 @@ def levene_test(operation: SyncOperations, series_1_id: str, series_2_id: str) -
        The p-value of the sample series.
     """
 
-    body = BodyStatisticsLeveneTest(series_1_id, series_2_id)
+    body = BodyLeveneTest(series_1_id, series_2_id)
 
-    result = operation.statistics_levene_test(body).additional_properties
+    result = operation.levene_test(body).additional_properties
 
     return result["f_statistic"], result["p_value"]
 
@@ -200,7 +200,7 @@ def min_max(operation: SyncOperations, series_1_id: str) -> Tuple[float, float]:
        The maximum value of the sample series.
     """
 
-    result = operation.statistics_min_max(series_1_id).additional_properties
+    result = operation.min_max(series_1_id).additional_properties
 
     return result["min"], result["max"]
 
@@ -228,9 +228,9 @@ def paired_t_test(
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsPairedTTest(series_1_id, series_2_id, alternative)
+    body = BodyPairedTTest(series_1_id, series_2_id, alternative)
 
-    result = operation.statistics_paired_t_test(body).additional_properties
+    result = operation.paired_t_test(body).additional_properties
 
     return result["t_statistic"], result["p_value"]
 
@@ -256,9 +256,9 @@ def pearson(operation: SyncOperations, series_1_id: str, series_2_id: str, alter
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsPearson(series_1_id, series_2_id, alternative)
+    body = BodyPearson(series_1_id, series_2_id, alternative)
 
-    result = operation.statistics_pearson(body).additional_properties
+    result = operation.pearson(body).additional_properties
 
     return result["pearson"], result["p_value"]
 
@@ -279,7 +279,7 @@ def skewness(operation: SyncOperations, series_1_id: str) -> float:
        The skewness value of the sample series.
     """
 
-    return operation.statistics_skewness(series_1_id).additional_properties["skewness"]
+    return operation.skewness(series_1_id).additional_properties["skewness"]
 
 
 def spearman(operation: SyncOperations, series_1_id: str, series_2_id: str, alternative: str) -> Tuple[float, float]:
@@ -303,8 +303,8 @@ def spearman(operation: SyncOperations, series_1_id: str, series_2_id: str, alte
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsSpearman(series_1_id, series_2_id, alternative)
-    result = operation.statistics_spearman(body)
+    body = BodySpearman(series_1_id, series_2_id, alternative)
+    result = operation.spearman(body)
 
     return result["spearman"], result["p_value"]
 
@@ -332,8 +332,8 @@ def student_t_test(
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsStudentTTest(series_1_id, series_2_id, alternative)
-    result = operation.statistics_student_t_test(body).additional_properties
+    body = BodyStudentTTest(series_1_id, series_2_id, alternative)
+    result = operation.student_t_test(body).additional_properties
 
     return result["t_statistic"], result["p_value"]
 
@@ -353,7 +353,7 @@ def variance(operation: SyncOperations, series_1_id: str) -> float:
     float
        The variance value of the sample series.
     """
-    return operation.statistics_variance(series_1_id).additional_properties["variance"]
+    return operation.variance(series_1_id).additional_properties["variance"]
 
 
 def welch_t_test(
@@ -379,8 +379,8 @@ def welch_t_test(
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsWelchTTest(series_1_id, series_2_id, alternative)
-    result = operation.statistics_welch_t_test(body).additional_properties
+    body = BodyWelchTTest(series_1_id, series_2_id, alternative)
+    result = operation.welch_t_test(body).additional_properties
     return result["t_statistic"], result["p_value"]
 
 
@@ -407,6 +407,6 @@ def wilcoxon_signed_rank_test(
     float
        The p-value of the sample series.
     """
-    body = BodyStatisticsWilcoxonSignedRankTest(series_1_id, series_2_id, alternative)
-    result = operation.statistics_wilcoxon_signed_rank_test(body)
+    body = BodyWilcoxonSignedRankTest(series_1_id, series_2_id, alternative)
+    result = operation.wilcoxon_signed_rank_test(body)
     return result["w_statistic"], result["p_value"]
