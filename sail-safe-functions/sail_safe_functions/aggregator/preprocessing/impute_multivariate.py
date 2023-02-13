@@ -1,7 +1,7 @@
 from typing import Any, List, Union
 
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_frame_federated import DataFrameFederated
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.preprocessing.impute_multivariate_precompute import ImputeMultivariatePrecompute
 
 

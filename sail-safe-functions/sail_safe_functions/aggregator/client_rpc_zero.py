@@ -1,6 +1,7 @@
 from typing import Type
 
 from sail_core.api.client_rpc_base import ClientRPCBase
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions.aggregator.data_model.data_model_longitudinal import DataModelLongitudinal
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
@@ -9,7 +10,6 @@ from sail_safe_functions.aggregator.reference_data_frame import ReferenceDataFra
 from sail_safe_functions.aggregator.reference_dataset_longitudinal import ReferenceDatasetLongitudinal
 from sail_safe_functions.aggregator.reference_dataset_tabular import ReferenceDatasetTabular
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
-from sail_safe_functions.aggregator.tools_common import check_instance
 from zero import ZeroClient
 
 # TODO move this somewhere

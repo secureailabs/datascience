@@ -42,8 +42,8 @@ for data_frame in list_data_frame:
 
 import numpy
 from sail_safe_functions.aggregator import preprocessing, statistics
-from sail_safe_functions.participant.preprocessing.cdf_precompute import CumulativeDistributionFunctionPrecompute
 
+# TODO create a function to drop nans in a series
 for series in list_series_number:
 
     print(series.series_name)

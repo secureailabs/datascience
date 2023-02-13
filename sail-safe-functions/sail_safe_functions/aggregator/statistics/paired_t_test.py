@@ -4,7 +4,11 @@ import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
-from sail_safe_functions.aggregator.tools_common import check_variance_zero
+from sail_safe_functions.aggregator.tools_common import (
+    check_series_one_value_federated,
+    check_series_paired,
+    check_variance_zero,
+)
 from sail_safe_functions.participant.statistics.paired_t_test_precompute import PairedTTestPrecompute
 from scipy import stats
 from scipy.stats import t
@@ -89,9 +93,10 @@ class PairedTTest(EstimatorTwoSample):
         self.alternative = alternative
 
     def run(self, sample_0: SeriesFederated, sample_1: SeriesFederated) -> Tuple[float, float]:
-        list_list_precompute = []
-        # TODO deal with posibilty sample_0 and sample_1 do not share same child frames: check indexes are the same
 
+        check_series_paired(sample_0, sample_1)
+        check_series_one_value_federated(sample_0)
+        list_list_precompute = []
         participant_service = ImplementationManager.get_instance().get_participant_service()
         for dataset_id in sample_0.list_dataset_id:
             reference_series_0 = sample_0.get_reference_series(dataset_id)

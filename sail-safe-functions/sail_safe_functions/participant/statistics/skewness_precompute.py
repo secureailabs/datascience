@@ -4,12 +4,7 @@ import numpy as np
 from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
-from sail_safe_functions.aggregator.tools_common import (
-    check_empty_series,
-    check_instance,
-    check_series_nan,
-    check_series_one_value,
-)
+from sail_safe_functions.aggregator.tools_common import check_empty_series, check_series_nan, check_series_one_value
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 

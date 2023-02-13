@@ -1,5 +1,5 @@
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_frame_federated import DataFrameFederated
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.preprocessing.convert.tabular_to_float64_precompute import (
     TabularToFloat64Precompute,
 )

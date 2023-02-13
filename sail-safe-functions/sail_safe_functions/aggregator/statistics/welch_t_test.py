@@ -7,7 +7,6 @@ from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.aggregator.tools_common import check_variance_zero
 from sail_safe_functions.participant.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
-from scipy import stats
 from scipy.stats import t
 
 

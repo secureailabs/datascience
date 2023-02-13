@@ -1,5 +1,6 @@
 import uuid
 
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_frame import DataFrame
 from sail_safe_functions.aggregator.dataset_longitudinal import DatasetLongitudinal
 from sail_safe_functions.aggregator.dataset_tabular import DatasetTabular
@@ -8,7 +9,6 @@ from sail_safe_functions.aggregator.reference_dataset_longitudinal import Refere
 from sail_safe_functions.aggregator.reference_dataset_tabular import ReferenceDatasetTabular
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.series import Series
-from sail_safe_functions.aggregator.tools_common import check_instance
 
 
 class ServiceReference:
