@@ -20,6 +20,7 @@ service_reference = TestServiceReference.get_instance()
 if os.environ.get("IV_FILEPATH") is not None:
     IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
+
 with open(IV_SETTINGS_FILE) as initial_settings:
     configuration = json.load(initial_settings)
     for entry in configuration["secure_computation_nodes"]:
