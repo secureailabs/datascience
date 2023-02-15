@@ -23,7 +23,7 @@ list_dataset_id = []
 IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 service_reference = TestServiceReference.get_instance()
 
-MINIMUM_SAMPLE_SIZE = 100
+MINIMUM_SAMPLE_SIZE = 0
 
 
 class Audit_log_task(threading.Thread):

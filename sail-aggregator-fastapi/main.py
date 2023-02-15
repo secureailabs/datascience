@@ -9,7 +9,7 @@ import config
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="sail_aggregator_scn_internal",
+    title="sail_aggregator",
     description="Internally facing API for communicating with the SAIL aggregator node",
     version="0.1.0",
 )

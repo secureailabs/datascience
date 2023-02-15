@@ -1,0 +1,3819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>sail_aggregator_client.sail_class API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sail_aggregator_client.sail_class</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .api.default import (
+    chisquare,
+    count,
+    data_frame_query,
+    data_frame_select_series,
+    data_frame_tabular_select_dataframe,
+    dataframe_drop_missing,
+    dataframe_model_add_new_series_model,
+    dataset_tabular_fhirv1,
+    histogram,
+    kernel_density_estimation,
+    kolmogorov_smirnov_test,
+    kurtosis,
+    landing,
+    levene_test,
+    mann_whitney_u_test,
+    mean,
+    min_max,
+    new_data_model_data_frame,
+    new_series_model_numerical,
+    new_tabular_model,
+    paired_t_test,
+    pearson,
+    read_dataset_tabular_from_longitudinal,
+    read_longitudinal_fhirv1,
+    read_tabular_dataframe_csvv1,
+    skewness,
+    spearman,
+    student_t_test,
+    tabular_model_add_dataframe_model,
+    variance,
+    welch_t_test,
+    wilcoxon_signed_rank_test,
+)
+from .client import AuthenticatedClient, Client
+from .models.body_chisquare import BodyChisquare
+from .models.body_data_frame_query import BodyDataFrameQuery
+from .models.body_data_frame_select_series import BodyDataFrameSelectSeries
+from .models.body_data_frame_tabular_select_dataframe import BodyDataFrameTabularSelectDataframe
+from .models.body_dataframe_model_add_new_series_model import BodyDataframeModelAddNewSeriesModel
+from .models.body_dataset_tabular_fhirv_1 import BodyDatasetTabularFhirv1
+from .models.body_histogram import BodyHistogram
+from .models.body_kernel_density_estimation import BodyKernelDensityEstimation
+from .models.body_kolmogorov_smirnov_test import BodyKolmogorovSmirnovTest
+from .models.body_levene_test import BodyLeveneTest
+from .models.body_mann_whitney_u_test import BodyMannWhitneyUTest
+from .models.body_new_series_model_numerical import BodyNewSeriesModelNumerical
+from .models.body_paired_t_test import BodyPairedTTest
+from .models.body_pearson import BodyPearson
+from .models.body_read_dataset_tabular_from_longitudinal import BodyReadDatasetTabularFromLongitudinal
+from .models.body_spearman import BodySpearman
+from .models.body_student_t_test import BodyStudentTTest
+from .models.body_tabular_model_add_dataframe_model import BodyTabularModelAddDataframeModel
+from .models.body_welch_t_test import BodyWelchTTest
+from .models.body_wilcoxon_signed_rank_test import BodyWilcoxonSignedRankTest
+from .models.chisquare_response_chisquare import ChisquareResponseChisquare
+from .models.count_response_count import CountResponseCount
+from .models.data_federation import DataFederation
+from .models.data_frame_query_response_data_frame_query import DataFrameQueryResponseDataFrameQuery
+from .models.data_frame_select_series_response_data_frame_select_series import (
+    DataFrameSelectSeriesResponseDataFrameSelectSeries,
+)
+from .models.data_frame_tabular_select_dataframe_response_data_frame_tabular_select_dataframe import (
+    DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe,
+)
+from .models.dataframe_drop_missing_response_dataframe_drop_missing import (
+    DataframeDropMissingResponseDataframeDropMissing,
+)
+from .models.dataframe_model_add_new_series_model_response_dataframe_model_add_new_series_model import (
+    DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel,
+)
+from .models.dataset_tabular_fhirv_1_response_dataset_tabular_fhirv_1 import (
+    DatasetTabularFhirv1ResponseDatasetTabularFhirv1,
+)
+from .models.histogram_response_histogram import HistogramResponseHistogram
+from .models.kernel_density_estimation_response_kernel_density_estimation import (
+    KernelDensityEstimationResponseKernelDensityEstimation,
+)
+from .models.kolmogorov_smirnov_test_response_kolmogorov_smirnov_test import (
+    KolmogorovSmirnovTestResponseKolmogorovSmirnovTest,
+)
+from .models.kurtosis_response_kurtosis import KurtosisResponseKurtosis
+from .models.landing_response_landing import LandingResponseLanding
+from .models.levene_test_response_levene_test import LeveneTestResponseLeveneTest
+from .models.mann_whitney_u_test_response_mann_whitney_u_test import MannWhitneyUTestResponseMannWhitneyUTest
+from .models.mean_response_mean import MeanResponseMean
+from .models.min_max_response_min_max import MinMaxResponseMinMax
+from .models.new_data_model_data_frame_response_new_data_model_data_frame import (
+    NewDataModelDataFrameResponseNewDataModelDataFrame,
+)
+from .models.new_series_model_numerical_response_new_series_model_numerical import (
+    NewSeriesModelNumericalResponseNewSeriesModelNumerical,
+)
+from .models.new_tabular_model_response_new_tabular_model import NewTabularModelResponseNewTabularModel
+from .models.paired_t_test_response_paired_t_test import PairedTTestResponsePairedTTest
+from .models.pearson_response_pearson import PearsonResponsePearson
+from .models.read_dataset_tabular_from_longitudinal_response_read_dataset_tabular_from_longitudinal import (
+    ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal,
+)
+from .models.read_longitudinal_fhirv_1_response_read_longitudinal_fhirv_1 import (
+    ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1,
+)
+from .models.read_tabular_dataframe_csvv_1_response_read_tabular_dataframe_csvv_1 import (
+    ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1,
+)
+from .models.skewness_response_skewness import SkewnessResponseSkewness
+from .models.spearman_response_spearman import SpearmanResponseSpearman
+from .models.student_t_test_response_student_t_test import StudentTTestResponseStudentTTest
+from .models.tabular_model_add_dataframe_model_response_tabular_model_add_dataframe_model import (
+    TabularModelAddDataframeModelResponseTabularModelAddDataframeModel,
+)
+from .models.variance_response_variance import VarianceResponseVariance
+from .models.welch_t_test_response_welch_t_test import WelchTTestResponseWelchTTest
+from .models.wilcoxon_signed_rank_test_response_wilcoxon_signed_rank_test import (
+    WilcoxonSignedRankTestResponseWilcoxonSignedRankTest,
+)
+
+
+class SyncAuthenticatedOperations:
+    def __init__(self, client: AuthenticatedClient) -&gt; None:
+        self._client = client
+
+
+class SyncOperations:
+    def __init__(self, client: Client) -&gt; None:
+        self._client = client
+
+    def new_tabular_model(
+        self,
+    ) -&gt; NewTabularModelResponseNewTabularModel:
+        &#34;&#34;&#34;New Data Frame Tabular
+
+         Create new Tabular Data Model
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewTabularModelResponseNewTabularModel]
+        &#34;&#34;&#34;
+
+        response = new_tabular_model.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewTabularModelResponseNewTabularModel)
+        return response
+
+    def new_series_model_numerical(
+        self,
+        json_body: BodyNewSeriesModelNumerical,
+    ) -&gt; NewSeriesModelNumericalResponseNewSeriesModelNumerical:
+        &#34;&#34;&#34;New Series Model Numerical
+
+         Create new numerical Series Model
+
+        Args:
+            json_body (BodyNewSeriesModelNumerical):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewSeriesModelNumericalResponseNewSeriesModelNumerical]
+        &#34;&#34;&#34;
+
+        response = new_series_model_numerical.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewSeriesModelNumericalResponseNewSeriesModelNumerical)
+        return response
+
+    def tabular_model_add_dataframe_model(
+        self,
+        json_body: BodyTabularModelAddDataframeModel,
+    ) -&gt; TabularModelAddDataframeModelResponseTabularModelAddDataframeModel:
+        &#34;&#34;&#34;Tabular Model Add Dataframe Model
+
+         Add a Dataframe model to a Tabular Dataframe Model
+
+        Args:
+            json_body (BodyTabularModelAddDataframeModel):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[TabularModelAddDataframeModelResponseTabularModelAddDataframeModel]
+        &#34;&#34;&#34;
+
+        response = tabular_model_add_dataframe_model.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, TabularModelAddDataframeModelResponseTabularModelAddDataframeModel)
+        return response
+
+    def new_data_model_data_frame(
+        self,
+        json_body: str,
+    ) -&gt; NewDataModelDataFrameResponseNewDataModelDataFrame:
+        &#34;&#34;&#34;New Data Model Data Frame
+
+         Create a new Dataframe model.
+
+        Args:
+            json_body (str): Desired name of the new Dataframe
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewDataModelDataFrameResponseNewDataModelDataFrame]
+        &#34;&#34;&#34;
+
+        response = new_data_model_data_frame.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewDataModelDataFrameResponseNewDataModelDataFrame)
+        return response
+
+    def dataframe_model_add_new_series_model(
+        self,
+        json_body: BodyDataframeModelAddNewSeriesModel,
+    ) -&gt; DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel:
+        &#34;&#34;&#34;Dataframe Model Add Series Model
+
+         Create a new numerical series model and add it to a Dataframe model.
+
+        Args:
+            json_body (BodyDataframeModelAddNewSeriesModel):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel]
+        &#34;&#34;&#34;
+
+        response = dataframe_model_add_new_series_model.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel)
+        return response
+
+    def read_longitudinal_fhirv1(
+        self,
+    ) -&gt; ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1:
+        &#34;&#34;&#34;Read Longitudinal Fhirv1
+
+         Reads a Longitudinal dataset from a fhirv1 data source.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1]
+        &#34;&#34;&#34;
+
+        response = read_longitudinal_fhirv1.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1)
+        return response
+
+    def read_dataset_tabular_from_longitudinal(
+        self,
+        json_body: BodyReadDatasetTabularFromLongitudinal,
+    ) -&gt; ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal:
+        &#34;&#34;&#34;Read Dataset Tabular From Longitudinal
+
+         Populates a Tabular dataset from a Longitudinal dataset.
+
+        Args:
+            json_body (BodyReadDatasetTabularFromLongitudinal):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal]
+        &#34;&#34;&#34;
+
+        response = read_dataset_tabular_from_longitudinal.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal)
+        return response
+
+    def dataset_tabular_fhirv1(
+        self,
+        json_body: BodyDatasetTabularFhirv1,
+    ) -&gt; DatasetTabularFhirv1ResponseDatasetTabularFhirv1:
+        &#34;&#34;&#34;Dataset Tabular Fhirv1
+
+         Pull data from fhirv1 source straight to tabular Dataframe.
+
+        Args:
+            json_body (BodyDatasetTabularFhirv1):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DatasetTabularFhirv1ResponseDatasetTabularFhirv1]
+        &#34;&#34;&#34;
+
+        response = dataset_tabular_fhirv1.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DatasetTabularFhirv1ResponseDatasetTabularFhirv1)
+        return response
+
+    def read_tabular_dataframe_csvv1(
+        self,
+        json_body: DataFederation,
+    ) -&gt; ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1:
+        &#34;&#34;&#34;Read Tabular Dataframe Csvv1
+
+         Pull a Tabular Dataframe from csvv1 source.
+
+        Args:
+            json_body (DataFederation): TODO: What is this datatype? This should be a reference
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1]
+        &#34;&#34;&#34;
+
+        response = read_tabular_dataframe_csvv1.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1)
+        return response
+
+    def data_frame_tabular_select_dataframe(
+        self,
+        json_body: BodyDataFrameTabularSelectDataframe,
+    ) -&gt; DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe:
+        &#34;&#34;&#34;Data Frame Tabular Select Dataframe
+
+         Select an individual datafame from a tabular dataframe.
+
+        Args:
+            json_body (BodyDataFrameTabularSelectDataframe):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe]
+        &#34;&#34;&#34;
+
+        response = data_frame_tabular_select_dataframe.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe)
+        return response
+
+    def data_frame_select_series(
+        self,
+        json_body: BodyDataFrameSelectSeries,
+    ) -&gt; DataFrameSelectSeriesResponseDataFrameSelectSeries:
+        &#34;&#34;&#34;Data Frame Select Series
+
+         Select an individual series from a  dataframe.
+
+        Args:
+            json_body (BodyDataFrameSelectSeries):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameSelectSeriesResponseDataFrameSelectSeries]
+        &#34;&#34;&#34;
+
+        response = data_frame_select_series.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameSelectSeriesResponseDataFrameSelectSeries)
+        return response
+
+    def dataframe_drop_missing(
+        self,
+        json_body: str,
+    ) -&gt; DataframeDropMissingResponseDataframeDropMissing:
+        &#34;&#34;&#34;Dataframe Drop Missing
+
+         Drop all missing values from a dataframe and return this copy.
+
+        Args:
+            json_body (str): Identifier of the dataframe to be cleaned.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataframeDropMissingResponseDataframeDropMissing]
+        &#34;&#34;&#34;
+
+        response = dataframe_drop_missing.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataframeDropMissingResponseDataframeDropMissing)
+        return response
+
+    def data_frame_query(
+        self,
+        json_body: BodyDataFrameQuery,
+    ) -&gt; DataFrameQueryResponseDataFrameQuery:
+        &#34;&#34;&#34;Data Frame Query
+
+         Query a Dataframe for a given String.
+
+        Args:
+            json_body (BodyDataFrameQuery):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameQueryResponseDataFrameQuery]
+        &#34;&#34;&#34;
+
+        response = data_frame_query.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameQueryResponseDataFrameQuery)
+        return response
+
+    def chisquare(
+        self,
+        json_body: BodyChisquare,
+    ) -&gt; ChisquareResponseChisquare:
+        &#34;&#34;&#34;Chisquare
+
+         Computes the chisquare of two Series.
+
+        Args:
+            json_body (BodyChisquare):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ChisquareResponseChisquare]
+        &#34;&#34;&#34;
+
+        response = chisquare.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ChisquareResponseChisquare)
+        return response
+
+    def count(
+        self,
+        json_body: str,
+    ) -&gt; CountResponseCount:
+        &#34;&#34;&#34;Count
+
+         Computes the count of a Series.
+
+        Args:
+            json_body (str): The identifier of the series to be counted.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[CountResponseCount]
+        &#34;&#34;&#34;
+
+        response = count.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, CountResponseCount)
+        return response
+
+    def kolmogorov_smirnov_test(
+        self,
+        json_body: BodyKolmogorovSmirnovTest,
+    ) -&gt; KolmogorovSmirnovTestResponseKolmogorovSmirnovTest:
+        &#34;&#34;&#34;Kolmogorov Smirnov Test
+
+         Computes Kolmogorov Smirnov Test of a Series.
+
+        Args:
+            json_body (BodyKolmogorovSmirnovTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KolmogorovSmirnovTestResponseKolmogorovSmirnovTest]
+        &#34;&#34;&#34;
+
+        response = kolmogorov_smirnov_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KolmogorovSmirnovTestResponseKolmogorovSmirnovTest)
+        return response
+
+    def kurtosis(
+        self,
+        series_id: str,
+    ) -&gt; KurtosisResponseKurtosis:
+        &#34;&#34;&#34;Kurtosis
+
+         Computes Kurtosis of a Series.
+
+        Args:
+            series_id (str):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KurtosisResponseKurtosis]
+        &#34;&#34;&#34;
+
+        response = kurtosis.sync(
+            client=self._client,
+            series_id=series_id,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KurtosisResponseKurtosis)
+        return response
+
+    def levene_test(
+        self,
+        json_body: BodyLeveneTest,
+    ) -&gt; LeveneTestResponseLeveneTest:
+        &#34;&#34;&#34;Levene Test
+
+         Computes the Levene Test of two Series.
+
+        Args:
+            json_body (BodyLeveneTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[LeveneTestResponseLeveneTest]
+        &#34;&#34;&#34;
+
+        response = levene_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, LeveneTestResponseLeveneTest)
+        return response
+
+    def mann_whitney_u_test(
+        self,
+        json_body: BodyMannWhitneyUTest,
+    ) -&gt; MannWhitneyUTestResponseMannWhitneyUTest:
+        &#34;&#34;&#34;Mann Whitney U Test
+
+         Computes the Mann Whitney U Test of two Series.
+
+        Args:
+            json_body (BodyMannWhitneyUTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MannWhitneyUTestResponseMannWhitneyUTest]
+        &#34;&#34;&#34;
+
+        response = mann_whitney_u_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MannWhitneyUTestResponseMannWhitneyUTest)
+        return response
+
+    def mean(
+        self,
+        json_body: str,
+    ) -&gt; MeanResponseMean:
+        &#34;&#34;&#34;Mean
+
+         Computes the Mean of a Series.
+
+        Args:
+            json_body (str): The identifer of the Series to be computed.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MeanResponseMean]
+        &#34;&#34;&#34;
+
+        response = mean.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MeanResponseMean)
+        return response
+
+    def min_max(
+        self,
+        json_body: str,
+    ) -&gt; MinMaxResponseMinMax:
+        &#34;&#34;&#34;Min Max
+
+         Computes the Min and Max of a Series.
+
+        Args:
+            json_body (str): The identifer of the Series to be computed.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MinMaxResponseMinMax]
+        &#34;&#34;&#34;
+
+        response = min_max.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MinMaxResponseMinMax)
+        return response
+
+    def paired_t_test(
+        self,
+        json_body: BodyPairedTTest,
+    ) -&gt; PairedTTestResponsePairedTTest:
+        &#34;&#34;&#34;Paired T Test
+
+         Computes the Paired T Test of two Series.
+
+        Args:
+            json_body (BodyPairedTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[PairedTTestResponsePairedTTest]
+        &#34;&#34;&#34;
+
+        response = paired_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, PairedTTestResponsePairedTTest)
+        return response
+
+    def pearson(
+        self,
+        json_body: BodyPearson,
+    ) -&gt; PearsonResponsePearson:
+        &#34;&#34;&#34;Pearson
+
+         Computes the Pearson of two Series.
+
+        Args:
+            json_body (BodyPearson):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[PearsonResponsePearson]
+        &#34;&#34;&#34;
+
+        response = pearson.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, PearsonResponsePearson)
+        return response
+
+    def skewness(
+        self,
+        series_id: str,
+    ) -&gt; SkewnessResponseSkewness:
+        &#34;&#34;&#34;Skewness
+
+         Computes the Skewness of a Series.
+
+        Args:
+            series_id (str):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[SkewnessResponseSkewness]
+        &#34;&#34;&#34;
+
+        response = skewness.sync(
+            client=self._client,
+            series_id=series_id,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, SkewnessResponseSkewness)
+        return response
+
+    def spearman(
+        self,
+        json_body: BodySpearman,
+    ) -&gt; SpearmanResponseSpearman:
+        &#34;&#34;&#34;Spearman
+
+         Computes the Spearman statistic of two Series.
+
+        Args:
+            json_body (BodySpearman):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[SpearmanResponseSpearman]
+        &#34;&#34;&#34;
+
+        response = spearman.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, SpearmanResponseSpearman)
+        return response
+
+    def student_t_test(
+        self,
+        json_body: BodyStudentTTest,
+    ) -&gt; StudentTTestResponseStudentTTest:
+        &#34;&#34;&#34;Student T Test
+
+         Computes the Student T test of two Series.
+
+        Args:
+            json_body (BodyStudentTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[StudentTTestResponseStudentTTest]
+        &#34;&#34;&#34;
+
+        response = student_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, StudentTTestResponseStudentTTest)
+        return response
+
+    def variance(
+        self,
+        json_body: str,
+    ) -&gt; VarianceResponseVariance:
+        &#34;&#34;&#34;Variance
+
+         Computes the Variance of a Series.
+
+        Args:
+            json_body (str): The identifier of the series
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[VarianceResponseVariance]
+        &#34;&#34;&#34;
+
+        response = variance.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, VarianceResponseVariance)
+        return response
+
+    def welch_t_test(
+        self,
+        json_body: BodyWelchTTest,
+    ) -&gt; WelchTTestResponseWelchTTest:
+        &#34;&#34;&#34;Welch T Test
+
+         Computes the Welch T test of two Series.
+
+        Args:
+            json_body (BodyWelchTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[WelchTTestResponseWelchTTest]
+        &#34;&#34;&#34;
+
+        response = welch_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, WelchTTestResponseWelchTTest)
+        return response
+
+    def wilcoxon_signed_rank_test(
+        self,
+        json_body: BodyWilcoxonSignedRankTest,
+    ) -&gt; WilcoxonSignedRankTestResponseWilcoxonSignedRankTest:
+        &#34;&#34;&#34;Wilcoxon Signed Rank Test
+
+         Computes the Wilcoxon signed rank test of two Series.
+
+        Args:
+            json_body (BodyWilcoxonSignedRankTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[WilcoxonSignedRankTestResponseWilcoxonSignedRankTest]
+        &#34;&#34;&#34;
+
+        response = wilcoxon_signed_rank_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, WilcoxonSignedRankTestResponseWilcoxonSignedRankTest)
+        return response
+
+    def histogram(
+        self,
+        json_body: BodyHistogram,
+    ) -&gt; HistogramResponseHistogram:
+        &#34;&#34;&#34;Histogram Federated
+
+         Creates a histogram of a given Series.
+
+        Args:
+            json_body (BodyHistogram):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[HistogramResponseHistogram]
+        &#34;&#34;&#34;
+
+        response = histogram.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, HistogramResponseHistogram)
+        return response
+
+    def kernel_density_estimation(
+        self,
+        json_body: BodyKernelDensityEstimation,
+    ) -&gt; KernelDensityEstimationResponseKernelDensityEstimation:
+        &#34;&#34;&#34;Kernel Density Estimation
+
+         Creates a Kernel Density Estimation of a given Series.
+
+        Args:
+            json_body (BodyKernelDensityEstimation):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KernelDensityEstimationResponseKernelDensityEstimation]
+        &#34;&#34;&#34;
+
+        response = kernel_density_estimation.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KernelDensityEstimationResponseKernelDensityEstimation)
+        return response
+
+    def landing(
+        self,
+    ) -&gt; LandingResponseLanding:
+        &#34;&#34;&#34;Home
+
+         landing page
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[LandingResponseLanding]
+        &#34;&#34;&#34;
+
+        response = landing.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, LandingResponseLanding)
+        return response</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sail_aggregator_client.sail_class.SyncAuthenticatedOperations"><code class="flex name class">
+<span>class <span class="ident">SyncAuthenticatedOperations</span></span>
+<span>(</span><span>client: <a title="sail_aggregator_client.client.AuthenticatedClient" href="client.html#sail_aggregator_client.client.AuthenticatedClient">AuthenticatedClient</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SyncAuthenticatedOperations:
+    def __init__(self, client: AuthenticatedClient) -&gt; None:
+        self._client = client</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations"><code class="flex name class">
+<span>class <span class="ident">SyncOperations</span></span>
+<span>(</span><span>client: <a title="sail_aggregator_client.client.Client" href="client.html#sail_aggregator_client.client.Client">Client</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SyncOperations:
+    def __init__(self, client: Client) -&gt; None:
+        self._client = client
+
+    def new_tabular_model(
+        self,
+    ) -&gt; NewTabularModelResponseNewTabularModel:
+        &#34;&#34;&#34;New Data Frame Tabular
+
+         Create new Tabular Data Model
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewTabularModelResponseNewTabularModel]
+        &#34;&#34;&#34;
+
+        response = new_tabular_model.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewTabularModelResponseNewTabularModel)
+        return response
+
+    def new_series_model_numerical(
+        self,
+        json_body: BodyNewSeriesModelNumerical,
+    ) -&gt; NewSeriesModelNumericalResponseNewSeriesModelNumerical:
+        &#34;&#34;&#34;New Series Model Numerical
+
+         Create new numerical Series Model
+
+        Args:
+            json_body (BodyNewSeriesModelNumerical):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewSeriesModelNumericalResponseNewSeriesModelNumerical]
+        &#34;&#34;&#34;
+
+        response = new_series_model_numerical.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewSeriesModelNumericalResponseNewSeriesModelNumerical)
+        return response
+
+    def tabular_model_add_dataframe_model(
+        self,
+        json_body: BodyTabularModelAddDataframeModel,
+    ) -&gt; TabularModelAddDataframeModelResponseTabularModelAddDataframeModel:
+        &#34;&#34;&#34;Tabular Model Add Dataframe Model
+
+         Add a Dataframe model to a Tabular Dataframe Model
+
+        Args:
+            json_body (BodyTabularModelAddDataframeModel):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[TabularModelAddDataframeModelResponseTabularModelAddDataframeModel]
+        &#34;&#34;&#34;
+
+        response = tabular_model_add_dataframe_model.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, TabularModelAddDataframeModelResponseTabularModelAddDataframeModel)
+        return response
+
+    def new_data_model_data_frame(
+        self,
+        json_body: str,
+    ) -&gt; NewDataModelDataFrameResponseNewDataModelDataFrame:
+        &#34;&#34;&#34;New Data Model Data Frame
+
+         Create a new Dataframe model.
+
+        Args:
+            json_body (str): Desired name of the new Dataframe
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[NewDataModelDataFrameResponseNewDataModelDataFrame]
+        &#34;&#34;&#34;
+
+        response = new_data_model_data_frame.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, NewDataModelDataFrameResponseNewDataModelDataFrame)
+        return response
+
+    def dataframe_model_add_new_series_model(
+        self,
+        json_body: BodyDataframeModelAddNewSeriesModel,
+    ) -&gt; DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel:
+        &#34;&#34;&#34;Dataframe Model Add Series Model
+
+         Create a new numerical series model and add it to a Dataframe model.
+
+        Args:
+            json_body (BodyDataframeModelAddNewSeriesModel):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel]
+        &#34;&#34;&#34;
+
+        response = dataframe_model_add_new_series_model.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel)
+        return response
+
+    def read_longitudinal_fhirv1(
+        self,
+    ) -&gt; ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1:
+        &#34;&#34;&#34;Read Longitudinal Fhirv1
+
+         Reads a Longitudinal dataset from a fhirv1 data source.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1]
+        &#34;&#34;&#34;
+
+        response = read_longitudinal_fhirv1.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1)
+        return response
+
+    def read_dataset_tabular_from_longitudinal(
+        self,
+        json_body: BodyReadDatasetTabularFromLongitudinal,
+    ) -&gt; ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal:
+        &#34;&#34;&#34;Read Dataset Tabular From Longitudinal
+
+         Populates a Tabular dataset from a Longitudinal dataset.
+
+        Args:
+            json_body (BodyReadDatasetTabularFromLongitudinal):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal]
+        &#34;&#34;&#34;
+
+        response = read_dataset_tabular_from_longitudinal.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal)
+        return response
+
+    def dataset_tabular_fhirv1(
+        self,
+        json_body: BodyDatasetTabularFhirv1,
+    ) -&gt; DatasetTabularFhirv1ResponseDatasetTabularFhirv1:
+        &#34;&#34;&#34;Dataset Tabular Fhirv1
+
+         Pull data from fhirv1 source straight to tabular Dataframe.
+
+        Args:
+            json_body (BodyDatasetTabularFhirv1):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DatasetTabularFhirv1ResponseDatasetTabularFhirv1]
+        &#34;&#34;&#34;
+
+        response = dataset_tabular_fhirv1.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DatasetTabularFhirv1ResponseDatasetTabularFhirv1)
+        return response
+
+    def read_tabular_dataframe_csvv1(
+        self,
+        json_body: DataFederation,
+    ) -&gt; ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1:
+        &#34;&#34;&#34;Read Tabular Dataframe Csvv1
+
+         Pull a Tabular Dataframe from csvv1 source.
+
+        Args:
+            json_body (DataFederation): TODO: What is this datatype? This should be a reference
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1]
+        &#34;&#34;&#34;
+
+        response = read_tabular_dataframe_csvv1.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1)
+        return response
+
+    def data_frame_tabular_select_dataframe(
+        self,
+        json_body: BodyDataFrameTabularSelectDataframe,
+    ) -&gt; DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe:
+        &#34;&#34;&#34;Data Frame Tabular Select Dataframe
+
+         Select an individual datafame from a tabular dataframe.
+
+        Args:
+            json_body (BodyDataFrameTabularSelectDataframe):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe]
+        &#34;&#34;&#34;
+
+        response = data_frame_tabular_select_dataframe.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe)
+        return response
+
+    def data_frame_select_series(
+        self,
+        json_body: BodyDataFrameSelectSeries,
+    ) -&gt; DataFrameSelectSeriesResponseDataFrameSelectSeries:
+        &#34;&#34;&#34;Data Frame Select Series
+
+         Select an individual series from a  dataframe.
+
+        Args:
+            json_body (BodyDataFrameSelectSeries):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameSelectSeriesResponseDataFrameSelectSeries]
+        &#34;&#34;&#34;
+
+        response = data_frame_select_series.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameSelectSeriesResponseDataFrameSelectSeries)
+        return response
+
+    def dataframe_drop_missing(
+        self,
+        json_body: str,
+    ) -&gt; DataframeDropMissingResponseDataframeDropMissing:
+        &#34;&#34;&#34;Dataframe Drop Missing
+
+         Drop all missing values from a dataframe and return this copy.
+
+        Args:
+            json_body (str): Identifier of the dataframe to be cleaned.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataframeDropMissingResponseDataframeDropMissing]
+        &#34;&#34;&#34;
+
+        response = dataframe_drop_missing.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataframeDropMissingResponseDataframeDropMissing)
+        return response
+
+    def data_frame_query(
+        self,
+        json_body: BodyDataFrameQuery,
+    ) -&gt; DataFrameQueryResponseDataFrameQuery:
+        &#34;&#34;&#34;Data Frame Query
+
+         Query a Dataframe for a given String.
+
+        Args:
+            json_body (BodyDataFrameQuery):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[DataFrameQueryResponseDataFrameQuery]
+        &#34;&#34;&#34;
+
+        response = data_frame_query.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, DataFrameQueryResponseDataFrameQuery)
+        return response
+
+    def chisquare(
+        self,
+        json_body: BodyChisquare,
+    ) -&gt; ChisquareResponseChisquare:
+        &#34;&#34;&#34;Chisquare
+
+         Computes the chisquare of two Series.
+
+        Args:
+            json_body (BodyChisquare):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[ChisquareResponseChisquare]
+        &#34;&#34;&#34;
+
+        response = chisquare.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, ChisquareResponseChisquare)
+        return response
+
+    def count(
+        self,
+        json_body: str,
+    ) -&gt; CountResponseCount:
+        &#34;&#34;&#34;Count
+
+         Computes the count of a Series.
+
+        Args:
+            json_body (str): The identifier of the series to be counted.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[CountResponseCount]
+        &#34;&#34;&#34;
+
+        response = count.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, CountResponseCount)
+        return response
+
+    def kolmogorov_smirnov_test(
+        self,
+        json_body: BodyKolmogorovSmirnovTest,
+    ) -&gt; KolmogorovSmirnovTestResponseKolmogorovSmirnovTest:
+        &#34;&#34;&#34;Kolmogorov Smirnov Test
+
+         Computes Kolmogorov Smirnov Test of a Series.
+
+        Args:
+            json_body (BodyKolmogorovSmirnovTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KolmogorovSmirnovTestResponseKolmogorovSmirnovTest]
+        &#34;&#34;&#34;
+
+        response = kolmogorov_smirnov_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KolmogorovSmirnovTestResponseKolmogorovSmirnovTest)
+        return response
+
+    def kurtosis(
+        self,
+        series_id: str,
+    ) -&gt; KurtosisResponseKurtosis:
+        &#34;&#34;&#34;Kurtosis
+
+         Computes Kurtosis of a Series.
+
+        Args:
+            series_id (str):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KurtosisResponseKurtosis]
+        &#34;&#34;&#34;
+
+        response = kurtosis.sync(
+            client=self._client,
+            series_id=series_id,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KurtosisResponseKurtosis)
+        return response
+
+    def levene_test(
+        self,
+        json_body: BodyLeveneTest,
+    ) -&gt; LeveneTestResponseLeveneTest:
+        &#34;&#34;&#34;Levene Test
+
+         Computes the Levene Test of two Series.
+
+        Args:
+            json_body (BodyLeveneTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[LeveneTestResponseLeveneTest]
+        &#34;&#34;&#34;
+
+        response = levene_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, LeveneTestResponseLeveneTest)
+        return response
+
+    def mann_whitney_u_test(
+        self,
+        json_body: BodyMannWhitneyUTest,
+    ) -&gt; MannWhitneyUTestResponseMannWhitneyUTest:
+        &#34;&#34;&#34;Mann Whitney U Test
+
+         Computes the Mann Whitney U Test of two Series.
+
+        Args:
+            json_body (BodyMannWhitneyUTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MannWhitneyUTestResponseMannWhitneyUTest]
+        &#34;&#34;&#34;
+
+        response = mann_whitney_u_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MannWhitneyUTestResponseMannWhitneyUTest)
+        return response
+
+    def mean(
+        self,
+        json_body: str,
+    ) -&gt; MeanResponseMean:
+        &#34;&#34;&#34;Mean
+
+         Computes the Mean of a Series.
+
+        Args:
+            json_body (str): The identifer of the Series to be computed.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MeanResponseMean]
+        &#34;&#34;&#34;
+
+        response = mean.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MeanResponseMean)
+        return response
+
+    def min_max(
+        self,
+        json_body: str,
+    ) -&gt; MinMaxResponseMinMax:
+        &#34;&#34;&#34;Min Max
+
+         Computes the Min and Max of a Series.
+
+        Args:
+            json_body (str): The identifer of the Series to be computed.
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[MinMaxResponseMinMax]
+        &#34;&#34;&#34;
+
+        response = min_max.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, MinMaxResponseMinMax)
+        return response
+
+    def paired_t_test(
+        self,
+        json_body: BodyPairedTTest,
+    ) -&gt; PairedTTestResponsePairedTTest:
+        &#34;&#34;&#34;Paired T Test
+
+         Computes the Paired T Test of two Series.
+
+        Args:
+            json_body (BodyPairedTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[PairedTTestResponsePairedTTest]
+        &#34;&#34;&#34;
+
+        response = paired_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, PairedTTestResponsePairedTTest)
+        return response
+
+    def pearson(
+        self,
+        json_body: BodyPearson,
+    ) -&gt; PearsonResponsePearson:
+        &#34;&#34;&#34;Pearson
+
+         Computes the Pearson of two Series.
+
+        Args:
+            json_body (BodyPearson):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[PearsonResponsePearson]
+        &#34;&#34;&#34;
+
+        response = pearson.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, PearsonResponsePearson)
+        return response
+
+    def skewness(
+        self,
+        series_id: str,
+    ) -&gt; SkewnessResponseSkewness:
+        &#34;&#34;&#34;Skewness
+
+         Computes the Skewness of a Series.
+
+        Args:
+            series_id (str):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[SkewnessResponseSkewness]
+        &#34;&#34;&#34;
+
+        response = skewness.sync(
+            client=self._client,
+            series_id=series_id,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, SkewnessResponseSkewness)
+        return response
+
+    def spearman(
+        self,
+        json_body: BodySpearman,
+    ) -&gt; SpearmanResponseSpearman:
+        &#34;&#34;&#34;Spearman
+
+         Computes the Spearman statistic of two Series.
+
+        Args:
+            json_body (BodySpearman):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[SpearmanResponseSpearman]
+        &#34;&#34;&#34;
+
+        response = spearman.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, SpearmanResponseSpearman)
+        return response
+
+    def student_t_test(
+        self,
+        json_body: BodyStudentTTest,
+    ) -&gt; StudentTTestResponseStudentTTest:
+        &#34;&#34;&#34;Student T Test
+
+         Computes the Student T test of two Series.
+
+        Args:
+            json_body (BodyStudentTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[StudentTTestResponseStudentTTest]
+        &#34;&#34;&#34;
+
+        response = student_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, StudentTTestResponseStudentTTest)
+        return response
+
+    def variance(
+        self,
+        json_body: str,
+    ) -&gt; VarianceResponseVariance:
+        &#34;&#34;&#34;Variance
+
+         Computes the Variance of a Series.
+
+        Args:
+            json_body (str): The identifier of the series
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[VarianceResponseVariance]
+        &#34;&#34;&#34;
+
+        response = variance.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, VarianceResponseVariance)
+        return response
+
+    def welch_t_test(
+        self,
+        json_body: BodyWelchTTest,
+    ) -&gt; WelchTTestResponseWelchTTest:
+        &#34;&#34;&#34;Welch T Test
+
+         Computes the Welch T test of two Series.
+
+        Args:
+            json_body (BodyWelchTTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[WelchTTestResponseWelchTTest]
+        &#34;&#34;&#34;
+
+        response = welch_t_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, WelchTTestResponseWelchTTest)
+        return response
+
+    def wilcoxon_signed_rank_test(
+        self,
+        json_body: BodyWilcoxonSignedRankTest,
+    ) -&gt; WilcoxonSignedRankTestResponseWilcoxonSignedRankTest:
+        &#34;&#34;&#34;Wilcoxon Signed Rank Test
+
+         Computes the Wilcoxon signed rank test of two Series.
+
+        Args:
+            json_body (BodyWilcoxonSignedRankTest):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[WilcoxonSignedRankTestResponseWilcoxonSignedRankTest]
+        &#34;&#34;&#34;
+
+        response = wilcoxon_signed_rank_test.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, WilcoxonSignedRankTestResponseWilcoxonSignedRankTest)
+        return response
+
+    def histogram(
+        self,
+        json_body: BodyHistogram,
+    ) -&gt; HistogramResponseHistogram:
+        &#34;&#34;&#34;Histogram Federated
+
+         Creates a histogram of a given Series.
+
+        Args:
+            json_body (BodyHistogram):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[HistogramResponseHistogram]
+        &#34;&#34;&#34;
+
+        response = histogram.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, HistogramResponseHistogram)
+        return response
+
+    def kernel_density_estimation(
+        self,
+        json_body: BodyKernelDensityEstimation,
+    ) -&gt; KernelDensityEstimationResponseKernelDensityEstimation:
+        &#34;&#34;&#34;Kernel Density Estimation
+
+         Creates a Kernel Density Estimation of a given Series.
+
+        Args:
+            json_body (BodyKernelDensityEstimation):
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[KernelDensityEstimationResponseKernelDensityEstimation]
+        &#34;&#34;&#34;
+
+        response = kernel_density_estimation.sync(
+            client=self._client,
+            json_body=json_body,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, KernelDensityEstimationResponseKernelDensityEstimation)
+        return response
+
+    def landing(
+        self,
+    ) -&gt; LandingResponseLanding:
+        &#34;&#34;&#34;Home
+
+         landing page
+
+        Raises:
+            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+        Returns:
+            Response[LandingResponseLanding]
+        &#34;&#34;&#34;
+
+        response = landing.sync(
+            client=self._client,
+        )
+
+        if response is None:
+            raise Exception(&#34;No response&#34;)
+
+        assert isinstance(response, LandingResponseLanding)
+        return response</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.chisquare"><code class="name flex">
+<span>def <span class="ident">chisquare</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_chisquare.BodyChisquare" href="models/body_chisquare.html#sail_aggregator_client.models.body_chisquare.BodyChisquare">BodyChisquare</a>) ‑> <a title="sail_aggregator_client.models.chisquare_response_chisquare.ChisquareResponseChisquare" href="models/chisquare_response_chisquare.html#sail_aggregator_client.models.chisquare_response_chisquare.ChisquareResponseChisquare">ChisquareResponseChisquare</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Chisquare</p>
+<p>Computes the chisquare of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyChisquare):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[ChisquareResponseChisquare]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def chisquare(
+    self,
+    json_body: BodyChisquare,
+) -&gt; ChisquareResponseChisquare:
+    &#34;&#34;&#34;Chisquare
+
+     Computes the chisquare of two Series.
+
+    Args:
+        json_body (BodyChisquare):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ChisquareResponseChisquare]
+    &#34;&#34;&#34;
+
+    response = chisquare.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, ChisquareResponseChisquare)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.count"><code class="name flex">
+<span>def <span class="ident">count</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.count_response_count.CountResponseCount" href="models/count_response_count.html#sail_aggregator_client.models.count_response_count.CountResponseCount">CountResponseCount</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Count</p>
+<p>Computes the count of a Series.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>The identifier of the series to be counted.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[CountResponseCount]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def count(
+    self,
+    json_body: str,
+) -&gt; CountResponseCount:
+    &#34;&#34;&#34;Count
+
+     Computes the count of a Series.
+
+    Args:
+        json_body (str): The identifier of the series to be counted.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[CountResponseCount]
+    &#34;&#34;&#34;
+
+    response = count.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, CountResponseCount)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.data_frame_query"><code class="name flex">
+<span>def <span class="ident">data_frame_query</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_data_frame_query.BodyDataFrameQuery" href="models/body_data_frame_query.html#sail_aggregator_client.models.body_data_frame_query.BodyDataFrameQuery">BodyDataFrameQuery</a>) ‑> <a title="sail_aggregator_client.models.data_frame_query_response_data_frame_query.DataFrameQueryResponseDataFrameQuery" href="models/data_frame_query_response_data_frame_query.html#sail_aggregator_client.models.data_frame_query_response_data_frame_query.DataFrameQueryResponseDataFrameQuery">DataFrameQueryResponseDataFrameQuery</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Data Frame Query</p>
+<p>Query a Dataframe for a given String.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyDataFrameQuery):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DataFrameQueryResponseDataFrameQuery]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data_frame_query(
+    self,
+    json_body: BodyDataFrameQuery,
+) -&gt; DataFrameQueryResponseDataFrameQuery:
+    &#34;&#34;&#34;Data Frame Query
+
+     Query a Dataframe for a given String.
+
+    Args:
+        json_body (BodyDataFrameQuery):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DataFrameQueryResponseDataFrameQuery]
+    &#34;&#34;&#34;
+
+    response = data_frame_query.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DataFrameQueryResponseDataFrameQuery)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.data_frame_select_series"><code class="name flex">
+<span>def <span class="ident">data_frame_select_series</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_data_frame_select_series.BodyDataFrameSelectSeries" href="models/body_data_frame_select_series.html#sail_aggregator_client.models.body_data_frame_select_series.BodyDataFrameSelectSeries">BodyDataFrameSelectSeries</a>) ‑> <a title="sail_aggregator_client.models.data_frame_select_series_response_data_frame_select_series.DataFrameSelectSeriesResponseDataFrameSelectSeries" href="models/data_frame_select_series_response_data_frame_select_series.html#sail_aggregator_client.models.data_frame_select_series_response_data_frame_select_series.DataFrameSelectSeriesResponseDataFrameSelectSeries">DataFrameSelectSeriesResponseDataFrameSelectSeries</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Data Frame Select Series</p>
+<p>Select an individual series from a
+dataframe.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyDataFrameSelectSeries):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DataFrameSelectSeriesResponseDataFrameSelectSeries]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data_frame_select_series(
+    self,
+    json_body: BodyDataFrameSelectSeries,
+) -&gt; DataFrameSelectSeriesResponseDataFrameSelectSeries:
+    &#34;&#34;&#34;Data Frame Select Series
+
+     Select an individual series from a  dataframe.
+
+    Args:
+        json_body (BodyDataFrameSelectSeries):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DataFrameSelectSeriesResponseDataFrameSelectSeries]
+    &#34;&#34;&#34;
+
+    response = data_frame_select_series.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DataFrameSelectSeriesResponseDataFrameSelectSeries)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.data_frame_tabular_select_dataframe"><code class="name flex">
+<span>def <span class="ident">data_frame_tabular_select_dataframe</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_data_frame_tabular_select_dataframe.BodyDataFrameTabularSelectDataframe" href="models/body_data_frame_tabular_select_dataframe.html#sail_aggregator_client.models.body_data_frame_tabular_select_dataframe.BodyDataFrameTabularSelectDataframe">BodyDataFrameTabularSelectDataframe</a>) ‑> <a title="sail_aggregator_client.models.data_frame_tabular_select_dataframe_response_data_frame_tabular_select_dataframe.DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe" href="models/data_frame_tabular_select_dataframe_response_data_frame_tabular_select_dataframe.html#sail_aggregator_client.models.data_frame_tabular_select_dataframe_response_data_frame_tabular_select_dataframe.DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe">DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Data Frame Tabular Select Dataframe</p>
+<p>Select an individual datafame from a tabular dataframe.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyDataFrameTabularSelectDataframe):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data_frame_tabular_select_dataframe(
+    self,
+    json_body: BodyDataFrameTabularSelectDataframe,
+) -&gt; DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe:
+    &#34;&#34;&#34;Data Frame Tabular Select Dataframe
+
+     Select an individual datafame from a tabular dataframe.
+
+    Args:
+        json_body (BodyDataFrameTabularSelectDataframe):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe]
+    &#34;&#34;&#34;
+
+    response = data_frame_tabular_select_dataframe.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DataFrameTabularSelectDataframeResponseDataFrameTabularSelectDataframe)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.dataframe_drop_missing"><code class="name flex">
+<span>def <span class="ident">dataframe_drop_missing</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.dataframe_drop_missing_response_dataframe_drop_missing.DataframeDropMissingResponseDataframeDropMissing" href="models/dataframe_drop_missing_response_dataframe_drop_missing.html#sail_aggregator_client.models.dataframe_drop_missing_response_dataframe_drop_missing.DataframeDropMissingResponseDataframeDropMissing">DataframeDropMissingResponseDataframeDropMissing</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataframe Drop Missing</p>
+<p>Drop all missing values from a dataframe and return this copy.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of the dataframe to be cleaned.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DataframeDropMissingResponseDataframeDropMissing]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dataframe_drop_missing(
+    self,
+    json_body: str,
+) -&gt; DataframeDropMissingResponseDataframeDropMissing:
+    &#34;&#34;&#34;Dataframe Drop Missing
+
+     Drop all missing values from a dataframe and return this copy.
+
+    Args:
+        json_body (str): Identifier of the dataframe to be cleaned.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DataframeDropMissingResponseDataframeDropMissing]
+    &#34;&#34;&#34;
+
+    response = dataframe_drop_missing.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DataframeDropMissingResponseDataframeDropMissing)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.dataframe_model_add_new_series_model"><code class="name flex">
+<span>def <span class="ident">dataframe_model_add_new_series_model</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_dataframe_model_add_new_series_model.BodyDataframeModelAddNewSeriesModel" href="models/body_dataframe_model_add_new_series_model.html#sail_aggregator_client.models.body_dataframe_model_add_new_series_model.BodyDataframeModelAddNewSeriesModel">BodyDataframeModelAddNewSeriesModel</a>) ‑> <a title="sail_aggregator_client.models.dataframe_model_add_new_series_model_response_dataframe_model_add_new_series_model.DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel" href="models/dataframe_model_add_new_series_model_response_dataframe_model_add_new_series_model.html#sail_aggregator_client.models.dataframe_model_add_new_series_model_response_dataframe_model_add_new_series_model.DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel">DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataframe Model Add Series Model</p>
+<p>Create a new numerical series model and add it to a Dataframe model.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyDataframeModelAddNewSeriesModel):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dataframe_model_add_new_series_model(
+    self,
+    json_body: BodyDataframeModelAddNewSeriesModel,
+) -&gt; DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel:
+    &#34;&#34;&#34;Dataframe Model Add Series Model
+
+     Create a new numerical series model and add it to a Dataframe model.
+
+    Args:
+        json_body (BodyDataframeModelAddNewSeriesModel):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel]
+    &#34;&#34;&#34;
+
+    response = dataframe_model_add_new_series_model.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DataframeModelAddNewSeriesModelResponseDataframeModelAddNewSeriesModel)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.dataset_tabular_fhirv1"><code class="name flex">
+<span>def <span class="ident">dataset_tabular_fhirv1</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_dataset_tabular_fhirv_1.BodyDatasetTabularFhirv1" href="models/body_dataset_tabular_fhirv_1.html#sail_aggregator_client.models.body_dataset_tabular_fhirv_1.BodyDatasetTabularFhirv1">BodyDatasetTabularFhirv1</a>) ‑> <a title="sail_aggregator_client.models.dataset_tabular_fhirv_1_response_dataset_tabular_fhirv_1.DatasetTabularFhirv1ResponseDatasetTabularFhirv1" href="models/dataset_tabular_fhirv_1_response_dataset_tabular_fhirv_1.html#sail_aggregator_client.models.dataset_tabular_fhirv_1_response_dataset_tabular_fhirv_1.DatasetTabularFhirv1ResponseDatasetTabularFhirv1">DatasetTabularFhirv1ResponseDatasetTabularFhirv1</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dataset Tabular Fhirv1</p>
+<p>Pull data from fhirv1 source straight to tabular Dataframe.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyDatasetTabularFhirv1):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[DatasetTabularFhirv1ResponseDatasetTabularFhirv1]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dataset_tabular_fhirv1(
+    self,
+    json_body: BodyDatasetTabularFhirv1,
+) -&gt; DatasetTabularFhirv1ResponseDatasetTabularFhirv1:
+    &#34;&#34;&#34;Dataset Tabular Fhirv1
+
+     Pull data from fhirv1 source straight to tabular Dataframe.
+
+    Args:
+        json_body (BodyDatasetTabularFhirv1):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[DatasetTabularFhirv1ResponseDatasetTabularFhirv1]
+    &#34;&#34;&#34;
+
+    response = dataset_tabular_fhirv1.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, DatasetTabularFhirv1ResponseDatasetTabularFhirv1)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.histogram"><code class="name flex">
+<span>def <span class="ident">histogram</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_histogram.BodyHistogram" href="models/body_histogram.html#sail_aggregator_client.models.body_histogram.BodyHistogram">BodyHistogram</a>) ‑> <a title="sail_aggregator_client.models.histogram_response_histogram.HistogramResponseHistogram" href="models/histogram_response_histogram.html#sail_aggregator_client.models.histogram_response_histogram.HistogramResponseHistogram">HistogramResponseHistogram</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Histogram Federated</p>
+<p>Creates a histogram of a given Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyHistogram):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[HistogramResponseHistogram]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def histogram(
+    self,
+    json_body: BodyHistogram,
+) -&gt; HistogramResponseHistogram:
+    &#34;&#34;&#34;Histogram Federated
+
+     Creates a histogram of a given Series.
+
+    Args:
+        json_body (BodyHistogram):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[HistogramResponseHistogram]
+    &#34;&#34;&#34;
+
+    response = histogram.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, HistogramResponseHistogram)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.kernel_density_estimation"><code class="name flex">
+<span>def <span class="ident">kernel_density_estimation</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_kernel_density_estimation.BodyKernelDensityEstimation" href="models/body_kernel_density_estimation.html#sail_aggregator_client.models.body_kernel_density_estimation.BodyKernelDensityEstimation">BodyKernelDensityEstimation</a>) ‑> <a title="sail_aggregator_client.models.kernel_density_estimation_response_kernel_density_estimation.KernelDensityEstimationResponseKernelDensityEstimation" href="models/kernel_density_estimation_response_kernel_density_estimation.html#sail_aggregator_client.models.kernel_density_estimation_response_kernel_density_estimation.KernelDensityEstimationResponseKernelDensityEstimation">KernelDensityEstimationResponseKernelDensityEstimation</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Kernel Density Estimation</p>
+<p>Creates a Kernel Density Estimation of a given Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyKernelDensityEstimation):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[KernelDensityEstimationResponseKernelDensityEstimation]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def kernel_density_estimation(
+    self,
+    json_body: BodyKernelDensityEstimation,
+) -&gt; KernelDensityEstimationResponseKernelDensityEstimation:
+    &#34;&#34;&#34;Kernel Density Estimation
+
+     Creates a Kernel Density Estimation of a given Series.
+
+    Args:
+        json_body (BodyKernelDensityEstimation):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[KernelDensityEstimationResponseKernelDensityEstimation]
+    &#34;&#34;&#34;
+
+    response = kernel_density_estimation.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, KernelDensityEstimationResponseKernelDensityEstimation)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.kolmogorov_smirnov_test"><code class="name flex">
+<span>def <span class="ident">kolmogorov_smirnov_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_kolmogorov_smirnov_test.BodyKolmogorovSmirnovTest" href="models/body_kolmogorov_smirnov_test.html#sail_aggregator_client.models.body_kolmogorov_smirnov_test.BodyKolmogorovSmirnovTest">BodyKolmogorovSmirnovTest</a>) ‑> <a title="sail_aggregator_client.models.kolmogorov_smirnov_test_response_kolmogorov_smirnov_test.KolmogorovSmirnovTestResponseKolmogorovSmirnovTest" href="models/kolmogorov_smirnov_test_response_kolmogorov_smirnov_test.html#sail_aggregator_client.models.kolmogorov_smirnov_test_response_kolmogorov_smirnov_test.KolmogorovSmirnovTestResponseKolmogorovSmirnovTest">KolmogorovSmirnovTestResponseKolmogorovSmirnovTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Kolmogorov Smirnov Test</p>
+<p>Computes Kolmogorov Smirnov Test of a Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyKolmogorovSmirnovTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[KolmogorovSmirnovTestResponseKolmogorovSmirnovTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def kolmogorov_smirnov_test(
+    self,
+    json_body: BodyKolmogorovSmirnovTest,
+) -&gt; KolmogorovSmirnovTestResponseKolmogorovSmirnovTest:
+    &#34;&#34;&#34;Kolmogorov Smirnov Test
+
+     Computes Kolmogorov Smirnov Test of a Series.
+
+    Args:
+        json_body (BodyKolmogorovSmirnovTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[KolmogorovSmirnovTestResponseKolmogorovSmirnovTest]
+    &#34;&#34;&#34;
+
+    response = kolmogorov_smirnov_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, KolmogorovSmirnovTestResponseKolmogorovSmirnovTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.kurtosis"><code class="name flex">
+<span>def <span class="ident">kurtosis</span></span>(<span>self, series_id: str) ‑> <a title="sail_aggregator_client.models.kurtosis_response_kurtosis.KurtosisResponseKurtosis" href="models/kurtosis_response_kurtosis.html#sail_aggregator_client.models.kurtosis_response_kurtosis.KurtosisResponseKurtosis">KurtosisResponseKurtosis</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Kurtosis</p>
+<p>Computes Kurtosis of a Series.</p>
+<h2 id="args">Args</h2>
+<p>series_id (str):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[KurtosisResponseKurtosis]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def kurtosis(
+    self,
+    series_id: str,
+) -&gt; KurtosisResponseKurtosis:
+    &#34;&#34;&#34;Kurtosis
+
+     Computes Kurtosis of a Series.
+
+    Args:
+        series_id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[KurtosisResponseKurtosis]
+    &#34;&#34;&#34;
+
+    response = kurtosis.sync(
+        client=self._client,
+        series_id=series_id,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, KurtosisResponseKurtosis)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.landing"><code class="name flex">
+<span>def <span class="ident">landing</span></span>(<span>self) ‑> <a title="sail_aggregator_client.models.landing_response_landing.LandingResponseLanding" href="models/landing_response_landing.html#sail_aggregator_client.models.landing_response_landing.LandingResponseLanding">LandingResponseLanding</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Home</p>
+<p>landing page</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[LandingResponseLanding]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def landing(
+    self,
+) -&gt; LandingResponseLanding:
+    &#34;&#34;&#34;Home
+
+     landing page
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[LandingResponseLanding]
+    &#34;&#34;&#34;
+
+    response = landing.sync(
+        client=self._client,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, LandingResponseLanding)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.levene_test"><code class="name flex">
+<span>def <span class="ident">levene_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_levene_test.BodyLeveneTest" href="models/body_levene_test.html#sail_aggregator_client.models.body_levene_test.BodyLeveneTest">BodyLeveneTest</a>) ‑> <a title="sail_aggregator_client.models.levene_test_response_levene_test.LeveneTestResponseLeveneTest" href="models/levene_test_response_levene_test.html#sail_aggregator_client.models.levene_test_response_levene_test.LeveneTestResponseLeveneTest">LeveneTestResponseLeveneTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Levene Test</p>
+<p>Computes the Levene Test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyLeveneTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[LeveneTestResponseLeveneTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def levene_test(
+    self,
+    json_body: BodyLeveneTest,
+) -&gt; LeveneTestResponseLeveneTest:
+    &#34;&#34;&#34;Levene Test
+
+     Computes the Levene Test of two Series.
+
+    Args:
+        json_body (BodyLeveneTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[LeveneTestResponseLeveneTest]
+    &#34;&#34;&#34;
+
+    response = levene_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, LeveneTestResponseLeveneTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.mann_whitney_u_test"><code class="name flex">
+<span>def <span class="ident">mann_whitney_u_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_mann_whitney_u_test.BodyMannWhitneyUTest" href="models/body_mann_whitney_u_test.html#sail_aggregator_client.models.body_mann_whitney_u_test.BodyMannWhitneyUTest">BodyMannWhitneyUTest</a>) ‑> <a title="sail_aggregator_client.models.mann_whitney_u_test_response_mann_whitney_u_test.MannWhitneyUTestResponseMannWhitneyUTest" href="models/mann_whitney_u_test_response_mann_whitney_u_test.html#sail_aggregator_client.models.mann_whitney_u_test_response_mann_whitney_u_test.MannWhitneyUTestResponseMannWhitneyUTest">MannWhitneyUTestResponseMannWhitneyUTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Mann Whitney U Test</p>
+<p>Computes the Mann Whitney U Test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyMannWhitneyUTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[MannWhitneyUTestResponseMannWhitneyUTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mann_whitney_u_test(
+    self,
+    json_body: BodyMannWhitneyUTest,
+) -&gt; MannWhitneyUTestResponseMannWhitneyUTest:
+    &#34;&#34;&#34;Mann Whitney U Test
+
+     Computes the Mann Whitney U Test of two Series.
+
+    Args:
+        json_body (BodyMannWhitneyUTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[MannWhitneyUTestResponseMannWhitneyUTest]
+    &#34;&#34;&#34;
+
+    response = mann_whitney_u_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, MannWhitneyUTestResponseMannWhitneyUTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.mean"><code class="name flex">
+<span>def <span class="ident">mean</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.mean_response_mean.MeanResponseMean" href="models/mean_response_mean.html#sail_aggregator_client.models.mean_response_mean.MeanResponseMean">MeanResponseMean</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Mean</p>
+<p>Computes the Mean of a Series.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>The identifer of the Series to be computed.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[MeanResponseMean]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mean(
+    self,
+    json_body: str,
+) -&gt; MeanResponseMean:
+    &#34;&#34;&#34;Mean
+
+     Computes the Mean of a Series.
+
+    Args:
+        json_body (str): The identifer of the Series to be computed.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[MeanResponseMean]
+    &#34;&#34;&#34;
+
+    response = mean.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, MeanResponseMean)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.min_max"><code class="name flex">
+<span>def <span class="ident">min_max</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.min_max_response_min_max.MinMaxResponseMinMax" href="models/min_max_response_min_max.html#sail_aggregator_client.models.min_max_response_min_max.MinMaxResponseMinMax">MinMaxResponseMinMax</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Min Max</p>
+<p>Computes the Min and Max of a Series.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>The identifer of the Series to be computed.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[MinMaxResponseMinMax]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def min_max(
+    self,
+    json_body: str,
+) -&gt; MinMaxResponseMinMax:
+    &#34;&#34;&#34;Min Max
+
+     Computes the Min and Max of a Series.
+
+    Args:
+        json_body (str): The identifer of the Series to be computed.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[MinMaxResponseMinMax]
+    &#34;&#34;&#34;
+
+    response = min_max.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, MinMaxResponseMinMax)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.new_data_model_data_frame"><code class="name flex">
+<span>def <span class="ident">new_data_model_data_frame</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.new_data_model_data_frame_response_new_data_model_data_frame.NewDataModelDataFrameResponseNewDataModelDataFrame" href="models/new_data_model_data_frame_response_new_data_model_data_frame.html#sail_aggregator_client.models.new_data_model_data_frame_response_new_data_model_data_frame.NewDataModelDataFrameResponseNewDataModelDataFrame">NewDataModelDataFrameResponseNewDataModelDataFrame</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>New Data Model Data Frame</p>
+<p>Create a new Dataframe model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>Desired name of the new Dataframe</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[NewDataModelDataFrameResponseNewDataModelDataFrame]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_data_model_data_frame(
+    self,
+    json_body: str,
+) -&gt; NewDataModelDataFrameResponseNewDataModelDataFrame:
+    &#34;&#34;&#34;New Data Model Data Frame
+
+     Create a new Dataframe model.
+
+    Args:
+        json_body (str): Desired name of the new Dataframe
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[NewDataModelDataFrameResponseNewDataModelDataFrame]
+    &#34;&#34;&#34;
+
+    response = new_data_model_data_frame.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, NewDataModelDataFrameResponseNewDataModelDataFrame)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.new_series_model_numerical"><code class="name flex">
+<span>def <span class="ident">new_series_model_numerical</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_new_series_model_numerical.BodyNewSeriesModelNumerical" href="models/body_new_series_model_numerical.html#sail_aggregator_client.models.body_new_series_model_numerical.BodyNewSeriesModelNumerical">BodyNewSeriesModelNumerical</a>) ‑> <a title="sail_aggregator_client.models.new_series_model_numerical_response_new_series_model_numerical.NewSeriesModelNumericalResponseNewSeriesModelNumerical" href="models/new_series_model_numerical_response_new_series_model_numerical.html#sail_aggregator_client.models.new_series_model_numerical_response_new_series_model_numerical.NewSeriesModelNumericalResponseNewSeriesModelNumerical">NewSeriesModelNumericalResponseNewSeriesModelNumerical</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>New Series Model Numerical</p>
+<p>Create new numerical Series Model</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyNewSeriesModelNumerical):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[NewSeriesModelNumericalResponseNewSeriesModelNumerical]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_series_model_numerical(
+    self,
+    json_body: BodyNewSeriesModelNumerical,
+) -&gt; NewSeriesModelNumericalResponseNewSeriesModelNumerical:
+    &#34;&#34;&#34;New Series Model Numerical
+
+     Create new numerical Series Model
+
+    Args:
+        json_body (BodyNewSeriesModelNumerical):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[NewSeriesModelNumericalResponseNewSeriesModelNumerical]
+    &#34;&#34;&#34;
+
+    response = new_series_model_numerical.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, NewSeriesModelNumericalResponseNewSeriesModelNumerical)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.new_tabular_model"><code class="name flex">
+<span>def <span class="ident">new_tabular_model</span></span>(<span>self) ‑> <a title="sail_aggregator_client.models.new_tabular_model_response_new_tabular_model.NewTabularModelResponseNewTabularModel" href="models/new_tabular_model_response_new_tabular_model.html#sail_aggregator_client.models.new_tabular_model_response_new_tabular_model.NewTabularModelResponseNewTabularModel">NewTabularModelResponseNewTabularModel</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>New Data Frame Tabular</p>
+<p>Create new Tabular Data Model</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[NewTabularModelResponseNewTabularModel]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_tabular_model(
+    self,
+) -&gt; NewTabularModelResponseNewTabularModel:
+    &#34;&#34;&#34;New Data Frame Tabular
+
+     Create new Tabular Data Model
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[NewTabularModelResponseNewTabularModel]
+    &#34;&#34;&#34;
+
+    response = new_tabular_model.sync(
+        client=self._client,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, NewTabularModelResponseNewTabularModel)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.paired_t_test"><code class="name flex">
+<span>def <span class="ident">paired_t_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_paired_t_test.BodyPairedTTest" href="models/body_paired_t_test.html#sail_aggregator_client.models.body_paired_t_test.BodyPairedTTest">BodyPairedTTest</a>) ‑> <a title="sail_aggregator_client.models.paired_t_test_response_paired_t_test.PairedTTestResponsePairedTTest" href="models/paired_t_test_response_paired_t_test.html#sail_aggregator_client.models.paired_t_test_response_paired_t_test.PairedTTestResponsePairedTTest">PairedTTestResponsePairedTTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Paired T Test</p>
+<p>Computes the Paired T Test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyPairedTTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[PairedTTestResponsePairedTTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def paired_t_test(
+    self,
+    json_body: BodyPairedTTest,
+) -&gt; PairedTTestResponsePairedTTest:
+    &#34;&#34;&#34;Paired T Test
+
+     Computes the Paired T Test of two Series.
+
+    Args:
+        json_body (BodyPairedTTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[PairedTTestResponsePairedTTest]
+    &#34;&#34;&#34;
+
+    response = paired_t_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, PairedTTestResponsePairedTTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.pearson"><code class="name flex">
+<span>def <span class="ident">pearson</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_pearson.BodyPearson" href="models/body_pearson.html#sail_aggregator_client.models.body_pearson.BodyPearson">BodyPearson</a>) ‑> <a title="sail_aggregator_client.models.pearson_response_pearson.PearsonResponsePearson" href="models/pearson_response_pearson.html#sail_aggregator_client.models.pearson_response_pearson.PearsonResponsePearson">PearsonResponsePearson</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pearson</p>
+<p>Computes the Pearson of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyPearson):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[PearsonResponsePearson]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pearson(
+    self,
+    json_body: BodyPearson,
+) -&gt; PearsonResponsePearson:
+    &#34;&#34;&#34;Pearson
+
+     Computes the Pearson of two Series.
+
+    Args:
+        json_body (BodyPearson):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[PearsonResponsePearson]
+    &#34;&#34;&#34;
+
+    response = pearson.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, PearsonResponsePearson)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.read_dataset_tabular_from_longitudinal"><code class="name flex">
+<span>def <span class="ident">read_dataset_tabular_from_longitudinal</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_read_dataset_tabular_from_longitudinal.BodyReadDatasetTabularFromLongitudinal" href="models/body_read_dataset_tabular_from_longitudinal.html#sail_aggregator_client.models.body_read_dataset_tabular_from_longitudinal.BodyReadDatasetTabularFromLongitudinal">BodyReadDatasetTabularFromLongitudinal</a>) ‑> <a title="sail_aggregator_client.models.read_dataset_tabular_from_longitudinal_response_read_dataset_tabular_from_longitudinal.ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal" href="models/read_dataset_tabular_from_longitudinal_response_read_dataset_tabular_from_longitudinal.html#sail_aggregator_client.models.read_dataset_tabular_from_longitudinal_response_read_dataset_tabular_from_longitudinal.ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal">ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read Dataset Tabular From Longitudinal</p>
+<p>Populates a Tabular dataset from a Longitudinal dataset.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyReadDatasetTabularFromLongitudinal):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_dataset_tabular_from_longitudinal(
+    self,
+    json_body: BodyReadDatasetTabularFromLongitudinal,
+) -&gt; ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal:
+    &#34;&#34;&#34;Read Dataset Tabular From Longitudinal
+
+     Populates a Tabular dataset from a Longitudinal dataset.
+
+    Args:
+        json_body (BodyReadDatasetTabularFromLongitudinal):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal]
+    &#34;&#34;&#34;
+
+    response = read_dataset_tabular_from_longitudinal.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, ReadDatasetTabularFromLongitudinalResponseReadDatasetTabularFromLongitudinal)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.read_longitudinal_fhirv1"><code class="name flex">
+<span>def <span class="ident">read_longitudinal_fhirv1</span></span>(<span>self) ‑> <a title="sail_aggregator_client.models.read_longitudinal_fhirv_1_response_read_longitudinal_fhirv_1.ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1" href="models/read_longitudinal_fhirv_1_response_read_longitudinal_fhirv_1.html#sail_aggregator_client.models.read_longitudinal_fhirv_1_response_read_longitudinal_fhirv_1.ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1">ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read Longitudinal Fhirv1</p>
+<p>Reads a Longitudinal dataset from a fhirv1 data source.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_longitudinal_fhirv1(
+    self,
+) -&gt; ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1:
+    &#34;&#34;&#34;Read Longitudinal Fhirv1
+
+     Reads a Longitudinal dataset from a fhirv1 data source.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1]
+    &#34;&#34;&#34;
+
+    response = read_longitudinal_fhirv1.sync(
+        client=self._client,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, ReadLongitudinalFhirv1ResponseReadLongitudinalFhirv1)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.read_tabular_dataframe_csvv1"><code class="name flex">
+<span>def <span class="ident">read_tabular_dataframe_csvv1</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.data_federation.DataFederation" href="models/data_federation.html#sail_aggregator_client.models.data_federation.DataFederation">DataFederation</a>) ‑> <a title="sail_aggregator_client.models.read_tabular_dataframe_csvv_1_response_read_tabular_dataframe_csvv_1.ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1" href="models/read_tabular_dataframe_csvv_1_response_read_tabular_dataframe_csvv_1.html#sail_aggregator_client.models.read_tabular_dataframe_csvv_1_response_read_tabular_dataframe_csvv_1.ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1">ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read Tabular Dataframe Csvv1</p>
+<p>Pull a Tabular Dataframe from csvv1 source.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>DataFederation</code></dt>
+<dd>TODO: What is this datatype? This should be a reference</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_tabular_dataframe_csvv1(
+    self,
+    json_body: DataFederation,
+) -&gt; ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1:
+    &#34;&#34;&#34;Read Tabular Dataframe Csvv1
+
+     Pull a Tabular Dataframe from csvv1 source.
+
+    Args:
+        json_body (DataFederation): TODO: What is this datatype? This should be a reference
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1]
+    &#34;&#34;&#34;
+
+    response = read_tabular_dataframe_csvv1.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, ReadTabularDataframeCsvv1ResponseReadTabularDataframeCsvv1)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.skewness"><code class="name flex">
+<span>def <span class="ident">skewness</span></span>(<span>self, series_id: str) ‑> <a title="sail_aggregator_client.models.skewness_response_skewness.SkewnessResponseSkewness" href="models/skewness_response_skewness.html#sail_aggregator_client.models.skewness_response_skewness.SkewnessResponseSkewness">SkewnessResponseSkewness</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Skewness</p>
+<p>Computes the Skewness of a Series.</p>
+<h2 id="args">Args</h2>
+<p>series_id (str):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[SkewnessResponseSkewness]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def skewness(
+    self,
+    series_id: str,
+) -&gt; SkewnessResponseSkewness:
+    &#34;&#34;&#34;Skewness
+
+     Computes the Skewness of a Series.
+
+    Args:
+        series_id (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[SkewnessResponseSkewness]
+    &#34;&#34;&#34;
+
+    response = skewness.sync(
+        client=self._client,
+        series_id=series_id,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, SkewnessResponseSkewness)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.spearman"><code class="name flex">
+<span>def <span class="ident">spearman</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_spearman.BodySpearman" href="models/body_spearman.html#sail_aggregator_client.models.body_spearman.BodySpearman">BodySpearman</a>) ‑> <a title="sail_aggregator_client.models.spearman_response_spearman.SpearmanResponseSpearman" href="models/spearman_response_spearman.html#sail_aggregator_client.models.spearman_response_spearman.SpearmanResponseSpearman">SpearmanResponseSpearman</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spearman</p>
+<p>Computes the Spearman statistic of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodySpearman):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[SpearmanResponseSpearman]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def spearman(
+    self,
+    json_body: BodySpearman,
+) -&gt; SpearmanResponseSpearman:
+    &#34;&#34;&#34;Spearman
+
+     Computes the Spearman statistic of two Series.
+
+    Args:
+        json_body (BodySpearman):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[SpearmanResponseSpearman]
+    &#34;&#34;&#34;
+
+    response = spearman.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, SpearmanResponseSpearman)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.student_t_test"><code class="name flex">
+<span>def <span class="ident">student_t_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_student_t_test.BodyStudentTTest" href="models/body_student_t_test.html#sail_aggregator_client.models.body_student_t_test.BodyStudentTTest">BodyStudentTTest</a>) ‑> <a title="sail_aggregator_client.models.student_t_test_response_student_t_test.StudentTTestResponseStudentTTest" href="models/student_t_test_response_student_t_test.html#sail_aggregator_client.models.student_t_test_response_student_t_test.StudentTTestResponseStudentTTest">StudentTTestResponseStudentTTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Student T Test</p>
+<p>Computes the Student T test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyStudentTTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[StudentTTestResponseStudentTTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def student_t_test(
+    self,
+    json_body: BodyStudentTTest,
+) -&gt; StudentTTestResponseStudentTTest:
+    &#34;&#34;&#34;Student T Test
+
+     Computes the Student T test of two Series.
+
+    Args:
+        json_body (BodyStudentTTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[StudentTTestResponseStudentTTest]
+    &#34;&#34;&#34;
+
+    response = student_t_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, StudentTTestResponseStudentTTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.tabular_model_add_dataframe_model"><code class="name flex">
+<span>def <span class="ident">tabular_model_add_dataframe_model</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_tabular_model_add_dataframe_model.BodyTabularModelAddDataframeModel" href="models/body_tabular_model_add_dataframe_model.html#sail_aggregator_client.models.body_tabular_model_add_dataframe_model.BodyTabularModelAddDataframeModel">BodyTabularModelAddDataframeModel</a>) ‑> <a title="sail_aggregator_client.models.tabular_model_add_dataframe_model_response_tabular_model_add_dataframe_model.TabularModelAddDataframeModelResponseTabularModelAddDataframeModel" href="models/tabular_model_add_dataframe_model_response_tabular_model_add_dataframe_model.html#sail_aggregator_client.models.tabular_model_add_dataframe_model_response_tabular_model_add_dataframe_model.TabularModelAddDataframeModelResponseTabularModelAddDataframeModel">TabularModelAddDataframeModelResponseTabularModelAddDataframeModel</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tabular Model Add Dataframe Model</p>
+<p>Add a Dataframe model to a Tabular Dataframe Model</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyTabularModelAddDataframeModel):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[TabularModelAddDataframeModelResponseTabularModelAddDataframeModel]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tabular_model_add_dataframe_model(
+    self,
+    json_body: BodyTabularModelAddDataframeModel,
+) -&gt; TabularModelAddDataframeModelResponseTabularModelAddDataframeModel:
+    &#34;&#34;&#34;Tabular Model Add Dataframe Model
+
+     Add a Dataframe model to a Tabular Dataframe Model
+
+    Args:
+        json_body (BodyTabularModelAddDataframeModel):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[TabularModelAddDataframeModelResponseTabularModelAddDataframeModel]
+    &#34;&#34;&#34;
+
+    response = tabular_model_add_dataframe_model.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, TabularModelAddDataframeModelResponseTabularModelAddDataframeModel)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.variance"><code class="name flex">
+<span>def <span class="ident">variance</span></span>(<span>self, json_body: str) ‑> <a title="sail_aggregator_client.models.variance_response_variance.VarianceResponseVariance" href="models/variance_response_variance.html#sail_aggregator_client.models.variance_response_variance.VarianceResponseVariance">VarianceResponseVariance</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Variance</p>
+<p>Computes the Variance of a Series.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>json_body</code></strong> :&ensp;<code>str</code></dt>
+<dd>The identifier of the series</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[VarianceResponseVariance]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def variance(
+    self,
+    json_body: str,
+) -&gt; VarianceResponseVariance:
+    &#34;&#34;&#34;Variance
+
+     Computes the Variance of a Series.
+
+    Args:
+        json_body (str): The identifier of the series
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[VarianceResponseVariance]
+    &#34;&#34;&#34;
+
+    response = variance.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, VarianceResponseVariance)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.welch_t_test"><code class="name flex">
+<span>def <span class="ident">welch_t_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_welch_t_test.BodyWelchTTest" href="models/body_welch_t_test.html#sail_aggregator_client.models.body_welch_t_test.BodyWelchTTest">BodyWelchTTest</a>) ‑> <a title="sail_aggregator_client.models.welch_t_test_response_welch_t_test.WelchTTestResponseWelchTTest" href="models/welch_t_test_response_welch_t_test.html#sail_aggregator_client.models.welch_t_test_response_welch_t_test.WelchTTestResponseWelchTTest">WelchTTestResponseWelchTTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Welch T Test</p>
+<p>Computes the Welch T test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyWelchTTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[WelchTTestResponseWelchTTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def welch_t_test(
+    self,
+    json_body: BodyWelchTTest,
+) -&gt; WelchTTestResponseWelchTTest:
+    &#34;&#34;&#34;Welch T Test
+
+     Computes the Welch T test of two Series.
+
+    Args:
+        json_body (BodyWelchTTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[WelchTTestResponseWelchTTest]
+    &#34;&#34;&#34;
+
+    response = welch_t_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, WelchTTestResponseWelchTTest)
+    return response</code></pre>
+</details>
+</dd>
+<dt id="sail_aggregator_client.sail_class.SyncOperations.wilcoxon_signed_rank_test"><code class="name flex">
+<span>def <span class="ident">wilcoxon_signed_rank_test</span></span>(<span>self, json_body: <a title="sail_aggregator_client.models.body_wilcoxon_signed_rank_test.BodyWilcoxonSignedRankTest" href="models/body_wilcoxon_signed_rank_test.html#sail_aggregator_client.models.body_wilcoxon_signed_rank_test.BodyWilcoxonSignedRankTest">BodyWilcoxonSignedRankTest</a>) ‑> <a title="sail_aggregator_client.models.wilcoxon_signed_rank_test_response_wilcoxon_signed_rank_test.WilcoxonSignedRankTestResponseWilcoxonSignedRankTest" href="models/wilcoxon_signed_rank_test_response_wilcoxon_signed_rank_test.html#sail_aggregator_client.models.wilcoxon_signed_rank_test_response_wilcoxon_signed_rank_test.WilcoxonSignedRankTestResponseWilcoxonSignedRankTest">WilcoxonSignedRankTestResponseWilcoxonSignedRankTest</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wilcoxon Signed Rank Test</p>
+<p>Computes the Wilcoxon signed rank test of two Series.</p>
+<h2 id="args">Args</h2>
+<p>json_body (BodyWilcoxonSignedRankTest):</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>errors.UnexpectedStatus</code></dt>
+<dd>If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.</dd>
+<dt><code>httpx.TimeoutException</code></dt>
+<dd>If the request takes longer than Client.timeout.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Response[WilcoxonSignedRankTestResponseWilcoxonSignedRankTest]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wilcoxon_signed_rank_test(
+    self,
+    json_body: BodyWilcoxonSignedRankTest,
+) -&gt; WilcoxonSignedRankTestResponseWilcoxonSignedRankTest:
+    &#34;&#34;&#34;Wilcoxon Signed Rank Test
+
+     Computes the Wilcoxon signed rank test of two Series.
+
+    Args:
+        json_body (BodyWilcoxonSignedRankTest):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[WilcoxonSignedRankTestResponseWilcoxonSignedRankTest]
+    &#34;&#34;&#34;
+
+    response = wilcoxon_signed_rank_test.sync(
+        client=self._client,
+        json_body=json_body,
+    )
+
+    if response is None:
+        raise Exception(&#34;No response&#34;)
+
+    assert isinstance(response, WilcoxonSignedRankTestResponseWilcoxonSignedRankTest)
+    return response</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sail_aggregator_client" href="index.html">sail_aggregator_client</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sail_aggregator_client.sail_class.SyncAuthenticatedOperations" href="#sail_aggregator_client.sail_class.SyncAuthenticatedOperations">SyncAuthenticatedOperations</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sail_aggregator_client.sail_class.SyncOperations" href="#sail_aggregator_client.sail_class.SyncOperations">SyncOperations</a></code></h4>
+<ul class="">
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.chisquare" href="#sail_aggregator_client.sail_class.SyncOperations.chisquare">chisquare</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.count" href="#sail_aggregator_client.sail_class.SyncOperations.count">count</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.data_frame_query" href="#sail_aggregator_client.sail_class.SyncOperations.data_frame_query">data_frame_query</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.data_frame_select_series" href="#sail_aggregator_client.sail_class.SyncOperations.data_frame_select_series">data_frame_select_series</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.data_frame_tabular_select_dataframe" href="#sail_aggregator_client.sail_class.SyncOperations.data_frame_tabular_select_dataframe">data_frame_tabular_select_dataframe</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.dataframe_drop_missing" href="#sail_aggregator_client.sail_class.SyncOperations.dataframe_drop_missing">dataframe_drop_missing</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.dataframe_model_add_new_series_model" href="#sail_aggregator_client.sail_class.SyncOperations.dataframe_model_add_new_series_model">dataframe_model_add_new_series_model</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.dataset_tabular_fhirv1" href="#sail_aggregator_client.sail_class.SyncOperations.dataset_tabular_fhirv1">dataset_tabular_fhirv1</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.histogram" href="#sail_aggregator_client.sail_class.SyncOperations.histogram">histogram</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.kernel_density_estimation" href="#sail_aggregator_client.sail_class.SyncOperations.kernel_density_estimation">kernel_density_estimation</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.kolmogorov_smirnov_test" href="#sail_aggregator_client.sail_class.SyncOperations.kolmogorov_smirnov_test">kolmogorov_smirnov_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.kurtosis" href="#sail_aggregator_client.sail_class.SyncOperations.kurtosis">kurtosis</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.landing" href="#sail_aggregator_client.sail_class.SyncOperations.landing">landing</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.levene_test" href="#sail_aggregator_client.sail_class.SyncOperations.levene_test">levene_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.mann_whitney_u_test" href="#sail_aggregator_client.sail_class.SyncOperations.mann_whitney_u_test">mann_whitney_u_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.mean" href="#sail_aggregator_client.sail_class.SyncOperations.mean">mean</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.min_max" href="#sail_aggregator_client.sail_class.SyncOperations.min_max">min_max</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.new_data_model_data_frame" href="#sail_aggregator_client.sail_class.SyncOperations.new_data_model_data_frame">new_data_model_data_frame</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.new_series_model_numerical" href="#sail_aggregator_client.sail_class.SyncOperations.new_series_model_numerical">new_series_model_numerical</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.new_tabular_model" href="#sail_aggregator_client.sail_class.SyncOperations.new_tabular_model">new_tabular_model</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.paired_t_test" href="#sail_aggregator_client.sail_class.SyncOperations.paired_t_test">paired_t_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.pearson" href="#sail_aggregator_client.sail_class.SyncOperations.pearson">pearson</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.read_dataset_tabular_from_longitudinal" href="#sail_aggregator_client.sail_class.SyncOperations.read_dataset_tabular_from_longitudinal">read_dataset_tabular_from_longitudinal</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.read_longitudinal_fhirv1" href="#sail_aggregator_client.sail_class.SyncOperations.read_longitudinal_fhirv1">read_longitudinal_fhirv1</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.read_tabular_dataframe_csvv1" href="#sail_aggregator_client.sail_class.SyncOperations.read_tabular_dataframe_csvv1">read_tabular_dataframe_csvv1</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.skewness" href="#sail_aggregator_client.sail_class.SyncOperations.skewness">skewness</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.spearman" href="#sail_aggregator_client.sail_class.SyncOperations.spearman">spearman</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.student_t_test" href="#sail_aggregator_client.sail_class.SyncOperations.student_t_test">student_t_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.tabular_model_add_dataframe_model" href="#sail_aggregator_client.sail_class.SyncOperations.tabular_model_add_dataframe_model">tabular_model_add_dataframe_model</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.variance" href="#sail_aggregator_client.sail_class.SyncOperations.variance">variance</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.welch_t_test" href="#sail_aggregator_client.sail_class.SyncOperations.welch_t_test">welch_t_test</a></code></li>
+<li><code><a title="sail_aggregator_client.sail_class.SyncOperations.wilcoxon_signed_rank_test" href="#sail_aggregator_client.sail_class.SyncOperations.wilcoxon_signed_rank_test">wilcoxon_signed_rank_test</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

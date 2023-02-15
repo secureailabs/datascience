@@ -1,6 +1,6 @@
 #!/bin/bash
 
-generatedDir="internal_api"
+generatedDir="internal_client"
 
 # Create the generated folder if it doesn't exist
 mkdir -p $generatedDir
