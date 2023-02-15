@@ -16,6 +16,7 @@ list_dataset_id = []
 IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 service_reference = TestServiceReference.get_instance()
 
+
 if os.environ.get("IV_FILEPATH") is not None:
     IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
 
@@ -31,10 +32,11 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 router = APIRouter(
     prefix='/data_ingestion',
 )
-# service_reference = TestServiceReference.get_instance()
+
 
 class DataFederation(BaseModel):
     list_dataset_id: List[str]
+
 
 # DATA INGESTION
 @router.post(
