@@ -3,16 +3,19 @@
 # Secure AI Labs Datasciece repo
 
 ## Overview
-The repository contains 3 python packages 
-- `sail-safe-functions` contains only "Scripts" that get converted into safe functions
-- `sail-safe-functions-federate` functions that we use to federate out safe functions, these should eventually end up in the ochestrator
-- `sail-safe-functions-test` contains the unit test 
+The repository contains 5 python packages
+- `sail-aggregator-fastapi` contains all code relating to running an aggregator scn service.
+- `sail_core` contains all core functionality needed to run in other packages. This includes and implementation manager and common tools.
+- `sail-participant-zeromq` contains all code needed to run a local copy of a `sail_zeromq` server. These act as data holding nodes.
+- `sail-safe-functions` contains only "Scripts" that get converted into safe functions. This includes both scripts which are held on SCNs and an aggregator SCN. This also includes all tests for safe funcitons.
+- `sail-user-client` contains all the code used by a researcher to interact with a deployed platform. This contains two submodules. `sail_aggregator_client` contains internally facing packages which abstract away the majority of fastapi interactions from the user. `sail_user_client` is the customer facing api which interacts with `sail_aggregator_client` and facilitates the user experience in the sail platform.
 
 - the `build` folder contains python configuration scripts for the repo
 - the `config` folder contains dependency management files  `ie: requirements.txt`
+- the `notebooks` directory contains a list of code examples
 - the `docs` folder contains the documentation that we generate and is published on github pages
 
-An up to date list of what is available for use is held [here](https://fluffy-couscous-a7e264fe.pages.github.io/)
+An up to date list of functionality that is available for use is held [here](https://fluffy-couscous-a7e264fe.pages.github.io/)
 
 
 
