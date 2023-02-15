@@ -29,7 +29,7 @@
     ],
     "python.linting.flake8Args": [
         "--max-line-length=2000",
-        "--ignore=E402, E265, F841, F541, E702",
+        "--ignore=E203, E231, E302, E303, E402, E265, F841, F541, E702, F401, E501, W292, W391, W503",
         "--max-length=120"
     ],
     "autoDocstring.docstringFormat": "sphinx",
