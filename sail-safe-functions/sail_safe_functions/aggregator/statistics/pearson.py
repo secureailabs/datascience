@@ -112,24 +112,31 @@ class Pearson(EstimatorTwoSample):
                 )
             )
         rho, degrees_of_freedom = self.aggregate(list_list_precompute)
-        if rho < 1:
-            t_statistic = rho * math.sqrt(degrees_of_freedom / (1 - rho**2))
-
-            if self.alternative == "less":
-                p_value = t.cdf(t_statistic, degrees_of_freedom)
-            elif self.alternative == "two-sided":
-                p_value = 2 - t.cdf(t_statistic, degrees_of_freedom) * 2
-            elif self.alternative == "greater":
-                p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
-            else:
-                raise ValueError()
-        else:
+        rho = max(min(rho, 1.0), -1.0)
+        # TODO this can certainly be cleaned up at some point
+        if abs(rho) == 1.0:
             if self.alternative == "less":
                 p_value = 1
             elif self.alternative == "two-sided":
                 p_value = 0
             elif self.alternative == "greater":
                 p_value = 0
+            else:
+                raise ValueError()
+        else:
+            t_statistic = abs(rho) * math.sqrt(degrees_of_freedom / (1 - abs(rho) ** 2))
+            if self.alternative == "less":
+                if rho < 0:
+                    p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
+                else:
+                    p_value = t.cdf(t_statistic, degrees_of_freedom)
+            elif self.alternative == "two-sided":
+                p_value = 2 - (t.cdf(t_statistic, degrees_of_freedom) * 2)
+            elif self.alternative == "greater":
+                if rho < 0:
+                    p_value = t.cdf(t_statistic, degrees_of_freedom)
+                else:
+                    p_value = 1 - t.cdf(t_statistic, degrees_of_freedom)
             else:
                 raise ValueError()
         p_value = float(p_value)
