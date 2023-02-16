@@ -60,8 +60,8 @@ class Chisquare(EstimatorTwoSample):
         list_unique_1 = []
         for precompute in list_precompute:
             for tuple_value in precompute:
-                value_0 = tuple_value[0]
-                value_1 = tuple_value[1]
+                value_0 = tuple_value.split("___")[0]
+                value_1 = tuple_value.split("___")[1]
                 if value_0 not in list_unique_0:
                     list_unique_0.append(value_0)
                 if value_1 not in list_unique_1:
@@ -72,8 +72,8 @@ class Chisquare(EstimatorTwoSample):
         count_total = 0
         for precompute in list_precompute:
             for tuple_value in precompute:
-                value_0 = tuple_value[0]
-                value_1 = tuple_value[1]
+                value_0 = tuple_value.split("___")[0]
+                value_1 = tuple_value.split("___")[1]
                 index_0 = list_unique_0.index(value_0)
                 index_1 = list_unique_1.index(value_1)
                 array_true[index_0, index_1] += precompute[tuple_value]
