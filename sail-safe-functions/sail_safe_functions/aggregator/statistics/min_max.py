@@ -3,6 +3,7 @@ from typing import List, Tuple
 import numpy
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.tools_common import check_series_empty_federated
 from sail_safe_functions.participant.statistics.min_max_precompute import MinMaxPrecompute
 
 
@@ -36,6 +37,8 @@ class MinMax(EstimatorOneSample):
         :return: min and max value
         :rtype: Tuple[float, float]
         """
+
+        check_series_empty_federated(sample_0)
         list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do not share same child frames
 

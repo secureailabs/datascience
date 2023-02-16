@@ -5,17 +5,20 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
-from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
-    EstimatorOneSampleReference,
-)
-from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
-    EstimatorTwoSampleReference,
-)
-from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat
-from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import GeneratorTwoSampleFloat
-from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import compute_single_knockout_privacy_measure
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
+    EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
+    EstimatorTwoSample
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import \
+    EstimatorOneSampleReference
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import \
+    EstimatorTwoSampleReference
+from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import \
+    GeneratorOneSampleFloat
+from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import \
+    GeneratorTwoSampleFloat
+from sail_safe_functions.test.helper_sail_safe_functions.tools_privacy import \
+    compute_single_knockout_privacy_measure
 from scipy import interpolate
 
 
@@ -317,7 +320,7 @@ def experiment_power(
     return experiment
 
 
-def plot_experiment_power(list_sample_size, list_list_list_experiment: List[List[List[dict]]]):
+def plot_experiment_power(list_sample_size, list_list_list_experiment: List[List[List[dict]]], *, do_show=True):
     list_subplot_titles = []
     for sample_size in list_sample_size:
         list_subplot_titles.append(f"N={sample_size}")
@@ -345,10 +348,11 @@ def plot_experiment_power(list_sample_size, list_list_list_experiment: List[List
         fig["layout"][f"xaxis{i+2}"]["title"] = "effect size"
     fig["layout"]["yaxis"]["title"] = "statistical power"
     fig.update_layout(height=350, width=1200, showlegend=True)
-    fig.show()
+    if do_show:
+        fig.show()
 
 
-def plot_experiment_bias_variance_two_sample_hist(list_experiment: List[dict]):
+def plot_experiment_bias_variance_two_sample_hist(list_experiment: List[dict], *, do_show=True):
     list_subplot_titles = []
     list_sample_size = []
     for experiment in list_experiment:
@@ -377,8 +381,8 @@ def plot_experiment_bias_variance_two_sample_hist(list_experiment: List[dict]):
         fig["layout"][f"xaxis{i+2}"]["title"] = "error"
     fig["layout"]["yaxis"]["title"] = "frequency"
     fig.update_layout(height=350, width=1200, showlegend=True)
-    fig.show()
-
+    if do_show:
+        fig.show()
 
 def add_trace_experiment(
     fig,

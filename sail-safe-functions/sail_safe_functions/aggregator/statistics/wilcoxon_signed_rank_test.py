@@ -6,7 +6,11 @@ from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
-from sail_safe_functions.aggregator.tools_common import check_series_one_value_federated, check_series_paired
+from sail_safe_functions.aggregator.tools_common import (
+    check_series_empty_federated,
+    check_series_one_value_federated,
+    check_series_paired,
+)
 from sail_safe_functions.participant.statistics.wilcoxon_signed_rank_test_precompute import (
     WilcoxonSingedRankTestPrecompute,
 )
@@ -59,6 +63,8 @@ class WilcoxonSingedRankTest(EstimatorTwoSample):
         """
 
         check_series_paired(sample_0, sample_1)
+        check_series_empty_federated(sample_0)
+        check_series_empty_federated(sample_1)
         check_series_one_value_federated(
             sample_0
         )  # No need to check the other because the series are checked to be paired

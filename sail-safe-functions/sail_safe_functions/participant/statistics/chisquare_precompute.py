@@ -26,7 +26,8 @@ class ChisquarePrecompute(SafeFunctionBase):
         check_series_one_value(sample_0)
         check_series_one_value(sample_1)
 
-        for tuple_value in zip(sample_0, sample_1):
+        for val_1, val_2 in zip(sample_0, sample_1):
+            tuple_value = val_1 + "_" + val_2
             if tuple_value not in precompute:
                 precompute[tuple_value] = 0
             precompute[tuple_value] = precompute[tuple_value] + 1
