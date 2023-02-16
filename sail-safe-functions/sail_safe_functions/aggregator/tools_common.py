@@ -34,6 +34,14 @@ def check_series_paired(series_0: SeriesFederated, series_1: SeriesFederated) ->
         raise ValueError("`sample_0` and `sample_1` must have the same length.")
 
 
+def check_series_empty_federated(series: SeriesFederated) -> None:
+    # TODO this avoids a serial import but it should move
+    from sail_safe_functions.aggregator import statistics
+
+    if statistics.count(series) == 0:
+        raise Exception("series cannot be empty")
+
+
 def check_series_one_value_federated(series: SeriesFederated) -> None:
     # TODO this avoids a serial import but it should move
     from sail_safe_functions.aggregator import statistics

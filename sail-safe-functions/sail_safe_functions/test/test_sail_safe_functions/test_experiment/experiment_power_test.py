@@ -31,4 +31,4 @@ def test_experiment_power():
 
     list_sample_size = [sample_size]
     list_list_list_experiment = [[[experiment]]]
-    plot_experiment_power(list_sample_size, list_list_list_experiment)
+    plot_experiment_power(list_sample_size, list_list_list_experiment, do_show=False)

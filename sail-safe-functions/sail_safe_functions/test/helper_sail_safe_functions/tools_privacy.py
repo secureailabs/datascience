@@ -6,11 +6,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
+    EstimatorOneSample
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import (
-    series_drop_by_index,
-    series_split_random,
-)
+    series_drop_by_index, series_split_random)
 
 
 def compute_single_knockout_privacy_measure(
@@ -81,7 +80,7 @@ def experiment_privacy_one_sample_dma(
     return experiment
 
 
-def plot_experiment_privacy_one_sample_dma(list_list_experiment):
+def plot_experiment_privacy_one_sample_dma(list_list_experiment, *, do_show=True):
     xaxis = "extract_fraction"
     yaxis = "fraction_hit"
     trace_axis = "estimator_name"
@@ -109,7 +108,8 @@ def plot_experiment_privacy_one_sample_dma(list_list_experiment):
         fig["layout"][f"xaxis{i+2}"]["title"] = xaxis
     fig["layout"]["yaxis"]["title"] = yaxis
     fig.update_layout(height=350, width=1200, showlegend=True)
-    fig.show()
+    if do_show:
+        fig.show()
 
 
 def add_trace_experiment(

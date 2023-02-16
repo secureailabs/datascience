@@ -46,4 +46,4 @@ def test_experiment_accuracy():
         target_estimate_name,
     )
     list_experiment = [experiment]
-    plot_experiment_bias_variance_two_sample_hist(list_experiment)
+    plot_experiment_bias_variance_two_sample_hist(list_experiment, do_show=False)

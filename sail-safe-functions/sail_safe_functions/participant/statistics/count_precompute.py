@@ -17,6 +17,6 @@ class CountPrecompute(SafeFunctionBase):
     ) -> float:
         sample_0 = ServiceReference.get_instance().reference_to_series(sample_0_series).to_numpy()
         check_instance(sample_0_series, ReferenceSeries)
-        check_empty_series(sample_0)
+        # check_empty_series(sample_0) # TODO move check to agregator
         check_series_nan(sample_0)
         return sample_0.size

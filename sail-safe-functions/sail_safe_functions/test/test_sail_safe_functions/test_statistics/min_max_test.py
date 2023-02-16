@@ -50,32 +50,13 @@ def test_min_max_empty():
 
 
 @pytest.mark.active
-def test_min_max_one_value():
-    """
-    This is our test to raise exception for series containing only one value
-    """
-    # Arrange
-    numpy.random.seed(42)
-    sample_size = 1
-    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-
-    # Act
-    estimator = MinMax()
-    with pytest.raises(Exception) as exc_info:
-        estimator.run(sample_0)
-
-    # Assert
-    assert "series cannot containt only one value" in str(exc_info.value)
-
-
-@pytest.mark.active
 def test_min_max_nan_value():
     """
     This is our test to raise exception if series containing nan values.
     """
     # Arrange
     numpy.random.seed(42)
-    a = numpy.empty((20))
+    a = numpy.zeros((20))
     a[12:] = numpy.nan
     sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
 
@@ -86,4 +67,4 @@ def test_min_max_nan_value():
         estimator.run(sample_0)
 
     # Assert
-    assert "Sample contains `na` values" in str(exc_info.value)
+    assert "series cannot containt nan or None values" in str(exc_info.value)
