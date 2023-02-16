@@ -91,7 +91,6 @@ def test_welch_t_test_one_value():
     estimator = WelchTTest(alternative=alternative)
 
     with pytest.raises(Exception) as exc_info:
-        #   pearson_sail, p_value_sail = estimator.run(sample_0, sample_1)
         estimator.run(sample_0, sample_1)
 
     # Assert

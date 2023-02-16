@@ -128,13 +128,8 @@ def test_pearson_same_sample_negative():
     """
     numpy.random.seed(42)
 
-    a = [1, 2, 3, 4, 5]
-    b = [-1, -2, -3, -4, -5]
-    a = numpy.array(a)
-    b = numpy.array(b)
-
-    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
-    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", b)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.array([1, 2, 3, 4, 5]))
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_1", numpy.array([-1, -2, -3, -4, -5]))
 
     alternative = "two-sided"
     estimator = Pearson(alternative=alternative)

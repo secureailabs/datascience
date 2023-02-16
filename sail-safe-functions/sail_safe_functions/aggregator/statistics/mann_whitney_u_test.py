@@ -7,6 +7,7 @@ from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator import preprocessing, statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
 from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.aggregator.tools_common import check_series_one_value_federated
 from sail_safe_functions.participant.statistics.mann_whitney_u_test_precompute import MannWhitneyUTestPrecompute
 from scipy import stats
 
@@ -54,6 +55,8 @@ class MannWhitneyUTest(EstimatorTwoSample):
         """
         check_instance(sample_0, SeriesFederated)
         check_instance(sample_1, SeriesFederated)
+        check_series_one_value_federated(sample_0)
+        check_series_one_value_federated(sample_1)
         n0 = statistics.count(sample_0)
         n1 = statistics.count(sample_1)
 
