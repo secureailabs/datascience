@@ -114,6 +114,8 @@ class Pearson(EstimatorTwoSample):
         rho, degrees_of_freedom = self.aggregate(list_list_precompute)
         rho = max(min(rho, 1.0), -1.0)
         # TODO this can certainly be cleaned up at some point
+
+        # the code below is an adaption of the scipy bdr function
         if abs(rho) == 1.0:
             if self.alternative == "less":
                 p_value = 1
@@ -124,6 +126,7 @@ class Pearson(EstimatorTwoSample):
             else:
                 raise ValueError()
         else:
+            # TODO possibly dropping the first abs here will make this simpler
             t_statistic = abs(rho) * math.sqrt(degrees_of_freedom / (1 - abs(rho) ** 2))
             if self.alternative == "less":
                 if rho < 0:
