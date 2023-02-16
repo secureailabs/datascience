@@ -212,8 +212,8 @@ def test_spearman_one_value():
     with pytest.raises(Exception) as exc_info:
         estimator.run(sample_0, sample_1)
 
-    # Assert
-    assert "series cannot containt only one value" in str(exc_info.value)
+        # Assert
+        assert "series cannot containt only one value" in str(exc_info.value)
 
 
 @pytest.mark.active
