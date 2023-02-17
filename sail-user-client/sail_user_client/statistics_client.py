@@ -2,10 +2,10 @@
 from typing import Tuple
 
 from sail_aggregator_client.models import (
-    BodyMannWhitneyUTest,
     BodyChisquare,
     BodyKolmogorovSmirnovTest,
     BodyLeveneTest,
+    BodyMannWhitneyUTest,
     BodyPairedTTest,
     BodyPearson,
     BodySpearman,

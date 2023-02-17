@@ -1,14 +1,13 @@
+import json
+import os
 
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+import config
+from config import validate
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.statistics import wilcoxon_singed_rank_test
-import config
-from config import validate, query_limit_n
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
-import os
-import json
 # from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 # from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 # from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
@@ -33,8 +32,9 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 router = APIRouter(
-    prefix='/statistics',
+    prefix="/statistics",
 )
+
 
 @router.post(
     path="/chisquare",
@@ -141,6 +141,7 @@ async def levene_test(
 
     return {"f_statistic": f_statistic_sail, "p_value": p_value_sail}
 
+
 @router.post(
     path="/mann_whitney_u_test",
     description="Computes the Mann Whitney U Test of two Series.",
@@ -204,6 +205,7 @@ async def min_max(series_id: str = Body(description="The identifer of the Series
 
     min, max = statistics.min_max(series)
     return {"min": min, "max": max}
+
 
 @router.post(
     path="/paired_t_test",

@@ -1,4 +1,3 @@
-
 from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
 from fastapi import APIRouter
 from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
@@ -26,12 +25,11 @@ with open(IV_SETTINGS_FILE) as initial_settings:
         scn_names.append(entry["ip_address"])
         scn_ports.append(5556)
         list_dataset_id.append(entry["dataset_id"])
-# TODO: take this out and make it globally accessible
+        # TODO: take this out and make it globally accessible
 
-
-router = APIRouter(
-    prefix='/data_ingestion',
-)
+        router = APIRouter(
+            prefix="/data_ingestion",
+        )
 
 
 class DataFederation(BaseModel):
@@ -143,4 +141,3 @@ async def read_tabular_dataframe_csvv1(
     dataset_tabular = preprocessing.read_dataset_csvv1(list_dataset_id)
     dataset_id = service_reference.get_instance().data_set_tabular_to_reference(dataset_tabular)
     return {"dataset_id": dataset_id}
-

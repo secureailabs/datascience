@@ -1,19 +1,18 @@
-
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
 from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 router = APIRouter(
-    prefix='/data_model',
+    prefix="/data_model",
 )
 
 dataframe_name_lookup = {}
 
 # DATA MODEL
 service_reference = TestServiceReference.get_instance()
+
 
 @router.post(
     path="/new_data_frame_tabular",
@@ -144,4 +143,3 @@ async def dataframe_model_add_series_model(
 
 
 # DATA MODEL END
-

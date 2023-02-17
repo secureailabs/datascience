@@ -1,13 +1,12 @@
-
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-from pydantic import BaseModel
-from typing import List
-from sail_safe_functions.aggregator import preprocessing
-import config
-import os
 import json
+import os
+from typing import List
+
+import config
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
+from pydantic import BaseModel
+from sail_safe_functions.aggregator import preprocessing
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 # TODO: take this out and make it globally accessible
 scn_names = []
@@ -31,7 +30,7 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 router = APIRouter(
-    prefix='/data_ingestion',
+    prefix="/data_ingestion",
 )
 # service_reference = TestServiceReference.get_instance()
 

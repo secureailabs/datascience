@@ -1,8 +1,7 @@
 import plotly.graph_objects as go
+from plotly.graph_objects import Figure
 from sail_aggregator_client.models import BodyHistogram, BodyKernelDensityEstimation
 from sail_aggregator_client.sail_class import SyncOperations
-from plotly.graph_objects import Figure
-
 
 
 def histogram(operation: SyncOperations, series_1_id: str, bin_count: int) -> Figure:

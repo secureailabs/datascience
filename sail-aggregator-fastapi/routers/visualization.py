@@ -1,13 +1,12 @@
-
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-from sail_safe_functions.aggregator import visualization
-from config import validate, query_limit_n
+import json
+import os
 
 import config
-import os
-import json
+from config import validate
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
+from sail_safe_functions.aggregator import visualization
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
 # from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 # from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 # from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
@@ -32,8 +31,9 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 router = APIRouter(
-    prefix='/visualisation',
+    prefix="/visualisation",
 )
+
 
 @router.post(
     path="/histogram",

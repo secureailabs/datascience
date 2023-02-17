@@ -1,11 +1,11 @@
-
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-from sail_safe_functions.aggregator import preprocessing
-import config
-import os
 import json
+import os
+
+import config
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
+from sail_safe_functions.aggregator import preprocessing
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+
 # from sail_safe_functions.aggregator.data_model.data_model_data_frame import DataModelDataFrame
 # from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 # from sail_safe_functions.aggregator.data_model.data_model_tabular import DataModelTabular
@@ -30,7 +30,7 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 router = APIRouter(
-    prefix='/preprocessing',
+    prefix="/preprocessing",
 )
 
 # Doesn't work but we should allow it

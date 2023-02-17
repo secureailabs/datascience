@@ -1,10 +1,9 @@
-
-from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
-from fastapi import APIRouter
-from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
-import config
-import os
 import json
+import os
+
+import config
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Path, Response, status
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
 
 # TODO: take this out and make it globally accessible
 scn_names = []
@@ -26,7 +25,7 @@ with open(IV_SETTINGS_FILE) as initial_settings:
 
 
 router = APIRouter(
-    prefix='/data_manipulation',
+    prefix="/data_manipulation",
 )
 
 
