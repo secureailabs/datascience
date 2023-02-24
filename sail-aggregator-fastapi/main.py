@@ -1,458 +1,64 @@
-##################################################
-# This file contains the fastapi implementation of the Smart Broker.
-# Currently it only includes the statistics functions
-##################################################
-# Property of Secure AI Labs
-##################################################
-# Author: Adam J. Hall
-# Copyright: Copyright 02/11/2022, MVP Delivery
-# Version: 0.0.0
-# Mmaintainer: Secure AI Labs
-# Email: adam.hall@secureailabs.com
-# Status: Alpha
-##################################################
-
-from sail_safe_functions.aggregator.statistics.chisquare import Chisquare
-from sail_safe_functions.aggregator.statistics.kolmogorov_smirnov_test import KolmogorovSmirnovTest
-from sail_safe_functions.aggregator.statistics.kurtosis import Kurtosis
-from sail_safe_functions.aggregator.statistics.levene_test import LeveneTest
-from sail_safe_functions.aggregator.statistics.mann_whitney_u_test import MannWhitneyUTest
-from sail_safe_functions.aggregator.statistics.mean import Mean
-from sail_safe_functions.aggregator.statistics.min_max import MinMax
-from sail_safe_functions.aggregator.statistics.paired_t_test import PairedTTest
-from sail_safe_functions.aggregator.statistics.pearson import Pearson
-from sail_safe_functions.aggregator.statistics.skewness import Skewness
-from sail_safe_functions.aggregator.statistics.spearman import Spearman
-from sail_safe_functions.aggregator.statistics.student_t_test import StudentTTest
-from sail_safe_functions.aggregator.statistics.variance import Variance
-from sail_safe_functions.aggregator.statistics.wilcoxon_signed_rank_test import WilcoxonSingedRankTest
-from SecureUtility import get_series, get_series_different, validate
+from sail_safe_functions.test.helper_sail_safe_functions.participant_service_local import ParticipantSeriviceLocal
+from sail_safe_functions.test.helper_sail_safe_functions.test_service_reference import TestServiceReference
+from sail_core.implementation.participant_service_client_dict import ParticipantServiceClientDict
+from sail_core.implementation_manager import ImplementationManager
+from routers import data_model, data_ingestion, data_manipulation, preprocessing, statistics, visualization
+from fastapi import Body, Depends, FastAPI, HTTPException, Path, Response, status
+import config
 
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 
-app = FastAPI()
+app = FastAPI(
+    title="sail_aggregator",
+    description="Internally facing API for communicating with the SAIL aggregator node",
+    version="0.1.0",
+)
+
+app.include_router(data_model.router)
+app.include_router(data_ingestion.router)
+app.include_router(data_manipulation.router)
+app.include_router(preprocessing.router)
+app.include_router(statistics.router)
+app.include_router(visualization.router)
+
+participant_service = ParticipantServiceClientDict()
+for dataset_id, scn_name, scn_port in zip(list_dataset_id, scn_names, scn_ports):
+    participant_service.register_client(dataset_id, ClientRPCZero(scn_name, scn_port))
+    print(f"Connected to SCN {scn_name} serving dataset {dataset_id}")
 
 
-@app.get("/")
-async def root():
+implementation_manager = ImplementationManager.get_instance()
+implementation_manager.set_participant_service(participant_service)
+implementation_manager.initialize()
+
+service_reference = TestServiceReference.get_instance()
+
+@app.on_event("startup")
+async def start_audit_logger():
     """
-    Redirects user to docs as hompage
+    Start async audit logger server at start up as a background task
     """
-    return RedirectResponse("/docs")
+    t = config.Audit_log_task()
+    t.start()
 
+@app.get(
+    path="/",
+    description="landing page",
+    response_description="simple string.",
+    response_model=dict,
+    response_model_by_alias=False,
+    response_model_exclude_unset=True,
+    dependencies=None,
+    status_code=status.HTTP_200_OK,
+    operation_id="landing",
+)
+def home():
+    return {"message":"hello world home page"}
 
-@app.get("/mean")
-async def mean(series_uuid: str) -> dict:
-    """
-    Returns the mean of the supplied remote series.
 
-    :param: series_uuid: UUID of remote series
-    :type: str
-    :return: dict containing value of mean
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
+import uvicorn
 
-    # Validate
-    validate(series)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
-    # Execute
-    estimator = Mean()
-    mean_sail = estimator.run(series)
 
-    # Return
-    return {"mean_sail": mean_sail}
-
-
-@app.get("/chisquare")
-async def chisquare(series_uuid_1: str, series_uuid_2: str) -> dict:
-    """
-    Returns the chisquare of the supplied remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :return: dict containing value of chisquare
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = Chisquare()
-    chisquare_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"chisquare_sail": chisquare_sail}
-
-
-@app.get("/kolmogorovSmirnovTest")
-async def kolmogorovSmirnovTest(series_uuid: str, type_distribution: str, type_ranking: str) -> dict:
-    """
-    Returns the Kolmogorov Smirnov Test of the supplied remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :return: dict containing k statistic and p value of Kolmogorov Smirnov Test
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
-
-    # Validate
-    validate(series)
-
-    # Execute
-    estimator = KolmogorovSmirnovTest(type_distribution=type_distribution, type_ranking=type_ranking)
-    k_statistic_sail, p_value_sail = estimator.run(series)
-
-    # Return
-    return {"k_statistic_sail": k_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/kurtosis")
-async def kurtosis(series_uuid: str) -> dict:
-    """
-    Returns the kurtosis of the supplied remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :return: dict containing value of kurtosis
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
-
-    # Validate
-    validate(series)
-
-    # Execute
-    estimator = Kurtosis()
-    kurtosis_sail = estimator.run(series)
-
-    # Return
-    return {"kurtosis_sail": kurtosis_sail}
-
-
-@app.get("/leveneTest")
-async def leveneTest(series_uuid_1: str, series_uuid_2: str) -> dict:
-    """
-    Returns the Levene Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :return: dict containing f statistic and p value of Levene test
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = LeveneTest()
-    f_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"f_statistic_sail": f_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/mannWhitneyUTest")
-async def mannWhitneyUTest(series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str) -> dict:
-    """
-    Returns the Mann Whitney U Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :return: dict containing w statistic and p value of the Mann Whitney U Test
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = MannWhitneyUTest(alternative=alternative, type_ranking=type_ranking)
-    w_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/minMax")
-async def minMax(series_uuid: str) -> dict:
-    """
-    Returns the Min and Max value of a remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :return: dict containing the min and max value
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
-
-    # Validate
-    validate(series)
-
-    # Execute
-    estimator = MinMax()
-    min_sail, max_sail = estimator.run(series)
-
-    # Return
-    return {"min_sail": min_sail, "max_sail": max_sail}
-
-
-@app.get("/pairedTTest")
-async def pairedTTest(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
-    """
-    Returns the Paired T Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for t test can be {"less", "two-sided", "greater"}
-    :type: str
-    :return: dict containing t statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series_different()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = PairedTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/pearson")
-async def pearson(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
-    """
-    Returns the Pearson statistic of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
-    :type: str
-    :return: dict containing pearson statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = Pearson(alternative=alternative)
-    pearson_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"pearson_sail": pearson_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/skewness")
-async def skewness(series_uuid: str) -> dict:
-    """
-    Returns the Skewness value of a remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :return: dict containing the skewness value
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
-
-    # Validate
-    validate(series)
-
-    # Execute
-    estimator = Skewness()
-    skewness_sail = estimator.run(series)
-
-    # Return
-    return {"skewness_sail": skewness_sail}
-
-
-@app.get("/spearman")
-async def spearman(series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str) -> dict:
-    """
-    Returns the Spearman of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
-    :type: str
-    :param: type_ranking: The mode for which to run the ranking algoritm in must be `unsafe` or `cdf` where `unsafe`
-        is unsafe and must be refactored out before this ends up in production
-    :type: str
-    :return: dict containing spearman statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series_different()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-    spearman_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"spearman_sail": spearman_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/studentTTest")
-async def studentTTest(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
-    """
-    Returns the Student T Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
-    :type: str
-    :return: dict containing t statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = StudentTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/variance")
-async def variance(series_uuid: str) -> dict:
-    """
-    Returns the Variance value of a remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :return: dict containing the variance value
-    :type: dict
-    """
-    # Arrange
-    series = get_series()
-
-    # Validate
-    validate(series)
-
-    # Execute
-    estimator = Variance()
-    variance_sail = estimator.run(series)
-
-    # Return
-    return {"variance_sail": variance_sail}
-
-
-@app.get("/welchTTest")
-async def welchTTest(series_uuid_1: str, series_uuid_2: str, alternative: str) -> dict:
-    """
-    Returns the Welch T Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
-    :type: str
-    :return: dict containing t statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = StudentTTest(alternative=alternative)
-    t_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"t_statistic_sail": t_statistic_sail, "p_value_sail": p_value_sail}
-
-
-@app.get("/wilcoxonSignedRankTest")
-async def wilcoxonSignedRankTest(series_uuid_1: str, series_uuid_2: str, alternative: str, type_ranking: str) -> dict:
-    """
-    Returns the Wilcoxon Signed Rank Test of two remote series.
-
-    :param: series_uuid_1: UUID of first remote series
-    :type: str
-    :param: series_uuid_2: UUID of second remote series
-    :type: str
-    :param: alternative: string specifying options for method can be {"less", "two-sided", "greater"}
-    :type: str
-    :param: type_ranking: The mode for which to run the ranking algoritm in must be `unsafe` or `cdf` where `unsafe`
-        is unsafe and must be refactored out before this ends up in production
-    :type: str
-    :return: dict containing w statistic and p value
-    :type: dict
-    """
-    # Arrange
-    series_1 = get_series()
-    series_2 = get_series()
-
-    # Validate
-    validate(series_1)
-    validate(series_2)
-
-    # Execute
-    estimator = WilcoxonSingedRankTest(alternative=alternative, type_ranking=type_ranking)
-    w_statistic_sail, p_value_sail = estimator.run(series_1, series_2)
-
-    # Return
-    return {"w_statistic_sail": w_statistic_sail, "p_value_sail": p_value_sail}

@@ -6,7 +6,7 @@ with open("README.md", "r") as file:
 setup(
     name="sail-aggregator-fastapi",
     version="1.0.1",
-    packages=find_packages(),
+    packages=(find_packages()),
     package_data={},
     python_requires=">=3.5",
     author="Jaap Oosterbroek",
