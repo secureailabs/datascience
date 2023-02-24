@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import Dict
 
 from sail_core.api.service_base import ServiceBase
 

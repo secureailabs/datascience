@@ -1,4 +1,10 @@
+import re
+
 from setuptools import find_packages, setup
+
+version = ""
+with open("sail_safe_functions/__init__.py") as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 requirements = []
 with open("requirements.txt") as file:
@@ -11,7 +17,7 @@ with open("README.md", "r") as file:
 
 setup(
     name="sail-safe-functions",
-    version="1.0.1",
+    version=version,
     install_requires=requirements,
     packages=find_packages(),
     package_data={},

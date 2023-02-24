@@ -3,14 +3,14 @@ from typing import Dict
 
 import requests
 from sail_core.api.config_service_base import ConfigServiceBase
-from sail_core.implementation_manager import ImplementationMaganger
+from sail_core.implementation_manager import ImplementationManager
 
 
 class ConfigServiceClient(ConfigServiceBase):
     def __init__(self) -> None:
         self.__config: Dict
 
-    def initialize(self, implementation_manager: ImplementationMaganger) -> None:
+    def initialize(self, implementation_manager: ImplementationManager) -> None:
         # config = implementation_manager.get_config_service()
         # url = config["config_service"]["url_server_config"]
         # TODO something magic here has to happen to get the config secret, somthing with
