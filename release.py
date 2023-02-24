@@ -10,7 +10,7 @@ from github import Github
 
 
 def run_command(command: str, check=True, path: Optional[str] = None):
-    if path == None:
+    if path is None:
         result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, check=check)
     else:
         result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, check=check, cwd=path)
