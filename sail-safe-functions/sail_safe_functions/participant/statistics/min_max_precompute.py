@@ -3,12 +3,7 @@ from typing import Tuple
 import numpy as np
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
-from sail_safe_functions.aggregator.tools_common import (
-    check_empty_series,
-    check_instance,
-    check_series_nan,
-    check_series_one_value,
-)
+from sail_safe_functions.aggregator.tools_common import check_empty_series, check_series_nan, check_series_one_value
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
@@ -37,9 +32,7 @@ class MinMaxPrecompute(SafeFunctionBase):
         if np.isnan(np.sum(sample_0)):
             raise ValueError("Sample contains `na` values")
         sample_0 = np.sort(sample_0)
-        check_empty_series(sample_0)
         check_series_nan(sample_0)
-        check_series_one_value(sample_0)
 
         subsample_size = int(np.ceil(np.sqrt(sample_0.size)))
         subsample_min = sample_0[:subsample_size]

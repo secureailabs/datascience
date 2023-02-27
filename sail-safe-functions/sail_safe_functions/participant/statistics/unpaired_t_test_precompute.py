@@ -1,16 +1,10 @@
 from typing import List
 
 import numpy as np
-import pandas as pd
 from sail_core.tools_common import sanitize_dict_for_json
 from sail_safe_functions.aggregator.reference_series import ReferenceSeries
 from sail_safe_functions.aggregator.service_reference import ServiceReference
-from sail_safe_functions.aggregator.tools_common import (
-    check_empty_series,
-    check_instance,
-    check_series_nan,
-    check_series_one_value,
-)
+from sail_safe_functions.aggregator.tools_common import check_empty_series, check_series_nan, check_series_one_value
 from sail_safe_functions.safe_function_base import SafeFunctionBase
 
 
@@ -39,9 +33,9 @@ class UnpairedTTestPrecompute(SafeFunctionBase):
         check_empty_series(sample_0)
         check_empty_series(sample_1)
         check_series_nan(sample_0)
-        check_series_one_value(sample_0)
+        # check_series_one_value(sample_0) #TODO these should be one level up
         check_series_nan(sample_1)
-        check_series_one_value(sample_1)
+        # check_series_one_value(sample_1)
 
         sum_x_0 = np.sum(sample_0)
         sum_xx_0 = np.sum(sample_0 * sample_0)

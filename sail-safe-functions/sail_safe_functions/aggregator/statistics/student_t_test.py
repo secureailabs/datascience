@@ -3,11 +3,9 @@ from typing import List, Tuple
 import numpy as np
 from sail_core.implementation_manager import ImplementationManager
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_two_sample import \
-    EstimatorTwoSample
-from sail_safe_functions.aggregator.tools_common import check_variance_zero
-from sail_safe_functions.participant.statistics.unpaired_t_test_precompute import \
-    UnpairedTTestPrecompute
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
+from sail_safe_functions.aggregator.tools_common import check_series_one_value_federated, check_variance_zero
+from sail_safe_functions.participant.statistics.unpaired_t_test_precompute import UnpairedTTestPrecompute
 from scipy import stats
 from scipy.stats import t
 
@@ -51,6 +49,9 @@ class StudentTTest(EstimatorTwoSample):
         :return: t_statistic, p_value
         :rtype: float, float
         """
+        check_series_one_value_federated(sample_0)
+        check_series_one_value_federated(sample_1)
+
         list_list_precompute = []
         # TODO deal with posibilty sample_0 and sample_1 do net share same child frames
         participant_service = ImplementationManager.get_instance().get_participant_service()

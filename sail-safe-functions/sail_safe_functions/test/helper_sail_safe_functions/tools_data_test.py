@@ -35,6 +35,7 @@ def series_drop_by_index(series_federated: SeriesFederated, index_drop: int):
 def series_split_random(
     series_federated: SeriesFederated, sample_size_0: int, random_seed: Optional[int] = None
 ) -> Tuple[SeriesFederated, SeriesFederated]:
+    # splits series federated into two series: one of sample_size_0 and a second of all the other data
     # TODO write a unit test for this
     series_federated_size = statistics.count(series_federated)
     if series_federated_size < sample_size_0:
@@ -44,17 +45,17 @@ def series_split_random(
     if random_seed is not None:
         random.seed(random_seed)
     random.shuffle(list_index)
-    array_index_0 = np.array(sorted(list_index[sample_size_0:]))
-    array_index_1 = np.array(sorted(list_index[:sample_size_0]))
+    array_index_0 = np.array(sorted(list_index[:sample_size_0]))
+    array_index_1 = np.array(sorted(list_index[sample_size_0:]))
     service_reference = ServiceReference.get_instance()
     list_reference_0 = []
     list_reference_1 = []
 
     for dataset_id in series_federated.list_dataset_id:
         series: Series = service_reference.reference_to_series(series_federated.get_reference_series(dataset_id))
-        series_size = series.size
-        array_index_0_series = array_index_0[0 <= array_index_0 & array_index_0 < series_size]
-        array_index_1_series = array_index_1[0 <= array_index_0 & array_index_0 < series_size]
+        series_size = int(series.size)
+        array_index_0_series = array_index_0[(0 <= array_index_0) & (array_index_0 < series_size)]
+        array_index_1_series = array_index_1[(0 <= array_index_1) & (array_index_1 < series_size)]
         array_index_0 = array_index_0 - series_size
         array_index_1 = array_index_1 - series_size
         series_pandas_0 = series.take(array_index_0_series)

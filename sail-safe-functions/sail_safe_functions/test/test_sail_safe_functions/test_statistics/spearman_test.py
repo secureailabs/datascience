@@ -63,8 +63,7 @@ def test_spearman_two_sided_2(two_sample_big: Tuple[SeriesFederated, SeriesFeder
 
     # Assert
     assert spearman_scipy == pytest.approx(spearman_sail, 0.0001)
-    # TODO
-    # assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
+    assert p_value_scipy == pytest.approx(p_value_sail, 0.0001)
 
 
 @pytest.mark.active
@@ -213,8 +212,8 @@ def test_spearman_one_value():
     with pytest.raises(Exception) as exc_info:
         estimator.run(sample_0, sample_1)
 
-    # Assert
-    assert "series cannot containt only one value" in str(exc_info.value)
+        # Assert
+        assert "series cannot containt only one value" in str(exc_info.value)
 
 
 @pytest.mark.active

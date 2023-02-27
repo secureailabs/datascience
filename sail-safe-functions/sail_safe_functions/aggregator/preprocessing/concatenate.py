@@ -1,7 +1,7 @@
 from sail_core.implementation_manager import ImplementationManager
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_model.data_model_series import DataModelSeries
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.participant.preprocessing.concatenate_precompute import ConcatenatePrecompute
 
 

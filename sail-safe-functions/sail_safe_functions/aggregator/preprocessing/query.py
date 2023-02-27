@@ -7,8 +7,8 @@ from typing import Any, List
 import numpy as np
 import pandas as pd
 from pandas.core.computation.expr import Expr, Scope
+from sail_core.tools_common import check_instance
 from sail_safe_functions.aggregator.data_frame_federated import DataFrameFederated
-from sail_safe_functions.aggregator.tools_common import check_instance
 from sail_safe_functions.aggregator.tools_specific.parser import unparse
 from sail_safe_functions.participant.preprocessing.query_precompute import QueryPrecompute
 

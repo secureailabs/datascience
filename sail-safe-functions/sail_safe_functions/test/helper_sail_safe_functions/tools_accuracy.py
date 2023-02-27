@@ -1,12 +1,17 @@
 from typing import List
 
 import numpy
+import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator.statistics.estimator import Estimator
 from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_two_sample import EstimatorTwoSample
 from sail_safe_functions.test.helper_sail_safe_functions.estimator_one_sample_reference import (
     EstimatorOneSampleReference,
+)
+from sail_safe_functions.test.helper_sail_safe_functions.estimator_two_sample_reference import (
+    EstimatorTwoSampleReference,
 )
 from sail_safe_functions.test.helper_sail_safe_functions.generator_one_sample_float import GeneratorOneSampleFloat
 from sail_safe_functions.test.helper_sail_safe_functions.generator_two_sample_float import GeneratorTwoSampleFloat
@@ -204,6 +209,266 @@ def plot_report_power(report_power: dict, title: str):
 
     fig.update_layout(height=350, width=1200, title_text="Quality report for " + title, showlegend=False)
     fig.show()
+
+
+def plot_list_report_power(list_report_power: List[dict]):
+    list_subplot_titles = []
+    list_sample_size = list_report_power[0]["list_sample_size"]
+    for sample_size in list_sample_size:
+        list_subplot_titles.append(f"N={sample_size}")
+
+    fig = make_subplots(rows=1, cols=len(list_subplot_titles), shared_yaxes=True, subplot_titles=list_subplot_titles)
+
+    for i, sample_size in enumerate(list_sample_size):
+        for report_power in list_report_power:
+            go_power = go.Scatter(
+                x=report_power["list_effect_size"],
+                y=report_power["list_list_fraction_hit"][i],
+                line=dict(color="#0000ff"),
+            )
+            fig.add_trace(go_power, row=1, col=i + 1)
+
+    fig["layout"]["yaxis"]["title"] = "statistical power"
+    fig["layout"]["xaxis"]["title"] = "effect size"
+    for i in range(len(report_power["list_sample_size"]) - 1):
+        fig["layout"][f"xaxis{i+2}"]["title"] = "effect size"
+
+    fig.update_layout(height=350, width=1200, showlegend=False)
+    fig.show()
+
+
+def experiment_bias_variance_two_sample(
+    estimator: EstimatorTwoSample,
+    generator: GeneratorTwoSampleFloat,
+    sample_size: int,
+    effect_size: float,
+    is_paired: bool,
+    significance: float,
+    run_count: int,
+    target_estimate_name: str,
+) -> dict:
+
+    experiment = {}
+    experiment["parameter"] = {}
+    experiment["parameter"]["estimator_name"] = estimator.estimator_name + " - " + target_estimate_name
+    experiment["parameter"]["generator_name"] = generator.name
+    experiment["parameter"]["sample_size"] = sample_size
+    experiment["parameter"]["effect_size"] = effect_size
+    experiment["parameter"]["significance"] = significance
+    experiment["parameter"]["run_count"] = run_count
+    experiment["parameter"]["target_estimate_name"] = target_estimate_name
+    # TODO check if experiment is cached
+
+    estimator_reference = EstimatorTwoSampleReference(estimator)
+
+    estimate_index = estimator.get_estimate_index(target_estimate_name)
+    list_estimate: List[float] = []
+    list_estimate_reference: List[float] = []
+
+    for _ in range(run_count):
+        sample_0, sample_1 = generator.generate(sample_size, effect_size, is_paired)
+        tuple_estimate = estimator.run(sample_0, sample_1)
+        tuple_estimate_reference = estimator_reference.run(sample_0, sample_1)
+        list_estimate.append(tuple_estimate[estimate_index])
+        list_estimate_reference.append(tuple_estimate_reference[estimate_index])
+
+    array_error = numpy.array(list_estimate, dtype=numpy.float64) - numpy.array(
+        list_estimate_reference, dtype=numpy.float64
+    )
+    error_bias = numpy.mean(array_error)
+    error_varriance = numpy.var(array_error)
+
+    experiment["result"] = {}
+    experiment["result"]["list_estimate"] = list_estimate
+    experiment["result"]["list_estimate_reference"] = list_estimate_reference
+    experiment["result"]["list_estimate_error"] = array_error.tolist()
+    experiment["result"]["error_bias"] = error_bias
+    experiment["result"]["error_varriance"] = error_varriance
+    return experiment
+
+
+def experiment_power(
+    estimator: EstimatorTwoSample,
+    generator: GeneratorTwoSampleFloat,
+    sample_size: int,
+    effect_size: float,
+    is_paired: bool,
+    significance: float,
+    run_count: int,
+) -> dict:
+    hit_count = 0
+    for _ in range(run_count):
+        sample_0, sample_1 = generator.generate(sample_size, effect_size, is_paired)
+        _, p_value = estimator.run(sample_0, sample_1)
+        if p_value < significance:
+            hit_count += 1
+    fraction_hit = hit_count / run_count
+    experiment = {}
+    experiment["parameter"] = {}
+    experiment["parameter"]["estimator_name"] = estimator.estimator_name
+    experiment["parameter"]["generator_name"] = generator.name
+    experiment["parameter"]["sample_size"] = sample_size
+    experiment["parameter"]["effect_size"] = effect_size
+    experiment["parameter"]["significance"] = significance
+    experiment["parameter"]["run_count"] = run_count
+
+    experiment["result"] = {}
+    experiment["result"]["statistical_power"] = fraction_hit
+    return experiment
+
+
+def plot_experiment_power(list_sample_size, list_list_list_experiment: List[List[List[dict]]], *, do_show=True):
+    list_subplot_titles = []
+    for sample_size in list_sample_size:
+        list_subplot_titles.append(f"N={sample_size}")
+
+    fig = make_subplots(rows=1, cols=len(list_sample_size), shared_yaxes=True, subplot_titles=list_subplot_titles)
+    dict_line = {}
+    for index_col, list_list_experiment in enumerate(list_list_list_experiment):
+        show_legend = index_col == len(list_sample_size) - 1
+        for index_estimator, list_experiment in enumerate(list_list_experiment):
+
+            add_trace_experiment(
+                fig,
+                1,
+                index_col + 1,
+                "effect_size",
+                "statistical_power",
+                "estimator_name",
+                show_legend,
+                dict_line,
+                list_experiment,
+            )
+
+    fig["layout"]["xaxis"]["title"] = "effect size"
+    for i in range(len(list_sample_size) - 1):
+        fig["layout"][f"xaxis{i+2}"]["title"] = "effect size"
+    fig["layout"]["yaxis"]["title"] = "statistical power"
+    fig.update_layout(height=350, width=1200, showlegend=True)
+    if do_show:
+        fig.show()
+
+
+def plot_experiment_bias_variance_two_sample_hist(list_experiment: List[dict], *, do_show=True):
+    list_subplot_titles = []
+    list_sample_size = []
+    for experiment in list_experiment:
+        list_sample_size.append(experiment["parameter"]["sample_size"])
+    for sample_size in list_sample_size:
+        list_subplot_titles.append(f"N={sample_size}")
+
+    fig = make_subplots(rows=1, cols=len(list_sample_size), shared_yaxes=True, subplot_titles=list_subplot_titles)
+    dict_line = {}
+    for index_col, experiment in enumerate(list_experiment):
+        show_legend = index_col == len(list_sample_size) - 1
+
+        add_trace_experiment_hist(
+            fig,
+            1,
+            index_col + 1,
+            "list_estimate_error",
+            "estimator_name",
+            show_legend,
+            dict_line,
+            experiment,
+        )
+
+    fig["layout"]["xaxis"]["title"] = "error"
+    for i in range(len(list_sample_size) - 1):
+        fig["layout"][f"xaxis{i+2}"]["title"] = "error"
+    fig["layout"]["yaxis"]["title"] = "frequency"
+    fig.update_layout(height=350, width=1200, showlegend=True)
+    if do_show:
+        fig.show()
+
+
+def add_trace_experiment(
+    fig,
+    index_row: int,
+    index_col: int,
+    attribute_x: str,
+    attribute_y: str,
+    attribute_name: str,
+    show_legend: bool,
+    dict_line: dict,
+    list_experiment: List[dict],
+):
+    name = list_experiment[0]["parameter"][attribute_name]
+    # gather data
+    list_x = []
+    list_y = []
+    for experiment in list_experiment:
+        list_x.append(experiment["parameter"][attribute_x])
+        list_y.append(experiment["result"][attribute_y])
+    # sort
+    list_x_sorted = [x for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+    list_y_sorted = [y for x, y in sorted(zip(list_x, list_y), key=lambda pair: pair[0])]
+
+    # plot
+    if name not in dict_line:
+        line = dict(color=px.colors.qualitative.Plotly[len(dict_line)])
+        dict_line[name] = line
+
+    line = dict_line[name]
+    go_power = go.Scatter(
+        x=list_x_sorted, y=list_y_sorted, name=name, legendgroup=name, showlegend=show_legend, line=line
+    )
+    fig.add_trace(go_power, row=index_row, col=index_col)
+
+
+def add_trace_experiment_hist(
+    fig,
+    index_row: int,
+    index_col: int,
+    attribute_x: str,
+    attribute_name: str,
+    show_legend: bool,
+    dict_line: dict,
+    experiment: dict,
+):
+    name = experiment["parameter"][attribute_name]
+    # gather data
+    list_x = experiment["result"][attribute_x]
+    if name not in dict_line:
+        line = dict(color=px.colors.qualitative.Plotly[len(dict_line)])
+        dict_line[name] = line
+
+    line = dict_line[name]
+    go_hist = go.Histogram(
+        histfunc="count",
+        x=list_x,
+        name=name,
+        legendgroup=name,
+        showlegend=show_legend,
+        #        marker=px.colors.qualitative.Plotly
+    )
+
+    fig.add_trace(go_hist, row=index_row, col=index_col)
+
+
+# def plot_line_grid(
+#     list_experiment,
+#     field_subplot_row: str,
+#     field_subplot_col: str,
+#     field_subplot_stack: str,
+#     name_data_x: str,
+#     name_data_y: str,
+# ):
+#     dict_row = {}
+#     list_value_subplot_row = []
+#     list_value_subplot_col = []
+#     list_value_subplot_stack = []
+#     for experiment in list_experiment:
+#         value_row = experiment[field_subplot_row]
+#         value_col = experiment[field_subplot_col]
+#         if value_row not in dict_row:
+#             dict_row[value_row] = {}
+
+#         if value_col not in dict_row[value_row]:
+#             dict_row[value_row][value_row] = []
+#         dict_row[value_row][value_row].append(experiment)
+#     list_field_subplot_row
+#     fig = make_subplots(rows=1, cols=len(list_subplot_titles), shared_yaxes=True, subplot_titles=list_subplot_titles)
 
 
 def create_report_power(
