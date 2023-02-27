@@ -6,10 +6,11 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sail_safe_functions.aggregator import statistics
 from sail_safe_functions.aggregator.series_federated import SeriesFederated
-from sail_safe_functions.aggregator.statistics.estimator_one_sample import \
-    EstimatorOneSample
+from sail_safe_functions.aggregator.statistics.estimator_one_sample import EstimatorOneSample
 from sail_safe_functions.test.helper_sail_safe_functions.tools_data_test import (
-    series_drop_by_index, series_split_random)
+    series_drop_by_index,
+    series_split_random,
+)
 
 
 def compute_single_knockout_privacy_measure(
@@ -34,8 +35,8 @@ def experiment_privacy_one_sample_dma(
     extract_fraction: float,
     run_count: int,
 ) -> dict:
-    ### perfroms a number of automated Divergence Membership Attacks and sees how many pass
-    # divergence is abs error
+    # perfroms a number of automated Divergence Membership Attacks and sees how many pass
+    # NOTE divergence is abs error
 
     if extract_fraction <= 0 or 1 < extract_fraction:
         raise Exception("extract fraction must be between 0 and 1")
