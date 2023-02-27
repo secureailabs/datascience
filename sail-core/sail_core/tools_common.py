@@ -1,5 +1,4 @@
 import json
-from ast import List
 from typing import Dict
 
 import numpy
