@@ -10,7 +10,7 @@ class ConficServiceIv(ConfigServiceBase):
         self.__config: Dict
 
     def initialize(self) -> None:
-        IV_SETTINGS_FILE = "/app/datascience/InitializationVector.json"
+        IV_SETTINGS_FILE = "/app/InitializationVector.json"
 
         if os.environ.get("IV_FILEPATH") is not None:
             IV_SETTINGS_FILE = os.environ.get("IV_FILEPATH")
