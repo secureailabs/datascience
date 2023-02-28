@@ -124,7 +124,7 @@ def test_convert_to_data_frame_t_test(dataset_longitudinal_r4sep2019_20_1: Datas
 
 
 @pytest.mark.active
-def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated):
+def test_convert_to_data_frame_many_procedure(dataset_longitudinal_r4sep2019_20_1: DatasetLongitudinalFederated):
     """
     This test our ability to convert a longitudinal dataset to a tabular and do a varriety of procedures,
     we are not so much intrested in the results but more if they dont raise do raise any exeptions
@@ -175,7 +175,7 @@ def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep201
     statistics.skewness(series_1)
     statistics.kurtosis(series_1)
     statistics.min_max(series_1)
-    # statistics.levene_test(series_1, series_2) #TODO broken
+    statistics.levene_test(series_1, series_2)
     statistics.pearson(series_1, series_2, "less")
     statistics.spearman(series_1, series_2, "less", "cdf")
     statistics.student_t_test(series_1, series_2, "less")
@@ -183,16 +183,14 @@ def test_convert_to_dataset_tabular_many_procedure(dataset_longitudinal_r4sep201
     statistics.paired_t_test(series_1, series_2, "less")
 
 
-@pytest.mark.broken
-def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
+@pytest.mark.slow
+def test_convert_to_data_frame_big(dataset_longitudinal_r4sep2019_1k_3: DatasetLongitudinalFederated):
     """
     This test our ability to convert a longitudinal dataset to a tabular one
     """
     dataset_longitudinal = dataset_longitudinal_r4sep2019_1k_3
 
     # Arrange
-    dataset_federation_id = "a892f738-4f6f-11ed-bdc3-0242ac120002"
-    dataset_federation_name = "r4sep2019_csvv1_20_1"
     data_frame_name = "data_frame_0"
 
     data_model_data_frame = DataModelDataFrame(data_frame_name)
@@ -224,14 +222,10 @@ def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: Dat
     data_model_tablular = DataModelTabular()
     data_model_tablular.add_data_model_data_frame(data_model_data_frame)
 
-    # act
-    dataset_tabular = preprocessing.convert_to_dataset_tabular(
-        dataset_longitudinal, dataset_federation_id, dataset_federation_name, data_model_tablular
-    )
+    # Act
+    data_frame = preprocessing.convert_to_data_frame(dataset_longitudinal, data_model_data_frame)
 
-    data_frame_nonan = preprocessing.drop_missing(
-        dataset_tabular[data_frame_name], axis=0, how="any", thresh=None, subset=None
-    )
+    data_frame_nonan = preprocessing.drop_missing(data_frame, axis=0, how="any", thresh=None, subset=None)
     name_series_1 = data_frame_nonan.list_series_name[1]
     name_series_2 = data_frame_nonan.list_series_name[2]
     data_model_series = data_frame_nonan[name_series_1].data_model_series
@@ -242,13 +236,14 @@ def test_convert_to_dataset_tabular_big(dataset_longitudinal_r4sep2019_1k_3: Dat
     t_statistic, p_value = statistics.student_t_test(series_1, series_2, "less")
 
     # assert
-    assert isinstance(dataset_tabular, DatasetTabularFederated)
     assert isinstance(data_frame_nonan, DataFrameFederated)
     assert isinstance(data_frame_nonan[name_series_1], SeriesFederated)
     assert data_model_series.type_data_level == DataModelSeries.DataLevelInterval
     assert data_model_series.unit == "kg/m2"
-    assert 24.97839070020774 == mean_1
-    assert 26.14043993190191 == mean_2
+    # fun fact: these are different outside of numerical accuracy on different cpu-architectures
+    # approx fixes this
+    assert 24.97839070020774 == pytest.approx(mean_1, 0.0001)
+    assert 26.14043993190191 == pytest.approx(mean_2, 0.0001)
 
-    assert -2.5605551123530965 == t_statistic
-    assert 0.00536218929892478 == p_value
+    assert -2.5605551123530965 == pytest.approx(t_statistic, 0.0001)
+    assert 0.00536218929892478 == pytest.approx(p_value, 0.0001)
