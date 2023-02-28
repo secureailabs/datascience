@@ -240,25 +240,25 @@ def test_spearman_nan_value():
     assert "series cannot containt nan or None values" in str(exc_info.value)
 
 
-# @pytest.mark.broken
-# def test_spearman_constant_value():
-#    """
-#    This is our test to raise exception for series containing constant value.
-#    """
-#    # Arrange
-#    numpy.random.seed(42)
-#    sample_size = 8
-#    a = [1, 1, 1, 1, 1, 1, 1, 1]
-#    a = numpy.array(a)
-#    sample_0 = SeriesFederated.from_array("dataset_0", "series_0", a)
-#    sample_1 = SeriesFederated.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
-#    alternative = "greater"
-#    type_ranking = "unsafe"
+@pytest.mark.active
+def test_spearman_constant_value():
+    """
+    This is our test to raise exception for series containing constant value.
+    """
+    # Arrange
+    numpy.random.seed(42)
+    sample_size = 8
+    a = [1, 1, 1, 1, 1, 1, 1, 1]
+    a = numpy.array(a)
+    sample_0 = ToolsDataTest.from_array("dataset_0", "series_0", a)
+    sample_1 = ToolsDataTest.from_array("dataset_0", "series_0", numpy.random.normal(0, 1, sample_size))
+    alternative = "greater"
+    type_ranking = "unsafe"
 
-#    # Act
-#    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
-#    with pytest.raises(Exception) as exc_info:
-#        estimator.run(sample_0, sample_1)
+    # Act
+    estimator = Spearman(alternative=alternative, type_ranking=type_ranking)
+    with pytest.raises(Exception) as exc_info:
+        estimator.run(sample_0, sample_1)
 
-# Assert
-#    assert "input array is constant" in str(exc_info.value)
+    # Assert
+    assert "Variance is zero raises sys.float_info.max" in str(exc_info.value)
