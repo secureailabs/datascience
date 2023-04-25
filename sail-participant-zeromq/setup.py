@@ -4,7 +4,7 @@ with open("README.md", "r") as file:
     long_description = file.read()
 
 setup(
-    name="sail-core",
+    name="sail-zeromq",
     version="0.0.1",
     packages=find_packages(),
     package_data={},
