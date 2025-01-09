@@ -60,6 +60,11 @@ class DataFrameFederated:
     # index section end
 
     # property section start
+
+    @property
+    def data_frame_name(self) -> str:
+        return self.__data_model_data_frame.data_frame_name
+
     @property
     def list_series_name(self) -> List[str]:
         return self.__data_model_data_frame.list_series_name

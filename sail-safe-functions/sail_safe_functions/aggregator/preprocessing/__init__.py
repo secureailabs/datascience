@@ -1,6 +1,6 @@
 from sail_safe_functions.aggregator.preprocessing.cdf import cumulative_distribution_function
 from sail_safe_functions.aggregator.preprocessing.concatenate import concatenate
-from sail_safe_functions.aggregator.preprocessing.convert_to_dataset_tabular import convert_to_dataset_tabular
+from sail_safe_functions.aggregator.preprocessing.convert_to_data_frame import convert_to_data_frame
 from sail_safe_functions.aggregator.preprocessing.drop_missing import drop_missing
 from sail_safe_functions.aggregator.preprocessing.float64_to_tabular import float64_to_tabular
 from sail_safe_functions.aggregator.preprocessing.impute_constant import impute_constant
